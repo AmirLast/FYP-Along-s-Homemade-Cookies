@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "922285547361",
+    "project_id": "fyp-along-shomemadecookies",
+    "storage_bucket": "fyp-along-shomemadecookies.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922285547361:android:459bb10fa60abe99886f20",
+        "android_client_info": {
+          "package_name": "com.example.fyp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFRSwDrDnugM5ca2xaUxXMHN7Q4vNFX3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
