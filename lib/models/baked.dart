@@ -4,7 +4,6 @@ class Baked {
   final String imagePath;
   final double price;
   final BakedCategory category;
-  List<Addon> availableAddons;
 
   Baked({
     required this.name,
@@ -12,11 +11,17 @@ class Baked {
     required this.imagePath,
     required this.price,
     required this.category,
-    required this.availableAddons,
   });
 }
 
 //baked categories
+//make this editable
+//delete addon
+/*
+read from DB, collection baked doc useruid collection (1)prod/(2)category
+(1) doc nameoffood -> all data in shop.dart
+(2) doc nameofcategory -> just name
+*/
 enum BakedCategory {
   cookie,
   cake,
@@ -25,15 +30,4 @@ enum BakedCategory {
   bagel,
   keropok,
   kuihraya,
-}
-
-// baked addons
-class Addon {
-  String name;
-  double price;
-
-  Addon({
-    required this.name,
-    required this.price,
-  });
 }

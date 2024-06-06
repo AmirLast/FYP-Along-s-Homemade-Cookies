@@ -11,7 +11,7 @@ class MyCurrentLocation extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         title: const Text("Your location"),
         content: TextField(
           controller: textController,

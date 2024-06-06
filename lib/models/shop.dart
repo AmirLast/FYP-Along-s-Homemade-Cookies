@@ -4,6 +4,12 @@ import 'package:fyp/models/baked.dart';
 import 'package:fyp/models/cartitem.dart';
 import 'package:intl/intl.dart';
 
+//these will be in database, but how to make it into a List after reading
+//loading screen to wait
+//search internet
+//read in changenotifier?
+//and then make page to edit the product
+
 class Shop extends ChangeNotifier {
   //list product menu
   final List<Baked> _menu = [
@@ -14,20 +20,6 @@ class Shop extends ChangeNotifier {
       imagePath: "lib/images/default_cookie.jpg",
       price: 10.00,
       category: BakedCategory.cookie,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
     ),
     Baked(
       name: "Second Cookie",
@@ -35,20 +27,6 @@ class Shop extends ChangeNotifier {
       imagePath: "lib/images/default_cookie.jpg",
       price: 20.00,
       category: BakedCategory.cookie,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
     ),
     Baked(
       name: "Third Cookie",
@@ -56,62 +34,6 @@ class Shop extends ChangeNotifier {
       imagePath: "lib/images/default_cookie.jpg",
       price: 30.00,
       category: BakedCategory.cookie,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fourth Cookie",
-      description: "Fourth dummy item for cookie",
-      imagePath: "lib/images/default_cookie.jpg",
-      price: 40.00,
-      category: BakedCategory.cookie,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fifth Cookie",
-      description: "Fifth dummy item for cookie",
-      imagePath: "lib/images/default_cookie.jpg",
-      price: 50.00,
-      category: BakedCategory.cookie,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
     ),
 
     //cake
@@ -122,20 +44,6 @@ class Shop extends ChangeNotifier {
       imagePath: "lib/images/default_cake.jpg",
       price: 10.00,
       category: BakedCategory.cake,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
     ),
     Baked(
       name: "Second Cake",
@@ -143,20 +51,6 @@ class Shop extends ChangeNotifier {
       imagePath: "lib/images/default_cake.jpg",
       price: 20.00,
       category: BakedCategory.cake,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
     ),
     Baked(
       name: "Third Cake",
@@ -164,63 +58,8 @@ class Shop extends ChangeNotifier {
       imagePath: "lib/images/default_cake.jpg",
       price: 30.00,
       category: BakedCategory.cake,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
     ),
-    Baked(
-      name: "Fourth Cake",
-      description: "Fourth dummy item for cake",
-      imagePath: "lib/images/default_cake.jpg",
-      price: 40.00,
-      category: BakedCategory.cake,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fifth Cake",
-      description: "Fifth dummy item for cake",
-      imagePath: "lib/images/default_cake.jpg",
-      price: 50.00,
-      category: BakedCategory.cake,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
+
     //bread
 
     Baked(
@@ -229,20 +68,6 @@ class Shop extends ChangeNotifier {
       imagePath: "lib/images/default_bread.jpg",
       price: 10.00,
       category: BakedCategory.bread,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
     ),
     Baked(
       name: "Second Bread",
@@ -250,20 +75,6 @@ class Shop extends ChangeNotifier {
       imagePath: "lib/images/default_bread.jpg",
       price: 20.00,
       category: BakedCategory.bread,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
     ),
     Baked(
       name: "Third Bread",
@@ -271,494 +82,6 @@ class Shop extends ChangeNotifier {
       imagePath: "lib/images/default_bread.jpg",
       price: 30.00,
       category: BakedCategory.bread,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fourth Bread",
-      description: "Fourth dummy item for bread",
-      imagePath: "lib/images/default_bread.jpg",
-      price: 40.00,
-      category: BakedCategory.bread,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fifth Bread",
-      description: "Fifth dummy item for bread",
-      imagePath: "lib/images/default_bread.jpg",
-      price: 50.00,
-      category: BakedCategory.bread,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-
-    //donut
-
-    Baked(
-      name: "First Donut",
-      description: "First dummy item for donut",
-      imagePath: "lib/images/default_donut.jpg",
-      price: 10.00,
-      category: BakedCategory.donut,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Second Donut",
-      description: "Second dummy item for donut",
-      imagePath: "lib/images/default_donut.jpg",
-      price: 20.00,
-      category: BakedCategory.donut,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Third Donut",
-      description: "Third dummy item for donut",
-      imagePath: "lib/images/default_donut.jpg",
-      price: 30.00,
-      category: BakedCategory.donut,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fourth Donut",
-      description: "Fourth dummy item for donut",
-      imagePath: "lib/images/default_donut.jpg",
-      price: 40.00,
-      category: BakedCategory.donut,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fifth Donut",
-      description: "Fifth dummy item for donut",
-      imagePath: "lib/images/default_donut.jpg",
-      price: 50.00,
-      category: BakedCategory.donut,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-
-    //bagel
-
-    Baked(
-      name: "First Bagel",
-      description: "First dummy item for bagel",
-      imagePath: "lib/images/default_bagel.jpg",
-      price: 10.00,
-      category: BakedCategory.bagel,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Second Bagel",
-      description: "Second dummy item for bagel",
-      imagePath: "lib/images/default_bagel.jpg",
-      price: 20.00,
-      category: BakedCategory.bagel,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Third Bagel",
-      description: "Third dummy item for bagel",
-      imagePath: "lib/images/default_bagel.jpg",
-      price: 30.00,
-      category: BakedCategory.bagel,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fourth Bagel",
-      description: "Fourth dummy item for bagel",
-      imagePath: "lib/images/default_bagel.jpg",
-      price: 40.00,
-      category: BakedCategory.bagel,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fifth Bagel",
-      description: "Fifth dummy item for bagel",
-      imagePath: "lib/images/default_bagel.jpg",
-      price: 50.00,
-      category: BakedCategory.bagel,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-
-    //keropok
-
-    Baked(
-      name: "First Keropok",
-      description: "First dummy item for keropok",
-      imagePath: "lib/images/default_keropok.jpg",
-      price: 10.00,
-      category: BakedCategory.keropok,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Second Keropok",
-      description: "Second dummy item for keropok",
-      imagePath: "lib/images/default_keropok.jpg",
-      price: 20.00,
-      category: BakedCategory.keropok,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Third Keropok",
-      description: "Third dummy item for keropok",
-      imagePath: "lib/images/default_keropok.jpg",
-      price: 30.00,
-      category: BakedCategory.keropok,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fourth Keropok",
-      description: "Fourth dummy item for keropok",
-      imagePath: "lib/images/default_keropok.jpg",
-      price: 40.00,
-      category: BakedCategory.keropok,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fifth Keropok",
-      description: "Fifth dummy item for keropok",
-      imagePath: "lib/images/default_keropok.jpg",
-      price: 50.00,
-      category: BakedCategory.keropok,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-
-    //kuihraya
-
-    Baked(
-      name: "First Kuih Raya",
-      description: "First dummy item for kuihraya",
-      imagePath: "lib/images/default_kuihraya.jpg",
-      price: 10.00,
-      category: BakedCategory.kuihraya,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Second Kuih Raya",
-      description: "Second dummy item for kuihraya",
-      imagePath: "lib/images/default_kuihraya.jpg",
-      price: 20.00,
-      category: BakedCategory.kuihraya,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Third Kuih Raya",
-      description: "Third dummy item for kuihraya",
-      imagePath: "lib/images/default_kuihraya.jpg",
-      price: 30.00,
-      category: BakedCategory.kuihraya,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fourth Kuih Raya",
-      description: "Fourth dummy item for kuihraya",
-      imagePath: "lib/images/default_kuihraya.jpg",
-      price: 40.00,
-      category: BakedCategory.kuihraya,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
-    ),
-    Baked(
-      name: "Fifth Kuih Raya",
-      description: "Fifth dummy item for kuihraya",
-      imagePath: "lib/images/default_kuihraya.jpg",
-      price: 50.00,
-      category: BakedCategory.kuihraya,
-      availableAddons: [
-        Addon(
-          name: "One",
-          price: 0.10,
-        ),
-        Addon(
-          name: "Two",
-          price: 0.20,
-        ),
-        Addon(
-          name: "Three",
-          price: 0.30,
-        ), //tambahan yang customer boleh mintak untuk sesuatu order
-      ],
     ),
   ];
 
@@ -776,17 +99,13 @@ class Shop extends ChangeNotifier {
   //operations----------------------------------
 
   // add to cart
-  void addToCart(Baked prod, List<Addon> selectedAddons) {
+  void addToCart(Baked prod) {
     //see if there is cart item already w/ same prod and selected addons
     CartItem? cartItem = _cart.firstWhereOrNull((item) {
       // check if food item is same
       bool isSameFood = item.prod == prod;
 
-      // check if list addons is same
-      bool isSameAddons =
-          const ListEquality().equals(item.selectedAddons, selectedAddons);
-
-      return isSameFood && isSameAddons;
+      return isSameFood;
     });
 
     //if item already exist -> increase quantity
@@ -798,7 +117,6 @@ class Shop extends ChangeNotifier {
       _cart.add(
         CartItem(
           prod: prod,
-          selectedAddons: selectedAddons,
         ),
       );
     }
@@ -826,10 +144,6 @@ class Shop extends ChangeNotifier {
 
     for (CartItem cartItem in _cart) {
       double itemTotal = cartItem.prod.price;
-
-      for (Addon addon in cartItem.selectedAddons) {
-        itemTotal += addon.price;
-      }
 
       total += itemTotal * cartItem.quantity; //betul ke cara kira ni?
     }
@@ -878,10 +192,6 @@ class Shop extends ChangeNotifier {
     for (final cartItem in _cart) {
       receipt.writeln(
           "${cartItem.quantity} x ${cartItem.prod.name} - ${_formatPrice(cartItem.prod.price)}");
-      if (cartItem.selectedAddons.isNotEmpty) {
-        receipt
-            .writeln("   Add-ons: ${_formatAddons(cartItem.selectedAddons)}");
-      }
       receipt.writeln();
     }
 
@@ -898,12 +208,5 @@ class Shop extends ChangeNotifier {
   // format double value into money
   String _formatPrice(double price) {
     return "RM${price.toStringAsFixed(2)}";
-  }
-
-  // format list addons into a string summary
-  String _formatAddons(List<Addon> addons) {
-    return addons
-        .map((addon) => "${addon.name} (${_formatPrice(addon.price)})")
-        .join(", ");
   }
 }

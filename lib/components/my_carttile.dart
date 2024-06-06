@@ -61,47 +61,10 @@ class MyCartTile extends StatelessWidget {
                       shop.removeFromCart(cartItem);
                     },
                     onInc: () {
-                      shop.addToCart(cartItem.prod, cartItem.selectedAddons);
+                      shop.addToCart(cartItem.prod);
                     },
                   ),
                 ],
-              ),
-            ),
-
-            //addons
-            SizedBox(
-              height: cartItem.selectedAddons.isEmpty ? 0 : 60,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.only(left: 10, bottom: 10, right: 10),
-                children: cartItem.selectedAddons
-                    .map(
-                      (addon) => Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: FilterChip(
-                          label: Row(
-                            children: [
-                              //addon name
-                              Text(addon.name),
-                              //addon price
-                              Text('RM' + addon.price.toString()),
-                            ],
-                          ),
-                          shape: StadiumBorder(
-                              side: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.primary)),
-                          onSelected: (value) {},
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                          labelStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.inversePrimary,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
               ),
             ),
           ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_button.dart';
+import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/pages/paymentpage.dart';
 import 'package:provider/provider.dart';
 import '../models/shop.dart';
@@ -78,9 +78,9 @@ class CartPage extends StatelessWidget {
                 ),
               ),
               //button to pay
-              MyButton(
+              MyMenuButton(
                 text: "Go to checkout",
-                onTap: () => Navigator.push(
+                onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const PayPage(),

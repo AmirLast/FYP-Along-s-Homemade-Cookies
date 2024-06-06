@@ -1,36 +1,32 @@
 import 'package:flutter/material.dart';
 
-class MyButton extends StatelessWidget {
+class MyMenuButton extends StatelessWidget {
   final Function()? onPressed;
   final String text;
-  final double margin;
 
-  const MyButton({
+  const MyMenuButton({
     super.key,
     required this.text,
     required this.onPressed,
-    required this.margin,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          maximumSize: Size(MediaQuery.of(context).size.width - margin, 70),
-          padding: const EdgeInsets.all(10),
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          maximumSize: const Size(250, 60),
+          backgroundColor: Theme.of(context).colorScheme.inverseSurface,
           shape: const BeveledRectangleBorder(
-              borderRadius: BorderRadius.horizontal(
-                  right: Radius.circular(50), left: Radius.circular(50)))),
+              borderRadius:
+                  BorderRadius.horizontal(right: Radius.circular(30)))),
       onPressed: onPressed,
       child: Center(
         child: Text(
-          textAlign: TextAlign.center,
           text,
           style: TextStyle(
             color: Theme.of(context).colorScheme.primary,
             fontWeight: FontWeight.bold,
-            fontSize: 30,
+            fontSize: 20,
           ),
         ),
       ),

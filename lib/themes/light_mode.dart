@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 ThemeData lightMode = ThemeData(
   colorScheme: ColorScheme.light(
-    background: const Color(0xffd1a271), //bg apps
+    surface: const Color(0xffd1a271), //bg apps
+    primaryContainer: const Color(0xffB67F5F), //appbar menus
     primary: Colors.black, //bg button
     secondary: Colors.grey.shade500, //writings in black
     tertiary: Colors.white, //bg form
-    inversePrimary: const Color(0xffc1ff72), // light green bg
+    inversePrimary: const Color(0xffc1ff72), // hello user text bg
+    inverseSurface: const Color(0xff7ED957), // user menu bg
   ),
 );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
-import 'package:fyp/components/my_button.dart';
+import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/pages/deliveryprogresspage.dart';
 
 class PayPage extends StatefulWidget {
@@ -65,7 +65,7 @@ class _PayPageState extends State<PayPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -102,9 +102,9 @@ class _PayPageState extends State<PayPage> {
 
           const Spacer(),
 
-          MyButton(
+          MyMenuButton(
             text: "Pay now",
-            onTap: userTappedPay,
+            onPressed: userTappedPay,
           ),
         ],
       ),

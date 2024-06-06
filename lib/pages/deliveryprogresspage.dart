@@ -55,7 +55,7 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
           //pfp of driver
           Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.surface,
               shape: BoxShape.circle,
             ),
             padding: const EdgeInsets.all(25),
@@ -96,7 +96,7 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
               //message button
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).colorScheme.surface,
                   shape: BoxShape.circle,
                 ),
                 padding: const EdgeInsets.all(25),
@@ -112,7 +112,7 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
               //call button
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).colorScheme.surface,
                   shape: BoxShape.circle,
                 ),
                 padding: const EdgeInsets.all(25),
