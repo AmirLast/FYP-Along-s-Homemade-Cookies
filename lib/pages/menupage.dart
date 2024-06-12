@@ -13,6 +13,13 @@ class _MenuPageState extends State<MenuPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        foregroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const MenuPage())),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
