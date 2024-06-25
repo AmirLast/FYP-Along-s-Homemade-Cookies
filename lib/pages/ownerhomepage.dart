@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/my_button.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_menubutton.dart';
+import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/homepagetemplate.dart';
 import 'package:fyp/pages/menupage.dart';
 // import 'package:fyp/pages/ownerorderpage.dart';
@@ -16,6 +17,8 @@ class OwnerHomePage extends StatefulWidget {
 
 class _OwnerHomePageState extends State<OwnerHomePage>
     with SingleTickerProviderStateMixin {
+  //owner data from ownerclass.dart
+  String fname = UserNow.usernow!.fname;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,9 +44,8 @@ class _OwnerHomePageState extends State<OwnerHomePage>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             MyButton(
-              text: "Hello Owner",
+              text: "Hello " + fname,
               onPressed: () {},
-              margin: 150,
             ),
             const SizedBox(
               height: 80,

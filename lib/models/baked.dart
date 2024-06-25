@@ -14,14 +14,6 @@ class Baked {
   });
 }
 
-//baked categories
-//make this editable
-//delete addon
-/*
-read from DB, collection baked doc useruid collection (1)prod/(2)category
-(1) doc nameoffood -> all data in shop.dart
-(2) doc nameofcategory -> just name
-*/
 enum BakedCategory {
   cookie,
   cake,

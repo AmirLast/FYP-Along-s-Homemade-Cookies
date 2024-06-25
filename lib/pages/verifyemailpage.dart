@@ -76,7 +76,19 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       : Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Theme.of(context).colorScheme.surface,
-          body: Expanded(
+          body: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              image: DecorationImage(
+                image: const AssetImage("lib/images/applogo.png"),
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.surface.withOpacity(0.2),
+                  BlendMode.dstATop,
+                ),
+                alignment: Alignment.center,
+                scale: 0.5,
+              ),
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

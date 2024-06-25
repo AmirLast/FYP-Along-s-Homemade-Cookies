@@ -27,6 +27,7 @@ class ProdTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(prod.name),
+                      /*Text(prod.name),
                       Text(
                         'RM' + prod.price.toString(),
                         style: TextStyle(
@@ -39,7 +40,7 @@ class ProdTile extends StatelessWidget {
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.inversePrimary,
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                 ),

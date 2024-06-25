@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/pages/loginpage.dart';
 import 'package:fyp/pages/registerpage.dart';
 
@@ -20,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           //name of app
           Center(
@@ -27,14 +27,15 @@ class _HomeScreenState extends State<HomeScreen> {
               "Along's\nHomemade\nCookies",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 32,
+                fontFamily: 'BlackMango',
+                fontSize: 40,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ),
 
-          const SizedBox(height: 25),
+          const SizedBox(height: 15),
 
           ColorFiltered(
             colorFilter: ColorFilter.mode(
@@ -50,19 +51,53 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 30),
 
           //sign in button
-          MyMenuButton(
-            text: "Sign In",
+          MaterialButton(
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const LoginPage())),
+            child: Container(
+              padding: const EdgeInsets.all(25),
+              margin: const EdgeInsets.symmetric(horizontal: 100),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Center(
+                child: Text(
+                  "Sign In",
+                  style: TextStyle(
+                    //fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+            ),
           ),
 
           const SizedBox(height: 10),
 
           //register
-          MyMenuButton(
-            text: "Sign Up",
+          MaterialButton(
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const RegisterPage())),
+            child: Container(
+              padding: const EdgeInsets.all(25),
+              margin: const EdgeInsets.symmetric(horizontal: 100),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Center(
+                child: Text(
+                  "Sign Up",
+                  style: TextStyle(
+                    //fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),

@@ -3,25 +3,24 @@ import 'package:flutter/material.dart';
 class MyButton extends StatelessWidget {
   final Function()? onPressed;
   final String text;
-  final double margin;
 
   const MyButton({
     super.key,
     required this.text,
     required this.onPressed,
-    required this.margin,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          maximumSize: Size(MediaQuery.of(context).size.width - margin, 70),
-          padding: const EdgeInsets.all(10),
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          shape: const BeveledRectangleBorder(
-              borderRadius: BorderRadius.horizontal(
-                  right: Radius.circular(50), left: Radius.circular(50)))),
+        maximumSize: Size(MediaQuery.of(context).size.width - 80, 70),
+        padding: const EdgeInsets.all(10),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        shape: const BeveledRectangleBorder(
+            borderRadius: BorderRadius.horizontal(
+                right: Radius.circular(50), left: Radius.circular(50))),
+      ),
       onPressed: onPressed,
       child: Center(
         child: Text(
