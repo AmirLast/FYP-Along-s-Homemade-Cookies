@@ -49,7 +49,10 @@ class AuthService {
           }
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
+              backgroundColor: Colors.black,
               content: Text(
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.secondary),
                 (error == "") ? e.message.toString() : error,
                 textAlign: TextAlign.center,
               ),

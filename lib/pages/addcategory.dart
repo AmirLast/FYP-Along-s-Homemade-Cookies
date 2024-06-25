@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/pages/menupage.dart';
+import 'package:fyp/services/auth/auth_service.dart';
 
 class AddCategory extends StatefulWidget {
   const AddCategory({super.key});
@@ -43,8 +47,9 @@ class _AddCategoryState extends State<AddCategory> {
           ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            const SizedBox(height: 60),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Container(
@@ -70,9 +75,10 @@ class _AddCategoryState extends State<AddCategory> {
                     MyTextField(
                       controller: nameController,
                       caps: TextCapitalization.words,
-                      inputType: TextInputType.name,
+                      inputType: TextInputType.text,
                       labelText: "Name",
                       obscureText: false,
+                      isEnabled: true,
                     ),
 
                     const SizedBox(height: 30),
@@ -84,13 +90,13 @@ class _AddCategoryState extends State<AddCategory> {
                           margin: const EdgeInsets.symmetric(horizontal: 25),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           child: Center(
                             child: Text(
                               "Confirm",
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                //fontWeight: FontWeight.bold,
                                 color: Theme.of(context).colorScheme.secondary,
                                 fontSize: 20,
                               ),
@@ -101,7 +107,7 @@ class _AddCategoryState extends State<AddCategory> {
                           //check blank
                           if (nameController.text == '') {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text(
                                   "Category name is blank",
                                   textAlign: TextAlign.center,
@@ -109,6 +115,39 @@ class _AddCategoryState extends State<AddCategory> {
                               ),
                             );
                             return;
+                          } else {
+                            User? user = AuthService().getCurrentUser();
+                            //cane nak cek collection tu dah ade sama nama ke?
+                            //make a collection(category)
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user?.uid)
+                                .collection(nameController.text);
+                            //testing
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user?.uid)
+                                .update({
+                              "category": nameController.text,
+                            });
+                            /*
+                            //update new category in owner List categories
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user?.uid)
+                                .update({
+                              "categories": nameController.text,
+                            });
+                            */
+                            //the doc = product in that category, doc id = name of product,
+                            //in doc = all values of product ; cek sample in cookies collection
+                            await Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const MenuPage(), //go back to menu page
+                              ),
+                            );
                           }
                         }),
 

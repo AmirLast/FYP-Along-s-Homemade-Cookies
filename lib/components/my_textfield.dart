@@ -6,6 +6,7 @@ class MyTextField extends StatelessWidget {
   final bool obscureText;
   final TextInputType inputType;
   final TextCapitalization caps;
+  final bool isEnabled;
 
   const MyTextField({
     super.key,
@@ -14,6 +15,7 @@ class MyTextField extends StatelessWidget {
     required this.obscureText,
     required this.inputType,
     required this.caps,
+    required this.isEnabled,
   });
 
   @override
@@ -21,12 +23,17 @@ class MyTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextField(
+        enabled: isEnabled, //get this value
         controller: controller,
         keyboardType: inputType,
         obscureText: obscureText,
         textCapitalization: caps,
         decoration: InputDecoration(
+          disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide.none),
           enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
               borderSide:
                   BorderSide(color: Theme.of(context).colorScheme.secondary)),
           focusedBorder: OutlineInputBorder(

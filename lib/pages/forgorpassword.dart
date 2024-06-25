@@ -50,85 +50,101 @@ class _ForgorPasswordState extends State<ForgorPassword> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Expanded(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //title of current widget
-            Text(
-              "Reset Password",
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+      body: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          image: DecorationImage(
+            image: const AssetImage("lib/images/applogo.png"),
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              BlendMode.dstATop,
             ),
-
-            const SizedBox(height: 25),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).colorScheme.tertiary,
+            alignment: Alignment.center,
+            scale: 0.5,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 60),
+              //title of current widget
+              Text(
+                "Reset Password",
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 30),
+              ),
 
-                    Text(
-                      "Insert E-mail to reset password",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      textAlign: TextAlign.justify,
-                    ),
+              const SizedBox(height: 25),
 
-                    const SizedBox(height: 60),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 30),
 
-                    //email
-                    MyTextField(
-                      controller: emailController,
-                      caps: TextCapitalization.none,
-                      inputType: TextInputType.emailAddress,
-                      labelText: "Email",
-                      obscureText: false,
-                    ),
-
-                    const SizedBox(height: 60),
-
-                    MaterialButton(
-                      onPressed: () {
-                        resetPass();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(25),
-                        margin: const EdgeInsets.symmetric(horizontal: 25),
-                        decoration: BoxDecoration(
+                      Text(
+                        "Insert E-mail to reset password",
+                        style: TextStyle(
+                          fontSize: 25,
                           color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Center(
-                          child: Text(
-                            "Confirm",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontSize: 20,
+                        textAlign: TextAlign.justify,
+                      ),
+
+                      const SizedBox(height: 60),
+
+                      //email
+                      MyTextField(
+                        controller: emailController,
+                        caps: TextCapitalization.none,
+                        inputType: TextInputType.emailAddress,
+                        labelText: "Email",
+                        obscureText: false,
+                        isEnabled: true,
+                      ),
+
+                      const SizedBox(height: 60),
+
+                      MaterialButton(
+                        onPressed: () {
+                          resetPass();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(25),
+                          margin: const EdgeInsets.symmetric(horizontal: 25),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Confirm",
+                              style: TextStyle(
+                                //fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 20,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
 
-                    const SizedBox(height: 40),
-                  ],
+                      const SizedBox(height: 40),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

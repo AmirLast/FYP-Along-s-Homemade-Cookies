@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_drawer.dart';
 
 class OwnerOrderPage extends StatefulWidget {
   const OwnerOrderPage({super.key});
@@ -10,6 +11,37 @@ class OwnerOrderPage extends StatefulWidget {
 class _OwnerOrderPageState extends State<OwnerOrderPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        title: const Center(
+          child: Text(
+            textAlign: TextAlign.center,
+            "Order",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      drawer: const MyDrawer(),
+      body: Container(
+        width: MediaQuery.of(context).size.width, //max width for current phone
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          image: DecorationImage(
+            image: const AssetImage("lib/images/applogo.png"),
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              BlendMode.dstATop,
+            ),
+            alignment: Alignment.center,
+            scale: 0.5,
+          ),
+        ),
+        child: const Column(
+          children: [],
+        ),
+      ),
+    );
   }
 }
