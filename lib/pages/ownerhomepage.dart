@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_button.dart';
+//import 'package:fyp/components/my_button.dart';
 import 'package:fyp/components/my_drawer.dart';
-import 'package:fyp/components/my_menubutton.dart';
+//import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
-import 'package:fyp/pages/homepagetemplate.dart';
 import 'package:fyp/pages/menupage.dart';
+//import 'package:fyp/pages/homepagetemplate.dart';
+//import 'package:fyp/pages/menupage.dart';
+import 'package:fyp/pages/settingspage.dart';
 // import 'package:fyp/pages/ownerorderpage.dart';
 // import 'package:fyp/pages/summarypage.dart';
 
@@ -43,6 +45,29 @@ class _OwnerHomePageState extends State<OwnerHomePage>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const SettingsPage())),
+                  icon: const Icon(Icons.account_circle),),
+                Text("Hello " + fname, style: TextStyle(fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,),),
+                    IconButton(
+                  onPressed: () => Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const MenuPage())),
+                  icon: const Icon(Icons.add_shopping_cart),),
+              ],
+            ),
+            const Image(image: AssetImage("lib/images/default_bagel.jpg"), height: 200, width: 300,),
+            
+            /*
             MyButton(
               text: "Hello " + fname,
               onPressed: () {},
@@ -83,6 +108,7 @@ class _OwnerHomePageState extends State<OwnerHomePage>
             const SizedBox(
               height: 60,
             ),
+            */
           ],
         ),
       ),

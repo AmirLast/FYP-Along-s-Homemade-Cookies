@@ -1,59 +1,42 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/images/assets.dart';
+//import 'package:fyp/images/assets.dart';
 import 'package:fyp/pages/loginpage.dart';
-import 'package:fyp/pages/registerpage2.dart';
-//import 'package:fyp/pages/verifyemailpage.dart';
-import 'package:fyp/services/auth/auth_service.dart';
-import 'package:fyp/services/auth/checkpass.dart';
+import 'package:fyp/pages/verifyemailpage.dart';
+//import 'package:fyp/services/auth/auth_service.dart';
+//import 'package:fyp/services/auth/checkpass.dart';
 import '../components/my_textfield.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class Register2Page extends StatefulWidget {
+  const Register2Page({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<Register2Page> createState() => _Register2PageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _Register2PageState extends State<Register2Page> {
 //text editing controller
-  late TextEditingController confirmpasswordController;
-  late bool confirmpasswordVisibility;
-  late TextEditingController emailController;
-  late TextEditingController fnameController;
-  late TextEditingController lnameController;
-  late TextEditingController phoneController;
-  late TextEditingController passwordController;
-  late bool passwordVisibility; //for?
-  late TextEditingController shopController;
-  bool isOwner = false; //default value
-  String type = "user"; //default value
+  late TextEditingController address1Controller;
+  late TextEditingController postcodeController;
+  late TextEditingController stateController;
 
   @override
   void initState() {
     super.initState();
-    confirmpasswordController = TextEditingController();
-    emailController = TextEditingController();
-    fnameController = TextEditingController();
-    lnameController = TextEditingController();
-    phoneController = TextEditingController();
-    passwordController = TextEditingController();
-    shopController = TextEditingController();
+    address1Controller = TextEditingController();
+    postcodeController = TextEditingController();
+    stateController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    confirmpasswordController.dispose();
-    emailController.dispose();
-    fnameController.dispose();
-    lnameController.dispose();
-    passwordController.dispose();
-    phoneController.dispose();
-    shopController.dispose();
+    address1Controller.dispose();
+    postcodeController.dispose();
+    stateController.dispose();
   }
-
+/*
   Future<User?> register({
     //for creting user
     required String email,
@@ -83,7 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     return user;
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +114,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(height: 30),
 
                         Text(
-                          "Fill in the information",
+                          "Fill in these information",
                           style: TextStyle(
                             fontSize: 25,
                             color: Theme.of(context).colorScheme.primary,
@@ -143,10 +126,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         //username
                         //first name
                         MyTextField(
-                          controller: fnameController,
+                          controller: address1Controller,
                           caps: TextCapitalization.words,
                           inputType: TextInputType.text,
-                          labelText: "Firstname",
+                          labelText: "Address",
                           obscureText: false,
                           isEnabled: true,
                         ),
@@ -155,10 +138,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
                         //last name
                         MyTextField(
-                          controller: lnameController,
-                          caps: TextCapitalization.words,
-                          inputType: TextInputType.text,
-                          labelText: "Lastname",
+                          controller: postcodeController,
+                          caps: TextCapitalization.none,
+                          inputType: TextInputType.number,
+                          labelText: "Post Code",
                           obscureText: false,
                           isEnabled: true,
                         ),
@@ -167,92 +150,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
                         //shop name
                         MyTextField(
-                          controller: shopController,
+                          controller: stateController,
                           caps: TextCapitalization.words,
                           inputType: TextInputType.text,
-                          labelText: "Shop Name",
-                          obscureText: false,
-                          isEnabled: isOwner,
-                        ),
-
-                        const SizedBox(height: 30),
-
-                        //phone number
-                        MyTextField(
-                          controller: phoneController,
-                          caps: TextCapitalization.none,
-                          inputType: TextInputType.number,
-                          labelText: "Phone Number",
+                          labelText: "State",
                           obscureText: false,
                           isEnabled: true,
-                        ),
-
-                        const SizedBox(height: 30),
-
-                        //email
-                        MyTextField(
-                          controller: emailController,
-                          caps: TextCapitalization.none,
-                          inputType: TextInputType.emailAddress,
-                          labelText: "Email",
-                          obscureText: false,
-                          isEnabled: true,
-                        ),
-
-                        const SizedBox(height: 30),
-
-                        //password
-                        MyTextField(
-                          controller: passwordController,
-                          caps: TextCapitalization.none,
-                          inputType: TextInputType.visiblePassword,
-                          labelText: "Password",
-                          obscureText: true,
-                          isEnabled: true,
-                        ),
-
-                        const SizedBox(height: 30),
-
-                        //confirm password
-                        MyTextField(
-                          controller: confirmpasswordController,
-                          caps: TextCapitalization.none,
-                          inputType: TextInputType.visiblePassword,
-                          labelText: "Confirm Password",
-                          obscureText: true,
-                          isEnabled: true,
-                        ),
-
-                        const SizedBox(
-                          height: 30,
-                        ),
-
-                        Column(
-                          children: [
-                            RadioListTile(
-                              title: const Text("User"),
-                              value: "user",
-                              groupValue: type,
-                              onChanged: (value) {
-                                setState(() {
-                                  type = value.toString();
-                                  isOwner = false;
-                                  shopController.clear();
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: const Text("Owner"),
-                              value: "owner",
-                              groupValue: type,
-                              onChanged: (value) {
-                                setState(() {
-                                  type = value.toString();
-                                  isOwner = true;
-                                });
-                              },
-                            ),
-                          ],
                         ),
 
                         const SizedBox(height: 60),
@@ -268,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             child: Center(
                               child: Text(
-                                "Next",
+                                "Sign Up",
                                 style: TextStyle(
                                   //fontWeight: FontWeight.bold,
                                   color:
@@ -279,75 +182,21 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                           onPressed: () async {
-                            if (passwordController.text !=
-                                confirmpasswordController.text) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Passwords don\'t match!',
-                                  ),
-                                ),
-                              );
-                              return;
-                            }
 
                             //some value for error checking---------
                             var isBlank = false; //blank means no error
                             String error = ""; //the error description
-                            User? user;
-
-                            //check password strength
-                            List passStrength = [
-                              false,
-                              false,
-                              false,
-                              false
-                            ]; //false for 4 category
-                            //check password strength
-                            final obj = PasswordStrength();
-                            passStrength = obj.checkpass(
-                                password: passwordController.text);
-
+                            //User? user;
+                            
                             //checking if it is blank or wrong length or password weak
-                            if (fnameController.text == '') {
-                              error = 'First name is blank';
+                            if (address1Controller.text == '') {
+                              error = 'Address is blank';
                               isBlank = true;
-                            } else if (lnameController.text == '') {
-                              error = 'Last name is blank';
+                            } else if (postcodeController.text == '') {
+                              error = 'Post Code is blank';
                               isBlank = true;
-                            } else if (shopController.text == '' && isOwner) {
-                              error = 'Shop name is blank';
-                              isBlank = true;
-                            } else if (emailController.text == '') {
-                              error = 'Email is blank';
-                              isBlank = true;
-                            } else if (passwordController.text == '') {
-                              error = 'Password is blank';
-                              isBlank = true;
-                            } else if (confirmpasswordController.text == '') {
-                              error = 'Re-enter password is blank';
-                              isBlank = true;
-                            } else if (phoneController.text == '') {
-                              error = 'Phone number is blank';
-                              isBlank = true;
-                            } else if (phoneController.text.length < 10) {
-                              error =
-                                  'Phone number should be more than 10 numbers';
-                              isBlank = true;
-                            } else if (!passStrength[2]) {
-                              error =
-                                  'Please add special character in password';
-                              isBlank = true;
-                            } else if (!passStrength[3]) {
-                              error = 'Please add number in password';
-                              isBlank = true;
-                            } else if (passwordController.text.length < 10) {
-                              error =
-                                  'Password should be at least 10 in length';
-                              isBlank = true;
-                            } else if (!(passStrength[0] && passStrength[1])) {
-                              error =
-                                  'Password should combine lower and upper case';
+                            } else if (stateController.text == '') {
+                              error = 'State is blank';
                               isBlank = true;
                             }
 
@@ -369,6 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               );
                               return;
                             } else {
+                              /* belum tau nak buat cane lagi
                               // try { register the user
                               user = await register(
                                   email: emailController.text,
@@ -409,11 +259,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                   "currentdir": "",
                                   "address": "", //for delivery
                                 });
-                              }
+                              }*/
 
                               await Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                  builder: (context) => const Register2Page(),
+                                  builder: (context) => const VerifyEmailPage(),
                                 ),
                                 (r) => false,
                               );

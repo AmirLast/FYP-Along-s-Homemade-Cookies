@@ -30,8 +30,9 @@ class CatTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(width: 30),
-              Expanded(
-                child: ExpansionTile(
+              //Expanded(
+                //child: 
+                ExpansionTile(
                   collapsedShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -54,7 +55,8 @@ class CatTile extends StatelessWidget {
                   ),
                   children: [
                     Expanded(
-                      child: ListView.builder(
+                      child: 
+                      ListView.builder(
                         itemCount: categoryMenu.length,
                         physics: const NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,
@@ -77,7 +79,7 @@ class CatTile extends StatelessWidget {
                     ),
                   ], //letak list baked by category
                 ),
-              ),
+              //),
               const SizedBox(width: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,

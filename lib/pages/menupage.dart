@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_cattile.dart';
 import 'package:fyp/components/my_drawer.dart';
@@ -35,7 +36,12 @@ class _MenuPageState extends State<MenuPage>
 
   @override
   Widget build(BuildContext context) {
+    
+                  if (kDebugMode) {
+                    print("\nLength: "+cat.length.toString()+"\n");
+                  }
     return SingleChildScrollView(
+      
       child: Scaffold(
         //the add button
         floatingActionButton: FloatingActionButton(
@@ -79,27 +85,34 @@ class _MenuPageState extends State<MenuPage>
           ),
           child: Column(
             children: [
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: cat.length,
-                  //physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (context, index) {
-                    //get individual food one by one from list categoryMenu made
-                    //for now try category dulu; baru belajar listview
-                    //final prod = categoryMenu[index];
-                    final String catName = cat[index].toString();
-                    //return product tile UI
-                    return CatTile(
-                      catName: catName,
-                      baked: menus,
-                      onEdit: () {},
-                      onDel: () {},
-                    );
-                  },
+              //Expanded(
+                //child:
+            Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: cat.length,
+                    //physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      //get individual food one by one from list categoryMenu made
+                      //for now try category dulu; baru belajar listview
+                      //final prod = categoryMenu[index];
+                      final String catName = cat[index].toString();
+                      //return product tile UI
+                      
+                    if (kDebugMode) {
+                      print("\nName: "+catName.toString()+"\n");
+                    }
+                      return CatTile(
+                        catName: catName,
+                        baked: menus,
+                        onEdit: () {},
+                        onDel: () {},
+                      );
+                    },
+                  ),
                 ),
-              ),
+              //),
               //letak list of menu by category
               //buat updatemenu macam updateuser
               /*
