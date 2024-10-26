@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/pages/adminhomepage.dart';
 import 'package:fyp/pages/userhomepage.dart';
-import 'package:fyp/pages/ownerhomepage.dart';
+import 'package:fyp/pages/homepagetemplate.dart';
 import 'package:fyp/services/auth/update_user.dart';
 
 class UserReplacement extends StatefulWidget {
@@ -36,7 +36,7 @@ class _UserReplacementState extends State<UserReplacement> {
       return const AdminHomePage();
     } else {
       // type == owner
-      return const OwnerHomePage();
+      return const HomePage();
     }
   }
 }

@@ -7,7 +7,7 @@ class MyDescBox extends StatelessWidget {
   Widget build(BuildContext context) {
     //text style
     var myPrimaryTextStyle =
-        TextStyle(color: Theme.of(context).colorScheme.inversePrimary);
+        TextStyle(color: Theme.of(context).colorScheme.primary);
     var mySecondaryTextStyle =
         TextStyle(color: Theme.of(context).colorScheme.primary);
 
@@ -15,7 +15,7 @@ class MyDescBox extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.secondary),
+          border: Border.all(color: Theme.of(context).colorScheme.primary),
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.all(25),

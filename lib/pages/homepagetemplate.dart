@@ -7,7 +7,6 @@ import 'package:fyp/models/baked.dart';
 import 'package:fyp/models/shop.dart';
 import 'package:fyp/pages/prodpage.dart';
 import 'package:provider/provider.dart';
-
 import '../components/my_drawer.dart';
 import '../components/my_sliverappbar.dart';
 
@@ -89,7 +88,7 @@ class _HomePageState extends State<HomePage>
                 Divider(
                   indent: 25,
                   endIndent: 25,
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 // current location
                 MyCurrentLocation(),

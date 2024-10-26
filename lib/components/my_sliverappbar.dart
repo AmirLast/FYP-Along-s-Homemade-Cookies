@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/cartpage.dart';
 
 class MySliverAppBar extends StatelessWidget {
@@ -13,6 +14,7 @@ class MySliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String fname = UserNow.usernow!.fname;
     return SliverAppBar(
       expandedHeight: 340,
       collapsedHeight: 120,
@@ -32,9 +34,9 @@ class MySliverAppBar extends StatelessWidget {
           icon: const Icon(Icons.shopping_cart),
         )
       ],
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-      title: const Text("Temp Cookie Shop"),
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      foregroundColor: Theme.of(context).colorScheme.primary,
+      title: Text("Hello "+ fname),
       flexibleSpace: FlexibleSpaceBar(
         background: Padding(
           padding: const EdgeInsets.only(bottom: 50.0),

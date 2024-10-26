@@ -411,11 +411,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                 });
                               }
 
-                              await Navigator.of(context).pushAndRemoveUntil(
+                              Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                   builder: (context) => const Register2Page(),
                                 ),
-                                (r) => false,
                               );
                             }
                           },

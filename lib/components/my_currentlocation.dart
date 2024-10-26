@@ -11,7 +11,7 @@ class MyCurrentLocation extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
         title: const Text("Your location"),
         content: TextField(
           controller: textController,
@@ -62,7 +62,7 @@ class MyCurrentLocation extends StatelessWidget {
                   builder: (context, shop, child) => Text(
                     shop.deliveryAddress,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                      color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -71,7 +71,7 @@ class MyCurrentLocation extends StatelessWidget {
                 //drop down menu
                 Icon(
                   Icons.keyboard_arrow_down_rounded,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ],
             ),
