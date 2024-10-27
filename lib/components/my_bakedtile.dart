@@ -19,29 +19,29 @@ class ProductTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               //text product detail
-              Expanded(
-                child: ListTile(
-                  onTap: onTap,
-                  title: Container(
-                    padding: const EdgeInsets.all(25),
-                    margin: const EdgeInsets.symmetric(horizontal: 25),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Center(
-                      child: Text(
-                        prod!.name,
-                        style: TextStyle(
-                          //fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: 15,
-                        ),
+              ListTile(
+                onTap: onTap,
+                title: Container(
+                  padding: const EdgeInsets.all(25),
+                  margin: const EdgeInsets.symmetric(horizontal: 25),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Center(
+                    child: Text(
+                      prod!.name,
+                      style: TextStyle(
+                        //fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 15,
                       ),
                     ),
                   ),

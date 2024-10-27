@@ -24,67 +24,65 @@ class CatTile extends StatelessWidget {
         baked.where((b) => b!.category == catName).toList();
     return Card(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 20),
           Row(
+        mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(width: 30),
-              Expanded(
-                child: 
-                ExpansionTile(
-                  collapsedShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  collapsedBackgroundColor:
-                      Theme.of(context).colorScheme.secondary,
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  title: Center(
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      catName,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  children: [
-                    Expanded(
-                      child: 
-                      ListView.builder(
-                        itemCount: categoryMenu.length,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (context, index) {
-                          return ProductTile(
-                            prod: categoryMenu[index],
-                            onTap: () {},
-                            onEdit: () {},
-                            onDel:
-                                () {}, /*=> Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        //calling ProdPage while sending prod values
-                        builder: (context) => ProdPage(prod: prod),
-                      ),
-                    ),*/
-                          );
-                        },
-                      ),
-                    ),
-                  ], //letak list baked by category
+              ExpansionTile(
+                collapsedShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                collapsedBackgroundColor:
+                    Theme.of(context).colorScheme.secondary,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                title: Center(
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    catName,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                children: [
+                  ListView.builder(
+                    itemCount: categoryMenu.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      return ProductTile(
+                        prod: categoryMenu[index],
+                        onTap: () {},
+                        onEdit: () {},
+                        onDel:
+                            () {}, /*=> Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    //calling ProdPage while sending prod values
+                    builder: (context) => ProdPage(prod: prod),
+                  ),
+                                    ),*/
+                      );
+                    },
+                  ),
+                ], //letak list baked by category
               ),
               const SizedBox(width: 10),
               Column(
+        mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Row(
+        mainAxisSize: MainAxisSize.min,
                     children: [
                       ElevatedButton(
                         onPressed: onEdit,
