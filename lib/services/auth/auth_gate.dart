@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/pages/adminhomepage.dart';
-import 'package:fyp/pages/homepagetemplate.dart';
+import 'package:fyp/pages/ownerhomepage.dart';
 import 'package:fyp/pages/userhomepage.dart';
-//import 'package:fyp/pages/ownerhomepage.dart';
 import 'package:fyp/pages/homescreen.dart';
 import 'package:fyp/services/auth/update_user.dart';
 
@@ -43,7 +42,7 @@ class _AuthGateState extends State<AuthGate> {
             } else if (type == 'admin') {
               return const AdminHomePage();
             } else if (type == 'owner') {
-              return const HomePage();//const OwnerHomePage();
+              return const OwnerHomePage();//const OwnerHomePage();
             }
             return const HomeScreen(); //to counter returning null
           } else {
