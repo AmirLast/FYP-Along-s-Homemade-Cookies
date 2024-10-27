@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/models/userclass.dart';
-import 'package:fyp/pages/cartpage.dart';
+import 'package:fyp/pages/mitch_page/cartpage.dart';
 
 class MySliverAppBar extends StatelessWidget {
   final Widget child;

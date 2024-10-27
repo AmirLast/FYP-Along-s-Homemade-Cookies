@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:fyp/components/my_menubutton.dart';
-import 'package:fyp/pages/deliveryprogresspage.dart';
+import 'package:fyp/pages/mitch_page/deliveryprogresspage.dart';
 
 class PayPage extends StatefulWidget {
   const PayPage({super.key});

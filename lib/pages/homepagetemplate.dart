@@ -5,7 +5,7 @@ import 'package:fyp/components/my_foodtile.dart';
 import 'package:fyp/components/my_tabbar.dart';
 import 'package:fyp/models/baked.dart';
 import 'package:fyp/models/shop.dart';
-import 'package:fyp/pages/prodpage.dart';
+import 'package:fyp/pages/mitch_page/prodpage.dart';
 import 'package:provider/provider.dart';
 import '../components/my_drawer.dart';
 import '../components/my_sliverappbar.dart';

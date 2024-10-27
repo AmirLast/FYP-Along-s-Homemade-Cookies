@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_menubutton.dart';
-import 'package:fyp/pages/paymentpage.dart';
+import 'package:fyp/pages/mitch_page/paymentpage.dart';
 import 'package:provider/provider.dart';
-import '../models/shop.dart';
+import '../../models/shop.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
