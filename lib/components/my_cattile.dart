@@ -30,8 +30,8 @@ class CatTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(width: 30),
-              //Expanded(
-                //child: 
+              Expanded(
+                child: 
                 ExpansionTile(
                   collapsedShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -79,7 +79,7 @@ class CatTile extends StatelessWidget {
                     ),
                   ], //letak list baked by category
                 ),
-              //),
+              ),
               const SizedBox(width: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,

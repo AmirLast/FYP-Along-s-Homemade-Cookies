@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 //import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
-//import 'package:fyp/pages/menupage.dart';
-import 'package:fyp/pages/menupage2.dart';
+import 'package:fyp/pages/menupage.dart';
 //import 'package:fyp/pages/homepagetemplate.dart';
-//import 'package:fyp/pages/menupage.dart';
 import 'package:fyp/pages/settingspage.dart';
 // import 'package:fyp/pages/ownerorderpage.dart';
 // import 'package:fyp/pages/summarypage.dart';
@@ -30,7 +28,8 @@ class _OwnerHomePageState extends State<OwnerHomePage>
       ),
       drawer: const MyDrawer(),
       body: Container(
-        width: MediaQuery.of(context).size.width, //max width for current phone
+        width:
+            MediaQuery.of(context).size.width, //max width for current phone
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           image: DecorationImage(
@@ -51,23 +50,34 @@ class _OwnerHomePageState extends State<OwnerHomePage>
               children: [
                 IconButton(
                   onPressed: () => Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const SettingsPage())),
-                  icon: const Icon(Icons.account_circle),),
-                Text("Hello " + fname, style: TextStyle(fontSize: 25,
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SettingsPage())),
+                  icon: const Icon(Icons.account_circle),
+                ),
+                Text(
+                  "Hello " + fname,
+                  style: TextStyle(
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,),),
-                    IconButton(
-                  onPressed: () => Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const MenuPage2())),
-                  icon: const Icon(Icons.add_shopping_cart),),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MenuPage())),
+                  icon: const Icon(Icons.add_shopping_cart),
+                ),
               ],
             ),
-            const Image(image: AssetImage("lib/images/default_bagel.jpg"), height: 200, width: 300,),
-            
+            const Image(
+              image: AssetImage("lib/images/default_bagel.jpg"),
+              height: 200,
+              width: 300,
+            ),
+    
             /*
             MyButton(
               text: "Hello " + fname,
