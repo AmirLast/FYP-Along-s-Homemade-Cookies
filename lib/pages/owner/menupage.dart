@@ -85,7 +85,7 @@ class _MenuPageState extends State<MenuPage>
               ListView.builder(
               shrinkWrap: true,
               itemCount: cat.length,
-              physics: const NeverScrollableScrollPhysics(),
+              primary: false,
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 //get individual food one by one from list categoryMenu made

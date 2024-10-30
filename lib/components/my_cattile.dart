@@ -57,7 +57,7 @@ class CatTile extends StatelessWidget {
                   ListView.builder(
                     shrinkWrap: true,
                     itemCount: categoryMenu.length,
-                    physics: const NeverScrollableScrollPhysics(),
+                    primary: false,
                     padding: EdgeInsets.zero,
                     itemBuilder: (context, index) {
                       return ProductTile(
