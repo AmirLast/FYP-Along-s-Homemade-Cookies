@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/pages/adminhomepage.dart';
+import 'package:fyp/pages/admin/adminhomepage.dart';
 import 'package:fyp/pages/owner/ownerhomepage.dart';
-import 'package:fyp/pages/userhomepage.dart';
+import 'package:fyp/pages/user/userhomepage.dart';
 import 'package:fyp/services/auth/update_user.dart';
 
 class UserReplacement extends StatefulWidget {

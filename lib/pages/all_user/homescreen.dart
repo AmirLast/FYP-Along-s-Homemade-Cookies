@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/pages/loginpage.dart';
-import 'package:fyp/pages/registerpage.dart';
+import 'package:fyp/pages/all_user/loginpage.dart';
+import 'package:fyp/pages/all_user/registerpage.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/userclass.dart';
-import 'package:fyp/pages/forgorpassword.dart';
-import 'package:fyp/pages/registerpage.dart';
-import 'package:fyp/pages/verifyemailpage.dart';
+import 'package:fyp/pages/all_user/forgorpassword.dart';
+import 'package:fyp/pages/all_user/registerpage.dart';
+import 'package:fyp/pages/all_user/verifyemailpage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:fyp/services/auth/checkpass.dart';
 

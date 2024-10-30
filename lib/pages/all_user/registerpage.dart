@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/images/assets.dart';
-import 'package:fyp/pages/loginpage.dart';
-import 'package:fyp/pages/registerpage2.dart';
+import 'package:fyp/pages/all_user/loginpage.dart';
+import 'package:fyp/pages/all_user/registerpage2.dart';
 //import 'package:fyp/pages/verifyemailpage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:fyp/services/auth/checkpass.dart';
-import '../components/my_textfield.dart';
+import '../../components/my_textfield.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

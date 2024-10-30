@@ -5,7 +5,7 @@ import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 //import 'package:fyp/pages/homepagetemplate.dart';
-import 'package:fyp/pages/settingspage.dart';
+import 'package:fyp/pages/all_user/settingspage.dart';
 // import 'package:fyp/pages/ownerorderpage.dart';
 // import 'package:fyp/pages/summarypage.dart';
 
