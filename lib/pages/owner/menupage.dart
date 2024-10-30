@@ -4,8 +4,8 @@ import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/models/bakedclass.dart';
 //import 'package:fyp/models/baked.dart';
 import 'package:fyp/models/userclass.dart';
-import 'package:fyp/pages/addcategory.dart';
-import 'package:fyp/pages/updatemenu.dart';
+import 'package:fyp/pages/owner/addcategory.dart';
+import 'package:fyp/pages/owner/updatemenu.dart';
 //import 'package:fyp/pages/prodpage.dart';
 
 class MenuPage extends StatefulWidget {

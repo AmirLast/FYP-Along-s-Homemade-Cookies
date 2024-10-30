@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_textfield.dart';
-import 'package:fyp/pages/menupage.dart';
+import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 
 class AddCategory extends StatefulWidget {
