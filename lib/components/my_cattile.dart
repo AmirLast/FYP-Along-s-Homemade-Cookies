@@ -55,6 +55,7 @@ class CatTile extends StatelessWidget {
                 ),
                 children: [
                   ListView.builder(
+                    shrinkWrap: true,
                     itemCount: categoryMenu.length,
                     physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
