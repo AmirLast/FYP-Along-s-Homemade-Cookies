@@ -67,10 +67,13 @@ class CatTile extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return ProductTile(
                           prod: categoryMenu[index],
-                          onTap: () {},
-                          onEdit: () {},
-                          onDel:
-                              () {}, /*=> Navigator.push(
+                          onTap: () {}, //pergi prod page cam kat mitch
+                          //alter part: nak refresh kat mana? lepas update/delete
+                          //access data guna categoryMenu[index] as key different
+                          onEdit:
+                              () {}, //pergi page baru (cam add category) + access data guna func update cam kat addcategory
+                          onDel: () {}, //pop up delete confirm + access data guna func delete
+                          /*=> Navigator.push(
                     context,
                     MaterialPageRoute(
                       //calling ProdPage while sending prod values

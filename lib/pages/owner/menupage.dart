@@ -64,9 +64,8 @@ class _MenuPageState extends State<MenuPage>
         child: Container(
           width:
               MediaQuery.of(context).size.width, //max width for current phone
-          height: MediaQuery.of(context)
-              .size
-              .height, //max height for current phone
+          height:
+              MediaQuery.of(context).size.height, //max height for current phone
           //for logo transparent
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
@@ -98,8 +97,11 @@ class _MenuPageState extends State<MenuPage>
                     return CatTile(
                       catName: catName,
                       baked: menus,
-                      onEdit: () {},
-                      onDel: () {},
+                      //alter part: nak refresh kat mana? lepas update/delete
+                      //access data guna catname as key different
+                      onEdit:
+                          () {}, //pergi page baru (cam add category) + access data guna func update cam kat addcategory
+                      onDel: () {}, //pop up delete confirm + access data guna func delete
                     );
                   },
                 ),
