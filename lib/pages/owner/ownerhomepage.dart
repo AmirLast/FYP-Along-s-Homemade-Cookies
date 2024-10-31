@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 //import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
-import 'package:fyp/pages/owner/menupage.dart';
 //import 'package:fyp/pages/homepagetemplate.dart';
 import 'package:fyp/pages/all_user/settingspage.dart';
+import 'package:fyp/pages/owner/menupage2.dart';
 // import 'package:fyp/pages/ownerorderpage.dart';
 // import 'package:fyp/pages/summarypage.dart';
 
@@ -67,7 +67,7 @@ class _OwnerHomePageState extends State<OwnerHomePage>
                   onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MenuPage())),
+                          builder: (context) => const MenuPage2())),
                   icon: const Icon(Icons.add_shopping_cart),
                 ),
               ],

@@ -64,8 +64,6 @@ class _MenuPageState extends State<MenuPage>
         body: Container(
           width:
               MediaQuery.of(context).size.width, //max width for current phone
-          height:
-              MediaQuery.of(context).size.height, //max width for current phone
           //for logo transparent
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
@@ -80,26 +78,27 @@ class _MenuPageState extends State<MenuPage>
             ),
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
-              ListView.builder(
-              shrinkWrap: true,
-              itemCount: cat.length,
-              primary: false,
-              padding: EdgeInsets.zero,
-              itemBuilder: (context, index) {
-                //get individual food one by one from list categoryMenu made
-                //for now try category dulu; baru belajar listview
-                //final prod = categoryMenu[index];
-                final String catName = cat[index].toString();
-                //return product tile UI
-                return CatTile(
-                  catName: catName,
-                  baked: menus,
-                  onEdit: () {},
-                  onDel: () {},
-                );
-              },
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: cat.length,
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index) {
+                    //get individual food one by one from list categoryMenu made
+                    //for now try category dulu; baru belajar listview
+                    //final prod = categoryMenu[index];
+                    final String catName = cat[index].toString();
+                    //return product tile UI
+                    return CatTile(
+                      catName: catName,
+                      baked: menus,
+                      onEdit: () {},
+                      onDel: () {},
+                    );
+                  },
+                ),
               ),
               //letak list of menu by category
               //buat updatemenu macam updateuser
