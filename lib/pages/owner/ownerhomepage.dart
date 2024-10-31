@@ -5,7 +5,7 @@ import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/models/userclass.dart';
 //import 'package:fyp/pages/homepagetemplate.dart';
 import 'package:fyp/pages/all_user/settingspage.dart';
-import 'package:fyp/pages/owner/menupage2.dart';
+import 'package:fyp/pages/owner/menupage.dart';
 // import 'package:fyp/pages/ownerorderpage.dart';
 // import 'package:fyp/pages/summarypage.dart';
 
@@ -28,8 +28,9 @@ class _OwnerHomePageState extends State<OwnerHomePage>
       ),
       drawer: const MyDrawer(),
       body: Container(
-        width:
-            MediaQuery.of(context).size.width, //max width for current phone
+        width: MediaQuery.of(context).size.width, //max width for current phone
+        height:
+            MediaQuery.of(context).size.height, //max width for current phone
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           image: DecorationImage(
@@ -43,9 +44,11 @@ class _OwnerHomePageState extends State<OwnerHomePage>
           ),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
@@ -67,7 +70,7 @@ class _OwnerHomePageState extends State<OwnerHomePage>
                   onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MenuPage2())),
+                          builder: (context) => const MenuPage())),
                   icon: const Icon(Icons.add_shopping_cart),
                 ),
               ],
@@ -77,7 +80,7 @@ class _OwnerHomePageState extends State<OwnerHomePage>
               height: 200,
               width: 300,
             ),
-    
+
             /*
             MyButton(
               text: "Hello " + fname,

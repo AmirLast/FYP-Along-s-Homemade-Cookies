@@ -18,72 +18,69 @@ class ProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
+      color: Theme.of(context).colorScheme.tertiary,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              //text product detail
-              Expanded(
-                child: ListTile(
-                  onTap: onTap,
-                  title: Container(
-                    padding: const EdgeInsets.all(25),
-                    margin: const EdgeInsets.symmetric(horizontal: 25),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Center(
-                      child: Text(
-                        prod!.name,
-                        style: TextStyle(
-                          //fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                  ),
+          //text product detail
+          Expanded(
+            child: ListTile(
+              onTap: onTap,
+              title: Text(
+                prod!.name,
+                style: TextStyle(
+                  //fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                  fontSize: 15,
                 ),
               ),
-              const SizedBox(width: 10),
+            ),
+          ),
+          
+          //const SizedBox(width: 10),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
               ElevatedButton(
                 onPressed: onEdit,
                 child: const Icon(Icons.edit),
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(20),
+                  //padding: const EdgeInsets.all(5),
                   backgroundColor: Theme.of(context)
                       .colorScheme
                       .secondary, // <-- Button color
                   //foregroundColor: Colors.red, // <-- Splash color
                 ),
               ),
-              const SizedBox(width: 10),
+              //const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: onDel,
                 child: const Icon(Icons.close_rounded),
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(20),
+                  //padding: const EdgeInsets.all(5),
                   backgroundColor: Theme.of(context)
                       .colorScheme
                       .secondary, // <-- Button color
                   //foregroundColor: Colors.red, // <-- Splash color
                 ),
               ),
-
-              // prod image
-              /*ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  prod.imagePath,
-                  height: 10,
-                ),
-              ),*/
             ],
           ),
+      /*
+      // prod image
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset(
+              prod!.imagePath,
+              height: 1,
+            ),
+          ),
+      */
+          
         ],
       ),
     );

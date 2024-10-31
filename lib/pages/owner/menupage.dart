@@ -35,35 +35,38 @@ class _MenuPageState extends State<MenuPage>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Scaffold(
-        //the add button
-        floatingActionButton: FloatingActionButton(
-          child: Icon(
-            Icons.add_rounded,
-            color: Theme.of(context).colorScheme.primary,
-            size: 40,
-          ),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AddCategory())),
+    return Scaffold(
+      //the add button
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add_rounded,
+          color: Theme.of(context).colorScheme.primary,
+          size: 40,
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          title: const Center(
-            child: Text(
-              textAlign: TextAlign.center,
-              "Manage Menu",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const AddCategory())),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        title: const Center(
+          child: Text(
+            textAlign: TextAlign.center,
+            "Manage Menu",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
-        drawer: const MyDrawer(), //default drawer
-        body: Container(
+      ),
+      drawer: const MyDrawer(), //default drawer
+      body: SingleChildScrollView(
+        child: Container(
           width:
               MediaQuery.of(context).size.width, //max width for current phone
+          height: MediaQuery.of(context)
+              .size
+              .height, //max height for current phone
           //for logo transparent
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
@@ -78,6 +81,7 @@ class _MenuPageState extends State<MenuPage>
             ),
           ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
                 child: ListView.builder(
@@ -107,13 +111,13 @@ class _MenuPageState extends State<MenuPage>
                 return BakedCategory.values.map((category) {
                   //category is enum in baked.dart;
                   //kita kene guna usernow.categories into enum?
-      
+            
                   //get category menu only the one specified which relate to category variable
                   List<Baked> categoryMenu = fullMenu.where((baked) => baked.category == category).toList();
-      
-      
+            
+            
                   //bawah ni cuba guna untuk children dalam cattile.dart
-      
+            
                   //create ListView
                   return ListView.builder(
                     itemCount: categoryMenu.length,
@@ -122,7 +126,7 @@ class _MenuPageState extends State<MenuPage>
                     itemBuilder: (context, index) {
                       //get individual food one by one from list categoryMenu made
                       final prod = categoryMenu[index];
-      
+            
                       //return product tile UI
                       return ProdTile(
                         prod: prod,

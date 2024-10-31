@@ -36,49 +36,54 @@ class _MenuPage2State extends State<MenuPage2> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Scaffold(
-        //the add button
-        floatingActionButton: FloatingActionButton(
-          child: Icon(
-            Icons.add_rounded,
-            color: Theme.of(context).colorScheme.primary,
-            size: 40,
-          ),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AddCategory())),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          title: const Center(
-            child: Text(
-              textAlign: TextAlign.center,
-              "Manage Menu",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+      scrollDirection: Axis.vertical,
+      child: Expanded(
+        child: Scaffold(
+          //the add button
+          floatingActionButton: FloatingActionButton(
+            child: Icon(
+              Icons.add_rounded,
+              color: Theme.of(context).colorScheme.primary,
+              size: 40,
             ),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const AddCategory())),
           ),
-        ),
-        drawer: const MyDrawer(), //default drawer
-        body: Container(
-          width:
-              MediaQuery.of(context).size.width, //max width for current phone
-          //for logo transparent
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            image: DecorationImage(
-              image: const AssetImage("lib/images/applogo.png"),
-              colorFilter: ColorFilter.mode(
-                Theme.of(context).colorScheme.surface.withOpacity(0.2),
-                BlendMode.dstATop,
+          floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            title: const Center(
+              child: Text(
+                textAlign: TextAlign.center,
+                "Manage Menu",
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
-              alignment: Alignment.center,
-              scale: 0.5,
             ),
           ),
-          child: const Column(
-            
+          drawer: const MyDrawer(), //default drawer
+          body: Container(
+            width:
+                MediaQuery.of(context).size.width, //max width for current phone
+                height: 
+                MediaQuery.of(context).size.height, //max width for current phone
+            //for logo transparent
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              image: DecorationImage(
+                image: const AssetImage("lib/images/applogo.png"),
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.surface.withOpacity(0.2),
+                  BlendMode.dstATop,
+                ),
+                alignment: Alignment.center,
+                scale: 0.5,
+              ),
+            ),
+            child: const Column(
+              
+            ),
           ),
         ),
       ),

@@ -23,37 +23,43 @@ class CatTile extends StatelessWidget {
     List<Bakeds?> categoryMenu =
         baked.where((b) => b!.category == catName).toList();
     return Card(
+      elevation: 0,
+      color: Colors.transparent,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const SizedBox(height: 20),
           Row(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(width: 30),
-              ExpansionTile(
-                collapsedShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                collapsedBackgroundColor:
-                    Theme.of(context).colorScheme.secondary,
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                title: Center(
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    catName,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+              Expanded(
+                child: ExpansionTile(
+                  collapsedShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  collapsedBackgroundColor:
+                      Theme.of(context).colorScheme.secondary,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  title: Center(
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      catName,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
-                ),
-                children: [
-                  Expanded(
-                    child: ListView.builder(
+                  children: [
+                    ListView.builder(
                       shrinkWrap: true,
                       itemCount: categoryMenu.length,
                       primary: false,
@@ -74,41 +80,37 @@ class CatTile extends StatelessWidget {
                         );
                       },
                     ),
-                  ),
-                ], //letak list baked by category
+                  ], //letak list baked by category
+                ),
               ),
               const SizedBox(width: 10),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+              Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    children: [
-                      ElevatedButton(
-                        onPressed: onEdit,
-                        child: const Icon(Icons.edit),
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(20),
-                          backgroundColor: Theme.of(context)
-                              .colorScheme
-                              .secondary, // <-- Button color
-                          //foregroundColor: Colors.red, // <-- Splash color
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: onDel,
-                        child: const Icon(Icons.close_rounded),
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(20),
-                          backgroundColor: Theme.of(context)
-                              .colorScheme
-                              .secondary, // <-- Button color
-                          //foregroundColor: Colors.red, // <-- Splash color
-                        ),
-                      ),
-                    ],
+                  ElevatedButton(
+                    onPressed: onEdit,
+                    child: const Icon(Icons.edit),
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(20),
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .secondary, // <-- Button color
+                      //foregroundColor: Colors.red, // <-- Splash color
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: onDel,
+                    child: const Icon(Icons.close_rounded),
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(20),
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .secondary, // <-- Button color
+                      //foregroundColor: Colors.red, // <-- Splash color
+                    ),
                   ),
                 ],
               ),
