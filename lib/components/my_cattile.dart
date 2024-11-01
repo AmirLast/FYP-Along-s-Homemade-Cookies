@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_bakedtile.dart';
 import 'package:fyp/models/bakedclass.dart';
-//import 'package:fyp/models/baked.dart';
 
 class CatTile extends StatelessWidget {
   //final Baked prod;
@@ -72,7 +71,8 @@ class CatTile extends StatelessWidget {
                           //access data guna categoryMenu[index] as key different
                           onEdit:
                               () {}, //pergi page baru (cam add category) + access data guna func update cam kat addcategory
-                          onDel: () {}, //pop up delete confirm + access data guna func delete
+                          onDel:
+                              () {}, //pop up delete confirm + access data guna func delete
                           /*=> Navigator.push(
                     context,
                     MaterialPageRoute(

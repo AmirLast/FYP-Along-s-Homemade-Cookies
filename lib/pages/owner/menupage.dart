@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/my_cattile.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/models/bakedclass.dart';
-//import 'package:fyp/models/baked.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/addcategory.dart';
 import 'package:fyp/pages/owner/updatemenu.dart';
-//import 'package:fyp/pages/prodpage.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -101,7 +99,8 @@ class _MenuPageState extends State<MenuPage>
                       //access data guna catname as key different
                       onEdit:
                           () {}, //pergi page baru (cam add category) + access data guna func update cam kat addcategory
-                      onDel: () {}, //pop up delete confirm + access data guna func delete
+                      onDel:
+                          () {}, //pop up delete confirm + access data guna func delete
                     );
                   },
                 ),
