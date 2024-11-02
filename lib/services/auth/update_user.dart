@@ -5,6 +5,7 @@ import 'package:fyp/models/userclass.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 
 class UpdateUserData {
+  //read FBFS and update local data
   Future<String> updateuserdata() async {
     AuthService something = AuthService();
     User? user = something.getCurrentUser();

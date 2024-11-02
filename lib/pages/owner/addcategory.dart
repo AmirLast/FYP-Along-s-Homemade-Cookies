@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 
@@ -117,35 +118,25 @@ class _AddCategoryState extends State<AddCategory> {
                             return;
                           } else {
                             User? user = AuthService().getCurrentUser();
-                            //cane nak cek collection tu dah ade sama nama ke?
-                            //make a collection(category)
-                            FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(user?.uid)
-                                .collection(nameController.text);
-                            //testing
-                            FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(user?.uid)
-                                .update({
-                              "category": nameController.text,
-                            });
-                            /*
-                            //update new category in owner List categories
+                            //cane nak cek collection tu dah ade sama nama ke???
+                            //update local userclass data (+ new category)
+                            UserNow.usernow!.categories
+                                .add(nameController.text);
+                            //map userclass data pasal categories
+                            List newArray = UserNow.usernow!.categories;
+                            //update array categories (xde prod) data kat FBFS
                             FirebaseFirestore.instance
                                 .collection('users')
                                 .doc(user?.uid)
                                 .update({
-                              "categories": nameController.text,
+                              "categories": newArray,
                             });
-                            */
-                            //the doc = product in that category, doc id = name of product,
-                            //in doc = all values of product ; cek sample in cookies collection
+                            //new collection is automatically create when add product :D
+                            //go back to menu page
                             await Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const MenuPage(), //go back to menu page
+                                builder: (context) => const MenuPage(),
                               ),
                             );
                           }

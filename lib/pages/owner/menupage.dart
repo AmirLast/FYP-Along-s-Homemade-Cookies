@@ -98,9 +98,11 @@ class _MenuPageState extends State<MenuPage>
                       //alter part: nak refresh kat mana? lepas update/delete
                       //access data guna catname as key different
                       onEdit:
-                          () {}, //pergi page baru (cam add category) + access data guna func update cam kat addcategory
+                          () {}, //pop up confirm -> pergi page baru (cam add category) -> update (cam kat addcategory.dart) -> back to menu
+                      //for collection: read the collection data into local data buffer(array) -> delete prev collection -> insert buffer into new collection name
                       onDel:
-                          () {}, //pop up delete confirm + access data guna func delete
+                          () {}, //pop up delete confirm -> delete FBFS -> delete local data -> pushreplacement ke menupage
+                      //for collection: delete prev collection
                     );
                   },
                 ),
