@@ -45,7 +45,7 @@ class CatTile extends StatelessWidget {
                   ),
                   collapsedBackgroundColor:
                       Theme.of(context).colorScheme.secondary,
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  backgroundColor: Theme.of(context).colorScheme.tertiary,
                   title: Center(
                     child: Text(
                       textAlign: TextAlign.center,
@@ -82,6 +82,21 @@ class CatTile extends StatelessWidget {
                                       ),*/
                         );
                       },
+                    ),
+                    //button add product
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Icon(
+                        Icons.add_rounded,
+                        size: 35,
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .secondary, // <-- Button color
+                        //foregroundColor: Colors.red, // <-- Splash color
+                      ),
                     ),
                   ], //letak list baked by category
                 ),

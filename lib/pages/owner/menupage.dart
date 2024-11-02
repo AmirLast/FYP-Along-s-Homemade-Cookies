@@ -39,9 +39,14 @@ class _MenuPageState extends State<MenuPage>
         child: Icon(
           Icons.add_rounded,
           color: Theme.of(context).colorScheme.primary,
-          size: 40,
+          size: 50,
         ),
         backgroundColor: Theme.of(context).colorScheme.secondary,
+        shape: CircleBorder(
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
         onPressed: () => Navigator.push(context,
             MaterialPageRoute(builder: (context) => const AddCategory())),
       ),
@@ -149,6 +154,7 @@ class _MenuPageState extends State<MenuPage>
               //else
               //tunjuk big + icon to add new menu
               //+ icon => addmenupage
+              const SizedBox(height: 150),
             ],
           ),
         ),

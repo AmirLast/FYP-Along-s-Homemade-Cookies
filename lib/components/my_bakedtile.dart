@@ -18,7 +18,7 @@ class ProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).colorScheme.tertiary,
+      color: Theme.of(context).colorScheme.secondary,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
@@ -31,14 +31,14 @@ class ProductTile extends StatelessWidget {
               title: Text(
                 prod!.name,
                 style: TextStyle(
-                  //fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.primary,
                   fontSize: 15,
                 ),
               ),
             ),
           ),
-          
+
           //const SizedBox(width: 10),
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -70,7 +70,7 @@ class ProductTile extends StatelessWidget {
               ),
             ],
           ),
-      /*
+          /*
       // prod image
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -80,7 +80,6 @@ class ProductTile extends StatelessWidget {
             ),
           ),
       */
-          
         ],
       ),
     );
