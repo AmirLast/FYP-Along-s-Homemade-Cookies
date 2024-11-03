@@ -154,7 +154,7 @@ class _MenuPageState extends State<MenuPage>
               //else
               //tunjuk big + icon to add new menu
               //+ icon => addmenupage
-              const SizedBox(height: 150),
+              const SizedBox(height: 80),
             ],
           ),
         ),
