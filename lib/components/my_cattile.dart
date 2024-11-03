@@ -86,6 +86,13 @@ class CatTile extends StatelessWidget {
                     //button add product
                     ElevatedButton(
                       onPressed: () {},
+                      /*=> Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            //calling ProdPage while sending prod values
+                            builder: (context) => ProdPage(prod: prod),
+                          ),
+                        ),*/
                       child: const Icon(
                         Icons.add_rounded,
                         size: 35,
@@ -111,9 +118,7 @@ class CatTile extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       padding: const EdgeInsets.all(20),
-                      backgroundColor: Theme.of(context)
-                          .colorScheme
-                          .secondary, // <-- Button color
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
                       //foregroundColor: Colors.red, // <-- Splash color
                     ),
                   ),
