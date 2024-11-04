@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_bakedtile.dart';
 import 'package:fyp/models/bakedclass.dart';
+import 'package:fyp/pages/owner/addproduct.dart';
 
 class CatTile extends StatelessWidget {
   //final Baked prod;
@@ -85,14 +86,13 @@ class CatTile extends StatelessWidget {
                     ),
                     //button add product
                     ElevatedButton(
-                      onPressed: () {},
-                      /*=> Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            //calling ProdPage while sending prod values
-                            builder: (context) => ProdPage(prod: prod),
-                          ),
-                        ),*/
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          //calling AddProduct while sending prod name
+                          builder: (context) => AddProduct(prod: catName),
+                        ),
+                      ),
                       child: const Icon(
                         Icons.add_rounded,
                         size: 35,

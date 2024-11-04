@@ -15,11 +15,23 @@ class AddCategory extends StatefulWidget {
 }
 
 class _AddCategoryState extends State<AddCategory> {
+  //text editing controller
+  late TextEditingController nameController;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    //text editing controller
-    final nameController = TextEditingController();
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -133,11 +145,12 @@ class _AddCategoryState extends State<AddCategory> {
                             });
                             //new collection is automatically create when add product :D
                             //go back to menu page
-                            await Navigator.pushReplacement(
+                            await Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const MenuPage(),
                               ),
+                              ModalRoute.withName('OwnerHomePage'),
                             );
                           }
                         }),
