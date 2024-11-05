@@ -61,6 +61,15 @@ class _MenuPageState extends State<MenuPage>
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => {},
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.transparent,
+            ),
+          ),
+        ],
       ),
       drawer: const MyDrawer(), //default drawer
       body: SingleChildScrollView(

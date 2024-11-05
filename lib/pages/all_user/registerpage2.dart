@@ -36,6 +36,7 @@ class _Register2PageState extends State<Register2Page> {
     postcodeController.dispose();
     stateController.dispose();
   }
+
 /*
   Future<User?> register({
     //for creting user
@@ -130,6 +131,7 @@ class _Register2PageState extends State<Register2Page> {
                           caps: TextCapitalization.words,
                           inputType: TextInputType.text,
                           labelText: "Address",
+                          hintText: "",
                           obscureText: false,
                           isEnabled: true,
                         ),
@@ -142,6 +144,7 @@ class _Register2PageState extends State<Register2Page> {
                           caps: TextCapitalization.none,
                           inputType: TextInputType.number,
                           labelText: "Post Code",
+                          hintText: "",
                           obscureText: false,
                           isEnabled: true,
                         ),
@@ -154,6 +157,7 @@ class _Register2PageState extends State<Register2Page> {
                           caps: TextCapitalization.words,
                           inputType: TextInputType.text,
                           labelText: "State",
+                          hintText: "",
                           obscureText: false,
                           isEnabled: true,
                         ),
@@ -182,12 +186,11 @@ class _Register2PageState extends State<Register2Page> {
                             ),
                           ),
                           onPressed: () async {
-
                             //some value for error checking---------
                             var isBlank = false; //blank means no error
                             String error = ""; //the error description
                             //User? user;
-                            
+
                             //checking if it is blank or wrong length or password weak
                             if (address1Controller.text == '') {
                               error = 'Address is blank';

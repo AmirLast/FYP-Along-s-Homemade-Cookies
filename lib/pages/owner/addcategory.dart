@@ -43,6 +43,15 @@ class _AddCategoryState extends State<AddCategory> {
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => {},
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.transparent,
+            ),
+          ),
+        ],
       ),
       drawer: const MyDrawer(),
       body: Container(
@@ -90,6 +99,7 @@ class _AddCategoryState extends State<AddCategory> {
                       caps: TextCapitalization.words,
                       inputType: TextInputType.text,
                       labelText: "Name",
+                      hintText: "",
                       obscureText: false,
                       isEnabled: true,
                     ),
@@ -145,12 +155,13 @@ class _AddCategoryState extends State<AddCategory> {
                             });
                             //new collection is automatically create when add product :D
                             //go back to menu page
-                            await Navigator.pushAndRemoveUntil(
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const MenuPage(),
                               ),
-                              ModalRoute.withName('OwnerHomePage'),
                             );
                           }
                         }),

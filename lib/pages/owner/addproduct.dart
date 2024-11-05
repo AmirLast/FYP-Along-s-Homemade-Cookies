@@ -49,6 +49,15 @@ class _AddProductState extends State<AddProduct> {
             style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => {},
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.transparent,
+            ),
+          ),
+        ],
       ),
       drawer: const MyDrawer(),
       body: SingleChildScrollView(
@@ -98,6 +107,7 @@ class _AddProductState extends State<AddProduct> {
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
                         labelText: "Product Name",
+                        hintText: "",
                         obscureText: false,
                         isEnabled: true,
                       ),
@@ -109,7 +119,8 @@ class _AddProductState extends State<AddProduct> {
                         controller: descController,
                         caps: TextCapitalization.none,
                         inputType: TextInputType.text,
-                        labelText: "Product Description",
+                        labelText: "Description",
+                        hintText: "",
                         obscureText: false,
                         isEnabled: true,
                       ),
@@ -121,7 +132,8 @@ class _AddProductState extends State<AddProduct> {
                         controller: priceController,
                         caps: TextCapitalization.none,
                         inputType: TextInputType.number,
-                        labelText: "Product Name",
+                        labelText: "Price",
+                        hintText: "RM 1.00",
                         obscureText: false,
                         isEnabled: true,
                       ),
@@ -202,7 +214,9 @@ class _AddProductState extends State<AddProduct> {
                               });
                               //new collection is automatically create when add product :D
                               //go back to menu page
-                              await Navigator.pushReplacement(
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const MenuPage(),

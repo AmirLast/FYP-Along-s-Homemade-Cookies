@@ -7,6 +7,7 @@ class MyTextField extends StatelessWidget {
   final TextInputType inputType;
   final TextCapitalization caps;
   final bool isEnabled;
+  final String hintText;
 
   const MyTextField({
     super.key,
@@ -16,6 +17,7 @@ class MyTextField extends StatelessWidget {
     required this.inputType,
     required this.caps,
     required this.isEnabled,
+    required this.hintText,
   });
 
   @override
@@ -43,6 +45,7 @@ class MyTextField extends StatelessWidget {
           filled: true,
           fillColor: Theme.of(context).colorScheme.secondary,
           labelText: labelText,
+          hintText: hintText,
         ),
       ),
     );

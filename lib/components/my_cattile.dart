@@ -117,7 +117,7 @@ class CatTile extends StatelessWidget {
                     child: const Icon(Icons.edit),
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(18),
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       //foregroundColor: Colors.red, // <-- Splash color
                     ),
@@ -128,7 +128,7 @@ class CatTile extends StatelessWidget {
                     child: const Icon(Icons.close_rounded),
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(18),
                       backgroundColor: Theme.of(context)
                           .colorScheme
                           .secondary, // <-- Button color

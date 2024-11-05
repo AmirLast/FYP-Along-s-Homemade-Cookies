@@ -108,6 +108,7 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                         caps: TextCapitalization.none,
                         inputType: TextInputType.emailAddress,
                         labelText: "Email",
+                        hintText: "",
                         obscureText: false,
                         isEnabled: true,
                       ),
