@@ -69,7 +69,7 @@ class _AddCategoryState extends State<AddCategory> {
           ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 60),
             Padding(
@@ -108,63 +108,63 @@ class _AddCategoryState extends State<AddCategory> {
 
                     //confirm button
                     MaterialButton(
-                        child: Container(
-                          padding: const EdgeInsets.all(25),
-                          margin: const EdgeInsets.symmetric(horizontal: 25),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Confirm",
-                              style: TextStyle(
-                                //fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 20,
-                              ),
+                      child: Container(
+                        padding: const EdgeInsets.all(25),
+                        margin: const EdgeInsets.symmetric(horizontal: 25),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Confirm",
+                            style: TextStyle(
+                              //fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontSize: 20,
                             ),
                           ),
                         ),
-                        onPressed: () async {
-                          //check blank
-                          if (nameController.text == '') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  "Category name is blank",
-                                  textAlign: TextAlign.center,
-                                ),
+                      ),
+                      onPressed: () async {
+                        //check blank
+                        if (nameController.text == '') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Category name is blank",
+                                textAlign: TextAlign.center,
                               ),
-                            );
-                            return;
-                          } else {
-                            User? user = AuthService().getCurrentUser();
-                            //cane nak cek collection tu dah ade sama nama ke???
-                            //update local userclass data (+ new category)
-                            UserNow.usernow!.categories
-                                .add(nameController.text);
-                            //map userclass data pasal categories
-                            List newArray = UserNow.usernow!.categories;
-                            //update array categories (xde prod) data kat FBFS
-                            FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(user?.uid)
-                                .update({
-                              "categories": newArray,
-                            });
-                            //new collection is automatically create when add product :D
-                            //go back to menu page
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const MenuPage(),
-                              ),
-                            );
-                          }
-                        }),
+                            ),
+                          );
+                          return;
+                        } else {
+                          User? user = AuthService().getCurrentUser();
+                          //cane nak cek collection tu dah ade sama nama ke???
+                          //update local userclass data (+ new category)
+                          UserNow.usernow!.categories.add(nameController.text);
+                          //map userclass data pasal categories
+                          List newArray = UserNow.usernow!.categories;
+                          //update array categories (xde prod) data kat FBFS
+                          FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(user?.uid)
+                              .update({
+                            "categories": newArray,
+                          });
+                          //new collection is automatically create when add product :D
+                          //go back to menu page
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MenuPage(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
 
                     const SizedBox(height: 40),
                   ],

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
@@ -11,8 +12,8 @@ import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddProduct extends StatefulWidget {
-  final String prod;
-  const AddProduct({super.key, required this.prod});
+  final String category;
+  const AddProduct({super.key, required this.category});
 
   @override
   State<AddProduct> createState() => _AddProductState();
@@ -103,7 +104,7 @@ class _AddProductState extends State<AddProduct> {
         title: Center(
           child: Text(
             textAlign: TextAlign.center,
-            widget.prod + "'s Product",
+            widget.category + "'s Product",
             style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
@@ -209,7 +210,9 @@ class _AddProductState extends State<AddProduct> {
                             child: const Text('Select Product Image')),
                         onPressed: showOptions,
                       ),
-                      Center(
+                      SizedBox(
+                        height: 150,
+                        width: 150,
                         child: _image == null
                             ? Image.network(
                                 "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637")
@@ -283,20 +286,26 @@ class _AddProductState extends State<AddProduct> {
                               return;
                             } else {
                               User? user = AuthService().getCurrentUser();
+                              //set file path for current user folder in firebase storage
+                              String path =
+                                  '${user?.uid}/${widget.category}/${nameController.text}';
                               //cane nak cek product tu dah ade sama nama ke???
+                              //upload gambar dalam firebase storage
+                              FirebaseStorage.instance
+                                  .ref()
+                                  .child(path)
+                                  .putFile(_image!);
                               //update prod dalam collection categories kat FBFS
                               FirebaseFirestore.instance
                                   .collection('users')
                                   .doc(user?.uid)
-                                  .collection(widget.prod)
+                                  .collection(widget.category)
                                   .add({
                                 "description": descController.text,
-                                "imagePath":
-                                    "gs://fyp-along-shomemadecookies.appspot.com/default_user.png", //pakai default dulu
+                                "imagePath": path, //bila nak display pakai apa?
                                 "name": nameController.text,
                                 "price": priceController.text,
                               });
-                              //new collection is automatically create when add product :D
                               //go back to menu page
                               Navigator.pop(context);
                               Navigator.pop(context);
@@ -322,117 +331,3 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 }
-/*
-import 'package:flutter/material.dart';
-import 'package:fyp/components/my_menubutton.dart';
-import 'package:fyp/models/baked.dart';
-import 'package:fyp/models/shop.dart';
-import 'package:provider/provider.dart';
-
-class ProdPage extends StatefulWidget {
-  final Baked prod;
-
-  const ProdPage({
-    super.key,
-    required this.prod,
-  });
-
-  @override
-  State<ProdPage> createState() => _ProdPageState();
-}
-
-class _ProdPageState extends State<ProdPage> {
-  //method to add to cart
-  void addToCart(Baked prod) {
-    // close current prod page
-    Navigator.pop(context);
-
-    //add to cart
-    context.read<Shop>().addToCart(prod);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        //scaffold UI
-        Scaffold(
-          appBar: AppBar(),
-          body: Column(
-            children: [
-              //product image
-              Image.asset(widget.prod.imagePath),
-
-              Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //product name
-                      Text(
-                        widget.prod.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-
-                      //product price
-                      Text(
-                        'RM' + widget.prod.price.toString(),
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      //product description
-                      Text(widget.prod.description),
-
-                      const SizedBox(height: 10),
-                      Divider(color: Theme.of(context).colorScheme.secondary),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
-                ),
-              ),
-
-              //button -> add to cart
-              MyMenuButton(
-                text: "Add to cart",
-                onPressed: () => addToCart(
-                  widget.prod,
-                ),
-              ),
-
-              const SizedBox(height: 25),
-            ],
-          ),
-        ),
-
-        //back button
-        SafeArea(
-          child: Opacity(
-            opacity: 0.6,
-            child: Container(
-              margin: const EdgeInsets.only(left: 25),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_rounded),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-*/
