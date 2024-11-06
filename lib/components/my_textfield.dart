@@ -46,6 +46,7 @@ class MyTextField extends StatelessWidget {
           fillColor: Theme.of(context).colorScheme.secondary,
           labelText: labelText,
           hintText: hintText,
+          hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
         ),
       ),
     );

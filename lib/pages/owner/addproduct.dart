@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddProduct extends StatefulWidget {
   final String prod;
@@ -15,6 +19,60 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
+  //untuk bahagian upload image-----------------------------------------------------
+  File? _image;
+  final picker = ImagePicker();
+
+//Image Picker function to get image from gallery
+  Future getImageFromGallery() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
+  }
+
+//Image Picker function to get image from camera
+  Future getImageFromCamera() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
+  }
+
+  Future showOptions() async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            child: const Text('Photo Gallery'),
+            onPressed: () {
+              // close the options modal
+              Navigator.of(context).pop();
+              // get image from gallery
+              getImageFromGallery();
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: const Text('Camera'),
+            onPressed: () {
+              // close the options modal
+              Navigator.of(context).pop();
+              // get image from camera
+              getImageFromCamera();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+  //bahagian upload imej-----------------------------------------------------------------------
+
   //text editing controller
   late TextEditingController descController;
   late TextEditingController nameController;
@@ -132,8 +190,8 @@ class _AddProductState extends State<AddProduct> {
                         controller: priceController,
                         caps: TextCapitalization.none,
                         inputType: TextInputType.number,
-                        labelText: "Price",
-                        hintText: "RM 1.00",
+                        labelText: "Price (RM)",
+                        hintText: "1.00",
                         obscureText: false,
                         isEnabled: true,
                       ),
@@ -141,8 +199,24 @@ class _AddProductState extends State<AddProduct> {
                       const SizedBox(height: 30),
 
                       //image of category
+                      MaterialButton(
+                        child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Text('Select Product Image')),
+                        onPressed: showOptions,
+                      ),
+                      Center(
+                        child: _image == null
+                            ? Image.network(
+                                "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637")
+                            : Image.file(_image!),
+                      ),
                       //input file sendiri or use default image for now
-                      //const SizedBox(height: 30),
+                      const SizedBox(height: 30),
 
                       //confirm button
                       MaterialButton(
@@ -197,6 +271,16 @@ class _AddProductState extends State<AddProduct> {
                                 ),
                               );
                               return;
+                            } else if (_image == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    "Picture not selected",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                              return;
                             } else {
                               User? user = AuthService().getCurrentUser();
                               //cane nak cek product tu dah ade sama nama ke???
@@ -230,6 +314,7 @@ class _AddProductState extends State<AddProduct> {
                   ),
                 ),
               ),
+              const SizedBox(height: 60),
             ],
           ),
         ),
