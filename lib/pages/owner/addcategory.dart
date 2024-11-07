@@ -15,6 +15,12 @@ class AddCategory extends StatefulWidget {
 }
 
 class _AddCategoryState extends State<AddCategory> {
+  //uppercase first letter-----------------------------------------
+  String upperCase(String toEdit) {
+    return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
+  }
+
+  //uppercase first letter-----------------------------------------
   //text editing controller
   late TextEditingController nameController;
 
@@ -130,9 +136,14 @@ class _AddCategoryState extends State<AddCategory> {
                         //check blank
                         if (nameController.text == '') {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.black,
                               content: Text(
                                 "Category name is blank",
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -142,7 +153,8 @@ class _AddCategoryState extends State<AddCategory> {
                           User? user = AuthService().getCurrentUser();
                           //cane nak cek collection tu dah ade sama nama ke???
                           //update local userclass data (+ new category)
-                          UserNow.usernow!.categories.add(nameController.text);
+                          UserNow.usernow!.categories
+                              .add(upperCase(nameController.text));
                           //map userclass data pasal categories
                           List newArray = UserNow.usernow!.categories;
                           //update array categories (xde prod) data kat FBFS

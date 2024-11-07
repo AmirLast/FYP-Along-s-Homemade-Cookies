@@ -84,6 +84,13 @@ class _RegisterPageState extends State<RegisterPage> {
     return user;
   }
 
+  //uppercase first letter-----------------------------------------
+  String upperCase(String toEdit) {
+    return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
+  }
+
+  //uppercase first letter-----------------------------------------
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -289,9 +296,15 @@ class _RegisterPageState extends State<RegisterPage> {
                             if (passwordController.text !=
                                 confirmpasswordController.text) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.black,
                                   content: Text(
                                     'Passwords don\'t match!',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                               );
@@ -386,35 +399,26 @@ class _RegisterPageState extends State<RegisterPage> {
 
                               user!.updatePhotoURL(
                                   defProfile); //set default user pfp
-
+                              //name the userfile as uid
+                              userSU.doc(user.uid).set({
+                                //set all data that user and owner have in common
+                                "fname": upperCase(fnameController.text),
+                                "lname": upperCase(lnameController.text),
+                                "phone": phoneController.text,
+                                "type": type,
+                                "passStrength": true, //checked hence true
+                                //owner need array of categories
+                                "categories": [],
+                                //for category edit assist
+                                "currentdir": "",
+                                "address": "", //for delivery
+                              });
                               if (type == 'owner') {
-                                //name the userfile as uid
-                                userSU.doc(user.uid).set({
-                                  "fname": fnameController.text,
-                                  "lname": lnameController.text,
-                                  "phone": phoneController.text,
-                                  "type": type,
-                                  "passStrength": true, //checked hence true
-                                  //owner need array of categories
-                                  "categories": [],
-                                  //for category edit assist
-                                  "currentdir": "",
-                                  "shop": shopController.text,
-                                  "address": "", //for delivery
-                                });
-                              } else {
-                                //this will be user
-                                //name the userfile as uid
-                                userSU.doc(user.uid).set({
-                                  "fname": fnameController.text,
-                                  "lname": lnameController.text,
-                                  "phone": phoneController.text,
-                                  "type": type,
-                                  "passStrength": true, //checked hence true
-                                  //for admin = editing shop of owner @ editing user
-                                  //for user = save id of owner for buying
-                                  "currentdir": "",
-                                  "address": "", //for delivery
+                                userSU.doc(user.uid).set(
+                                    //add other data that only owner have
+                                    {'shop': upperCase(shopController.text)},
+                                    SetOptions(merge: true)).then((value) {
+                                  //Do your stuff.
                                 });
                               }
 

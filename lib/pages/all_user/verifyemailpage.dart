@@ -61,8 +61,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: Colors.black,
           content: Text(
             e.toString(),
+            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
             textAlign: TextAlign.center,
           ),
         ),

@@ -1,6 +1,9 @@
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/models/userclass.dart';
 //import 'package:fyp/images/assets.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/verifyemailpage.dart';
@@ -221,48 +224,17 @@ class _Register2PageState extends State<Register2Page> {
                               );
                               return;
                             } else {
-                              /* belum tau nak buat cane lagi
-                              // try { register the user
-                              user = await register(
-                                  email: emailController.text,
-                                  password: passwordController.text);
-
+                              User user = UserNow.usernow!.user;
                               var userSU = FirebaseFirestore.instance.collection(
                                   'users'); //opening user collection in firestore
-
-                              user!.updatePhotoURL(
-                                  defProfile); //set default user pfp
-
-                              if (type == 'owner') {
-                                //name the userfile as uid
-                                userSU.doc(user.uid).set({
-                                  "fname": fnameController.text,
-                                  "lname": lnameController.text,
-                                  "phone": phoneController.text,
-                                  "type": type,
-                                  "passStrength": true, //checked hence true
-                                  //owner need array of categories
-                                  "categories": [],
-                                  //for category edit assist
-                                  "currentdir": "",
-                                  "shop": shopController.text,
-                                  "address": "", //for delivery
-                                });
-                              } else {
-                                //this will be user
-                                //name the userfile as uid
-                                userSU.doc(user.uid).set({
-                                  "fname": fnameController.text,
-                                  "lname": lnameController.text,
-                                  "phone": phoneController.text,
-                                  "type": type,
-                                  "passStrength": true, //checked hence true
-                                  //for admin = editing shop of owner @ editing user
-                                  //for user = save id of owner for buying
-                                  "currentdir": "",
-                                  "address": "", //for delivery
-                                });
-                              }*/
+                              //name the userfile as uid
+                              userSU.doc(user.uid).update({
+                                "address": address1Controller.text +
+                                    ", " +
+                                    postcodeController.text +
+                                    ", " +
+                                    stateController.text,
+                              });
 
                               await Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(

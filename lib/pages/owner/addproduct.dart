@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -20,6 +19,12 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
+  //uppercase first letter-----------------------------------------
+  String upperCase(String toEdit) {
+    return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
+  }
+
+  //uppercase first letter-----------------------------------------
   //untuk bahagian upload image-----------------------------------------------------
   File? _image;
   final picker = ImagePicker();
@@ -246,9 +251,14 @@ class _AddProductState extends State<AddProduct> {
                             //check blank
                             if (nameController.text == '') {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.black,
                                   content: Text(
                                     "Product name is blank",
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -256,9 +266,14 @@ class _AddProductState extends State<AddProduct> {
                               return;
                             } else if (descController.text == '') {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.black,
                                   content: Text(
                                     "Description is blank",
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -266,9 +281,14 @@ class _AddProductState extends State<AddProduct> {
                               return;
                             } else if (priceController.text == '') {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.black,
                                   content: Text(
                                     "Price is blank",
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -276,45 +296,85 @@ class _AddProductState extends State<AddProduct> {
                               return;
                             } else if (_image == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.black,
                                   content: Text(
                                     "Picture not selected",
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
                               );
                               return;
                             } else {
+                              //fix price into 0.00 format
+                              String prodPrice =
+                                  double.parse(priceController.text)
+                                      .toStringAsFixed(2);
                               User? user = AuthService().getCurrentUser();
                               //set file path for current user folder in firebase storage
                               String path =
                                   '${user?.uid}/${widget.category}/${nameController.text}';
                               //cane nak cek product tu dah ade sama nama ke???
-                              //upload gambar dalam firebase storage
-                              FirebaseStorage.instance
-                                  .ref()
-                                  .child(path)
-                                  .putFile(_image!);
-                              //update prod dalam collection categories kat FBFS
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(user?.uid)
-                                  .collection(widget.category)
-                                  .add({
-                                "description": descController.text,
-                                "imagePath": path, //bila nak display pakai apa?
-                                "name": nameController.text,
-                                "price": priceController.text,
-                              });
-                              //go back to menu page
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MenuPage(),
-                                ),
-                              );
+
+                              try {
+                                //upload gambar dalam firebase storage
+                                FirebaseStorage.instance
+                                    .ref()
+                                    .child(path)
+                                    .putFile(_image!);
+                                //update prod dalam collection categories kat FBFS
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(user?.uid)
+                                    .collection(widget.category)
+                                    .add({
+                                  "description": descController.text,
+                                  "imagePath": path,
+                                  "name": upperCase(nameController.text),
+                                  "price": prodPrice,
+                                });
+
+                                // loading circle-------------------------
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                );
+                                Future.delayed(const Duration(seconds: 2));
+                                Navigator.pop(
+                                    context); //pop loading circle---------
+
+                                //go back to menu page
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MenuPage(),
+                                  ),
+                                );
+                              } on FirebaseException {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Colors.black,
+                                    content: Text(
+                                      "Fail uploading",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              }
                             }
                           }),
 
