@@ -150,11 +150,14 @@ class _AddCategoryState extends State<AddCategory> {
                           );
                           return;
                         } else {
+                          //uppercase every first letter for each word
+                          List<String> words = nameController.text.split(" ");
+                          String capitalizedSentence =
+                              words.map((word) => upperCase(word)).join(" ");
                           User? user = AuthService().getCurrentUser();
                           //cane nak cek collection tu dah ade sama nama ke???
                           //update local userclass data (+ new category)
-                          UserNow.usernow!.categories
-                              .add(upperCase(nameController.text));
+                          UserNow.usernow!.categories.add(capitalizedSentence);
                           //map userclass data pasal categories
                           List newArray = UserNow.usernow!.categories;
                           //update array categories (xde prod) data kat FBFS

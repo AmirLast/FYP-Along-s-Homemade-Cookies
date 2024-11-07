@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_cattile.dart';
 import 'package:fyp/components/my_drawer.dart';
@@ -5,6 +7,7 @@ import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/addcategory.dart';
 import 'package:fyp/pages/owner/updatemenu.dart';
+import 'package:fyp/services/auth/auth_service.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -114,8 +117,71 @@ class _MenuPageState extends State<MenuPage>
                       onEdit:
                           () {}, //pop up confirm -> pergi page baru (cam add category) -> update (cam kat addcategory.dart) -> back to menu
                       //for collection: read the collection data into local data buffer(array) -> delete prev collection -> insert buffer into new collection name
-                      onDel:
-                          () {}, //pop up delete confirm -> delete FBFS -> delete local data -> pushreplacement ke menupage
+                      onDel: () {
+                        //confirm pop up
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.tertiary,
+                                  content: Text(
+                                    "Do you want to delete category named '" +
+                                        catName +
+                                        "'?",
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  actions: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        IconButton(
+                                          iconSize: 50,
+                                          color: Colors.green,
+                                          onPressed: () async {
+                                            User? user =
+                                                AuthService().getCurrentUser();
+                                            await FirebaseFirestore.instance
+                                                .collection('users')
+                                                .doc(user!.uid)
+                                                .update({
+                                              'categories':
+                                                  FieldValue.arrayRemove(
+                                                      [catName])
+                                            });
+
+                                            // loading circle-------------------------
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              },
+                                            );
+                                            Future.delayed(
+                                                const Duration(seconds: 2));
+                                            Navigator.pop(
+                                                context); //pop loading circle---------
+                                            //refresh new menu page
+                                            setState(() {});
+                                          },
+                                          icon: const Icon(Icons.check_circle),
+                                        ),
+                                        IconButton(
+                                            iconSize: 50,
+                                            color: Colors.red,
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            icon: const Icon(Icons.cancel)),
+                                      ],
+                                    )
+                                  ],
+                                ));
+                      }, //pop up delete confirm -> delete FBFS -> delete local data -> pushreplacement ke menupage
                       //for collection: delete prev collection
                     );
                   },

@@ -310,6 +310,12 @@ class _AddProductState extends State<AddProduct> {
                               );
                               return;
                             } else {
+                              //uppercase every first letter for each word
+                              List<String> words =
+                                  nameController.text.split(" ");
+                              String capitalizedSentence = words
+                                  .map((word) => upperCase(word))
+                                  .join(" ");
                               //fix price into 0.00 format
                               String prodPrice =
                                   double.parse(priceController.text)
@@ -334,7 +340,7 @@ class _AddProductState extends State<AddProduct> {
                                     .add({
                                   "description": descController.text,
                                   "imagePath": path,
-                                  "name": upperCase(nameController.text),
+                                  "name": capitalizedSentence,
                                   "price": prodPrice,
                                 });
 
