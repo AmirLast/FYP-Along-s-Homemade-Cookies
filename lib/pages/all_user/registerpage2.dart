@@ -137,6 +137,7 @@ class _Register2PageState extends State<Register2Page> {
                           hintText: "",
                           obscureText: false,
                           isEnabled: true,
+                          isShowhint: false,
                         ),
 
                         const SizedBox(height: 30),
@@ -150,6 +151,7 @@ class _Register2PageState extends State<Register2Page> {
                           hintText: "",
                           obscureText: false,
                           isEnabled: true,
+                          isShowhint: false,
                         ),
 
                         const SizedBox(height: 30),
@@ -163,6 +165,7 @@ class _Register2PageState extends State<Register2Page> {
                           hintText: "",
                           obscureText: false,
                           isEnabled: true,
+                          isShowhint: false,
                         ),
 
                         const SizedBox(height: 60),

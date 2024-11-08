@@ -111,6 +111,7 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                         hintText: "",
                         obscureText: false,
                         isEnabled: true,
+                        isShowhint: false,
                       ),
 
                       const SizedBox(height: 60),

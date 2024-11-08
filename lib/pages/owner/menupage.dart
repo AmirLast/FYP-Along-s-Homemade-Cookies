@@ -163,11 +163,20 @@ class _MenuPageState extends State<MenuPage>
                                               },
                                             );
                                             Future.delayed(
-                                                const Duration(seconds: 2));
-                                            Navigator.pop(
-                                                context); //pop loading circle---------
-                                            //refresh new menu page
-                                            setState(() {});
+                                                const Duration(seconds: 2), () {
+                                              Navigator.pop(context);
+                                              //pop loading circle---------
+                                              //refresh new menu page
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const MenuPage(),
+                                                ),
+                                              );
+                                            });
                                           },
                                           icon: const Icon(Icons.check_circle),
                                         ),

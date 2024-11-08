@@ -79,8 +79,6 @@ class _RegisterPageState extends State<RegisterPage> {
     );
     user = _authService.getCurrentUser();
 
-    Navigator.of(context).pop(); // pop loading circle
-
     return user;
   }
 
@@ -157,6 +155,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           hintText: "",
                           obscureText: false,
                           isEnabled: true,
+                          isShowhint: false,
                         ),
 
                         const SizedBox(height: 30),
@@ -170,6 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           hintText: "",
                           obscureText: false,
                           isEnabled: true,
+                          isShowhint: false,
                         ),
 
                         const SizedBox(height: 30),
@@ -183,6 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           hintText: "",
                           obscureText: false,
                           isEnabled: isOwner,
+                          isShowhint: false,
                         ),
 
                         const SizedBox(height: 30),
@@ -196,6 +197,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           hintText: "",
                           obscureText: false,
                           isEnabled: true,
+                          isShowhint: false,
                         ),
 
                         const SizedBox(height: 30),
@@ -209,6 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           hintText: "",
                           obscureText: false,
                           isEnabled: true,
+                          isShowhint: false,
                         ),
 
                         const SizedBox(height: 30),
@@ -222,6 +225,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           hintText: "",
                           obscureText: true,
                           isEnabled: true,
+                          isShowhint: false,
                         ),
 
                         const SizedBox(height: 30),
@@ -235,6 +239,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           hintText: "",
                           obscureText: true,
                           isEnabled: true,
+                          isShowhint: false,
                         ),
 
                         const SizedBox(
@@ -421,12 +426,16 @@ class _RegisterPageState extends State<RegisterPage> {
                                   //Do your stuff.
                                 });
                               }
-
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => const Register2Page(),
-                                ),
-                              );
+                              //if success then go to next page
+                              Future.delayed(const Duration(seconds: 2), () {
+                                Navigator.of(context).pop();
+                                // pop loading circle if success register
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => const Register2Page(),
+                                  ),
+                                );
+                              });
                             }
                           },
                         ),

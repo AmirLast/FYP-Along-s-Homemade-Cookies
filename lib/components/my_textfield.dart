@@ -8,6 +8,7 @@ class MyTextField extends StatelessWidget {
   final TextCapitalization caps;
   final bool isEnabled;
   final String hintText;
+  final bool isShowhint;
 
   const MyTextField({
     super.key,
@@ -18,6 +19,7 @@ class MyTextField extends StatelessWidget {
     required this.caps,
     required this.isEnabled,
     required this.hintText,
+    required this.isShowhint,
   });
 
   @override
@@ -25,6 +27,7 @@ class MyTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextField(
+        autofocus: isShowhint,
         enabled: isEnabled, //get this value
         controller: controller,
         keyboardType: inputType,
@@ -45,6 +48,8 @@ class MyTextField extends StatelessWidget {
           filled: true,
           fillColor: Theme.of(context).colorScheme.secondary,
           labelText: labelText,
+          floatingLabelBehavior:
+              isShowhint ? FloatingLabelBehavior.never : null,
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
         ),

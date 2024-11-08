@@ -44,8 +44,6 @@ class _LoginPageState extends State<LoginPage> {
     );
     user = _authService.getCurrentUser();
 
-    Navigator.of(context).pop(); // pop loading circle if success
-
     return user;
   }
 
@@ -118,6 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: "",
                         obscureText: false,
                         isEnabled: true,
+                        isShowhint: false,
                       ),
 
                       const SizedBox(height: 30),
@@ -131,6 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: "",
                         obscureText: true,
                         isEnabled: true,
+                        isShowhint: false,
                       ),
 
                       const SizedBox(height: 60),
@@ -180,12 +180,16 @@ class _LoginPageState extends State<LoginPage> {
                             "passStrength": isStrong,
                           });
                           //make them verify first, verify page will handle diff user routing
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => const VerifyEmailPage(),
-                            ),
-                            (r) => false,
-                          );
+                          Future.delayed(const Duration(seconds: 2), () {
+                            Navigator.of(context).pop();
+                            // pop loading circle if success
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => const VerifyEmailPage(),
+                              ),
+                              (r) => false,
+                            );
+                          });
                         },
                         child: Container(
                           padding: const EdgeInsets.all(25),

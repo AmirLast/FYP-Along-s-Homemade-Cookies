@@ -83,6 +83,7 @@ class CatTile extends StatelessWidget {
                               builder: (context) => EditProdPage(
                                 prod: categoryMenu[index],
                                 category: catName,
+                                isSaved: false,
                               ),
                             ),
                           ), //pergi page baru (cam add category) + access data guna func update cam kat addcategory
@@ -141,20 +142,22 @@ class CatTile extends StatelessWidget {
                                                     );
                                                   },
                                                 );
-                                                Future.delayed(
-                                                    const Duration(seconds: 2));
-                                                Navigator.pop(
-                                                    context); //pop loading circle---------
-                                                //refresh new menu page
-                                                Navigator.pop(context);
-                                                Navigator.pop(context);
-                                                await Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const MenuPage(),
-                                                  ),
-                                                );
+                                                await Future.delayed(
+                                                    const Duration(seconds: 2),
+                                                    () {
+                                                  Navigator.pop(context);
+                                                  //pop loading circle---------
+                                                  //refresh new menu page
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const MenuPage(),
+                                                    ),
+                                                  );
+                                                });
                                               },
                                               icon: const Icon(
                                                   Icons.check_circle),

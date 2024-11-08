@@ -108,6 +108,7 @@ class _AddCategoryState extends State<AddCategory> {
                       hintText: "",
                       obscureText: false,
                       isEnabled: true,
+                      isShowhint: false,
                     ),
 
                     const SizedBox(height: 30),
@@ -150,6 +151,15 @@ class _AddCategoryState extends State<AddCategory> {
                           );
                           return;
                         } else {
+                          // loading circle-------------------------
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          );
                           //uppercase every first letter for each word
                           List<String> words = nameController.text.split(" ");
                           String capitalizedSentence =
@@ -168,15 +178,20 @@ class _AddCategoryState extends State<AddCategory> {
                             "categories": newArray,
                           });
                           //new collection is automatically create when add product :D
-                          //go back to menu page
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MenuPage(),
-                            ),
-                          );
+
+                          await Future.delayed(const Duration(seconds: 2), () {
+                            Navigator.pop(context);
+                            //pop loading circle-----------------
+                            //go back to menu page
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MenuPage(),
+                              ),
+                            );
+                          });
                         }
                       },
                     ),

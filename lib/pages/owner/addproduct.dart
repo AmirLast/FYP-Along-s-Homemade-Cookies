@@ -174,6 +174,7 @@ class _AddProductState extends State<AddProduct> {
                         hintText: "",
                         obscureText: false,
                         isEnabled: true,
+                        isShowhint: false,
                       ),
 
                       const SizedBox(height: 30),
@@ -187,6 +188,7 @@ class _AddProductState extends State<AddProduct> {
                         hintText: "",
                         obscureText: false,
                         isEnabled: true,
+                        isShowhint: false,
                       ),
 
                       const SizedBox(height: 30),
@@ -200,6 +202,7 @@ class _AddProductState extends State<AddProduct> {
                         hintText: "1.00",
                         obscureText: false,
                         isEnabled: true,
+                        isShowhint: false,
                       ),
 
                       const SizedBox(height: 30),
@@ -218,10 +221,18 @@ class _AddProductState extends State<AddProduct> {
                       SizedBox(
                         height: 150,
                         width: 150,
-                        child: _image == null
-                            ? Image.network(
-                                "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637")
-                            : Image.file(_image!),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 4,
+                            ),
+                          ),
+                          child: _image == null
+                              ? Image.network(
+                                  "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637")
+                              : Image.file(_image!),
+                        ),
                       ),
                       //input file sendiri or use default image for now
                       const SizedBox(height: 30),
@@ -233,7 +244,7 @@ class _AddProductState extends State<AddProduct> {
                             margin: const EdgeInsets.symmetric(horizontal: 25),
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.primary,
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(50),
                             ),
                             child: Center(
                               child: Text(
@@ -326,6 +337,15 @@ class _AddProductState extends State<AddProduct> {
                                   '${user?.uid}/${widget.category}/${nameController.text}';
                               //cane nak cek product tu dah ade sama nama ke???
 
+                              // loading circle-------------------------
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              );
                               try {
                                 //upload gambar dalam firebase storage
                                 FirebaseStorage.instance
@@ -344,29 +364,23 @@ class _AddProductState extends State<AddProduct> {
                                   "price": prodPrice,
                                 });
 
-                                // loading circle-------------------------
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  },
-                                );
-                                Future.delayed(const Duration(seconds: 2));
-                                Navigator.pop(
-                                    context); //pop loading circle---------
-
-                                //go back to menu page
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MenuPage(),
-                                  ),
-                                );
+                                await Future.delayed(const Duration(seconds: 2),
+                                    () {
+                                  Navigator.pop(context);
+                                  //pop loading circle---------
+                                  //go back to menu page
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const MenuPage(),
+                                    ),
+                                  );
+                                });
                               } on FirebaseException {
+                                Navigator.pop(context);
+                                //pop loading circle if fail---------
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     backgroundColor: Colors.black,
