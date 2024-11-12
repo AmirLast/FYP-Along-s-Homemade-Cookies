@@ -71,10 +71,7 @@ class CatTile extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return ProductTile(
                           prod: categoryMenu[index],
-                          onTap: () =>
-                              Navigator.push, //pergi prod page cam kat mitch
-                          //alter part: nak refresh kat mana? lepas update/delete
-                          //access data guna categoryMenu[index] as key different
+                          onTap: () {},
                           onEdit: () => Navigator.push(
                             context,
                             MaterialPageRoute(

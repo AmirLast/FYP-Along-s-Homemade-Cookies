@@ -48,7 +48,8 @@ class _OwnerHomePageState extends State<OwnerHomePage>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize:
+                  MainAxisSize.max, //max maksudnya penuh container ke?
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
@@ -82,21 +83,7 @@ class _OwnerHomePageState extends State<OwnerHomePage>
             ),
 
             /*
-            MyButton(
-              text: "Hello " + fname,
-              onPressed: () {},
-            ),
-            const SizedBox(
-              height: 80,
-            ),
-            MyMenuButton(
-              text: "Manage Menu",
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MenuPage())),
-            ),
-            const SizedBox(
-              height: 60,
-            ),
+            List function2 owner yang belum terciptakan
             MyMenuButton(
                 text: "Business Summary",
                 onPressed: () {} //=> Navigator.push(context,
@@ -113,15 +100,6 @@ class _OwnerHomePageState extends State<OwnerHomePage>
                 ),
             const SizedBox(
               height: 60,
-            ),
-            MyMenuButton(
-              text: "See Template",
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomePage())),
-            ),
-            const SizedBox(
-              height: 60,
-            ),
             */
           ],
         ),

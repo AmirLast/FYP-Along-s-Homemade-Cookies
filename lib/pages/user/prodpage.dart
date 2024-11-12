@@ -19,6 +19,10 @@ class ProdPage extends StatefulWidget {
 }
 
 class _EditProdPageState extends State<ProdPage> {
+  //to access this page from previous widget
+  //=> Navigator.push, //pergi prod page cam kat mitch
+  //alter part: nak refresh kat mana? lepas update/delete
+  //access data guna categoryMenu[index] as key different
   //method to add to cart
   /*void addToCart(Bakeds prod) {
     // close current prod page

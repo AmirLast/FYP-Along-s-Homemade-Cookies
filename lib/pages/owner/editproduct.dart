@@ -307,17 +307,49 @@ class _EditProdPageState extends State<EditProdPage> {
 
                             const SizedBox(height: 30),
 
-                            //image of category
-                            MaterialButton(
-                              child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Text('Change Product Image')),
-                              onPressed: showOptions,
+                            Row(
+                              children: [
+                                MaterialButton(
+                                  child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child:
+                                          const Text('Change Product Image')),
+                                  onPressed: showOptions,
+                                ),
+                                const SizedBox(width: 30),
+                                MaterialButton(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: _image == null
+                                            ? Colors.grey.shade400
+                                            : Colors.grey[300],
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Text(
+                                        'Remove Picture',
+                                        style: TextStyle(
+                                          color: _image == null
+                                              ? Colors.black.withOpacity(0.4)
+                                              : null,
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: _image == null
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              _image = null;
+                                            });
+                                          })
+                              ],
                             ),
+
+                            //image of category
                             SizedBox(
                               height: 150,
                               width: 150,
@@ -344,187 +376,275 @@ class _EditProdPageState extends State<EditProdPage> {
                             //input file sendiri or use default image for now
                             const SizedBox(height: 30),
 
-                            //confirm button
+                            //save button
                             MaterialButton(
-                              child: Container(
-                                padding: const EdgeInsets.all(25),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 25),
-                                decoration: BoxDecoration(
-                                  color: isSaveEnabled()
-                                      ? Colors.grey.shade400
-                                      : Colors.black,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Save",
-                                    style: TextStyle(
-                                      //fontWeight: FontWeight.bold,
-                                      color: isSaveEnabled()
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .primary
-                                              .withOpacity(0.4)
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                      fontSize: 20,
+                                child: Container(
+                                  padding: const EdgeInsets.all(25),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 25),
+                                  decoration: BoxDecoration(
+                                    color: isSaveEnabled()
+                                        ? Colors.grey.shade400
+                                        : Colors.black,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Save",
+                                      style: TextStyle(
+                                        //fontWeight: FontWeight.bold,
+                                        color: isSaveEnabled()
+                                            ? Colors.black.withOpacity(0.4)
+                                            : Colors.grey.shade400,
+                                        fontSize: 20,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              onPressed: isSaveEnabled()
-                                  ? null
-                                  : () async {
-                                      //check blank
-                                      if (nameController.text == '') {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            backgroundColor: Colors.black,
-                                            content: Text(
-                                              "Product name is blank",
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
-                                        return;
-                                      } else if (descController.text == '') {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            backgroundColor: Colors.black,
-                                            content: Text(
-                                              "Description is blank",
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
-                                        return;
-                                      } else if (priceController.text == '') {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            backgroundColor: Colors.black,
-                                            content: Text(
-                                              "Price is blank",
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
-                                        return;
-                                      } else if (_image == null) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            backgroundColor: Colors.black,
-                                            content: Text(
-                                              "Picture not selected",
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
-                                        return;
-                                      } else {
-                                        //uppercase every first letter for each word
-                                        List<String> words =
-                                            nameController.text.split(" ");
-                                        String capitalizedSentence = words
-                                            .map((word) => upperCase(word))
-                                            .join(" ");
-                                        //fix price into 0.00 format
-                                        String prodPrice =
-                                            double.parse(priceController.text)
-                                                .toStringAsFixed(2);
-                                        User? user =
-                                            AuthService().getCurrentUser();
-                                        //set file path for current user folder in firebase storage
-                                        String path =
-                                            '${user?.uid}/${widget.category}/${nameController.text}';
-                                        //cane nak cek product tu dah ade sama nama ke???
-
-                                        try {
-                                          //upload gambar dalam firebase storage
-                                          FirebaseStorage.instance
-                                              .ref()
-                                              .child(path)
-                                              .putFile(_image!);
-                                          //update prod dalam collection categories kat FBFS
-                                          FirebaseFirestore.instance
-                                              .collection('users')
-                                              .doc(user?.uid)
-                                              .collection(widget.category)
-                                              .add({
-                                            "description": descController.text,
-                                            "imagePath": path,
-                                            "name": capitalizedSentence,
-                                            "price": prodPrice,
-                                          });
-
-                                          // loading circle-------------------------
-                                          showDialog(
+                                onPressed: isSaveEnabled()
+                                    ? null
+                                    : () async {
+                                        //showdialog confirm save
+                                        showDialog(
                                             context: context,
-                                            builder: (context) {
-                                              return const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            },
-                                          );
-                                          await Future.delayed(
-                                              const Duration(seconds: 2), () {
-                                            Navigator.pop(context);
-                                            //pop loading circle---------
+                                            builder: (context) => AlertDialog(
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .tertiary,
+                                                  content: const Text(
+                                                    "Save changes?",
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  actions: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        IconButton(
+                                                          iconSize: 50,
+                                                          color: Colors.green,
+                                                          onPressed: () async {
+                                                            //code here
+                                                            String
+                                                                capitalizedSentence;
+                                                            String prodPrice;
+                                                            List<String> words;
+                                                            //set name
+                                                            nameController
+                                                                        .text ==
+                                                                    ""
+                                                                ? capitalizedSentence =
+                                                                    widget.prod!
+                                                                        .name
+                                                                : {
+                                                                    words = nameController
+                                                                        .text
+                                                                        .split(
+                                                                            " "),
+                                                                    capitalizedSentence = words
+                                                                        .map((word) =>
+                                                                            upperCase(
+                                                                                word))
+                                                                        .join(
+                                                                            " ")
+                                                                  };
 
-                                            //go back to menu page
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const MenuPage(),
-                                              ),
-                                            );
-                                          });
-                                        } on FirebaseException {
-                                          Navigator.pop(context);
-                                          //pop loading circle when fail---------
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              backgroundColor: Colors.black,
-                                              content: Text(
-                                                "Fail uploading",
-                                                style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    },
-                            ),
+                                                            //fix price into 0.00 format
+                                                            priceController
+                                                                        .text ==
+                                                                    ""
+                                                                ? prodPrice = widget
+                                                                    .prod!.price
+                                                                    .toStringAsFixed(
+                                                                        2)
+                                                                : prodPrice = double.parse(
+                                                                        priceController
+                                                                            .text)
+                                                                    .toStringAsFixed(
+                                                                        2);
+
+                                                            User? user =
+                                                                AuthService()
+                                                                    .getCurrentUser();
+                                                            //set file path for current user folder in firebase storage
+                                                            String path =
+                                                                '${user?.uid}/${widget.category}/${nameController.text}';
+                                                            //cane nak cek product tu dah ade sama nama ke???
+
+                                                            try {
+                                                              //upload gambar dalam firebase storage
+                                                              if (_image !=
+                                                                  null) {
+                                                                FirebaseStorage
+                                                                    .instance
+                                                                    .ref()
+                                                                    .child(path)
+                                                                    .putFile(
+                                                                        _image!);
+                                                              }
+                                                              //update prod dalam collection categories kat FBFS
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'users')
+                                                                  .doc(
+                                                                      user?.uid)
+                                                                  .collection(widget
+                                                                      .category)
+                                                                  .where('name',
+                                                                      isEqualTo: widget
+                                                                          .prod!
+                                                                          .name)
+                                                                  .get()
+                                                                  .then(
+                                                                      (querySnapshot) {
+                                                                for (DocumentSnapshot documentSnapshot
+                                                                    in querySnapshot
+                                                                        .docs) {
+                                                                  documentSnapshot
+                                                                      .reference
+                                                                      .update({
+                                                                    "description": descController.text ==
+                                                                            ""
+                                                                        ? widget
+                                                                            .prod!
+                                                                            .description
+                                                                        : descController
+                                                                            .text,
+                                                                    "imagePath":
+                                                                        path,
+                                                                    "name":
+                                                                        capitalizedSentence,
+                                                                    "price":
+                                                                        prodPrice,
+                                                                  });
+                                                                }
+                                                              });
+                                                              /*add({
+                                                                "description":
+                                                                    descController
+                                                                        .text,
+                                                                "imagePath":
+                                                                    path,
+                                                                "name":
+                                                                    capitalizedSentence,
+                                                                "price":
+                                                                    prodPrice,
+                                                              });*/
+
+                                                              // loading circle-------------------------
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return const Center(
+                                                                    child:
+                                                                        CircularProgressIndicator(),
+                                                                  );
+                                                                },
+                                                              );
+                                                              await Future.delayed(
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          2),
+                                                                  () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                                //pop loading circle---------
+
+                                                                //go back to menu page
+                                                                Navigator.pop(
+                                                                    context);
+                                                                Navigator.pop(
+                                                                    context);
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            const MenuPage(),
+                                                                  ),
+                                                                );
+                                                              });
+                                                            } on FirebaseException {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              //pop loading circle when fail---------
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .showSnackBar(
+                                                                SnackBar(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .black,
+                                                                  content: Text(
+                                                                    "Fail uploading",
+                                                                    style: TextStyle(
+                                                                        color: Theme.of(context)
+                                                                            .colorScheme
+                                                                            .secondary),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }
+                                                            // loading circle-------------------------
+                                                            showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return const Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(),
+                                                                );
+                                                              },
+                                                            );
+                                                            await Future.delayed(
+                                                                const Duration(
+                                                                    seconds: 2),
+                                                                () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              //pop loading circle---------
+                                                              //refresh new menu page
+                                                              Navigator.pop(
+                                                                  context);
+                                                              Navigator.pop(
+                                                                  context);
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          const MenuPage(),
+                                                                ),
+                                                              );
+                                                            });
+                                                          },
+                                                          icon: const Icon(Icons
+                                                              .check_circle),
+                                                        ),
+                                                        IconButton(
+                                                            iconSize: 50,
+                                                            color: Colors.red,
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                            icon: const Icon(
+                                                                Icons.cancel)),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ));
+                                      }),
 
                             const SizedBox(height: 40),
                           ],
