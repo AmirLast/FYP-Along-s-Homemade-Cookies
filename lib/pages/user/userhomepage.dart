@@ -17,16 +17,16 @@ class _UserHomePageState extends State<UserHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: const Color(0xffd1a271),
       ),
       drawer: const MyDrawer(),
       body: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: const Color(0xffd1a271),
           image: DecorationImage(
             image: const AssetImage("lib/images/applogo.png"),
             colorFilter: ColorFilter.mode(
-              Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              const Color(0xffd1a271).withOpacity(0.2),
               BlendMode.dstATop,
             ),
             alignment: Alignment.center,

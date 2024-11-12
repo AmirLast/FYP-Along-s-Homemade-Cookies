@@ -135,7 +135,7 @@ class _EditProdPageState extends State<EditProdPage> {
           backgroundColor: Colors.black,
           content: Text(
             "Product image does not exist",
-            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+            style: TextStyle(color: Colors.grey.shade400),
             textAlign: TextAlign.center,
           ),
         ),
@@ -156,8 +156,7 @@ class _EditProdPageState extends State<EditProdPage> {
               backgroundColor: Colors.black,
               content: Text(
                 "Data saved",
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.secondary),
+                style: TextStyle(color: Colors.grey.shade400),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -178,9 +177,9 @@ class _EditProdPageState extends State<EditProdPage> {
     return isLoading
         ? const CircularProgressIndicator()
         : Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: const Color(0xffd1a271),
             appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              backgroundColor: const Color(0xffB67F5F),
               title: Center(
                 child: Text(
                   textAlign: TextAlign.center,
@@ -206,11 +205,11 @@ class _EditProdPageState extends State<EditProdPage> {
                     .size
                     .width, //max width for current phone
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
+                  color: const Color(0xffd1a271),
                   image: DecorationImage(
                     image: const AssetImage("lib/images/applogo.png"),
                     colorFilter: ColorFilter.mode(
-                      Theme.of(context).colorScheme.surface.withOpacity(0.2),
+                      const Color(0xffd1a271).withOpacity(0.2),
                       BlendMode.dstATop,
                     ),
                     alignment: Alignment.center,
@@ -226,17 +225,17 @@ class _EditProdPageState extends State<EditProdPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Colors.white,
                         ),
                         child: Column(
                           children: [
                             const SizedBox(height: 30),
 
-                            Text(
+                            const Text(
                               "Edit product information",
                               style: TextStyle(
                                 fontSize: 25,
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Colors.black,
                               ),
                             ),
 
@@ -353,8 +352,8 @@ class _EditProdPageState extends State<EditProdPage> {
                                     const EdgeInsets.symmetric(horizontal: 25),
                                 decoration: BoxDecoration(
                                   color: isSaveEnabled()
-                                      ? Theme.of(context).colorScheme.secondary
-                                      : Theme.of(context).colorScheme.primary,
+                                      ? Colors.grey.shade400
+                                      : Colors.black,
                                   borderRadius: BorderRadius.circular(50),
                                 ),
                                 child: Center(
@@ -568,7 +567,7 @@ class _EditProdPageState extends State<EditProdPage> {
                     'RM' + widget.prod!.price.toString(),
                     style: TextStyle(
                       fontSize: 16,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Colors.black,
                     ),
                   ),
     
@@ -578,7 +577,7 @@ class _EditProdPageState extends State<EditProdPage> {
                   Text(widget.prod!.description),
     
                   const SizedBox(height: 10),
-                  Divider(color: Theme.of(context).colorScheme.secondary),
+                  Divider(color: Colors.grey.shade400),
                   const SizedBox(height: 10),
                 ],
               ),

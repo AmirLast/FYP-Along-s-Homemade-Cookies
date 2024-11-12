@@ -16,7 +16,7 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.secondary,
+      backgroundColor: Colors.grey.shade400,
       child: Column(
         children: [
           //logo
@@ -24,7 +24,7 @@ class MyDrawer extends StatelessWidget {
             padding: const EdgeInsets.only(top: 100.0),
             child: ColorFiltered(
               colorFilter: ColorFilter.mode(
-                Theme.of(context).colorScheme.secondary,
+                Colors.grey.shade400,
                 BlendMode.color,
               ),
               child: Image.asset(
@@ -34,10 +34,10 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
 
-          Padding(
-            padding: const EdgeInsets.all(25.0),
+          const Padding(
+            padding: EdgeInsets.all(25.0),
             child: Divider(
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Colors.white,
             ),
           ),
 

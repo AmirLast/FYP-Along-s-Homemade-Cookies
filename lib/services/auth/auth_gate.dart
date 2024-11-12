@@ -42,7 +42,7 @@ class _AuthGateState extends State<AuthGate> {
             } else if (type == 'admin') {
               return const AdminHomePage();
             } else if (type == 'owner') {
-              return const OwnerHomePage();//const OwnerHomePage();
+              return const OwnerHomePage(); //const OwnerHomePage();
             }
             return const HomeScreen(); //to counter returning null
           } else {

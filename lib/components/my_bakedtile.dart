@@ -18,7 +18,7 @@ class ProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).colorScheme.secondary,
+      color: Colors.grey.shade400,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
@@ -30,9 +30,9 @@ class ProductTile extends StatelessWidget {
               onTap: onTap,
               title: Text(
                 prod!.name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Colors.black,
                   fontSize: 15,
                 ),
               ),

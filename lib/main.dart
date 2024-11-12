@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/services/auth/auth_gate.dart';
 import 'package:fyp/firebase_options.dart';
-import 'package:fyp/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -11,10 +10,7 @@ void main() async {
 
   runApp(
     MultiProvider(
-      providers: [
-        //theme provider
-        ChangeNotifierProvider(create: (context) => ThemeProvider()),
-
+      providers: const [
         //shop provider
         //ChangeNotifierProvider(create: (context) => Shop()),
       ],
@@ -28,10 +24,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const AuthGate(),
-      theme: Provider.of<ThemeProvider>(context).themeData,
+      home: AuthGate(),
     );
   }
 }

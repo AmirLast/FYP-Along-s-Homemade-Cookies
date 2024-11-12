@@ -49,14 +49,14 @@ class _ForgorPasswordState extends State<ForgorPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: const Color(0xffd1a271),
       body: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: const Color(0xffd1a271),
           image: DecorationImage(
             image: const AssetImage("lib/images/applogo.png"),
             colorFilter: ColorFilter.mode(
-              Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              const Color(0xffd1a271).withOpacity(0.2),
               BlendMode.dstATop,
             ),
             alignment: Alignment.center,
@@ -69,12 +69,12 @@ class _ForgorPasswordState extends State<ForgorPassword> {
             children: [
               const SizedBox(height: 60),
               //title of current widget
-              Text(
+              const Text(
                 "Reset Password",
                 style: TextStyle(
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Colors.black,
                 ),
               ),
 
@@ -85,17 +85,17 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).colorScheme.tertiary,
+                    color: Colors.white,
                   ),
                   child: Column(
                     children: [
                       const SizedBox(height: 30),
 
-                      Text(
+                      const Text(
                         "Insert E-mail to reset password",
                         style: TextStyle(
                           fontSize: 25,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Colors.black,
                         ),
                         textAlign: TextAlign.justify,
                       ),
@@ -124,7 +124,7 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                           padding: const EdgeInsets.all(25),
                           margin: const EdgeInsets.symmetric(horizontal: 25),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Colors.black,
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Center(
@@ -132,7 +132,7 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                               "Confirm",
                               style: TextStyle(
                                 //fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: Colors.grey.shade400,
                                 fontSize: 20,
                               ),
                             ),

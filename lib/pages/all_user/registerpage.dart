@@ -92,15 +92,15 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: const Color(0xffd1a271),
       body: SingleChildScrollView(
         child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
+            color: const Color(0xffd1a271),
             image: DecorationImage(
               image: const AssetImage("lib/images/applogo.png"),
               colorFilter: ColorFilter.mode(
-                Theme.of(context).colorScheme.surface.withOpacity(0.2),
+                const Color(0xffd1a271).withOpacity(0.2),
                 BlendMode.dstATop,
               ),
               alignment: Alignment.center,
@@ -113,12 +113,12 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 const SizedBox(height: 60), //to replace safearea
                 //title of current widget
-                Text(
+                const Text(
                   "Sign Up",
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Colors.black,
                   ),
                 ),
 
@@ -129,17 +129,17 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.tertiary,
+                      color: Colors.white,
                     ),
                     child: Column(
                       children: [
                         const SizedBox(height: 30),
 
-                        Text(
+                        const Text(
                           "Fill in the information",
                           style: TextStyle(
                             fontSize: 25,
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Colors.black,
                           ),
                         ),
 
@@ -282,7 +282,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             padding: const EdgeInsets.all(25),
                             margin: const EdgeInsets.symmetric(horizontal: 25),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Colors.black,
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Center(
@@ -290,8 +290,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 "Next",
                                 style: TextStyle(
                                   //fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
+                                  color: Colors.grey.shade400,
                                   fontSize: 20,
                                 ),
                               ),
@@ -446,10 +445,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
+                            const Text(
                               "Already have an account?",
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary),
+                              style: TextStyle(color: Colors.black),
                             ),
                             const SizedBox(width: 4),
                             GestureDetector(
@@ -457,10 +455,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => const LoginPage())),
-                              child: Text(
+                              child: const Text(
                                 "Click here to Login",
                                 style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

@@ -48,7 +48,7 @@ class _EditProdPageState extends State<ProdPage> {
           backgroundColor: Colors.black,
           content: Text(
             "Product image does not exist",
-            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+            style: TextStyle(color: Colors.grey.shade400),
             textAlign: TextAlign.center,
           ),
         ),
@@ -100,9 +100,9 @@ class _EditProdPageState extends State<ProdPage> {
                       //product price
                       Text(
                         'RM' + widget.prod!.price.toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Colors.black,
                         ),
                       ),
 
@@ -112,7 +112,7 @@ class _EditProdPageState extends State<ProdPage> {
                       Text(widget.prod!.description),
 
                       const SizedBox(height: 10),
-                      Divider(color: Theme.of(context).colorScheme.secondary),
+                      Divider(color: Colors.grey.shade400),
                       const SizedBox(height: 10),
                     ],
                   ),
@@ -140,7 +140,7 @@ class _EditProdPageState extends State<ProdPage> {
             child: Container(
               margin: const EdgeInsets.only(left: 25),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
+                color: Colors.grey.shade400,
                 shape: BoxShape.circle,
               ),
               child: IconButton(

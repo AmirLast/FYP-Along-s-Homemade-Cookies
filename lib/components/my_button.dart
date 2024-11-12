@@ -16,7 +16,7 @@ class MyButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         maximumSize: Size(MediaQuery.of(context).size.width - 80, 70),
         padding: const EdgeInsets.all(10),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Colors.black,
         shape: const BeveledRectangleBorder(
             borderRadius: BorderRadius.horizontal(
                 right: Radius.circular(50), left: Radius.circular(50))),
@@ -26,8 +26,8 @@ class MyButton extends StatelessWidget {
         child: Text(
           textAlign: TextAlign.center,
           text,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
+          style: const TextStyle(
+            color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 30,
           ),

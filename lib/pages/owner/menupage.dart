@@ -39,24 +39,24 @@ class _MenuPageState extends State<MenuPage>
     return Scaffold(
       //the add button
       floatingActionButton: FloatingActionButton(
-        child: Icon(
+        child: const Icon(
           Icons.add_rounded,
-          color: Theme.of(context).colorScheme.primary,
+          color: Colors.black,
           size: 50,
         ),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Colors.grey.shade400,
         shape: CircleBorder(
           side: BorderSide(
-            color: Theme.of(context).colorScheme.secondary,
+            color: Colors.grey.shade400,
           ),
         ),
         onPressed: () => Navigator.push(context,
             MaterialPageRoute(builder: (context) => const AddCategory())),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: const Color(0xffd1a271),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: const Color(0xffB67F5F),
         title: const Center(
           child: Text(
             textAlign: TextAlign.center,
@@ -83,11 +83,11 @@ class _MenuPageState extends State<MenuPage>
               MediaQuery.of(context).size.height, //max height for current phone
           //for logo transparent
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
+            color: const Color(0xffd1a271),
             image: DecorationImage(
               image: const AssetImage("lib/images/applogo.png"),
               colorFilter: ColorFilter.mode(
-                Theme.of(context).colorScheme.surface.withOpacity(0.2),
+                const Color(0xffd1a271).withOpacity(0.2),
                 BlendMode.dstATop,
               ),
               alignment: Alignment.center,
@@ -122,8 +122,7 @@ class _MenuPageState extends State<MenuPage>
                         showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.tertiary,
+                                  backgroundColor: Colors.white,
                                   content: Text(
                                     "Do you want to delete category named '" +
                                         catName +

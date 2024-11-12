@@ -20,15 +20,15 @@ class MyDrawerTile extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         title: Text(
           text,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
+          style: const TextStyle(
+            color: Colors.black,
           ),
         ),
         leading: Icon(
           icon,
-          color: Theme.of(context).colorScheme.primary,
+          color: Colors.black,
         ),
-        tileColor: Theme.of(context).colorScheme.tertiary,
+        tileColor: Colors.white,
         onTap: onTap,
       ),
     );

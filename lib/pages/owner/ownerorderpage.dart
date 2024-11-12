@@ -12,9 +12,9 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: const Color(0xffd1a271),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: const Color(0xffB67F5F),
         title: const Center(
           child: Text(
             textAlign: TextAlign.center,
@@ -27,11 +27,11 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
       body: Container(
         width: MediaQuery.of(context).size.width, //max width for current phone
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: const Color(0xffd1a271),
           image: DecorationImage(
             image: const AssetImage("lib/images/applogo.png"),
             colorFilter: ColorFilter.mode(
-              Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              const Color(0xffd1a271).withOpacity(0.2),
               BlendMode.dstATop,
             ),
             alignment: Alignment.center,

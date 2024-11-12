@@ -16,13 +16,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: const Color(0xffd1a271),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           //name of app
-          Center(
+          const Center(
             child: Text(
               "Along's\nHomemade\nCookies",
               textAlign: TextAlign.center,
@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontFamily: 'BlackMango',
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
+                color: Colors.black,
               ),
             ),
           ),
@@ -38,8 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 15),
 
           ColorFiltered(
-            colorFilter: ColorFilter.mode(
-              Theme.of(context).colorScheme.surface,
+            colorFilter: const ColorFilter.mode(
+              Color(0xffd1a271),
               BlendMode.color,
             ),
             child: Image.asset(
@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(25),
               margin: const EdgeInsets.symmetric(horizontal: 100),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
+                color: Colors.black,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Center(
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   "Sign In",
                   style: TextStyle(
                     //fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Colors.grey.shade400,
                     fontSize: 25,
                   ),
                 ),
@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(25),
               margin: const EdgeInsets.symmetric(horizontal: 100),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
+                color: Colors.black,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Center(
@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   "Sign Up",
                   style: TextStyle(
                     //fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Colors.grey.shade400,
                     fontSize: 25,
                   ),
                 ),

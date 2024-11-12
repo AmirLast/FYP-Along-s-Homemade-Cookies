@@ -24,7 +24,7 @@ class _OwnerHomePageState extends State<OwnerHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: const Color(0xffd1a271),
       ),
       drawer: const MyDrawer(),
       body: Container(
@@ -32,11 +32,11 @@ class _OwnerHomePageState extends State<OwnerHomePage>
         height:
             MediaQuery.of(context).size.height, //max width for current phone
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: const Color(0xffd1a271),
           image: DecorationImage(
             image: const AssetImage("lib/images/applogo.png"),
             colorFilter: ColorFilter.mode(
-              Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              const Color(0xffd1a271).withOpacity(0.2),
               BlendMode.dstATop,
             ),
             alignment: Alignment.center,
@@ -60,10 +60,10 @@ class _OwnerHomePageState extends State<OwnerHomePage>
                 ),
                 Text(
                   "Hello " + fname,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Colors.black,
                   ),
                 ),
                 IconButton(

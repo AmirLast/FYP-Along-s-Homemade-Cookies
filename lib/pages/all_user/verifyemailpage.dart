@@ -64,7 +64,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           backgroundColor: Colors.black,
           content: Text(
             e.toString(),
-            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+            style: TextStyle(color: Colors.grey.shade400),
             textAlign: TextAlign.center,
           ),
         ),
@@ -77,14 +77,14 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       ? const UserReplacement()
       : Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: const Color(0xffd1a271),
           body: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
+              color: const Color(0xffd1a271),
               image: DecorationImage(
                 image: const AssetImage("lib/images/applogo.png"),
                 colorFilter: ColorFilter.mode(
-                  Theme.of(context).colorScheme.surface.withOpacity(0.2),
+                  const Color(0xffd1a271).withOpacity(0.2),
                   BlendMode.dstATop,
                 ),
                 alignment: Alignment.center,
@@ -95,12 +95,12 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //title of current widget
-                Text(
+                const Text(
                   "Email Verification",
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Colors.black,
                   ),
                 ),
 
@@ -111,16 +111,16 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.tertiary,
+                      color: Colors.white,
                     ),
                     child: Column(
                       children: [
                         const SizedBox(height: 30),
-                        Text(
+                        const Text(
                           "A verification email has been sent to your email",
                           style: TextStyle(
                             fontSize: 25,
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Colors.black,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -129,19 +129,18 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                           onPressed:
                               canResendEmail ? sendVerificationEmail : null,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
+                            backgroundColor: Colors.black,
                             padding: const EdgeInsets.all(25),
                           ),
                           icon: Icon(
                             Icons.email,
                             size: 32,
-                            color: Theme.of(context).colorScheme.secondary,
+                            color: Colors.grey.shade400,
                           ),
                           label: Text(
                             "Resent Email",
                             style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: Colors.grey.shade400,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -157,10 +156,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                               (r) => false,
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             "Cancel",
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                             ),

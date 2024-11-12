@@ -49,15 +49,14 @@ class CatTile extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  collapsedBackgroundColor:
-                      Theme.of(context).colorScheme.secondary,
-                  backgroundColor: Theme.of(context).colorScheme.tertiary,
+                  collapsedBackgroundColor: Colors.grey.shade400,
+                  backgroundColor: Colors.white,
                   title: Center(
                     child: Text(
                       textAlign: TextAlign.center,
                       catName,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+                      style: const TextStyle(
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
@@ -210,7 +209,7 @@ class CatTile extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       padding: const EdgeInsets.all(18),
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      backgroundColor: Colors.grey.shade400,
                       //foregroundColor: Colors.red, // <-- Splash color
                     ),
                   ),

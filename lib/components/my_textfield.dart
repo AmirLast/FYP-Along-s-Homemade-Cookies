@@ -39,14 +39,12 @@ class MyTextField extends StatelessWidget {
               borderSide: BorderSide.none),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide:
-                  BorderSide(color: Theme.of(context).colorScheme.secondary)),
-          focusedBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).colorScheme.primary),
+              borderSide: BorderSide(color: Colors.grey.shade400)),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
           ),
           filled: true,
-          fillColor: Theme.of(context).colorScheme.secondary,
+          fillColor: Colors.grey.shade400,
           labelText: labelText,
           floatingLabelBehavior:
               isShowhint ? FloatingLabelBehavior.never : null,

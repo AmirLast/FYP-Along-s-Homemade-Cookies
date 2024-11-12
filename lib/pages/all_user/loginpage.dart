@@ -55,14 +55,14 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: const Color(0xffd1a271),
       body: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: const Color(0xffd1a271),
           image: DecorationImage(
             image: const AssetImage("lib/images/applogo.png"),
             colorFilter: ColorFilter.mode(
-              Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              const Color(0xffd1a271).withOpacity(0.2),
               BlendMode.dstATop,
             ),
             alignment: Alignment.center,
@@ -75,12 +75,12 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               const SizedBox(height: 60),
               //title of current widget
-              Text(
+              const Text(
                 "Sign In",
                 style: TextStyle(
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Colors.black,
                 ),
               ),
 
@@ -91,17 +91,17 @@ class _LoginPageState extends State<LoginPage> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).colorScheme.tertiary,
+                    color: Colors.white,
                   ),
                   child: Column(
                     children: [
                       const SizedBox(height: 30),
 
-                      Text(
+                      const Text(
                         "Insert Email and Password",
                         style: TextStyle(
                           fontSize: 25,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Colors.black,
                         ),
                       ),
 
@@ -195,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.all(25),
                           margin: const EdgeInsets.symmetric(horizontal: 25),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Colors.black,
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Center(
@@ -203,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                               "Sign In",
                               style: TextStyle(
                                 //fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: Colors.grey.shade400,
                                 fontSize: 20,
                               ),
                             ),
@@ -229,10 +229,9 @@ class _LoginPageState extends State<LoginPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             "Have no account?",
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary),
+                            style: TextStyle(color: Colors.black),
                           ),
                           const SizedBox(width: 4),
                           GestureDetector(
@@ -241,10 +240,10 @@ class _LoginPageState extends State<LoginPage> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const RegisterPage())), //goto Register
-                            child: Text(
+                            child: const Text(
                               "Click here to Register",
                               style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Colors.black,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

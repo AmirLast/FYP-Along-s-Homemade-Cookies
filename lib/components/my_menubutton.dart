@@ -15,7 +15,7 @@ class MyMenuButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           maximumSize: const Size(250, 60),
-          backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+          backgroundColor: const Color(0xff7ED957),
           shape: const BeveledRectangleBorder(
               borderRadius:
                   BorderRadius.horizontal(right: Radius.circular(30)))),
@@ -23,8 +23,8 @@ class MyMenuButton extends StatelessWidget {
       child: Center(
         child: Text(
           text,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
+          style: const TextStyle(
+            color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),

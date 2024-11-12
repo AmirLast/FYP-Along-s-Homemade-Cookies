@@ -39,9 +39,9 @@ class _AddCategoryState extends State<AddCategory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: const Color(0xffd1a271),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: const Color(0xffB67F5F),
         title: const Center(
           child: Text(
             textAlign: TextAlign.center,
@@ -63,11 +63,11 @@ class _AddCategoryState extends State<AddCategory> {
       body: Container(
         width: MediaQuery.of(context).size.width, //max width for current phone
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: const Color(0xffd1a271),
           image: DecorationImage(
             image: const AssetImage("lib/images/applogo.png"),
             colorFilter: ColorFilter.mode(
-              Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              const Color(0xffd1a271).withOpacity(0.2),
               BlendMode.dstATop,
             ),
             alignment: Alignment.center,
@@ -83,17 +83,17 @@ class _AddCategoryState extends State<AddCategory> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).colorScheme.tertiary,
+                  color: Colors.white,
                 ),
                 child: Column(
                   children: [
                     const SizedBox(height: 30),
 
-                    Text(
+                    const Text(
                       "Fill in the information",
                       style: TextStyle(
                         fontSize: 25,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Colors.black,
                       ),
                     ),
 
@@ -119,7 +119,7 @@ class _AddCategoryState extends State<AddCategory> {
                         padding: const EdgeInsets.all(25),
                         margin: const EdgeInsets.symmetric(horizontal: 25),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Colors.black,
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Center(
@@ -127,7 +127,7 @@ class _AddCategoryState extends State<AddCategory> {
                             "Confirm",
                             style: TextStyle(
                               //fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.secondary,
+                              color: Colors.grey.shade400,
                               fontSize: 20,
                             ),
                           ),
