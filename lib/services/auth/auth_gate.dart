@@ -15,8 +15,22 @@ class AuthGate extends StatefulWidget {
 
 class _AuthGateState extends State<AuthGate> {
   String type = "";
+  bool isLoading = true;
 
   Future<void> whoisuser() async {
+    //show loading circle
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+    await Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pop(context);
+      //pop loading circle---------
+    });
     //update user data in local memory
     final obj = UpdateUserData();
     type = await obj.updateuserdata();
@@ -31,26 +45,28 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            // if there is user logged in then
-            if (type == 'user') {
-              return const UserHomePage();
-            } else if (type == 'admin') {
-              return const AdminHomePage();
-            } else if (type == 'owner') {
-              return const OwnerHomePage(); //const OwnerHomePage();
-            }
-            return const HomeScreen(); //to counter returning null
-          } else {
-            // no user logged in -> homescreen
-            return const HomeScreen();
-          }
-        },
-      ),
-    );
+    return !isLoading
+        ? const CircularProgressIndicator()
+        : Scaffold(
+            body: StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  // if there is user logged in then
+                  if (type == 'user') {
+                    return const UserHomePage();
+                  } else if (type == 'admin') {
+                    return const AdminHomePage();
+                  } else if (type == 'owner') {
+                    return const OwnerHomePage(); //const OwnerHomePage();
+                  }
+                  return const HomeScreen(); //to counter returning null
+                } else {
+                  // no user logged in -> homescreen
+                  return const HomeScreen();
+                }
+              },
+            ),
+          );
   }
 }

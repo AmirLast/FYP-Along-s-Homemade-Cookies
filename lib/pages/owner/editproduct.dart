@@ -119,11 +119,7 @@ class _EditProdPageState extends State<EditProdPage> {
   void downloadUrl() async {
     var path = widget.prod!.imagePath;
     try {
-      await FirebaseStorage.instance
-          .ref()
-          .child(path)
-          .getDownloadURL()
-          .then((String url) {
+      await FirebaseStorage.instance.ref().child(path).getDownloadURL().then((String url) {
         setState(() {
           src = url;
           isLoading = false;
@@ -165,10 +161,7 @@ class _EditProdPageState extends State<EditProdPage> {
 
   //enable save kalau ada changes in textcontroller atau imej je--------------------------------
   bool isSaveEnabled() {
-    return (nameController.text == '' &&
-        descController.text == '' &&
-        priceController.text == '' &&
-        _image == null);
+    return (nameController.text == '' && descController.text == '' && priceController.text == '' && _image == null);
   }
   //enable save kalau ada changes in textcontroller atau imej je--------------------------------
 
@@ -184,8 +177,7 @@ class _EditProdPageState extends State<EditProdPage> {
                 child: Text(
                   textAlign: TextAlign.center,
                   "Product '" + widget.prod!.name + "'",
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
               ),
               actions: [
@@ -201,9 +193,7 @@ class _EditProdPageState extends State<EditProdPage> {
             drawer: const MyDrawer(),
             body: SingleChildScrollView(
               child: Container(
-                width: MediaQuery.of(context)
-                    .size
-                    .width, //max width for current phone
+                width: MediaQuery.of(context).size.width, //max width for current phone
                 decoration: BoxDecoration(
                   color: const Color(0xffd1a271),
                   image: DecorationImage(
@@ -246,8 +236,7 @@ class _EditProdPageState extends State<EditProdPage> {
                               padding: EdgeInsets.all(8.0),
                               child: Text(
                                 "Product Name",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                             MyTextField(
@@ -268,8 +257,7 @@ class _EditProdPageState extends State<EditProdPage> {
                               padding: EdgeInsets.all(8.0),
                               child: Text(
                                 "Description",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                             MyTextField(
@@ -290,8 +278,7 @@ class _EditProdPageState extends State<EditProdPage> {
                               padding: EdgeInsets.all(8.0),
                               child: Text(
                                 "Price (RM)",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                             MyTextField(
@@ -316,8 +303,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                         color: Colors.grey[300],
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child:
-                                          const Text('Change Product Image')),
+                                      child: const Text('Change Product Image')),
                                   onPressed: showOptions,
                                 ),
                                 const SizedBox(width: 30),
@@ -325,17 +311,13 @@ class _EditProdPageState extends State<EditProdPage> {
                                     child: Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                        color: _image == null
-                                            ? Colors.grey.shade400
-                                            : Colors.grey[300],
+                                        color: _image == null ? Colors.grey.shade400 : Colors.grey[300],
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Text(
                                         'Remove Picture',
                                         style: TextStyle(
-                                          color: _image == null
-                                              ? Colors.black.withOpacity(0.4)
-                                              : null,
+                                          color: _image == null ? Colors.black.withOpacity(0.4) : null,
                                         ),
                                       ),
                                     ),
@@ -380,12 +362,9 @@ class _EditProdPageState extends State<EditProdPage> {
                             MaterialButton(
                                 child: Container(
                                   padding: const EdgeInsets.all(25),
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 25),
+                                  margin: const EdgeInsets.symmetric(horizontal: 25),
                                   decoration: BoxDecoration(
-                                    color: isSaveEnabled()
-                                        ? Colors.grey.shade400
-                                        : Colors.black,
+                                    color: isSaveEnabled() ? Colors.grey.shade400 : Colors.black,
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   child: Center(
@@ -393,9 +372,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                       "Save",
                                       style: TextStyle(
                                         //fontWeight: FontWeight.bold,
-                                        color: isSaveEnabled()
-                                            ? Colors.black.withOpacity(0.4)
-                                            : Colors.grey.shade400,
+                                        color: isSaveEnabled() ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
                                         fontSize: 20,
                                       ),
                                     ),
@@ -408,190 +385,99 @@ class _EditProdPageState extends State<EditProdPage> {
                                         showDialog(
                                             context: context,
                                             builder: (context) => AlertDialog(
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .tertiary,
+                                                  backgroundColor: Theme.of(context).colorScheme.tertiary,
                                                   content: const Text(
                                                     "Save changes?",
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                                   ),
                                                   actions: [
                                                     Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                       children: [
                                                         IconButton(
                                                           iconSize: 50,
                                                           color: Colors.green,
                                                           onPressed: () async {
                                                             //code here
-                                                            String
-                                                                capitalizedSentence;
+                                                            String capitalizedSentence;
                                                             String prodPrice;
                                                             List<String> words;
                                                             //set name
-                                                            nameController
-                                                                        .text ==
-                                                                    ""
-                                                                ? capitalizedSentence =
-                                                                    widget.prod!
-                                                                        .name
+                                                            nameController.text == ""
+                                                                ? capitalizedSentence = widget.prod!.name
                                                                 : {
-                                                                    words = nameController
-                                                                        .text
-                                                                        .split(
-                                                                            " "),
-                                                                    capitalizedSentence = words
-                                                                        .map((word) =>
-                                                                            upperCase(
-                                                                                word))
-                                                                        .join(
-                                                                            " ")
+                                                                    words = nameController.text.split(" "),
+                                                                    capitalizedSentence = words.map((word) => upperCase(word)).join(" ")
                                                                   };
 
                                                             //fix price into 0.00 format
-                                                            priceController
-                                                                        .text ==
-                                                                    ""
-                                                                ? prodPrice = widget
-                                                                    .prod!.price
-                                                                    .toStringAsFixed(
-                                                                        2)
-                                                                : prodPrice = double.parse(
-                                                                        priceController
-                                                                            .text)
-                                                                    .toStringAsFixed(
-                                                                        2);
+                                                            priceController.text == ""
+                                                                ? prodPrice = widget.prod!.price.toStringAsFixed(2)
+                                                                : prodPrice = double.parse(priceController.text).toStringAsFixed(2);
 
-                                                            User? user =
-                                                                AuthService()
-                                                                    .getCurrentUser();
+                                                            User? user = AuthService().getCurrentUser();
                                                             //set file path for current user folder in firebase storage
-                                                            String path =
-                                                                '${user?.uid}/${widget.category}/${nameController.text}';
+                                                            String path = '${user?.uid}/${widget.category}/${nameController.text}';
                                                             //cane nak cek product tu dah ade sama nama ke???
 
                                                             try {
                                                               //upload gambar dalam firebase storage
-                                                              if (_image !=
-                                                                  null) {
-                                                                FirebaseStorage
-                                                                    .instance
-                                                                    .ref()
-                                                                    .child(path)
-                                                                    .putFile(
-                                                                        _image!);
+                                                              if (_image != null) {
+                                                                FirebaseStorage.instance.ref().child(path).putFile(_image!);
                                                               }
                                                               //update prod dalam collection categories kat FBFS
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'users')
-                                                                  .doc(
-                                                                      user?.uid)
-                                                                  .collection(widget
-                                                                      .category)
-                                                                  .where('name',
-                                                                      isEqualTo: widget
-                                                                          .prod!
-                                                                          .name)
+                                                              FirebaseFirestore.instance
+                                                                  .collection('users')
+                                                                  .doc(user?.uid)
+                                                                  .collection(widget.category)
+                                                                  .where('name', isEqualTo: widget.prod!.name)
                                                                   .get()
-                                                                  .then(
-                                                                      (querySnapshot) {
-                                                                for (DocumentSnapshot documentSnapshot
-                                                                    in querySnapshot
-                                                                        .docs) {
-                                                                  documentSnapshot
-                                                                      .reference
-                                                                      .update({
-                                                                    "description": descController.text ==
-                                                                            ""
-                                                                        ? widget
-                                                                            .prod!
-                                                                            .description
-                                                                        : descController
-                                                                            .text,
-                                                                    "imagePath":
-                                                                        path,
-                                                                    "name":
-                                                                        capitalizedSentence,
-                                                                    "price":
-                                                                        prodPrice,
+                                                                  .then((querySnapshot) {
+                                                                for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                                  documentSnapshot.reference.update({
+                                                                    "description": descController.text == ""
+                                                                        ? widget.prod!.description
+                                                                        : descController.text,
+                                                                    "imagePath": path,
+                                                                    "name": capitalizedSentence,
+                                                                    "price": prodPrice,
                                                                   });
                                                                 }
                                                               });
-                                                              /*add({
-                                                                "description":
-                                                                    descController
-                                                                        .text,
-                                                                "imagePath":
-                                                                    path,
-                                                                "name":
-                                                                    capitalizedSentence,
-                                                                "price":
-                                                                    prodPrice,
-                                                              });*/
 
                                                               // loading circle-------------------------
                                                               showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context) {
+                                                                context: context,
+                                                                builder: (context) {
                                                                   return const Center(
-                                                                    child:
-                                                                        CircularProgressIndicator(),
+                                                                    child: CircularProgressIndicator(),
                                                                   );
                                                                 },
                                                               );
-                                                              await Future.delayed(
-                                                                  const Duration(
-                                                                      seconds:
-                                                                          2),
-                                                                  () {
-                                                                Navigator.pop(
-                                                                    context);
+                                                              await Future.delayed(const Duration(seconds: 2), () {
+                                                                Navigator.pop(context);
                                                                 //pop loading circle---------
 
                                                                 //go back to menu page
-                                                                Navigator.pop(
-                                                                    context);
-                                                                Navigator.pop(
-                                                                    context);
+                                                                Navigator.pop(context);
+                                                                Navigator.pop(context);
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            const MenuPage(),
+                                                                    builder: (context) => const MenuPage(),
                                                                   ),
                                                                 );
                                                               });
                                                             } on FirebaseException {
-                                                              Navigator.pop(
-                                                                  context);
+                                                              Navigator.pop(context);
                                                               //pop loading circle when fail---------
-                                                              ScaffoldMessenger
-                                                                      .of(context)
-                                                                  .showSnackBar(
+                                                              ScaffoldMessenger.of(context).showSnackBar(
                                                                 SnackBar(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .black,
+                                                                  backgroundColor: Colors.black,
                                                                   content: Text(
                                                                     "Fail uploading",
-                                                                    style: TextStyle(
-                                                                        color: Theme.of(context)
-                                                                            .colorScheme
-                                                                            .secondary),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
+                                                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                                                    textAlign: TextAlign.center,
                                                                   ),
                                                                 ),
                                                               );
@@ -599,47 +485,33 @@ class _EditProdPageState extends State<EditProdPage> {
                                                             // loading circle-------------------------
                                                             showDialog(
                                                               context: context,
-                                                              builder:
-                                                                  (context) {
+                                                              builder: (context) {
                                                                 return const Center(
-                                                                  child:
-                                                                      CircularProgressIndicator(),
+                                                                  child: CircularProgressIndicator(),
                                                                 );
                                                               },
                                                             );
-                                                            await Future.delayed(
-                                                                const Duration(
-                                                                    seconds: 2),
-                                                                () {
-                                                              Navigator.pop(
-                                                                  context);
+                                                            await Future.delayed(const Duration(seconds: 2), () {
+                                                              Navigator.pop(context);
                                                               //pop loading circle---------
                                                               //refresh new menu page
-                                                              Navigator.pop(
-                                                                  context);
-                                                              Navigator.pop(
-                                                                  context);
+                                                              Navigator.pop(context);
+                                                              Navigator.pop(context);
                                                               Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          const MenuPage(),
+                                                                  builder: (context) => const MenuPage(),
                                                                 ),
                                                               );
                                                             });
                                                           },
-                                                          icon: const Icon(Icons
-                                                              .check_circle),
+                                                          icon: const Icon(Icons.check_circle),
                                                         ),
                                                         IconButton(
                                                             iconSize: 50,
                                                             color: Colors.red,
-                                                            onPressed: () =>
-                                                                Navigator.pop(
-                                                                    context),
-                                                            icon: const Icon(
-                                                                Icons.cancel)),
+                                                            onPressed: () => Navigator.pop(context),
+                                                            icon: const Icon(Icons.cancel)),
                                                       ],
                                                     )
                                                   ],
