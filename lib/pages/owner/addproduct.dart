@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/models/imageclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,59 +26,9 @@ class _AddProductState extends State<AddProduct> {
   }
 
   //uppercase first letter-----------------------------------------
-  //untuk bahagian upload image-----------------------------------------------------
+  //untuk image picker
   File? _image;
-  final picker = ImagePicker();
-
-//Image Picker function to get image from gallery
-  Future getImageFromGallery() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
-    });
-  }
-
-//Image Picker function to get image from camera
-  Future getImageFromCamera() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
-    });
-  }
-
-  Future showOptions() async {
-    showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            child: const Text('Photo Gallery'),
-            onPressed: () {
-              // close the options modal
-              Navigator.of(context).pop();
-              // get image from gallery
-              getImageFromGallery();
-            },
-          ),
-          CupertinoActionSheetAction(
-            child: const Text('Camera'),
-            onPressed: () {
-              // close the options modal
-              Navigator.of(context).pop();
-              // get image from camera
-              getImageFromCamera();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-  //bahagian upload imej-----------------------------------------------------------------------
+  Imageclass? imageObj;
 
   //text editing controller
   late TextEditingController descController;
@@ -126,8 +77,7 @@ class _AddProductState extends State<AddProduct> {
       drawer: const MyDrawer(),
       body: SingleChildScrollView(
         child: Container(
-          width:
-              MediaQuery.of(context).size.width, //max width for current phone
+          width: MediaQuery.of(context).size.width, //max width for current phone
           decoration: BoxDecoration(
             color: const Color(0xffd1a271),
             image: DecorationImage(
@@ -216,7 +166,13 @@ class _AddProductState extends State<AddProduct> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Text('Select Product Image')),
-                        onPressed: showOptions,
+                        onPressed: () async {
+                          setState(() {
+                            imageObj?.showOptions(context).then((value) {
+                              _image = value;
+                            });
+                          });
+                        },
                       ),
                       SizedBox(
                         height: 150,
@@ -265,10 +221,7 @@ class _AddProductState extends State<AddProduct> {
                                   backgroundColor: Colors.black,
                                   content: Text(
                                     "Product name is blank",
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
+                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -280,10 +233,7 @@ class _AddProductState extends State<AddProduct> {
                                   backgroundColor: Colors.black,
                                   content: Text(
                                     "Description is blank",
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
+                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -295,10 +245,7 @@ class _AddProductState extends State<AddProduct> {
                                   backgroundColor: Colors.black,
                                   content: Text(
                                     "Price is blank",
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
+                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -310,10 +257,7 @@ class _AddProductState extends State<AddProduct> {
                                   backgroundColor: Colors.black,
                                   content: Text(
                                     "Picture not selected",
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
+                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -321,19 +265,13 @@ class _AddProductState extends State<AddProduct> {
                               return;
                             } else {
                               //uppercase every first letter for each word
-                              List<String> words =
-                                  nameController.text.split(" ");
-                              String capitalizedSentence = words
-                                  .map((word) => upperCase(word))
-                                  .join(" ");
+                              List<String> words = nameController.text.split(" ");
+                              String capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
                               //fix price into 0.00 format
-                              String prodPrice =
-                                  double.parse(priceController.text)
-                                      .toStringAsFixed(2);
+                              String prodPrice = double.parse(priceController.text).toStringAsFixed(2);
                               User? user = AuthService().getCurrentUser();
                               //set file path for current user folder in firebase storage
-                              String path =
-                                  '${user?.uid}/${widget.category}/${nameController.text}';
+                              String path = '${user?.uid}/${widget.category}/${nameController.text}';
                               //cane nak cek product tu dah ade sama nama ke???
 
                               // loading circle-------------------------
@@ -347,24 +285,16 @@ class _AddProductState extends State<AddProduct> {
                               );
                               try {
                                 //upload gambar dalam firebase storage
-                                FirebaseStorage.instance
-                                    .ref()
-                                    .child(path)
-                                    .putFile(_image!);
+                                FirebaseStorage.instance.ref().child(path).putFile(_image!);
                                 //update prod dalam collection categories kat FBFS
-                                FirebaseFirestore.instance
-                                    .collection('users')
-                                    .doc(user?.uid)
-                                    .collection(widget.category)
-                                    .add({
+                                FirebaseFirestore.instance.collection('users').doc(user?.uid).collection(widget.category).add({
                                   "description": descController.text,
                                   "imagePath": path,
                                   "name": capitalizedSentence,
                                   "price": prodPrice,
                                 });
 
-                                await Future.delayed(const Duration(seconds: 2),
-                                    () {
+                                await Future.delayed(const Duration(seconds: 2), () {
                                   Navigator.pop(context);
                                   //pop loading circle---------
                                   //go back to menu page
@@ -385,10 +315,7 @@ class _AddProductState extends State<AddProduct> {
                                     backgroundColor: Colors.black,
                                     content: Text(
                                       "Fail uploading",
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary),
+                                      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),

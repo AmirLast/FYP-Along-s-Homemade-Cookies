@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
+import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/settingspage.dart';
 import 'package:fyp/pages/owner/menupage.dart';
@@ -16,6 +17,8 @@ class OwnerHomePage extends StatefulWidget {
 class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProviderStateMixin {
   //owner data from ownerclass.dart
   String fname = UserNow.usernow!.fname;
+  //for logo
+  late Logo show;
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -37,18 +40,7 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
         body: Container(
           width: MediaQuery.of(context).size.width, //max width for current phone
           height: MediaQuery.of(context).size.height, //max width for current phone
-          decoration: BoxDecoration(
-            color: const Color(0xffd1a271),
-            image: DecorationImage(
-              image: const AssetImage("lib/images/applogo.png"),
-              colorFilter: ColorFilter.mode(
-                const Color(0xffd1a271).withOpacity(0.2),
-                BlendMode.dstATop,
-              ),
-              alignment: Alignment.center,
-              scale: 0.5,
-            ),
-          ),
+          decoration: show.showLogo(),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
