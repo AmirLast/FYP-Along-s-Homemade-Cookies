@@ -2,14 +2,13 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/imageclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 
 class AddProduct extends StatefulWidget {
   final String category;
@@ -170,6 +169,7 @@ class _AddProductState extends State<AddProduct> {
                           setState(() {
                             imageObj?.showOptions(context).then((value) {
                               _image = value;
+                              //
                             });
                           });
                         },
