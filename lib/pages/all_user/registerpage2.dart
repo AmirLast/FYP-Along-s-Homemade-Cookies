@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/userclass.dart';
 //import 'package:fyp/images/assets.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
@@ -19,6 +20,8 @@ class Register2Page extends StatefulWidget {
 }
 
 class _Register2PageState extends State<Register2Page> {
+  //for logo
+  final Logo show = Logo();
 //text editing controller
   late TextEditingController address1Controller;
   late TextEditingController postcodeController;
@@ -51,7 +54,7 @@ class _Register2PageState extends State<Register2Page> {
       context: context,
       builder: (context) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Colors.black),
         );
       },
     );
@@ -77,18 +80,7 @@ class _Register2PageState extends State<Register2Page> {
       backgroundColor: const Color(0xffd1a271),
       body: SingleChildScrollView(
         child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xffd1a271),
-            image: DecorationImage(
-              image: const AssetImage("lib/images/applogo.png"),
-              colorFilter: ColorFilter.mode(
-                const Color(0xffd1a271).withOpacity(0.2),
-                BlendMode.dstATop,
-              ),
-              alignment: Alignment.center,
-              scale: 0.5,
-            ),
-          ),
+          decoration: show.showLogo(),
           child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -215,10 +207,7 @@ class _Register2PageState extends State<Register2Page> {
                                 SnackBar(
                                   backgroundColor: Colors.black,
                                   content: Text(
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
+                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                     error,
                                     textAlign: TextAlign.center,
                                   ),
@@ -227,15 +216,10 @@ class _Register2PageState extends State<Register2Page> {
                               return;
                             } else {
                               User user = UserNow.usernow!.user;
-                              var userSU = FirebaseFirestore.instance.collection(
-                                  'users'); //opening user collection in firestore
+                              var userSU = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
                               //name the userfile as uid
                               userSU.doc(user.uid).update({
-                                "address": address1Controller.text +
-                                    ", " +
-                                    postcodeController.text +
-                                    ", " +
-                                    stateController.text,
+                                "address": address1Controller.text + ", " + postcodeController.text + ", " + stateController.text,
                               });
 
                               await Navigator.of(context).pushAndRemoveUntil(
@@ -260,10 +244,7 @@ class _Register2PageState extends State<Register2Page> {
                             ),
                             const SizedBox(width: 4),
                             GestureDetector(
-                              onTap: () => Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const LoginPage())),
+                              onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage())),
                               child: const Text(
                                 "Click here to Login",
                                 style: TextStyle(

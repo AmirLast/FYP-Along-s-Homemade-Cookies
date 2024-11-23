@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
+import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
@@ -15,6 +16,8 @@ class AddCategory extends StatefulWidget {
 }
 
 class _AddCategoryState extends State<AddCategory> {
+  //for logo
+  final Logo show = Logo();
   //uppercase first letter-----------------------------------------
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
@@ -62,18 +65,7 @@ class _AddCategoryState extends State<AddCategory> {
       drawer: const MyDrawer(),
       body: Container(
         width: MediaQuery.of(context).size.width, //max width for current phone
-        decoration: BoxDecoration(
-          color: const Color(0xffd1a271),
-          image: DecorationImage(
-            image: const AssetImage("lib/images/applogo.png"),
-            colorFilter: ColorFilter.mode(
-              const Color(0xffd1a271).withOpacity(0.2),
-              BlendMode.dstATop,
-            ),
-            alignment: Alignment.center,
-            scale: 0.5,
-          ),
-        ),
+        decoration: show.showLogo(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -141,10 +133,7 @@ class _AddCategoryState extends State<AddCategory> {
                               backgroundColor: Colors.black,
                               content: Text(
                                 "Category name is blank",
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .secondary),
+                                style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -156,14 +145,13 @@ class _AddCategoryState extends State<AddCategory> {
                             context: context,
                             builder: (context) {
                               return const Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(color: Colors.black),
                               );
                             },
                           );
                           //uppercase every first letter for each word
                           List<String> words = nameController.text.split(" ");
-                          String capitalizedSentence =
-                              words.map((word) => upperCase(word)).join(" ");
+                          String capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
                           User? user = AuthService().getCurrentUser();
                           //cane nak cek collection tu dah ade sama nama ke???
                           //update local userclass data (+ new category)
@@ -171,10 +159,7 @@ class _AddCategoryState extends State<AddCategory> {
                           //map userclass data pasal categories
                           List newArray = UserNow.usernow!.categories;
                           //update array categories (xde prod) data kat FBFS
-                          FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(user?.uid)
-                              .update({
+                          FirebaseFirestore.instance.collection('users').doc(user?.uid).update({
                             "categories": newArray,
                           });
                           //new collection is automatically create when add product :D

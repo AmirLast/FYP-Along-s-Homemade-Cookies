@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class Logo {
   showLogo() {
-    BoxDecoration(
+    return BoxDecoration(
       color: const Color(0xffd1a271),
       image: DecorationImage(
         image: const AssetImage("lib/images/applogo.png"),

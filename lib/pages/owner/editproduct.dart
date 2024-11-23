@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
+import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
@@ -29,6 +30,8 @@ class EditProdPage extends StatefulWidget {
 }
 
 class _EditProdPageState extends State<EditProdPage> {
+  //for logo
+  final Logo show = Logo();
   //uppercase first letter-----------------------------------------
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
@@ -168,7 +171,7 @@ class _EditProdPageState extends State<EditProdPage> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const CircularProgressIndicator()
+        ? const CircularProgressIndicator(color: Colors.black)
         : Scaffold(
             backgroundColor: const Color(0xffd1a271),
             appBar: AppBar(
@@ -194,18 +197,7 @@ class _EditProdPageState extends State<EditProdPage> {
             body: SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width, //max width for current phone
-                decoration: BoxDecoration(
-                  color: const Color(0xffd1a271),
-                  image: DecorationImage(
-                    image: const AssetImage("lib/images/applogo.png"),
-                    colorFilter: ColorFilter.mode(
-                      const Color(0xffd1a271).withOpacity(0.2),
-                      BlendMode.dstATop,
-                    ),
-                    alignment: Alignment.center,
-                    scale: 0.5,
-                  ),
-                ),
+                decoration: show.showLogo(),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -450,7 +442,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                 context: context,
                                                                 builder: (context) {
                                                                   return const Center(
-                                                                    child: CircularProgressIndicator(),
+                                                                    child: CircularProgressIndicator(color: Colors.black),
                                                                   );
                                                                 },
                                                               );
@@ -487,7 +479,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                               context: context,
                                                               builder: (context) {
                                                                 return const Center(
-                                                                  child: CircularProgressIndicator(),
+                                                                  child: CircularProgressIndicator(color: Colors.black),
                                                                 );
                                                               },
                                                             );
@@ -585,7 +577,7 @@ class _EditProdPageState extends State<EditProdPage> {
                 context: context,
                 builder: (context) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(color: Colors.black),
                   );
                 },
               );

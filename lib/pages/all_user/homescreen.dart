@@ -52,8 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           //sign in button
           MaterialButton(
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const LoginPage())),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage())),
             child: Container(
               padding: const EdgeInsets.all(25),
               margin: const EdgeInsets.symmetric(horizontal: 100),
@@ -78,8 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           //register
           MaterialButton(
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const RegisterPage())),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage())),
             child: Container(
               padding: const EdgeInsets.all(25),
               margin: const EdgeInsets.symmetric(horizontal: 100),

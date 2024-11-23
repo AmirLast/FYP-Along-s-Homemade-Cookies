@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_cattile.dart';
 import 'package:fyp/components/my_drawer.dart';
+import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/addcategory.dart';
@@ -16,8 +17,9 @@ class MenuPage extends StatefulWidget {
   State<MenuPage> createState() => _MenuPageState();
 }
 
-class _MenuPageState extends State<MenuPage>
-    with SingleTickerProviderStateMixin {
+class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin {
+  //for logo
+  final Logo show = Logo();
   List cat = UserNow.usernow!.categories;
   List<Bakeds?> menus = [];
 
@@ -50,8 +52,7 @@ class _MenuPageState extends State<MenuPage>
             color: Colors.grey.shade400,
           ),
         ),
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const AddCategory())),
+        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const AddCategory())),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       backgroundColor: const Color(0xffd1a271),
@@ -77,23 +78,10 @@ class _MenuPageState extends State<MenuPage>
       drawer: const MyDrawer(), //default drawer
       body: SingleChildScrollView(
         child: Container(
-          width:
-              MediaQuery.of(context).size.width, //max width for current phone
-          height:
-              MediaQuery.of(context).size.height, //max height for current phone
+          width: MediaQuery.of(context).size.width, //max width for current phone
+          height: MediaQuery.of(context).size.height, //max height for current phone
           //for logo transparent
-          decoration: BoxDecoration(
-            color: const Color(0xffd1a271),
-            image: DecorationImage(
-              image: const AssetImage("lib/images/applogo.png"),
-              colorFilter: ColorFilter.mode(
-                const Color(0xffd1a271).withOpacity(0.2),
-                BlendMode.dstATop,
-              ),
-              alignment: Alignment.center,
-              scale: 0.5,
-            ),
-          ),
+          decoration: show.showLogo(),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -124,31 +112,20 @@ class _MenuPageState extends State<MenuPage>
                             builder: (context) => AlertDialog(
                                   backgroundColor: Colors.white,
                                   content: Text(
-                                    "Do you want to delete category named '" +
-                                        catName +
-                                        "'?",
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                    "Do you want to delete category named '" + catName + "'?",
+                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                   ),
                                   actions: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
                                         IconButton(
                                           iconSize: 50,
                                           color: Colors.green,
                                           onPressed: () async {
-                                            User? user =
-                                                AuthService().getCurrentUser();
-                                            await FirebaseFirestore.instance
-                                                .collection('users')
-                                                .doc(user!.uid)
-                                                .update({
-                                              'categories':
-                                                  FieldValue.arrayRemove(
-                                                      [catName])
+                                            User? user = AuthService().getCurrentUser();
+                                            await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+                                              'categories': FieldValue.arrayRemove([catName])
                                             });
 
                                             // loading circle-------------------------
@@ -156,13 +133,11 @@ class _MenuPageState extends State<MenuPage>
                                               context: context,
                                               builder: (context) {
                                                 return const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
+                                                  child: CircularProgressIndicator(color: Colors.black),
                                                 );
                                               },
                                             );
-                                            Future.delayed(
-                                                const Duration(seconds: 2), () {
+                                            Future.delayed(const Duration(seconds: 2), () {
                                               Navigator.pop(context);
                                               //pop loading circle---------
                                               //refresh new menu page
@@ -171,8 +146,7 @@ class _MenuPageState extends State<MenuPage>
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const MenuPage(),
+                                                  builder: (context) => const MenuPage(),
                                                 ),
                                               );
                                             });
@@ -182,8 +156,7 @@ class _MenuPageState extends State<MenuPage>
                                         IconButton(
                                             iconSize: 50,
                                             color: Colors.red,
-                                            onPressed: () =>
-                                                Navigator.pop(context),
+                                            onPressed: () => Navigator.pop(context),
                                             icon: const Icon(Icons.cancel)),
                                       ],
                                     )

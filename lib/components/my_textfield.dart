@@ -27,6 +27,7 @@ class MyTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextField(
+        cursorColor: Colors.black,
         autofocus: isShowhint,
         enabled: isEnabled, //get this value
         controller: controller,
@@ -34,20 +35,16 @@ class MyTextField extends StatelessWidget {
         obscureText: obscureText,
         textCapitalization: caps,
         decoration: InputDecoration(
-          disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide.none),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: Colors.grey.shade400)),
+          disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black),
           ),
           filled: true,
           fillColor: Colors.grey.shade400,
           labelText: labelText,
-          floatingLabelBehavior:
-              isShowhint ? FloatingLabelBehavior.never : null,
+          floatingLabelStyle: const TextStyle(color: Colors.black),
+          floatingLabelBehavior: isShowhint ? FloatingLabelBehavior.never : null,
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
         ),

@@ -9,8 +9,11 @@ class UpdateUserData {
   Future<String> updateuserdata() async {
     AuthService something = AuthService();
     User? user = something.getCurrentUser();
+    if (user == null) {
+      return "";
+    }
     var dir = FirebaseFirestore.instance.collection('users');
-    await dir.doc(user!.uid).get().then((value) {
+    await dir.doc(user.uid).get().then((value) {
       UserNow.usernow = UserNow(
         value.data()?['fname'],
         value.data()?['lname'],
@@ -19,6 +22,7 @@ class UpdateUserData {
         value.data()?['type'],
         value.data()?['currentdir'],
         value.data()?['passStrength'],
+        value.data()?['address'],
       );
       //check user type
       if (value.data()?['type'] == "owner") {

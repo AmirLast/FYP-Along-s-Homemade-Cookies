@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/forgorpassword.dart';
@@ -17,11 +18,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  //for logo
+  final Logo show = Logo();
   // login user
-  static Future<User?> login(
-      {required String email,
-      required String password,
-      required BuildContext context}) async {
+  static Future<User?> login({required String email, required String password, required BuildContext context}) async {
     //authenticating
     final _authService = AuthService();
     User? user;
@@ -31,7 +31,9 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (context) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            color: Colors.grey,
+          ),
         );
       },
     );
@@ -57,18 +59,7 @@ class _LoginPageState extends State<LoginPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xffd1a271),
       body: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xffd1a271),
-          image: DecorationImage(
-            image: const AssetImage("lib/images/applogo.png"),
-            colorFilter: ColorFilter.mode(
-              const Color(0xffd1a271).withOpacity(0.2),
-              BlendMode.dstATop,
-            ),
-            alignment: Alignment.center,
-            scale: 0.5,
-          ),
-        ),
+        decoration: show.showLogo(),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -137,21 +128,14 @@ class _LoginPageState extends State<LoginPage> {
 
                       MaterialButton(
                         onPressed: () async {
-                          User? user = await login(
-                              email: emailController.text,
-                              password: passwordController.text,
-                              context: context); //dah login
+                          User? user =
+                              await login(email: emailController.text, password: passwordController.text, context: context); //dah login
                           //re-check password strength since user can reset password with weak password
                           final obj = PasswordStrength();
-                          List passStrength =
-                              obj.checkpass(password: passwordController.text);
+                          List passStrength = obj.checkpass(password: passwordController.text);
                           //all 4 criteria must qualify to be considered strength
-                          bool isStrong = passStrength[0] &&
-                              passStrength[1] &&
-                              passStrength[2] &&
-                              passStrength[3];
-                          var dir =
-                              FirebaseFirestore.instance.collection('users');
+                          bool isStrong = passStrength[0] && passStrength[1] && passStrength[2] && passStrength[3];
+                          var dir = FirebaseFirestore.instance.collection('users');
                           await dir.doc(user!.uid).get().then((value) {
                             //these are general data loads for any user
                             UserNow.usernow = UserNow(
@@ -162,6 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                               value.data()?['type'],
                               value.data()?['currentdir'],
                               value.data()?['passStrength'],
+                              value.data()?['address'],
                             );
                             //check user type
                             if (value.data()?['type'] != "admin") {
@@ -169,8 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                               UserNow.usernow?.shop = value.data()?['address'];
                               if (value.data()?['type'] == "owner") {
                                 //for owner, they have extra data
-                                UserNow.usernow?.categories =
-                                    value.data()?['categories'];
+                                UserNow.usernow?.categories = value.data()?['categories'];
                                 UserNow.usernow?.shop = value.data()?['shop'];
                               }
                             }
@@ -218,8 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                           "Forgot password?",
                         ),
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const ForgorPassword()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ForgorPassword()));
                         },
                       ),
 
@@ -236,10 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(width: 4),
                           GestureDetector(
                             onTap: () => Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegisterPage())), //goto Register
+                                context, MaterialPageRoute(builder: (context) => const RegisterPage())), //goto Register
                             child: const Text(
                               "Click here to Register",
                               style: TextStyle(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/images/assets.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/registerpage2.dart';
@@ -17,6 +18,8 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  //for logo
+  final Logo show = Logo();
 //text editing controller
   late TextEditingController confirmpasswordController;
   late bool confirmpasswordVisibility;
@@ -64,7 +67,7 @@ class _RegisterPageState extends State<RegisterPage> {
       context: context,
       builder: (context) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Colors.black),
         );
       },
     );
@@ -95,18 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: const Color(0xffd1a271),
       body: SingleChildScrollView(
         child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xffd1a271),
-            image: DecorationImage(
-              image: const AssetImage("lib/images/applogo.png"),
-              colorFilter: ColorFilter.mode(
-                const Color(0xffd1a271).withOpacity(0.2),
-                BlendMode.dstATop,
-              ),
-              alignment: Alignment.center,
-              scale: 0.5,
-            ),
-          ),
+          decoration: show.showLogo(),
           child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -297,17 +289,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                           onPressed: () async {
-                            if (passwordController.text !=
-                                confirmpasswordController.text) {
+                            if (passwordController.text != confirmpasswordController.text) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   backgroundColor: Colors.black,
                                   content: Text(
                                     'Passwords don\'t match!',
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
+                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -321,16 +309,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             User? user;
 
                             //check password strength
-                            List passStrength = [
-                              false,
-                              false,
-                              false,
-                              false
-                            ]; //false for 4 category
+                            List passStrength = [false, false, false, false]; //false for 4 category
                             //check password strength
                             final obj = PasswordStrength();
-                            passStrength = obj.checkpass(
-                                password: passwordController.text);
+                            passStrength = obj.checkpass(password: passwordController.text);
 
                             //checking if it is blank or wrong length or password weak
                             if (fnameController.text == '') {
@@ -355,23 +337,19 @@ class _RegisterPageState extends State<RegisterPage> {
                               error = 'Phone number is blank';
                               isBlank = true;
                             } else if (phoneController.text.length < 10) {
-                              error =
-                                  'Phone number should be more than 10 numbers';
+                              error = 'Phone number should be more than 10 numbers';
                               isBlank = true;
                             } else if (!passStrength[2]) {
-                              error =
-                                  'Please add special character in password';
+                              error = 'Please add special character in password';
                               isBlank = true;
                             } else if (!passStrength[3]) {
                               error = 'Please add number in password';
                               isBlank = true;
                             } else if (passwordController.text.length < 10) {
-                              error =
-                                  'Password should be at least 10 in length';
+                              error = 'Password should be at least 10 in length';
                               isBlank = true;
                             } else if (!(passStrength[0] && passStrength[1])) {
-                              error =
-                                  'Password should combine lower and upper case';
+                              error = 'Password should combine lower and upper case';
                               isBlank = true;
                             }
 
@@ -382,10 +360,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 SnackBar(
                                   backgroundColor: Colors.black,
                                   content: Text(
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
+                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                     error,
                                     textAlign: TextAlign.center,
                                   ),
@@ -394,15 +369,11 @@ class _RegisterPageState extends State<RegisterPage> {
                               return;
                             } else {
                               // try { register the user
-                              user = await register(
-                                  email: emailController.text,
-                                  password: passwordController.text);
+                              user = await register(email: emailController.text, password: passwordController.text);
 
-                              var userSU = FirebaseFirestore.instance.collection(
-                                  'users'); //opening user collection in firestore
+                              var userSU = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
 
-                              user!.updatePhotoURL(
-                                  defProfile); //set default user pfp
+                              user!.updatePhotoURL(defProfile); //set default user pfp
                               //name the userfile as uid
                               userSU.doc(user.uid).set({
                                 //set all data that user and owner have in common
@@ -451,10 +422,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             const SizedBox(width: 4),
                             GestureDetector(
-                              onTap: () => Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const LoginPage())),
+                              onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage())),
                               child: const Text(
                                 "Click here to Login",
                                 style: TextStyle(

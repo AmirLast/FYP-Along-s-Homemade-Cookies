@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
 import 'package:fyp/services/auth/userplacement.dart';
 
@@ -12,6 +13,8 @@ class VerifyEmailPage extends StatefulWidget {
 }
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
+  //for logo
+  final Logo show = Logo();
   bool isEmailVerified = false;
   bool canResendEmail = false;
   Timer? timer;
@@ -43,8 +46,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     await FirebaseAuth.instance.currentUser!.reload();
 
     setState(() {
-      isEmailVerified =
-          FirebaseAuth.instance.currentUser!.emailVerified; //verified
+      isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified; //verified
     });
 
     if (isEmailVerified) timer?.cancel();
@@ -79,18 +81,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           resizeToAvoidBottomInset: false,
           backgroundColor: const Color(0xffd1a271),
           body: Container(
-            decoration: BoxDecoration(
-              color: const Color(0xffd1a271),
-              image: DecorationImage(
-                image: const AssetImage("lib/images/applogo.png"),
-                colorFilter: ColorFilter.mode(
-                  const Color(0xffd1a271).withOpacity(0.2),
-                  BlendMode.dstATop,
-                ),
-                alignment: Alignment.center,
-                scale: 0.5,
-              ),
-            ),
+            decoration: show.showLogo(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -126,8 +117,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         ),
                         const SizedBox(height: 60),
                         ElevatedButton.icon(
-                          onPressed:
-                              canResendEmail ? sendVerificationEmail : null,
+                          onPressed: canResendEmail ? sendVerificationEmail : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
                             padding: const EdgeInsets.all(25),
@@ -139,10 +129,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                           ),
                           label: Text(
                             "Resent Email",
-                            style: TextStyle(
-                                color: Colors.grey.shade400,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.grey.shade400, fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ),
                         const SizedBox(height: 60),

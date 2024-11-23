@@ -4,8 +4,6 @@ import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/settingspage.dart';
 import 'package:fyp/pages/owner/menupage.dart';
-// import 'package:fyp/pages/ownerorderpage.dart';
-// import 'package:fyp/pages/summarypage.dart';
 
 class OwnerHomePage extends StatefulWidget {
   const OwnerHomePage({super.key});
@@ -18,10 +16,11 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
   //owner data from ownerclass.dart
   String fname = UserNow.usernow!.fname;
   //for logo
-  late Logo show;
+  final Logo show = Logo();
   @override
   Widget build(BuildContext context) {
     return PopScope(
+      canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) {
           return;
@@ -50,7 +49,7 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   IconButton(
-                    onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SettingsPage())),
+                    onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SettingsPage())),
                     icon: const Icon(Icons.account_circle),
                   ),
                   Text(

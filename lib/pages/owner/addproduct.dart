@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
+import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/imageclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
@@ -19,6 +20,8 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
+  //for logo
+  final Logo show = Logo();
   //uppercase first letter-----------------------------------------
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
@@ -77,18 +80,7 @@ class _AddProductState extends State<AddProduct> {
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width, //max width for current phone
-          decoration: BoxDecoration(
-            color: const Color(0xffd1a271),
-            image: DecorationImage(
-              image: const AssetImage("lib/images/applogo.png"),
-              colorFilter: ColorFilter.mode(
-                const Color(0xffd1a271).withOpacity(0.2),
-                BlendMode.dstATop,
-              ),
-              alignment: Alignment.center,
-              scale: 0.5,
-            ),
-          ),
+          decoration: show.showLogo(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -279,7 +271,7 @@ class _AddProductState extends State<AddProduct> {
                                 context: context,
                                 builder: (context) {
                                   return const Center(
-                                    child: CircularProgressIndicator(),
+                                    child: CircularProgressIndicator(color: Colors.black),
                                   );
                                 },
                               );

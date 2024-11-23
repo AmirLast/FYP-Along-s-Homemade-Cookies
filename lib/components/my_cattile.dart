@@ -25,8 +25,7 @@ class CatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Bakeds?> categoryMenu =
-        baked.where((b) => b!.category == catName).toList();
+    List<Bakeds?> categoryMenu = baked.where((b) => b!.category == catName).toList();
     return Card(
       elevation: 0,
       color: Colors.transparent,
@@ -88,43 +87,30 @@ class CatTile extends StatelessWidget {
                             showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary,
+                                      backgroundColor: Theme.of(context).colorScheme.tertiary,
                                       content: Text(
-                                        "Do you want to delete product named '" +
-                                            categoryMenu[index]!.name +
-                                            "'?",
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
+                                        "Do you want to delete product named '" + categoryMenu[index]!.name + "'?",
+                                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                       ),
                                       actions: [
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                                           children: [
                                             IconButton(
                                               iconSize: 50,
                                               color: Colors.green,
                                               onPressed: () async {
-                                                User? user = AuthService()
-                                                    .getCurrentUser();
+                                                User? user = AuthService().getCurrentUser();
                                                 FirebaseFirestore.instance
                                                     .collection('users')
                                                     .doc(user!.uid)
                                                     .collection(catName)
-                                                    .where('name',
-                                                        isEqualTo:
-                                                            categoryMenu[index]!
-                                                                .name)
+                                                    .where('name', isEqualTo: categoryMenu[index]!.name)
                                                     .get()
                                                     .then(
                                                   (querySnapshot) {
-                                                    for (DocumentSnapshot documentSnapshot
-                                                        in querySnapshot.docs) {
-                                                      documentSnapshot.reference
-                                                          .delete();
+                                                    for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                      documentSnapshot.reference.delete();
                                                     }
                                                   },
                                                 );
@@ -133,14 +119,11 @@ class CatTile extends StatelessWidget {
                                                   context: context,
                                                   builder: (context) {
                                                     return const Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
+                                                      child: CircularProgressIndicator(color: Colors.black),
                                                     );
                                                   },
                                                 );
-                                                await Future.delayed(
-                                                    const Duration(seconds: 2),
-                                                    () {
+                                                await Future.delayed(const Duration(seconds: 2), () {
                                                   Navigator.pop(context);
                                                   //pop loading circle---------
                                                   //refresh new menu page
@@ -149,20 +132,17 @@ class CatTile extends StatelessWidget {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const MenuPage(),
+                                                      builder: (context) => const MenuPage(),
                                                     ),
                                                   );
                                                 });
                                               },
-                                              icon: const Icon(
-                                                  Icons.check_circle),
+                                              icon: const Icon(Icons.check_circle),
                                             ),
                                             IconButton(
                                                 iconSize: 50,
                                                 color: Colors.red,
-                                                onPressed: () =>
-                                                    Navigator.pop(context),
+                                                onPressed: () => Navigator.pop(context),
                                                 icon: const Icon(Icons.cancel)),
                                           ],
                                         )
@@ -187,9 +167,7 @@ class CatTile extends StatelessWidget {
                       ),
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
-                        backgroundColor: Theme.of(context)
-                            .colorScheme
-                            .secondary, // <-- Button color
+                        backgroundColor: Theme.of(context).colorScheme.secondary, // <-- Button color
                         //foregroundColor: Colors.red, // <-- Splash color
                       ),
                     ),
@@ -217,9 +195,7 @@ class CatTile extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       padding: const EdgeInsets.all(18),
-                      backgroundColor: Theme.of(context)
-                          .colorScheme
-                          .secondary, // <-- Button color
+                      backgroundColor: Theme.of(context).colorScheme.secondary, // <-- Button color
                       //foregroundColor: Colors.red, // <-- Splash color
                     ),
                   ),

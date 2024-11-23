@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 
 class ForgorPassword extends StatefulWidget {
@@ -10,6 +11,8 @@ class ForgorPassword extends StatefulWidget {
 }
 
 class _ForgorPasswordState extends State<ForgorPassword> {
+  //for logo
+  final Logo show = Logo();
   TextEditingController emailController = TextEditingController();
 
   final url =
@@ -23,14 +26,12 @@ class _ForgorPasswordState extends State<ForgorPassword> {
 
   Future<void> resetPass() async {
     try {
-      await FirebaseAuth.instance
-          .sendPasswordResetEmail(email: emailController.text);
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
       showDialog(
           context: context,
           builder: (context) {
             return const AlertDialog(
-              content: Text(
-                  'Your password reset link is sent to your email. Check in email to proceed'),
+              content: Text('Your password reset link is sent to your email. Check in email to proceed'),
             ); //pop up to UI so user know what error it is
           });
     } on FirebaseAuthException catch (e) {
@@ -51,18 +52,7 @@ class _ForgorPasswordState extends State<ForgorPassword> {
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xffd1a271),
       body: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xffd1a271),
-          image: DecorationImage(
-            image: const AssetImage("lib/images/applogo.png"),
-            colorFilter: ColorFilter.mode(
-              const Color(0xffd1a271).withOpacity(0.2),
-              BlendMode.dstATop,
-            ),
-            alignment: Alignment.center,
-            scale: 0.5,
-          ),
-        ),
+        decoration: show.showLogo(),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
