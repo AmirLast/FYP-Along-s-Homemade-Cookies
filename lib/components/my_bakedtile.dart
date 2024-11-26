@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/models/bakedclass.dart';
 
-class ProductTile extends StatelessWidget {
+class BakedTile extends StatelessWidget {
   final Bakeds? prod;
   final void Function()? onTap;
   final void Function()? onEdit;
   final void Function()? onDel;
 
-  const ProductTile({
+  const BakedTile({
     super.key,
     required this.prod,
     required this.onTap,
@@ -49,9 +49,7 @@ class ProductTile extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
                   //padding: const EdgeInsets.all(5),
-                  backgroundColor: Theme.of(context)
-                      .colorScheme
-                      .secondary, // <-- Button color
+                  backgroundColor: Theme.of(context).colorScheme.secondary, // <-- Button color
                   //foregroundColor: Colors.red, // <-- Splash color
                 ),
               ),
@@ -62,9 +60,7 @@ class ProductTile extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
                   //padding: const EdgeInsets.all(5),
-                  backgroundColor: Theme.of(context)
-                      .colorScheme
-                      .secondary, // <-- Button color
+                  backgroundColor: Theme.of(context).colorScheme.secondary, // <-- Button color
                   //foregroundColor: Colors.red, // <-- Splash color
                 ),
               ),

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_cattile.dart';
+import 'package:fyp/components/my_categorytile.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/bakedclass.dart';
@@ -26,8 +26,11 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
   Future<void> updateMenu() async {
     //update menu data in local memory
     final obj = UpdateMenuData();
-    menus = await obj.updatemenudata();
-    setState(() {});
+    await obj.updatemenudata().then((temp) {
+      setState(() {
+        menus = temp;
+      });
+    });
   }
 
   @override
@@ -80,8 +83,7 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
         child: Container(
           width: MediaQuery.of(context).size.width, //max width for current phone
           height: MediaQuery.of(context).size.height, //max height for current phone
-          //for logo transparent
-          decoration: show.showLogo(),
+          decoration: show.showLogo(), //for logo
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -92,16 +94,11 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                   itemCount: cat.length,
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) {
-                    //get individual food one by one from list categoryMenu made
-                    //for now try category dulu; baru belajar listview
-                    //final prod = categoryMenu[index];
                     final String catName = cat[index].toString();
                     //return product tile UI
-                    return CatTile(
+                    return CategoryTile(
                       catName: catName,
                       baked: menus,
-                      //alter part: nak refresh kat mana? lepas update/delete
-                      //access data guna catname as key different
                       onEdit:
                           () {}, //pop up confirm -> pergi page baru (cam add category) -> update (cam kat addcategory.dart) -> back to menu
                       //for collection: read the collection data into local data buffer(array) -> delete prev collection -> insert buffer into new collection name
@@ -163,53 +160,10 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                   ],
                                 ));
                       }, //pop up delete confirm -> delete FBFS -> delete local data -> pushreplacement ke menupage
-                      //for collection: delete prev collection
                     );
                   },
                 ),
               ),
-              //letak list of menu by category
-              //buat updatemenu macam updateuser
-              /*
-              List<Widget> getProdInThisCategory(List<Baked> fullMenu) {
-                return BakedCategory.values.map((category) {
-                  //category is enum in baked.dart;
-                  //kita kene guna usernow.categories into enum?
-            
-                  //get category menu only the one specified which relate to category variable
-                  List<Baked> categoryMenu = fullMenu.where((baked) => baked.category == category).toList();
-            
-            
-                  //bawah ni cuba guna untuk children dalam cattile.dart
-            
-                  //create ListView
-                  return ListView.builder(
-                    itemCount: categoryMenu.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    itemBuilder: (context, index) {
-                      //get individual food one by one from list categoryMenu made
-                      final prod = categoryMenu[index];
-            
-                      //return product tile UI
-                      return ProdTile(
-                        prod: prod,
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            //calling ProdPage while sending prod values
-                            builder: (context) => ProdPage(prod: prod),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }).toList();
-              }
-              */
-              //else
-              //tunjuk big + icon to add new menu
-              //+ icon => addmenupage
               const SizedBox(height: 80),
             ],
           ),

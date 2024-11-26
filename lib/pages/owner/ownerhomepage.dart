@@ -26,7 +26,7 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
           return;
         }
         final navigator = Navigator.of(context);
-        bool value = await someFunction();
+        bool value = await confirmPopUp(context);
         if (value) {
           navigator.pop(result);
         }
@@ -99,6 +99,41 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
   }
 }
 
-someFunction() {
-  return false;
+confirmPopUp(context) {
+  late bool value;
+  //confirm pop up
+  showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            backgroundColor: Colors.white,
+            content: const Text(
+              "Are you sure you want to exit?",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    iconSize: 50,
+                    color: Colors.green,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      value = true;
+                    },
+                    icon: const Icon(Icons.check_circle),
+                  ),
+                  IconButton(
+                      iconSize: 50,
+                      color: Colors.red,
+                      onPressed: () {
+                        Navigator.pop(context);
+                        value = false;
+                      },
+                      icon: const Icon(Icons.cancel)),
+                ],
+              )
+            ],
+          ));
+  return value;
 }

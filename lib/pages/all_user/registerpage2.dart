@@ -1,15 +1,10 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/userclass.dart';
-//import 'package:fyp/images/assets.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/verifyemailpage.dart';
-//import 'package:fyp/services/auth/auth_service.dart';
-//import 'package:fyp/services/auth/checkpass.dart';
 import '../../components/my_textfield.dart';
 
 class Register2Page extends StatefulWidget {
@@ -43,37 +38,6 @@ class _Register2PageState extends State<Register2Page> {
     stateController.dispose();
   }
 
-/*
-  Future<User?> register({
-    //for creting user
-    required String email,
-    required String password,
-  }) async {
-    // loading circle
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(color: Colors.black),
-        );
-      },
-    );
-    // get auth service
-    final _authService = AuthService();
-    User? user;
-    //create user
-    await _authService.signUpWithEmailPassword(
-      email,
-      password,
-      context,
-    );
-    user = _authService.getCurrentUser();
-
-    Navigator.of(context).pop(); // pop loading circle
-
-    return user;
-  }
-*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(

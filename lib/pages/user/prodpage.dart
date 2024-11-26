@@ -2,7 +2,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/bakedclass.dart';
-//import 'package:fyp/models/shop.dart';
 
 class ProdPage extends StatefulWidget {
   final Bakeds? prod;
@@ -37,11 +36,7 @@ class _EditProdPageState extends State<ProdPage> {
     //get Url of product image so it can be displayed
     var path = widget.prod!.imagePath;
     try {
-      await FirebaseStorage.instance
-          .ref()
-          .child(path)
-          .getDownloadURL()
-          .then((String url) {
+      await FirebaseStorage.instance.ref().child(path).getDownloadURL().then((String url) {
         setState(() {
           src = url;
         });
@@ -126,8 +121,7 @@ class _EditProdPageState extends State<ProdPage> {
               //button -> add to cart
               MyMenuButton(
                 text: "Add to cart",
-                onPressed:
-                    () {}, /*=> addToCart(
+                onPressed: () {}, /*=> addToCart(
                   widget.prod,
                 ),*/
               ),

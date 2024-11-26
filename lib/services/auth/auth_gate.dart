@@ -28,12 +28,17 @@ class _AuthGateState extends State<AuthGate> {
     //update user data in local memory
     final obj = UpdateUserData();
     await obj.updateuserdata().then((temp) {
-      type = temp;
+      //try tak guna future delayed
+      setState(() {
+        type = temp;
+        isLoading = false;
+      });
+      /*type = temp;
       Future.delayed(const Duration(seconds: 2), () {
         setState(() {
           isLoading = false;
         });
-      });
+      });*/
     });
   }
 

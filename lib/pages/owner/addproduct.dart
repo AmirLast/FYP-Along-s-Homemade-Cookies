@@ -9,7 +9,7 @@ import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/imageclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
-//import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart'; dah boleh delete ke?
 
 class AddProduct extends StatefulWidget {
   final String category;

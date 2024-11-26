@@ -8,14 +8,13 @@ import 'package:fyp/pages/owner/editproduct.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 
-class CatTile extends StatelessWidget {
-  //final Baked prod;
+class CategoryTile extends StatefulWidget {
   final String catName;
   final void Function()? onEdit;
   final void Function()? onDel;
   final List<Bakeds?> baked;
 
-  const CatTile({
+  const CategoryTile({
     super.key,
     required this.catName,
     required this.onEdit,
@@ -24,8 +23,15 @@ class CatTile extends StatelessWidget {
   });
 
   @override
+  State<CategoryTile> createState() => _CategoryTileState();
+}
+
+class _CategoryTileState extends State<CategoryTile> {
+  bool showCategoryOption = true; //for hiding options when expanded
+
+  @override
   Widget build(BuildContext context) {
-    List<Bakeds?> categoryMenu = baked.where((b) => b!.category == catName).toList();
+    List<Bakeds?> categoryMenu = widget.baked.where((b) => b!.category == widget.catName).toList();
     return Card(
       elevation: 0,
       color: Colors.transparent,
@@ -53,7 +59,7 @@ class CatTile extends StatelessWidget {
                   title: Center(
                     child: Text(
                       textAlign: TextAlign.center,
-                      catName,
+                      widget.catName,
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -68,16 +74,18 @@ class CatTile extends StatelessWidget {
                       primary: false,
                       padding: EdgeInsets.zero,
                       itemBuilder: (context, index) {
-                        return ProductTile(
+                        return BakedTile(
                           prod: categoryMenu[index],
-                          onTap: () {},
+                          onTap: () {
+                            showCategoryOption = !showCategoryOption; //change the visibility of options button
+                          },
                           onEdit: () => Navigator.push(
                             context,
                             MaterialPageRoute(
                               //calling ProdPage while sending prod values
                               builder: (context) => EditProdPage(
                                 prod: categoryMenu[index],
-                                category: catName,
+                                category: widget.catName,
                                 isSaved: false,
                               ),
                             ),
@@ -87,7 +95,7 @@ class CatTile extends StatelessWidget {
                             showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                      backgroundColor: Theme.of(context).colorScheme.tertiary,
+                                      backgroundColor: Colors.white,
                                       content: Text(
                                         "Do you want to delete product named '" + categoryMenu[index]!.name + "'?",
                                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -104,7 +112,7 @@ class CatTile extends StatelessWidget {
                                                 FirebaseFirestore.instance
                                                     .collection('users')
                                                     .doc(user!.uid)
-                                                    .collection(catName)
+                                                    .collection(widget.catName)
                                                     .where('name', isEqualTo: categoryMenu[index]!.name)
                                                     .get()
                                                     .then(
@@ -158,7 +166,7 @@ class CatTile extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           //calling AddProduct while sending prod name
-                          builder: (context) => AddProduct(category: catName),
+                          builder: (context) => AddProduct(category: widget.catName),
                         ),
                       ),
                       child: const Icon(
@@ -178,25 +186,31 @@ class CatTile extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ElevatedButton(
-                    onPressed: onEdit,
-                    child: const Icon(Icons.edit),
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(18),
-                      backgroundColor: Colors.grey.shade400,
-                      //foregroundColor: Colors.red, // <-- Splash color
+                  Visibility(
+                    visible: showCategoryOption,
+                    child: ElevatedButton(
+                      onPressed: widget.onEdit,
+                      child: const Icon(Icons.edit),
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(18),
+                        backgroundColor: Colors.grey.shade400,
+                        //foregroundColor: Colors.red, // <-- Splash color
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: onDel,
-                    child: const Icon(Icons.close_rounded),
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(18),
-                      backgroundColor: Theme.of(context).colorScheme.secondary, // <-- Button color
-                      //foregroundColor: Colors.red, // <-- Splash color
+                  Visibility(
+                    visible: showCategoryOption,
+                    child: ElevatedButton(
+                      onPressed: widget.onDel,
+                      child: const Icon(Icons.close_rounded),
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(18),
+                        backgroundColor: Theme.of(context).colorScheme.secondary, // <-- Button color
+                        //foregroundColor: Colors.red, // <-- Splash color
+                      ),
                     ),
                   ),
                 ],
