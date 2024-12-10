@@ -45,22 +45,22 @@ class BakedTile extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: onEdit,
-                child: const Icon(Icons.edit),
+                child: const Icon(Icons.edit, color: Colors.black),
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
                   //padding: const EdgeInsets.all(5),
-                  backgroundColor: Theme.of(context).colorScheme.secondary, // <-- Button color
+                  backgroundColor: Colors.grey.shade400, // <-- Button color
                   //foregroundColor: Colors.red, // <-- Splash color
                 ),
               ),
               //const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: onDel,
-                child: const Icon(Icons.close_rounded),
+                child: const Icon(Icons.close_rounded, color: Colors.black),
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
                   //padding: const EdgeInsets.all(5),
-                  backgroundColor: Theme.of(context).colorScheme.secondary, // <-- Button color
+                  backgroundColor: Colors.grey.shade400, // <-- Button color
                   //foregroundColor: Colors.red, // <-- Splash color
                 ),
               ),

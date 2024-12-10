@@ -240,6 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Column(
                           children: [
                             RadioListTile(
+                              activeColor: Colors.black,
                               title: const Text("User"),
                               value: "user",
                               groupValue: type,

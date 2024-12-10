@@ -29,10 +29,29 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
         bool value = await confirmPopUp(context);
         if (value) {
           navigator.pop(result);
+          navigator.pop(result);
         }
       },
       child: Scaffold(
         appBar: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SettingsPage())),
+              icon: const Icon(Icons.account_circle, color: Colors.black),
+            ),
+            Text(
+              "Hello " + fname,
+              style: const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            IconButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPage())),
+              icon: const Icon(Icons.add_shopping_cart, color: Colors.black),
+            ),
+          ],
           backgroundColor: const Color(0xffd1a271),
         ),
         drawer: const MyDrawer(),

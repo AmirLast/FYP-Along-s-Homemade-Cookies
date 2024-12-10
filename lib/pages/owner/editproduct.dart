@@ -68,7 +68,10 @@ class _EditProdPageState extends State<EditProdPage> {
       builder: (context) => CupertinoActionSheet(
         actions: [
           CupertinoActionSheetAction(
-            child: const Text('Photo Gallery'),
+            child: const Text(
+              'Photo Gallery',
+              style: TextStyle(color: Colors.black),
+            ),
             onPressed: () {
               // close the options modal
               Navigator.of(context).pop();
@@ -77,7 +80,10 @@ class _EditProdPageState extends State<EditProdPage> {
             },
           ),
           CupertinoActionSheetAction(
-            child: const Text('Camera'),
+            child: const Text(
+              'Camera',
+              style: TextStyle(color: Colors.black),
+            ),
             onPressed: () {
               // close the options modal
               Navigator.of(context).pop();
@@ -139,7 +145,8 @@ class _EditProdPageState extends State<EditProdPage> {
         ),
       );
       setState(() {
-        src = "";
+        src =
+            "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637";
         isLoading = false;
       });
     }
@@ -285,42 +292,18 @@ class _EditProdPageState extends State<EditProdPage> {
 
                             const SizedBox(height: 30),
 
-                            Row(
-                              children: [
-                                MaterialButton(
-                                  child: Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: const Text('Change Product Image')),
-                                  onPressed: showOptions,
-                                ),
-                                const SizedBox(width: 30),
-                                MaterialButton(
-                                    child: Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: _image == null ? Colors.grey.shade400 : Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Text(
-                                        'Remove Picture',
-                                        style: TextStyle(
-                                          color: _image == null ? Colors.black.withOpacity(0.4) : null,
-                                        ),
-                                      ),
-                                    ),
-                                    onPressed: _image == null
-                                        ? null
-                                        : () {
-                                            setState(() {
-                                              _image = null;
-                                            });
-                                          })
-                              ],
+                            MaterialButton(
+                              child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Text('Change Product Image')),
+                              onPressed: showOptions,
                             ),
+
+                            const SizedBox(height: 20),
 
                             //image of category
                             SizedBox(
@@ -347,6 +330,33 @@ class _EditProdPageState extends State<EditProdPage> {
                               ),
                             ),
                             //input file sendiri or use default image for now
+
+                            const SizedBox(height: 20),
+
+                            //button to remove picture chosen
+                            MaterialButton(
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: _image == null ? Colors.grey.shade400 : Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  'Remove Picture',
+                                  style: TextStyle(
+                                    color: _image == null ? Colors.black.withOpacity(0.4) : null,
+                                  ),
+                                ),
+                              ),
+                              onPressed: _image == null
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        _image = null;
+                                      });
+                                    },
+                            ),
+
                             const SizedBox(height: 30),
 
                             //save button
@@ -376,7 +386,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                         showDialog(
                                             context: context,
                                             builder: (context) => AlertDialog(
-                                                  backgroundColor: Theme.of(context).colorScheme.tertiary,
+                                                  backgroundColor: Colors.white,
                                                   content: const Text(
                                                     "Save changes?",
                                                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -451,7 +461,11 @@ class _EditProdPageState extends State<EditProdPage> {
 
                                                                 //go back to menu page
                                                                 Navigator.pop(context);
+                                                                //pop save changes dialogue
                                                                 Navigator.pop(context);
+                                                                //pop edit page
+                                                                Navigator.pop(context);
+                                                                //pop old menu page
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(

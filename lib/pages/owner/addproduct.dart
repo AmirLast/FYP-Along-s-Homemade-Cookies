@@ -158,14 +158,16 @@ class _AddProductState extends State<AddProduct> {
                             ),
                             child: const Text('Select Product Image')),
                         onPressed: () async {
-                          setState(() {
-                            imageObj?.showOptions(context).then((value) {
+                          imageObj?.showOptions(context).then((value) {
+                            setState(() {
                               _image = value;
-                              //
                             });
                           });
                         },
                       ),
+
+                      const SizedBox(height: 20),
+
                       SizedBox(
                         height: 150,
                         width: 150,

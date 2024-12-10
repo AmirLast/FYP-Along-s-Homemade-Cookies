@@ -27,8 +27,6 @@ class CategoryTile extends StatefulWidget {
 }
 
 class _CategoryTileState extends State<CategoryTile> {
-  bool showCategoryOption = true; //for hiding options when expanded
-
   @override
   Widget build(BuildContext context) {
     List<Bakeds?> categoryMenu = widget.baked.where((b) => b!.category == widget.catName).toList();
@@ -76,9 +74,7 @@ class _CategoryTileState extends State<CategoryTile> {
                       itemBuilder: (context, index) {
                         return BakedTile(
                           prod: categoryMenu[index],
-                          onTap: () {
-                            showCategoryOption = !showCategoryOption; //change the visibility of options button
-                          },
+                          onTap: () {},
                           onEdit: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -172,10 +168,11 @@ class _CategoryTileState extends State<CategoryTile> {
                       child: const Icon(
                         Icons.add_rounded,
                         size: 35,
+                        color: Colors.black,
                       ),
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
-                        backgroundColor: Theme.of(context).colorScheme.secondary, // <-- Button color
+                        backgroundColor: Colors.grey.shade400, // <-- Button color
                         //foregroundColor: Colors.red, // <-- Splash color
                       ),
                     ),
@@ -186,31 +183,25 @@ class _CategoryTileState extends State<CategoryTile> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Visibility(
-                    visible: showCategoryOption,
-                    child: ElevatedButton(
-                      onPressed: widget.onEdit,
-                      child: const Icon(Icons.edit),
-                      style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(18),
-                        backgroundColor: Colors.grey.shade400,
-                        //foregroundColor: Colors.red, // <-- Splash color
-                      ),
+                  ElevatedButton(
+                    onPressed: widget.onEdit,
+                    child: const Icon(Icons.edit, color: Colors.black),
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(18),
+                      backgroundColor: Colors.grey.shade400,
+                      //foregroundColor: Colors.red, // <-- Splash color
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Visibility(
-                    visible: showCategoryOption,
-                    child: ElevatedButton(
-                      onPressed: widget.onDel,
-                      child: const Icon(Icons.close_rounded),
-                      style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(18),
-                        backgroundColor: Theme.of(context).colorScheme.secondary, // <-- Button color
-                        //foregroundColor: Colors.red, // <-- Splash color
-                      ),
+                  ElevatedButton(
+                    onPressed: widget.onDel,
+                    child: const Icon(Icons.close_rounded, color: Colors.black),
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(18),
+                      backgroundColor: Colors.grey.shade400, // <-- Button color
+                      //foregroundColor: Colors.red, // <-- Splash color
                     ),
                   ),
                 ],
