@@ -67,7 +67,7 @@ class _AddCategoryState extends State<AddCategory> {
         width: MediaQuery.of(context).size.width, //max width for current phone
         decoration: show.showLogo(),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 60),
             Padding(
