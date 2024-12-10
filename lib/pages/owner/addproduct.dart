@@ -2,13 +2,14 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
-import 'package:fyp/models/imageclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
+import 'package:image_picker/image_picker.dart';
 //import 'package:image_picker/image_picker.dart'; dah boleh delete ke?
 
 class AddProduct extends StatefulWidget {
@@ -28,9 +29,65 @@ class _AddProductState extends State<AddProduct> {
   }
 
   //uppercase first letter-----------------------------------------
-  //untuk image picker
+  //untuk bahagian upload image-----------------------------------------------------
   File? _image;
-  Imageclass? imageObj;
+  final picker = ImagePicker();
+
+  //Image Picker function to get image from gallery
+  Future getImageFromGallery() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
+  }
+
+  //Image Picker function to get image from camera
+  Future getImageFromCamera() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
+  }
+
+  Future showOptions() async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            child: const Text(
+              'Photo Gallery',
+              style: TextStyle(color: Colors.black),
+            ),
+            onPressed: () {
+              // close the options modal
+              Navigator.of(context).pop();
+              // get image from gallery
+              getImageFromGallery();
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: const Text(
+              'Camera',
+              style: TextStyle(color: Colors.black),
+            ),
+            onPressed: () {
+              // close the options modal
+              Navigator.of(context).pop();
+              // get image from camera
+              getImageFromCamera();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+  //bahagian upload imej-----------------------------------------------------------------------
 
   //text editing controller
   late TextEditingController descController;
@@ -157,13 +214,7 @@ class _AddProductState extends State<AddProduct> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Text('Select Product Image')),
-                        onPressed: () async {
-                          imageObj?.showOptions(context).then((value) {
-                            setState(() {
-                              _image = value;
-                            });
-                          });
-                        },
+                        onPressed: showOptions,
                       ),
 
                       const SizedBox(height: 20),

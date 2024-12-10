@@ -8,7 +8,6 @@ import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
-import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -41,7 +40,7 @@ class _EditProdPageState extends State<EditProdPage> {
   File? _image;
   final picker = ImagePicker();
 
-//Image Picker function to get image from gallery
+  //Image Picker function to get image from gallery
   Future getImageFromGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -52,7 +51,7 @@ class _EditProdPageState extends State<EditProdPage> {
     });
   }
 
-//Image Picker function to get image from camera
+  //Image Picker function to get image from camera
   Future getImageFromCamera() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
     setState(() {
@@ -112,7 +111,7 @@ class _EditProdPageState extends State<EditProdPage> {
     nameController = TextEditingController();
     priceController = TextEditingController();
     downloadUrl();
-    changedData();
+    changedData(widget.isSaved);
   }
 
   @override
@@ -153,8 +152,8 @@ class _EditProdPageState extends State<EditProdPage> {
   } //Url of product image so it can be displayed------------------------------------------
 
   //kalau ada changed data-------------------------
-  void changedData() {
-    !widget.isSaved
+  void changedData(isSaved) {
+    !isSaved
         ? null
         : ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -172,436 +171,463 @@ class _EditProdPageState extends State<EditProdPage> {
   bool isSaveEnabled() {
     return (nameController.text == '' && descController.text == '' && priceController.text == '' && _image == null);
   }
+
   //enable save kalau ada changes in textcontroller atau imej je--------------------------------
+  //confirm pop up kalau ada unsaved data
+  confirmPopUp(context) {
+    //confirm pop up
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        content: const Text(
+          "Are you sure you want to exit? There is unsaved changes",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                iconSize: 50,
+                color: Colors.green,
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.check_circle),
+              ),
+              IconButton(
+                  iconSize: 50,
+                  color: Colors.red,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.cancel)),
+            ],
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return isLoading
         ? const CircularProgressIndicator(color: Colors.black)
-        : Scaffold(
-            backgroundColor: const Color(0xffd1a271),
-            appBar: AppBar(
-              backgroundColor: const Color(0xffB67F5F),
-              title: Center(
-                child: Text(
-                  textAlign: TextAlign.center,
-                  "Product '" + widget.prod!.name + "'",
-                  style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () => {},
-                  icon: const Icon(
-                    Icons.more_vert,
-                    color: Colors.transparent,
+        : PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) async {
+              if (didPop) {
+                return;
+              }
+              if (isSaveEnabled()) {
+                Navigator.pop(context);
+              } else {
+                confirmPopUp(context);
+              }
+            },
+            child: Scaffold(
+              backgroundColor: const Color(0xffd1a271),
+              appBar: AppBar(
+                backgroundColor: const Color(0xffB67F5F),
+                title: Center(
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    "Product '" + widget.prod!.name + "'",
+                    style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ),
-              ],
-            ),
-            drawer: const MyDrawer(),
-            body: SingleChildScrollView(
-              child: Container(
-                width: MediaQuery.of(context).size.width, //max width for current phone
-                decoration: show.showLogo(),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 60),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.white,
-                        ),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 30),
+                actions: [
+                  IconButton(
+                    onPressed: () => {},
+                    icon: const Icon(
+                      Icons.more_vert,
+                      color: Colors.transparent,
+                    ),
+                  ),
+                ],
+              ),
+              drawer: const MyDrawer(),
+              body: SingleChildScrollView(
+                child: Container(
+                  width: MediaQuery.of(context).size.width, //max width for current phone
+                  decoration: show.showLogo(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 60),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
+                          ),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 30),
 
-                            const Text(
-                              "Edit product information",
-                              style: TextStyle(
-                                fontSize: 25,
-                                color: Colors.black,
+                              const Text(
+                                "Edit product information",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
 
-                            const SizedBox(height: 60),
+                              const SizedBox(height: 60),
 
-                            //name of product
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                "Product Name",
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              //name of product
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Product Name",
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
                               ),
-                            ),
-                            MyTextField(
-                              controller: nameController,
-                              caps: TextCapitalization.words,
-                              inputType: TextInputType.text,
-                              labelText: widget.prod!.name,
-                              hintText: widget.prod!.name,
-                              obscureText: false,
-                              isEnabled: true,
-                              isShowhint: true,
-                            ),
-
-                            const SizedBox(height: 30),
-
-                            //description of category
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                "Description",
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              MyTextField(
+                                controller: nameController,
+                                caps: TextCapitalization.words,
+                                inputType: TextInputType.text,
+                                labelText: widget.prod!.name,
+                                hintText: widget.prod!.name,
+                                obscureText: false,
+                                isEnabled: true,
+                                isShowhint: true,
                               ),
-                            ),
-                            MyTextField(
-                              controller: descController,
-                              caps: TextCapitalization.none,
-                              inputType: TextInputType.text,
-                              labelText: widget.prod!.description,
-                              hintText: widget.prod!.description,
-                              obscureText: false,
-                              isEnabled: true,
-                              isShowhint: true,
-                            ),
 
-                            const SizedBox(height: 30),
+                              const SizedBox(height: 30),
 
-                            //price of category
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                "Price (RM)",
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              //description of category
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Description",
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
                               ),
-                            ),
-                            MyTextField(
-                              controller: priceController,
-                              caps: TextCapitalization.none,
-                              inputType: TextInputType.number,
-                              labelText: widget.prod!.price.toStringAsFixed(2),
-                              hintText: widget.prod!.price.toStringAsFixed(2),
-                              obscureText: false,
-                              isEnabled: true,
-                              isShowhint: true,
-                            ),
+                              MyTextField(
+                                controller: descController,
+                                caps: TextCapitalization.none,
+                                inputType: TextInputType.text,
+                                labelText: widget.prod!.description,
+                                hintText: widget.prod!.description,
+                                obscureText: false,
+                                isEnabled: true,
+                                isShowhint: true,
+                              ),
 
-                            const SizedBox(height: 30),
+                              const SizedBox(height: 30),
 
-                            MaterialButton(
-                              child: Container(
+                              //price of category
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Price (RM)",
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              MyTextField(
+                                controller: priceController,
+                                caps: TextCapitalization.none,
+                                inputType: TextInputType.number,
+                                labelText: widget.prod!.price.toStringAsFixed(2),
+                                hintText: widget.prod!.price.toStringAsFixed(2),
+                                obscureText: false,
+                                isEnabled: true,
+                                isShowhint: true,
+                              ),
+
+                              const SizedBox(height: 30),
+
+                              MaterialButton(
+                                child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Text('Change Product Image')),
+                                onPressed: showOptions,
+                              ),
+
+                              const SizedBox(height: 20),
+
+                              //image of category
+                              SizedBox(
+                                height: 150,
+                                width: 150,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 4,
+                                    ),
+                                  ),
+                                  child: _image == null
+                                      //kalau belum pick show current
+                                      ? Image.network(
+                                          src,
+                                          fit: BoxFit.cover,
+                                        )
+                                      //kalau dah pick show chosen image
+                                      : Image.file(
+                                          _image!,
+                                          fit: BoxFit.cover,
+                                        ),
+                                ),
+                              ),
+                              //input file sendiri or use default image for now
+
+                              const SizedBox(height: 20),
+
+                              //button to remove picture chosen
+                              MaterialButton(
+                                child: Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[300],
+                                    color: _image == null ? Colors.grey.shade400 : Colors.grey[300],
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: const Text('Change Product Image')),
-                              onPressed: showOptions,
-                            ),
-
-                            const SizedBox(height: 20),
-
-                            //image of category
-                            SizedBox(
-                              height: 150,
-                              width: 150,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 4,
-                                  ),
-                                ),
-                                child: _image == null
-                                    //kalau belum pick show current
-                                    ? Image.network(
-                                        src,
-                                        fit: BoxFit.cover,
-                                      )
-                                    //kalau dah pick show chosen image
-                                    : Image.file(
-                                        _image!,
-                                        fit: BoxFit.cover,
-                                      ),
-                              ),
-                            ),
-                            //input file sendiri or use default image for now
-
-                            const SizedBox(height: 20),
-
-                            //button to remove picture chosen
-                            MaterialButton(
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: _image == null ? Colors.grey.shade400 : Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  'Remove Picture',
-                                  style: TextStyle(
-                                    color: _image == null ? Colors.black.withOpacity(0.4) : null,
-                                  ),
-                                ),
-                              ),
-                              onPressed: _image == null
-                                  ? null
-                                  : () {
-                                      setState(() {
-                                        _image = null;
-                                      });
-                                    },
-                            ),
-
-                            const SizedBox(height: 30),
-
-                            //save button
-                            MaterialButton(
-                                child: Container(
-                                  padding: const EdgeInsets.all(25),
-                                  margin: const EdgeInsets.symmetric(horizontal: 25),
-                                  decoration: BoxDecoration(
-                                    color: isSaveEnabled() ? Colors.grey.shade400 : Colors.black,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "Save",
-                                      style: TextStyle(
-                                        //fontWeight: FontWeight.bold,
-                                        color: isSaveEnabled() ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
-                                        fontSize: 20,
-                                      ),
+                                  child: Text(
+                                    'Remove Picture',
+                                    style: TextStyle(
+                                      color: _image == null ? Colors.black.withOpacity(0.4) : null,
                                     ),
                                   ),
                                 ),
-                                onPressed: isSaveEnabled()
+                                onPressed: _image == null
                                     ? null
-                                    : () async {
-                                        //showdialog confirm save
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                                  backgroundColor: Colors.white,
-                                                  content: const Text(
-                                                    "Save changes?",
-                                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                                  ),
-                                                  actions: [
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                      children: [
-                                                        IconButton(
-                                                          iconSize: 50,
-                                                          color: Colors.green,
-                                                          onPressed: () async {
-                                                            //code here
-                                                            String capitalizedSentence;
-                                                            String prodPrice;
-                                                            List<String> words;
-                                                            //set name
-                                                            nameController.text == ""
-                                                                ? capitalizedSentence = widget.prod!.name
-                                                                : {
-                                                                    words = nameController.text.split(" "),
-                                                                    capitalizedSentence = words.map((word) => upperCase(word)).join(" ")
-                                                                  };
+                                    : () {
+                                        setState(() {
+                                          _image = null;
+                                        });
+                                      },
+                              ),
 
-                                                            //fix price into 0.00 format
-                                                            priceController.text == ""
-                                                                ? prodPrice = widget.prod!.price.toStringAsFixed(2)
-                                                                : prodPrice = double.parse(priceController.text).toStringAsFixed(2);
+                              const SizedBox(height: 30),
 
-                                                            User? user = AuthService().getCurrentUser();
-                                                            //set file path for current user folder in firebase storage
-                                                            String path = '${user?.uid}/${widget.category}/${nameController.text}';
-                                                            //cane nak cek product tu dah ade sama nama ke???
-
-                                                            try {
-                                                              //upload gambar dalam firebase storage
-                                                              if (_image != null) {
-                                                                FirebaseStorage.instance.ref().child(path).putFile(_image!);
-                                                              }
-                                                              //update prod dalam collection categories kat FBFS
-                                                              FirebaseFirestore.instance
-                                                                  .collection('users')
-                                                                  .doc(user?.uid)
-                                                                  .collection(widget.category)
-                                                                  .where('name', isEqualTo: widget.prod!.name)
-                                                                  .get()
-                                                                  .then((querySnapshot) {
-                                                                for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-                                                                  documentSnapshot.reference.update({
-                                                                    "description": descController.text == ""
-                                                                        ? widget.prod!.description
-                                                                        : descController.text,
-                                                                    "imagePath": path,
-                                                                    "name": capitalizedSentence,
-                                                                    "price": prodPrice,
-                                                                  });
-                                                                }
-                                                              });
-
-                                                              // loading circle-------------------------
-                                                              showDialog(
-                                                                context: context,
-                                                                builder: (context) {
-                                                                  return const Center(
-                                                                    child: CircularProgressIndicator(color: Colors.black),
-                                                                  );
-                                                                },
-                                                              );
-                                                              await Future.delayed(const Duration(seconds: 2), () {
-                                                                Navigator.pop(context);
-                                                                //pop loading circle---------
-
-                                                                //go back to menu page
-                                                                Navigator.pop(context);
-                                                                //pop save changes dialogue
-                                                                Navigator.pop(context);
-                                                                //pop edit page
-                                                                Navigator.pop(context);
-                                                                //pop old menu page
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder: (context) => const MenuPage(),
-                                                                  ),
-                                                                );
-                                                              });
-                                                            } on FirebaseException {
-                                                              Navigator.pop(context);
-                                                              //pop loading circle when fail---------
-                                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                                SnackBar(
-                                                                  backgroundColor: Colors.black,
-                                                                  content: Text(
-                                                                    "Fail uploading",
-                                                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                                                    textAlign: TextAlign.center,
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            }
-                                                            // loading circle-------------------------
-                                                            showDialog(
-                                                              context: context,
-                                                              builder: (context) {
-                                                                return const Center(
-                                                                  child: CircularProgressIndicator(color: Colors.black),
-                                                                );
-                                                              },
-                                                            );
-                                                            await Future.delayed(const Duration(seconds: 2), () {
-                                                              Navigator.pop(context);
-                                                              //pop loading circle---------
-                                                              //refresh new menu page
-                                                              Navigator.pop(context);
-                                                              Navigator.pop(context);
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder: (context) => const MenuPage(),
-                                                                ),
-                                                              );
-                                                            });
-                                                          },
-                                                          icon: const Icon(Icons.check_circle),
-                                                        ),
-                                                        IconButton(
+                              //save button
+                              MaterialButton(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(25),
+                                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                                    decoration: BoxDecoration(
+                                      color: isSaveEnabled() ? Colors.grey.shade400 : Colors.black,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "Save",
+                                        style: TextStyle(
+                                          //fontWeight: FontWeight.bold,
+                                          color: isSaveEnabled() ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: isSaveEnabled()
+                                      ? null
+                                      : () async {
+                                          //showdialog confirm save
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                    backgroundColor: Colors.white,
+                                                    content: const Text(
+                                                      "Save changes?",
+                                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                    ),
+                                                    actions: [
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                        children: [
+                                                          IconButton(
                                                             iconSize: 50,
-                                                            color: Colors.red,
-                                                            onPressed: () => Navigator.pop(context),
-                                                            icon: const Icon(Icons.cancel)),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ));
-                                      }),
+                                                            color: Colors.green,
+                                                            onPressed: () async {
+                                                              //code here
+                                                              String capitalizedSentence;
+                                                              String prodPrice;
+                                                              List<String> words;
+                                                              //set name
+                                                              nameController.text == ""
+                                                                  ? capitalizedSentence = widget.prod!.name
+                                                                  : {
+                                                                      words = nameController.text.split(" "),
+                                                                      capitalizedSentence = words.map((word) => upperCase(word)).join(" ")
+                                                                    };
 
-                            const SizedBox(height: 40),
-                          ],
+                                                              //fix price into 0.00 format
+                                                              priceController.text == ""
+                                                                  ? prodPrice = widget.prod!.price.toStringAsFixed(2)
+                                                                  : prodPrice = double.parse(priceController.text).toStringAsFixed(2);
+
+                                                              User? user = AuthService().getCurrentUser();
+                                                              //set file path for current user folder in firebase storage
+                                                              String path;
+                                                              //no change? use old prod name
+                                                              if (nameController.text == "") {
+                                                                path = '${user?.uid}/${widget.category}/${widget.prod!.name}';
+                                                              } else {
+                                                                path = '${user?.uid}/${widget.category}/${nameController.text}';
+                                                              }
+                                                              //cane nak cek product tu dah ade sama nama ke???
+
+                                                              try {
+                                                                //upload gambar dalam firebase storage
+                                                                if (_image != null) {
+                                                                  FirebaseStorage.instance.ref().child(path).putFile(_image!);
+                                                                }
+                                                                //update prod dalam collection categories kat FBFS
+                                                                FirebaseFirestore.instance
+                                                                    .collection('users')
+                                                                    .doc(user?.uid)
+                                                                    .collection(widget.category)
+                                                                    .where('name', isEqualTo: widget.prod!.name)
+                                                                    .get()
+                                                                    .then((querySnapshot) {
+                                                                  for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                                    documentSnapshot.reference.update({
+                                                                      "description": descController.text == ""
+                                                                          ? widget.prod!.description
+                                                                          : descController.text,
+                                                                      "imagePath": path,
+                                                                      "name": capitalizedSentence,
+                                                                      "price": prodPrice,
+                                                                    });
+                                                                  }
+                                                                });
+
+                                                                // loading circle-------------------------
+                                                                showDialog(
+                                                                  context: context,
+                                                                  builder: (context) {
+                                                                    return const Center(
+                                                                      child: CircularProgressIndicator(color: Colors.black),
+                                                                    );
+                                                                  },
+                                                                );
+                                                                await Future.delayed(const Duration(seconds: 2), () {
+                                                                  Navigator.pop(context);
+                                                                  //pop loading circle---------
+                                                                  Navigator.pop(context);
+                                                                  //pop save changes dialogue
+                                                                  setState(() {
+                                                                    descController.text == "" ? null : changedData(true);
+                                                                    dispose();
+                                                                  });
+                                                                });
+                                                              } on FirebaseException {
+                                                                Navigator.pop(context);
+                                                                //pop loading circle when fail---------
+                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                  SnackBar(
+                                                                    backgroundColor: Colors.black,
+                                                                    content: Text(
+                                                                      "Fail uploading",
+                                                                      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                                                      textAlign: TextAlign.center,
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              }
+                                                            },
+                                                            icon: const Icon(Icons.check_circle),
+                                                          ),
+                                                          IconButton(
+                                                              iconSize: 50,
+                                                              color: Colors.red,
+                                                              onPressed: () => Navigator.pop(context),
+                                                              icon: const Icon(Icons.cancel)),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ));
+                                        }),
+
+                              const SizedBox(height: 40),
+                            ],
+                          ),
                         ),
                       ),
+                      const SizedBox(height: 60),
+                    ],
+                  ),
+                ),
+              ), /*Column(
+          children: [
+            //product image
+            SizedBox(
+                height: 150,
+                width: 150,
+                //if url does not exist display default image
+                child: src == ""
+                    ? Image.network(
+                        "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637")
+                    : Image.network(src)),
+              
+            Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //product name
+                    Text(
+                      widget.prod!.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
-                    const SizedBox(height: 60),
+              
+                    //product price
+                    Text(
+                      'RM' + widget.prod!.price.toString(),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+              
+                    const SizedBox(height: 10),
+              
+                    //product description
+                    Text(widget.prod!.description),
+              
+                    const SizedBox(height: 10),
+                    Divider(color: Colors.grey.shade400),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),
-            ), /*Column(
-        children: [
-          //product image
-          SizedBox(
-              height: 150,
-              width: 150,
-              //if url does not exist display default image
-              child: src == ""
-                  ? Image.network(
-                      "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637")
-                  : Image.network(src)),
-    
-          Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //product name
-                  Text(
-                    widget.prod!.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-    
-                  //product price
-                  Text(
-                    'RM' + widget.prod!.price.toString(),
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                  ),
-    
-                  const SizedBox(height: 10),
-    
-                  //product description
-                  Text(widget.prod!.description),
-    
-                  const SizedBox(height: 10),
-                  Divider(color: Colors.grey.shade400),
-                  const SizedBox(height: 10),
-                ],
-              ),
             ),
-          ),
-    
-          //button -> add to cart
-          MyMenuButton(
-            text: "Add to cart",
-            onPressed: () {
-              // loading circle-------------------------
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return const Center(
-                    child: CircularProgressIndicator(color: Colors.black),
-                  );
-                },
-              );
-              Future.delayed(const Duration(seconds: 2));
-              Navigator.pop(context); //pop loading circle---------
-            },
-          ),
-    
-          const SizedBox(height: 25),
-        ],
-      ),*/
+              
+            //button -> add to cart
+            MyMenuButton(
+              text: "Add to cart",
+              onPressed: () {
+                // loading circle-------------------------
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: Colors.black),
+                    );
+                  },
+                );
+                Future.delayed(const Duration(seconds: 2));
+                Navigator.pop(context); //pop loading circle---------
+              },
+            ),
+              
+            const SizedBox(height: 25),
+          ],
+                ),*/
+            ),
           );
   }
 }

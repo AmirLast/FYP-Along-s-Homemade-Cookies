@@ -33,12 +33,6 @@ class _AuthGateState extends State<AuthGate> {
         type = temp;
         isLoading = false;
       });
-      /*type = temp;
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() {
-          isLoading = false;
-        });
-      });*/
     });
   }
 

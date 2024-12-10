@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/userclass.dart';
@@ -25,27 +26,22 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
         if (didPop) {
           return;
         }
-        final navigator = Navigator.of(context);
-        bool value = await confirmPopUp(context);
-        if (value) {
-          navigator.pop(result);
-          navigator.pop(result);
-        }
+        confirmPopUp(context);
       },
       child: Scaffold(
         appBar: AppBar(
+          title: Text(
+            "Hello " + fname,
+            style: const TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
           actions: [
             IconButton(
-              onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SettingsPage())),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
               icon: const Icon(Icons.account_circle, color: Colors.black),
-            ),
-            Text(
-              "Hello " + fname,
-              style: const TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
             ),
             IconButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPage())),
@@ -59,38 +55,10 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
           width: MediaQuery.of(context).size.width, //max width for current phone
           height: MediaQuery.of(context).size.height, //max width for current phone
           decoration: show.showLogo(),
-          child: Column(
+          child: const Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.max, //max maksudnya penuh container ke?
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SettingsPage())),
-                    icon: const Icon(Icons.account_circle),
-                  ),
-                  Text(
-                    "Hello " + fname,
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPage())),
-                    icon: const Icon(Icons.add_shopping_cart),
-                  ),
-                ],
-              ),
-              const Image(
-                image: AssetImage("lib/images/default_bagel.jpg"),
-                height: 200,
-                width: 300,
-              ),
-
               /*
               List function2 owner yang belum terciptakan
               MyMenuButton(
@@ -119,40 +87,37 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
 }
 
 confirmPopUp(context) {
-  late bool value;
   //confirm pop up
   showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            backgroundColor: Colors.white,
-            content: const Text(
-              "Are you sure you want to exit?",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    context: context,
+    builder: (context) => AlertDialog(
+      backgroundColor: Colors.white,
+      content: const Text(
+        "Are you sure you want to exit?",
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              iconSize: 50,
+              color: Colors.green,
+              onPressed: () {
+                SystemNavigator.pop();
+              },
+              icon: const Icon(Icons.check_circle),
             ),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    iconSize: 50,
-                    color: Colors.green,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      value = true;
-                    },
-                    icon: const Icon(Icons.check_circle),
-                  ),
-                  IconButton(
-                      iconSize: 50,
-                      color: Colors.red,
-                      onPressed: () {
-                        Navigator.pop(context);
-                        value = false;
-                      },
-                      icon: const Icon(Icons.cancel)),
-                ],
-              )
-            ],
-          ));
-  return value;
+            IconButton(
+                iconSize: 50,
+                color: Colors.red,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.cancel)),
+          ],
+        )
+      ],
+    ),
+  );
 }
