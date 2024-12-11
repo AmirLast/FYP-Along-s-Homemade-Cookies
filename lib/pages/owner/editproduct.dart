@@ -30,6 +30,45 @@ class EditProdPage extends StatefulWidget {
 class _EditProdPageState extends State<EditProdPage> {
   //for logo
   final Logo show = Logo();
+
+  //text editing controller
+  late TextEditingController descController;
+  late TextEditingController nameController;
+  late TextEditingController priceController;
+  late String src;
+  late bool isLoading;
+  late String nameHT;
+  late String descHT;
+  late String priceHT;
+
+  @override
+  void initState() {
+    super.initState();
+    isLoading = true;
+    descController = TextEditingController();
+    nameController = TextEditingController();
+    priceController = TextEditingController();
+    inithinttext(widget.prod!.name, widget.prod!.description, widget.prod!.price.toStringAsFixed(2));
+    downloadUrl();
+    changedData(widget.isSaved);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    descController.dispose();
+    nameController.dispose();
+    priceController.dispose();
+  }
+
+  //to initialize hint text--------
+  inithinttext(String name, String desc, String price) {
+    nameHT = name;
+    descHT = desc;
+    priceHT = price;
+  }
+  //to initialize hint text--------
+
   //uppercase first letter-----------------------------------------
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
@@ -96,32 +135,6 @@ class _EditProdPageState extends State<EditProdPage> {
   }
   //bahagian upload imej-----------------------------------------------------------------------
 
-  //text editing controller
-  late TextEditingController descController;
-  late TextEditingController nameController;
-  late TextEditingController priceController;
-  late String src;
-  late bool isLoading;
-
-  @override
-  void initState() {
-    super.initState();
-    isLoading = true;
-    descController = TextEditingController();
-    nameController = TextEditingController();
-    priceController = TextEditingController();
-    downloadUrl();
-    changedData(widget.isSaved);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    descController.dispose();
-    nameController.dispose();
-    priceController.dispose();
-  }
-
   //get Url of product image so it can be displayed------------------------------------------
   void downloadUrl() async {
     var path = widget.prod!.imagePath;
@@ -171,9 +184,9 @@ class _EditProdPageState extends State<EditProdPage> {
   bool isSaveEnabled() {
     return (nameController.text == '' && descController.text == '' && priceController.text == '' && _image == null);
   }
-
   //enable save kalau ada changes in textcontroller atau imej je--------------------------------
-  //confirm pop up kalau ada unsaved data
+
+  //confirm pop up kalau ada unsaved data---------------------------------------
   confirmPopUp(context) {
     //confirm pop up
     showDialog(
@@ -209,7 +222,7 @@ class _EditProdPageState extends State<EditProdPage> {
         ],
       ),
     );
-  }
+  } //----------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -290,8 +303,8 @@ class _EditProdPageState extends State<EditProdPage> {
                                 controller: nameController,
                                 caps: TextCapitalization.words,
                                 inputType: TextInputType.text,
-                                labelText: widget.prod!.name,
-                                hintText: widget.prod!.name,
+                                labelText: nameHT,
+                                hintText: nameHT,
                                 obscureText: false,
                                 isEnabled: true,
                                 isShowhint: true,
@@ -311,8 +324,8 @@ class _EditProdPageState extends State<EditProdPage> {
                                 controller: descController,
                                 caps: TextCapitalization.none,
                                 inputType: TextInputType.text,
-                                labelText: widget.prod!.description,
-                                hintText: widget.prod!.description,
+                                labelText: descHT,
+                                hintText: descHT,
                                 obscureText: false,
                                 isEnabled: true,
                                 isShowhint: true,
@@ -332,8 +345,8 @@ class _EditProdPageState extends State<EditProdPage> {
                                 controller: priceController,
                                 caps: TextCapitalization.none,
                                 inputType: TextInputType.number,
-                                labelText: widget.prod!.price.toStringAsFixed(2),
-                                hintText: widget.prod!.price.toStringAsFixed(2),
+                                labelText: priceHT,
+                                hintText: priceHT,
                                 obscureText: false,
                                 isEnabled: true,
                                 isShowhint: true,
@@ -477,8 +490,18 @@ class _EditProdPageState extends State<EditProdPage> {
                                                               //cane nak cek product tu dah ade sama nama ke???
 
                                                               try {
+                                                                // loading circle-------------------------
+                                                                showDialog(
+                                                                  context: context,
+                                                                  builder: (context) {
+                                                                    return const Center(
+                                                                      child: CircularProgressIndicator(color: Colors.black),
+                                                                    );
+                                                                  },
+                                                                );
                                                                 //upload gambar dalam firebase storage
                                                                 if (_image != null) {
+                                                                  FirebaseStorage.instance.ref().child(path).delete();
                                                                   FirebaseStorage.instance.ref().child(path).putFile(_image!);
                                                                 }
                                                                 //update prod dalam collection categories kat FBFS
@@ -501,26 +524,24 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                   }
                                                                 });
 
-                                                                // loading circle-------------------------
-                                                                showDialog(
-                                                                  context: context,
-                                                                  builder: (context) {
-                                                                    return const Center(
-                                                                      child: CircularProgressIndicator(color: Colors.black),
-                                                                    );
-                                                                  },
-                                                                );
                                                                 await Future.delayed(const Duration(seconds: 2), () {
                                                                   Navigator.pop(context);
                                                                   //pop loading circle---------
                                                                   Navigator.pop(context);
                                                                   //pop save changes dialogue
                                                                   setState(() {
-                                                                    descController.text == "" ? null : changedData(true);
+                                                                    changedData(true);
+                                                                    inithinttext(
+                                                                        capitalizedSentence,
+                                                                        descController.text == ""
+                                                                            ? widget.prod!.description
+                                                                            : descController.text,
+                                                                        prodPrice);
+                                                                    _image = null;
                                                                     dispose();
                                                                   });
                                                                 });
-                                                              } on FirebaseException {
+                                                              } catch (e) {
                                                                 Navigator.pop(context);
                                                                 //pop loading circle when fail---------
                                                                 ScaffoldMessenger.of(context).showSnackBar(
