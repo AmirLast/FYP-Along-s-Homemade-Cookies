@@ -1,11 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/images/assets.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/registerpage2.dart';
-import 'package:fyp/services/auth/auth_service.dart';
 import 'package:fyp/services/auth/checkpass.dart';
 import '../../components/my_textfield.dart';
 
@@ -21,13 +17,13 @@ class _RegisterPageState extends State<RegisterPage> {
   final Logo show = Logo();
 //text editing controller
   late TextEditingController confirmpasswordController;
-  late bool confirmpasswordVisibility;
   late TextEditingController emailController;
   late TextEditingController fnameController;
   late TextEditingController lnameController;
   late TextEditingController phoneController;
   late TextEditingController passwordController;
   late bool passwordVisibility; //for?
+  late bool confirmpasswordVisibility; //for?
   late TextEditingController shopController;
   bool isOwner = false; //default value
   String type = "user"; //default value
@@ -42,6 +38,8 @@ class _RegisterPageState extends State<RegisterPage> {
     phoneController = TextEditingController();
     passwordController = TextEditingController();
     shopController = TextEditingController();
+    passwordVisibility = false;
+    confirmpasswordVisibility = false;
   }
 
   @override
@@ -55,41 +53,6 @@ class _RegisterPageState extends State<RegisterPage> {
     phoneController.dispose();
     shopController.dispose();
   }
-
-  Future<User?> register({
-    //for creting user
-    required String email,
-    required String password,
-  }) async {
-    // loading circle
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(color: Colors.black),
-        );
-      },
-    );
-    // get auth service
-    final _authService = AuthService();
-    User? user;
-    //create user
-    await _authService.signUpWithEmailPassword(
-      email,
-      password,
-      context,
-    );
-    user = _authService.getCurrentUser();
-
-    return user;
-  }
-
-  //uppercase first letter-----------------------------------------
-  String upperCase(String toEdit) {
-    return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
-  }
-
-  //uppercase first letter-----------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -208,29 +171,81 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(height: 30),
 
                         //password
-                        MyTextField(
-                          controller: passwordController,
-                          caps: TextCapitalization.none,
-                          inputType: TextInputType.visiblePassword,
-                          labelText: "Password",
-                          hintText: "",
-                          obscureText: true,
-                          isEnabled: true,
-                          isShowhint: false,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                          child: TextField(
+                            cursorColor: Colors.black,
+                            autofocus: false,
+                            enabled: true, //get this value
+                            controller: passwordController,
+                            keyboardType: TextInputType.visiblePassword,
+                            obscureText: passwordVisibility, //initially false
+                            textCapitalization: TextCapitalization.none,
+                            decoration: InputDecoration(
+                              disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    passwordVisibility = !passwordVisibility;
+                                  });
+                                },
+                                icon: Icon(passwordVisibility ? Icons.visibility : Icons.visibility_off),
+                                color: Colors.black,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade400,
+                              labelText: "Password",
+                              floatingLabelStyle: const TextStyle(color: Colors.black),
+                              floatingLabelBehavior: null,
+                              hintText: "",
+                              hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
+                            ),
+                          ),
                         ),
 
                         const SizedBox(height: 30),
 
                         //confirm password
-                        MyTextField(
-                          controller: confirmpasswordController,
-                          caps: TextCapitalization.none,
-                          inputType: TextInputType.visiblePassword,
-                          labelText: "Confirm Password",
-                          hintText: "",
-                          obscureText: true,
-                          isEnabled: true,
-                          isShowhint: false,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                          child: TextField(
+                            cursorColor: Colors.black,
+                            autofocus: false,
+                            enabled: true, //get this value
+                            controller: confirmpasswordController,
+                            keyboardType: TextInputType.visiblePassword,
+                            obscureText: confirmpasswordVisibility, //initially false
+                            textCapitalization: TextCapitalization.none,
+                            decoration: InputDecoration(
+                              disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    confirmpasswordVisibility = !confirmpasswordVisibility;
+                                  });
+                                },
+                                icon: Icon(confirmpasswordVisibility ? Icons.visibility : Icons.visibility_off),
+                                color: Colors.black,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade400,
+                              labelText: "Confirm Password",
+                              floatingLabelStyle: const TextStyle(color: Colors.black),
+                              floatingLabelBehavior: null,
+                              hintText: "",
+                              hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
+                            ),
+                          ),
                         ),
 
                         const SizedBox(
@@ -306,7 +321,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             //some value for error checking---------
                             var isBlank = false; //blank means no error
                             String error = ""; //the error description
-                            User? user;
 
                             //check password strength
                             List passStrength = [false, false, false, false]; //false for 4 category
@@ -368,41 +382,31 @@ class _RegisterPageState extends State<RegisterPage> {
                               );
                               return;
                             } else {
-                              // try { register the user
-                              user = await register(email: emailController.text, password: passwordController.text);
-
-                              var userSU = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
-
-                              user!.updatePhotoURL(defProfile); //set default user pfp
-                              //name the userfile as uid
-                              userSU.doc(user.uid).set({
-                                //set all data that user and owner have in common
-                                "fname": upperCase(fnameController.text),
-                                "lname": upperCase(lnameController.text),
-                                "phone": phoneController.text,
-                                "type": type,
-                                "passStrength": true, //checked hence true
-                                //owner need array of categories
-                                "categories": [],
-                                //for category edit assist
-                                "currentdir": "",
-                                "address": "", //for delivery
-                              });
-                              if (type == 'owner') {
-                                userSU.doc(user.uid).set(
-                                    //add other data that only owner have
-                                    {'shop': upperCase(shopController.text)},
-                                    SetOptions(merge: true)).then((value) {
-                                  //Do your stuff.
-                                });
-                              }
-                              //if success then go to next page
-                              Future.delayed(const Duration(seconds: 2), () {
+                              // loading circle-----
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(color: Colors.black),
+                                  );
+                                },
+                              );
+                              // loading circle-----
+                              Future.delayed(const Duration(seconds: 1), () {
                                 Navigator.of(context).pop();
-                                // pop loading circle if success register
-                                Navigator.of(context).pushReplacement(
+                                // pop loading circle
+                                Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const Register2Page(),
+                                    builder: (context) => Register2Page(
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                      fname: fnameController.text,
+                                      lname: lnameController.text,
+                                      type: type,
+                                      shop: isOwner ? shopController.text : "",
+                                      phone: phoneController.text,
+                                      passStrength: true,
+                                    ),
                                   ),
                                 );
                               });

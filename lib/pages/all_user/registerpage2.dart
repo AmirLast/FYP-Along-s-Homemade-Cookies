@@ -2,13 +2,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/models/userclass.dart';
+import 'package:fyp/images/assets.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/verifyemailpage.dart';
+import 'package:fyp/services/auth/auth_service.dart';
 import '../../components/my_textfield.dart';
 
 class Register2Page extends StatefulWidget {
-  const Register2Page({super.key});
+  final String email;
+  final String password;
+  final String fname;
+  final String lname;
+  final String type;
+  final String shop;
+  final String phone;
+  final bool passStrength;
+
+  const Register2Page({
+    super.key,
+    required this.email,
+    required this.password,
+    required this.fname,
+    required this.lname,
+    required this.type,
+    required this.shop,
+    required this.phone,
+    required this.passStrength,
+  });
 
   @override
   State<Register2Page> createState() => _Register2PageState();
@@ -37,6 +57,39 @@ class _Register2PageState extends State<Register2Page> {
     postcodeController.dispose();
     stateController.dispose();
   }
+
+  Future<User?> register({
+    //for creting user
+    required String email,
+    required String password,
+  }) async {
+    // loading circle
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(color: Colors.black),
+        );
+      },
+    );
+    // get auth service
+    final _authService = AuthService();
+    User? user;
+    //create user
+    await _authService.signUpWithEmailPassword(
+      email,
+      password,
+      context,
+    );
+    user = _authService.getCurrentUser();
+    return user;
+  }
+
+  //uppercase first letter-----------------------------------------
+  String upperCase(String toEdit) {
+    return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
+  }
+  //uppercase first letter-----------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -179,19 +232,73 @@ class _Register2PageState extends State<Register2Page> {
                               );
                               return;
                             } else {
-                              User user = UserNow.usernow!.user;
-                              var userSU = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
-                              //name the userfile as uid
-                              userSU.doc(user.uid).update({
-                                "address": address1Controller.text + ", " + postcodeController.text + ", " + stateController.text,
-                              });
-
-                              await Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                  builder: (context) => const VerifyEmailPage(),
-                                ),
-                                (r) => false,
+                              // loading circle-----
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(color: Colors.black),
+                                  );
+                                },
                               );
+                              //--------------------
+                              try {
+                                User? user = await register(email: widget.email, password: widget.password);
+
+                                var userFF = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
+
+                                user?.updatePhotoURL(defProfile); //set default user pfp
+                                //name the userfile as uid
+                                userFF.doc(user?.uid).set({
+                                  //set all data that user and owner have in common
+                                  "fname": widget.fname,
+                                  "lname": widget.lname,
+                                  "phone": widget.phone,
+                                  "type": widget.type,
+                                  "passStrength": true, //checked hence true
+                                  //owner need array of categories
+                                  "categories": [],
+                                  //for category edit assist
+                                  "currentdir": "",
+                                  "address":
+                                      address1Controller.text + ", " + postcodeController.text + ", " + stateController.text, //for delivery
+                                });
+                                if (widget.type == 'owner') {
+                                  userFF.doc(user?.uid).set(
+                                      //add other data that only owner have
+                                      {'shop': upperCase(widget.shop)},
+                                      SetOptions(merge: true)).then((value) {
+                                    //Do your stuff.
+                                  });
+                                }
+                                await Future.delayed(
+                                  const Duration(seconds: 2),
+                                  () {
+                                    Navigator.of(context).pop();
+                                    // pop loading circle if success register
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                        builder: (context) => const VerifyEmailPage(),
+                                      ),
+                                      (r) => false,
+                                    );
+                                  },
+                                );
+                              } catch (e) {
+                                Navigator.pop(context);
+                                //pop loading circle if fail
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Colors.black,
+                                    content: Text(
+                                      "Fail to register",
+                                      style: TextStyle(color: Colors.grey.shade400),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                                setState(() {});
+                              }
                             }
                           },
                         ),

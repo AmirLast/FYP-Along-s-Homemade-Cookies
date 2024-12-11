@@ -7,9 +7,19 @@ import '../pages/all_user/settingspage.dart';
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
-  void logout() {
+  Future logout(context) async {
+    // loading circle-----
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(color: Colors.black),
+        );
+      },
+    );
+    // loading circle-----
     final authService = AuthService();
-    authService.signOut();
+    await authService.signOut();
   }
 
   @override
@@ -82,9 +92,12 @@ class MyDrawer extends StatelessWidget {
           MyDrawerTile(
             text: "L O G O U T",
             icon: Icons.logout,
-            onTap: () {
-              logout();
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
+            onTap: () async {
+              await logout(context).then((onValue) {
+                //Navigator.pop(context); no need cause pushandremoveuntil right?
+                //pop circle after logout done
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
+              });
             },
           ),
 

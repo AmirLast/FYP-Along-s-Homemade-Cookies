@@ -18,9 +18,18 @@ class _AuthGateState extends State<AuthGate> {
   bool isLoading = true;
 
   stillLoad() {
-    return const Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(child: CircularProgressIndicator(color: Colors.grey)),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+        decoration: const BoxDecoration(
+          color: Color(0xffd1a271),
+          image: DecorationImage(
+            image: AssetImage("lib/images/applogo.png"),
+            alignment: Alignment.center,
+            scale: 0.5,
+          ),
+        ),
+      ),
     );
   }
 

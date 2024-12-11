@@ -9,10 +9,10 @@ class UserNow {
   User user;
   String currentdir = "";
   bool passStrength = false;
+  String address = "";
   //below is for owner
   List categories = [];
   String shop = "";
-  String address = "";
   UserNow(this.fname, this.lname, this.phone, this.user, this.type, this.currentdir, this.passStrength, this.address);
   static UserNow? usernow; //the object to call all the above data
 }
