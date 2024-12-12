@@ -120,11 +120,8 @@ class _EditProdPageState extends State<EditCategoryPage> {
         }
         if (nameController.text == '') {
           Navigator.pop(context);
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute<void>(builder: (BuildContext context) => const MenuPage()),
-            ModalRoute.withName('/MenuPage'),
-          );
+          Navigator.pop(context);
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
         } else {
           confirmPopUp(context);
         }
