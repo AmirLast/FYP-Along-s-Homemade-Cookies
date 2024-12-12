@@ -79,7 +79,7 @@ class _AddCategoryState extends State<AddCategory> {
                 ),
                 child: Column(
                   children: [
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 80),
 
                     const Text(
                       "Fill in the information",

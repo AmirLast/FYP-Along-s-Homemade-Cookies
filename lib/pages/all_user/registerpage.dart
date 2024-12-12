@@ -194,7 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     passwordVisibility = !passwordVisibility;
                                   });
                                 },
-                                icon: Icon(passwordVisibility ? Icons.visibility : Icons.visibility_off),
+                                icon: Icon(passwordVisibility ? Icons.visibility_off : Icons.visibility),
                                 color: Colors.black,
                               ),
                               filled: true,
@@ -234,7 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     confirmpasswordVisibility = !confirmpasswordVisibility;
                                   });
                                 },
-                                icon: Icon(confirmpasswordVisibility ? Icons.visibility : Icons.visibility_off),
+                                icon: Icon(confirmpasswordVisibility ? Icons.visibility_off : Icons.visibility),
                                 color: Colors.black,
                               ),
                               filled: true,

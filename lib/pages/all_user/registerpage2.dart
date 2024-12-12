@@ -63,15 +63,6 @@ class _Register2PageState extends State<Register2Page> {
     required String email,
     required String password,
   }) async {
-    // loading circle
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(color: Colors.black),
-        );
-      },
-    );
     // get auth service
     final _authService = AuthService();
     User? user;
@@ -285,19 +276,21 @@ class _Register2PageState extends State<Register2Page> {
                                   },
                                 );
                               } catch (e) {
-                                Navigator.pop(context);
-                                //pop loading circle if fail
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    backgroundColor: Colors.black,
-                                    content: Text(
-                                      "Fail to register",
-                                      style: TextStyle(color: Colors.grey.shade400),
-                                      textAlign: TextAlign.center,
+                                Future.delayed(const Duration(seconds: 2), () {
+                                  Navigator.pop(context);
+                                  //pop loading circle if fail
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.black,
+                                      content: Text(
+                                        "Fail to register",
+                                        style: TextStyle(color: Colors.grey.shade400),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                  ),
-                                );
-                                setState(() {});
+                                  );
+                                  setState(() {});
+                                });
                               }
                             }
                           },

@@ -14,7 +14,7 @@ class UserHomePage extends StatefulWidget {
 class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderStateMixin {
   String name = UserNow.usernow!.fname;
   //for logo
-  late Logo show;
+  final Logo show = Logo();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
