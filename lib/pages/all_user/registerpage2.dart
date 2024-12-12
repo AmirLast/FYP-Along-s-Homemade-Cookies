@@ -196,7 +196,7 @@ class _Register2PageState extends State<Register2Page> {
                             String error = ""; //the error description
                             //User? user;
 
-                            //checking if it is blank or wrong length or password weak
+                            //checking if it is blank
                             if (address1Controller.text == '') {
                               error = 'Address is blank';
                               isBlank = true;
@@ -228,7 +228,7 @@ class _Register2PageState extends State<Register2Page> {
                                 context: context,
                                 builder: (context) {
                                   return const Center(
-                                    child: CircularProgressIndicator(color: Colors.black),
+                                    child: CircularProgressIndicator(color: Color(0xffB67F5F)),
                                   );
                                 },
                               );

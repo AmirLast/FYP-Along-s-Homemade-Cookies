@@ -22,11 +22,11 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
   final Logo show = Logo();
   List cat = UserNow.usernow!.categories;
   List<Bakeds?> menus = [];
+  final obj = UpdateMenuData();
 
   Future<void> updateMenu() async {
     //update menu data in local memory
-    final obj = UpdateMenuData();
-    await obj.updatemenudata().then((temp) {
+    await obj.updatemenudata("").then((temp) {
       setState(() {
         menus = temp;
       });
@@ -109,7 +109,7 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                             builder: (context) => AlertDialog(
                                   backgroundColor: Colors.white,
                                   content: Text(
-                                    "Do you want to delete category named '" + catName + "'?",
+                                    "Do you want to delete category named '" + catName + "'? All product will be deleted too.",
                                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                   ),
                                   actions: [
@@ -121,16 +121,35 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                           color: Colors.green,
                                           onPressed: () async {
                                             User? user = AuthService().getCurrentUser();
+                                            //delete data from firebase categories value
                                             await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
                                               'categories': FieldValue.arrayRemove([catName])
                                             });
+                                            //delete data from firebase collection
+                                            List<Bakeds?> documents = [];
+                                            await obj.updatemenudata(catName).then((temp) {
+                                              documents = temp;
+                                            });
+                                            int i = 0;
+                                            int j = documents.length;
+                                            //if theres no product, no document to be delete, this for loop won't be bothered
+                                            for (i; i < j; i++) {
+                                              await FirebaseFirestore.instance
+                                                  .collection('users')
+                                                  .doc(user.uid)
+                                                  .collection(catName)
+                                                  .doc(documents[i]?.name)
+                                                  .delete();
+                                            }
+                                            //delete data from local class
+                                            UserNow.usernow?.categories.remove(catName);
 
                                             // loading circle-------------------------
                                             showDialog(
                                               context: context,
                                               builder: (context) {
                                                 return const Center(
-                                                  child: CircularProgressIndicator(color: Colors.black),
+                                                  child: CircularProgressIndicator(color: Color(0xffB67F5F)),
                                                 );
                                               },
                                             );
@@ -139,7 +158,7 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                               //pop loading circle---------
                                               //refresh new menu page
                                               Navigator.pop(context);
-                                              setState(() {});
+                                              updateMenu();
                                               /*Navigator.pop(context);
                                               Navigator.push(
                                                 context,

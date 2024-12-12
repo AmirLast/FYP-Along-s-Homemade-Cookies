@@ -5,8 +5,13 @@ import 'package:fyp/models/userclass.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 
 class UpdateMenuData {
-  Future<List<Bakeds?>> updatemenudata() async {
-    List cat = UserNow.usernow!.categories;
+  Future<List<Bakeds?>> updatemenudata(option) async {
+    List cat = [];
+    if (option != "") {
+      cat.add(option);
+    } else {
+      cat = UserNow.usernow!.categories;
+    }
     int i = cat.length; //check how many categories
     int j = 0; //starts from index 0
     List<Bakeds?> allMenu = []; //to store menus

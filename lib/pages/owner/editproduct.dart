@@ -8,6 +8,7 @@ import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
+import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -227,7 +228,7 @@ class _EditProdPageState extends State<EditProdPage> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const CircularProgressIndicator(color: Colors.black)
+        ? const CircularProgressIndicator(color: Color(0xffB67F5F))
         : PopScope(
             canPop: false,
             onPopInvokedWithResult: (didPop, result) async {
@@ -236,6 +237,11 @@ class _EditProdPageState extends State<EditProdPage> {
               }
               if (isSaveEnabled()) {
                 Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute<void>(builder: (BuildContext context) => const MenuPage()),
+                  ModalRoute.withName('OwnerHomePage'),
+                );
               } else {
                 confirmPopUp(context);
               }
@@ -495,7 +501,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                   context: context,
                                                                   builder: (context) {
                                                                     return const Center(
-                                                                      child: CircularProgressIndicator(color: Colors.black),
+                                                                      child: CircularProgressIndicator(color: Color(0xffB67F5F)),
                                                                     );
                                                                   },
                                                                 );
@@ -529,17 +535,19 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                   //pop loading circle---------
                                                                   Navigator.pop(context);
                                                                   //pop save changes dialogue
-                                                                  setState(() {
-                                                                    changedData(true);
-                                                                    inithinttext(
-                                                                        capitalizedSentence,
-                                                                        descController.text == ""
-                                                                            ? widget.prod!.description
-                                                                            : descController.text,
-                                                                        prodPrice);
-                                                                    _image = null;
-                                                                    dispose();
-                                                                  });
+
+                                                                  changedData(true);
+                                                                  inithinttext(
+                                                                      capitalizedSentence,
+                                                                      descController.text == ""
+                                                                          ? widget.prod!.description
+                                                                          : descController.text,
+                                                                      prodPrice);
+                                                                  _image = null;
+                                                                  descController = TextEditingController();
+                                                                  nameController = TextEditingController();
+                                                                  priceController = TextEditingController();
+                                                                  downloadUrl();
                                                                 });
                                                               } catch (e) {
                                                                 Navigator.pop(context);
@@ -636,7 +644,7 @@ class _EditProdPageState extends State<EditProdPage> {
                   context: context,
                   builder: (context) {
                     return const Center(
-                      child: CircularProgressIndicator(color: Colors.black),
+                      child: CircularProgressIndicator(color: Color(0xffB67F5F)),
                     );
                   },
                 );

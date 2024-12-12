@@ -69,7 +69,7 @@ class _AddCategoryState extends State<AddCategory> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 60),
+            const SizedBox(height: 150),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Container(
@@ -79,7 +79,7 @@ class _AddCategoryState extends State<AddCategory> {
                 ),
                 child: Column(
                   children: [
-                    const SizedBox(height: 80),
+                    const SizedBox(height: 30),
 
                     const Text(
                       "Fill in the information",
@@ -145,7 +145,7 @@ class _AddCategoryState extends State<AddCategory> {
                             context: context,
                             builder: (context) {
                               return const Center(
-                                child: CircularProgressIndicator(color: Colors.black),
+                                child: CircularProgressIndicator(color: Color(0xffB67F5F)),
                               );
                             },
                           );

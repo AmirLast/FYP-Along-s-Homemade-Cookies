@@ -387,7 +387,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 context: context,
                                 builder: (context) {
                                   return const Center(
-                                    child: CircularProgressIndicator(color: Colors.black),
+                                    child: CircularProgressIndicator(color: Color(0xffB67F5F)),
                                   );
                                 },
                               );
