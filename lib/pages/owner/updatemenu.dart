@@ -28,7 +28,7 @@ class UpdateMenuData {
             Bakeds.currentBaked = Bakeds(
               name: docSnapshot.data()['name'],
               description: docSnapshot.data()['description'],
-              imagePath: docSnapshot.data()['imagePath'],
+              url: docSnapshot.data()['url'],
               price: double.parse(docSnapshot.data()['price']),
               category: cat[j].toString(),
             );

@@ -7,6 +7,7 @@ import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/addcategory.dart';
+import 'package:fyp/pages/owner/editcategory.dart';
 import 'package:fyp/pages/owner/updatemenu.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 
@@ -99,8 +100,15 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                     return CategoryTile(
                       catName: catName,
                       baked: menus,
-                      onEdit:
-                          () {}, //pop up confirm -> pergi page baru (cam add category) -> update (cam kat addcategory.dart) -> back to menu
+                      onEdit: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          //calling ProdPage while sending prod values
+                          builder: (context) => EditCategoryPage(
+                            category: catName,
+                          ),
+                        ),
+                      ), //pop up confirm -> pergi page baru (cam add category) -> update (cam kat addcategory.dart) -> back to menu
                       //for collection: read the collection data into local data buffer(array) -> delete prev collection -> insert buffer into new collection name
                       onDel: () {
                         //confirm pop up

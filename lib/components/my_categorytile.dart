@@ -82,7 +82,6 @@ class _CategoryTileState extends State<CategoryTile> {
                               builder: (context) => EditProdPage(
                                 prod: categoryMenu[index],
                                 category: widget.catName,
-                                isSaved: false,
                               ),
                             ),
                           ), //pergi page baru (cam add category) + access data guna func update cam kat addcategory

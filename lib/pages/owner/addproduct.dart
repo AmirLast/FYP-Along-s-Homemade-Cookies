@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/pages/all_user/updateurl.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,8 +22,8 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  //for logo
-  final Logo show = Logo();
+  final DownloadURL obj = DownloadURL(); //for url
+  final Logo show = Logo(); //for logo
   //uppercase first letter-----------------------------------------
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
@@ -316,7 +317,7 @@ class _AddProductState extends State<AddProduct> {
                               String prodPrice = double.parse(priceController.text).toStringAsFixed(2);
                               User? user = AuthService().getCurrentUser();
                               //set file path for current user folder in firebase storage
-                              String path = '${user?.uid}/${widget.category}/${nameController.text}';
+                              String path = '${user?.uid}/${nameController.text}';
                               //cane nak cek product tu dah ade sama nama ke???
 
                               // loading circle-------------------------
@@ -331,12 +332,14 @@ class _AddProductState extends State<AddProduct> {
                               try {
                                 //upload gambar dalam firebase storage
                                 FirebaseStorage.instance.ref().child(path).putFile(_image!);
-                                //update prod dalam collection categories kat FBFS
-                                FirebaseFirestore.instance.collection('users').doc(user?.uid).collection(widget.category).add({
-                                  "description": descController.text,
-                                  "imagePath": path,
-                                  "name": capitalizedSentence,
-                                  "price": prodPrice,
+                                await obj.downloadUrl(widget.category, user!.uid, context).then((url) {
+                                  //update prod dalam collection categories kat FBFS
+                                  FirebaseFirestore.instance.collection('users').doc(user.uid).collection(widget.category).add({
+                                    "description": descController.text,
+                                    "url": url,
+                                    "name": capitalizedSentence,
+                                    "price": prodPrice,
+                                  });
                                 });
 
                                 await Future.delayed(const Duration(seconds: 2), () {

@@ -2,13 +2,13 @@ class Bakeds {
   //all data in a product
   String name;
   String description;
-  String imagePath;
+  String url;
   double price;
   String category;
   Bakeds({
     required this.name,
     required this.description,
-    required this.imagePath,
+    required this.url,
     required this.price,
     required this.category,
   });

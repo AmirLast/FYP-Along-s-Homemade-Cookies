@@ -8,6 +8,7 @@ import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
+import 'package:fyp/pages/all_user/updateurl.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,13 +16,11 @@ import 'package:image_picker/image_picker.dart';
 class EditProdPage extends StatefulWidget {
   final Bakeds? prod;
   final String category;
-  final bool isSaved;
 
   const EditProdPage({
     super.key,
     required this.prod,
     required this.category,
-    required this.isSaved,
   });
 
   @override
@@ -29,9 +28,9 @@ class EditProdPage extends StatefulWidget {
 }
 
 class _EditProdPageState extends State<EditProdPage> {
-  //for logo
-  final Logo show = Logo();
-
+  final Logo show = Logo(); //for logo
+  final DownloadURL obj = DownloadURL(); //for url
+  final String useruid = AuthService().getCurrentUser()!.uid;
   //text editing controller
   late TextEditingController descController;
   late TextEditingController nameController;
@@ -50,8 +49,7 @@ class _EditProdPageState extends State<EditProdPage> {
     nameController = TextEditingController();
     priceController = TextEditingController();
     inithinttext(widget.prod!.name, widget.prod!.description, widget.prod!.price.toStringAsFixed(2));
-    downloadUrl();
-    changedData(widget.isSaved);
+    src = widget.prod!.url;
   }
 
   @override
@@ -134,36 +132,7 @@ class _EditProdPageState extends State<EditProdPage> {
       ),
     );
   }
-  //bahagian upload imej-----------------------------------------------------------------------
-
-  //get Url of product image so it can be displayed------------------------------------------
-  void downloadUrl() async {
-    var path = widget.prod!.imagePath;
-    try {
-      await FirebaseStorage.instance.ref().child(path).getDownloadURL().then((String url) {
-        setState(() {
-          src = url;
-          isLoading = false;
-        });
-      });
-    } on FirebaseException {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.black,
-          content: Text(
-            "Product image does not exist",
-            style: TextStyle(color: Colors.grey.shade400),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-      setState(() {
-        src =
-            "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637";
-        isLoading = false;
-      });
-    }
-  } //Url of product image so it can be displayed------------------------------------------
+  //bahagian upload imej------------------------------------------------------------
 
   //kalau ada changed data-------------------------
   void changedData(isSaved) {
@@ -227,366 +196,375 @@ class _EditProdPageState extends State<EditProdPage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? const CircularProgressIndicator(color: Color(0xffB67F5F))
-        : PopScope(
-            canPop: false,
-            onPopInvokedWithResult: (didPop, result) async {
-              if (didPop) {
-                return;
-              }
-              if (isSaveEnabled()) {
-                Navigator.pop(context);
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute<void>(builder: (BuildContext context) => const MenuPage()),
-                  ModalRoute.withName('OwnerHomePage'),
-                );
-              } else {
-                confirmPopUp(context);
-              }
-            },
-            child: Scaffold(
-              backgroundColor: const Color(0xffd1a271),
-              appBar: AppBar(
-                backgroundColor: const Color(0xffB67F5F),
-                title: Center(
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    "Product '" + widget.prod!.name + "'",
-                    style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                actions: [
-                  IconButton(
-                    onPressed: () => {},
-                    icon: const Icon(
-                      Icons.more_vert,
-                      color: Colors.transparent,
-                    ),
-                  ),
-                ],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          return;
+        }
+        if (isSaveEnabled()) {
+          Navigator.pop(context);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute<void>(builder: (BuildContext context) => const MenuPage()),
+            ModalRoute.withName('/MenuPage'),
+          );
+        } else {
+          confirmPopUp(context);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xffd1a271),
+        appBar: AppBar(
+          backgroundColor: const Color(0xffB67F5F),
+          title: Center(
+            child: Text(
+              textAlign: TextAlign.center,
+              "Product '" + widget.prod!.name + "'",
+              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () => {},
+              icon: const Icon(
+                Icons.more_vert,
+                color: Colors.transparent,
               ),
-              drawer: const MyDrawer(),
-              body: SingleChildScrollView(
-                child: Container(
-                  width: MediaQuery.of(context).size.width, //max width for current phone
-                  decoration: show.showLogo(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 60),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                          ),
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 30),
+            ),
+          ],
+        ),
+        drawer: const MyDrawer(),
+        body: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width, //max width for current phone
+            decoration: show.showLogo(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(height: 60),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 30),
 
-                              const Text(
-                                "Edit product information",
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.black,
-                                ),
-                              ),
-
-                              const SizedBox(height: 60),
-
-                              //name of product
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Product Name",
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              MyTextField(
-                                controller: nameController,
-                                caps: TextCapitalization.words,
-                                inputType: TextInputType.text,
-                                labelText: nameHT,
-                                hintText: nameHT,
-                                obscureText: false,
-                                isEnabled: true,
-                                isShowhint: true,
-                              ),
-
-                              const SizedBox(height: 30),
-
-                              //description of category
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Description",
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              MyTextField(
-                                controller: descController,
-                                caps: TextCapitalization.none,
-                                inputType: TextInputType.text,
-                                labelText: descHT,
-                                hintText: descHT,
-                                obscureText: false,
-                                isEnabled: true,
-                                isShowhint: true,
-                              ),
-
-                              const SizedBox(height: 30),
-
-                              //price of category
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Price (RM)",
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              MyTextField(
-                                controller: priceController,
-                                caps: TextCapitalization.none,
-                                inputType: TextInputType.number,
-                                labelText: priceHT,
-                                hintText: priceHT,
-                                obscureText: false,
-                                isEnabled: true,
-                                isShowhint: true,
-                              ),
-
-                              const SizedBox(height: 30),
-
-                              MaterialButton(
-                                child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: const Text('Change Product Image')),
-                                onPressed: showOptions,
-                              ),
-
-                              const SizedBox(height: 20),
-
-                              //image of category
-                              SizedBox(
-                                height: 150,
-                                width: 150,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.black,
-                                      width: 4,
-                                    ),
-                                  ),
-                                  child: _image == null
-                                      //kalau belum pick show current
-                                      ? Image.network(
-                                          src,
-                                          fit: BoxFit.cover,
-                                        )
-                                      //kalau dah pick show chosen image
-                                      : Image.file(
-                                          _image!,
-                                          fit: BoxFit.cover,
-                                        ),
-                                ),
-                              ),
-                              //input file sendiri or use default image for now
-
-                              const SizedBox(height: 20),
-
-                              //button to remove picture chosen
-                              MaterialButton(
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: _image == null ? Colors.grey.shade400 : Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Text(
-                                    'Remove Picture',
-                                    style: TextStyle(
-                                      color: _image == null ? Colors.black.withOpacity(0.4) : null,
-                                    ),
-                                  ),
-                                ),
-                                onPressed: _image == null
-                                    ? null
-                                    : () {
-                                        setState(() {
-                                          _image = null;
-                                        });
-                                      },
-                              ),
-
-                              const SizedBox(height: 30),
-
-                              //save button
-                              MaterialButton(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(25),
-                                    margin: const EdgeInsets.symmetric(horizontal: 25),
-                                    decoration: BoxDecoration(
-                                      color: isSaveEnabled() ? Colors.grey.shade400 : Colors.black,
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "Save",
-                                        style: TextStyle(
-                                          //fontWeight: FontWeight.bold,
-                                          color: isSaveEnabled() ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: isSaveEnabled()
-                                      ? null
-                                      : () async {
-                                          //showdialog confirm save
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                    backgroundColor: Colors.white,
-                                                    content: const Text(
-                                                      "Save changes?",
-                                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                                    ),
-                                                    actions: [
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                        children: [
-                                                          IconButton(
-                                                            iconSize: 50,
-                                                            color: Colors.green,
-                                                            onPressed: () async {
-                                                              //code here
-                                                              String capitalizedSentence;
-                                                              String prodPrice;
-                                                              List<String> words;
-                                                              //set name
-                                                              nameController.text == ""
-                                                                  ? capitalizedSentence = widget.prod!.name
-                                                                  : {
-                                                                      words = nameController.text.split(" "),
-                                                                      capitalizedSentence = words.map((word) => upperCase(word)).join(" ")
-                                                                    };
-
-                                                              //fix price into 0.00 format
-                                                              priceController.text == ""
-                                                                  ? prodPrice = widget.prod!.price.toStringAsFixed(2)
-                                                                  : prodPrice = double.parse(priceController.text).toStringAsFixed(2);
-
-                                                              User? user = AuthService().getCurrentUser();
-                                                              //set file path for current user folder in firebase storage
-                                                              String path;
-                                                              //no change? use old prod name
-                                                              if (nameController.text == "") {
-                                                                path = '${user?.uid}/${widget.category}/${widget.prod!.name}';
-                                                              } else {
-                                                                path = '${user?.uid}/${widget.category}/${nameController.text}';
-                                                              }
-                                                              //cane nak cek product tu dah ade sama nama ke???
-
-                                                              try {
-                                                                // loading circle-------------------------
-                                                                showDialog(
-                                                                  context: context,
-                                                                  builder: (context) {
-                                                                    return const Center(
-                                                                      child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                                                    );
-                                                                  },
-                                                                );
-                                                                //upload gambar dalam firebase storage
-                                                                if (_image != null) {
-                                                                  FirebaseStorage.instance.ref().child(path).delete();
-                                                                  FirebaseStorage.instance.ref().child(path).putFile(_image!);
-                                                                }
-                                                                //update prod dalam collection categories kat FBFS
-                                                                FirebaseFirestore.instance
-                                                                    .collection('users')
-                                                                    .doc(user?.uid)
-                                                                    .collection(widget.category)
-                                                                    .where('name', isEqualTo: widget.prod!.name)
-                                                                    .get()
-                                                                    .then((querySnapshot) {
-                                                                  for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-                                                                    documentSnapshot.reference.update({
-                                                                      "description": descController.text == ""
-                                                                          ? widget.prod!.description
-                                                                          : descController.text,
-                                                                      "imagePath": path,
-                                                                      "name": capitalizedSentence,
-                                                                      "price": prodPrice,
-                                                                    });
-                                                                  }
-                                                                });
-
-                                                                await Future.delayed(const Duration(seconds: 2), () {
-                                                                  Navigator.pop(context);
-                                                                  //pop loading circle---------
-                                                                  Navigator.pop(context);
-                                                                  //pop save changes dialogue
-
-                                                                  changedData(true);
-                                                                  inithinttext(
-                                                                      capitalizedSentence,
-                                                                      descController.text == ""
-                                                                          ? widget.prod!.description
-                                                                          : descController.text,
-                                                                      prodPrice);
-                                                                  _image = null;
-                                                                  descController = TextEditingController();
-                                                                  nameController = TextEditingController();
-                                                                  priceController = TextEditingController();
-                                                                  downloadUrl();
-                                                                });
-                                                              } catch (e) {
-                                                                Navigator.pop(context);
-                                                                //pop loading circle when fail---------
-                                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                                  SnackBar(
-                                                                    backgroundColor: Colors.black,
-                                                                    content: Text(
-                                                                      "Fail uploading",
-                                                                      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                                                      textAlign: TextAlign.center,
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              }
-                                                            },
-                                                            icon: const Icon(Icons.check_circle),
-                                                          ),
-                                                          IconButton(
-                                                              iconSize: 50,
-                                                              color: Colors.red,
-                                                              onPressed: () => Navigator.pop(context),
-                                                              icon: const Icon(Icons.cancel)),
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ));
-                                        }),
-
-                              const SizedBox(height: 40),
-                            ],
+                        const Text(
+                          "Edit product information",
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.black,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 60),
-                    ],
+
+                        const SizedBox(height: 60),
+
+                        //name of product
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "Product Name",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        MyTextField(
+                          controller: nameController,
+                          caps: TextCapitalization.words,
+                          inputType: TextInputType.text,
+                          labelText: nameHT,
+                          hintText: nameHT,
+                          obscureText: false,
+                          isEnabled: true,
+                          isShowhint: true,
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        //description of category
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "Description",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        MyTextField(
+                          controller: descController,
+                          caps: TextCapitalization.none,
+                          inputType: TextInputType.text,
+                          labelText: descHT,
+                          hintText: descHT,
+                          obscureText: false,
+                          isEnabled: true,
+                          isShowhint: true,
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        //price of category
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "Price (RM)",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        MyTextField(
+                          controller: priceController,
+                          caps: TextCapitalization.none,
+                          inputType: TextInputType.number,
+                          labelText: priceHT,
+                          hintText: priceHT,
+                          obscureText: false,
+                          isEnabled: true,
+                          isShowhint: true,
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        MaterialButton(
+                          child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Text('Change Product Image')),
+                          onPressed: showOptions,
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        //image of category
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black,
+                                width: 4,
+                              ),
+                            ),
+                            child: _image == null
+                                //kalau belum pick show current
+                                ? Image.network(
+                                    src,
+                                    fit: BoxFit.cover,
+                                  )
+                                //kalau dah pick show chosen image
+                                : Image.file(
+                                    _image!,
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                        ),
+                        //input file sendiri or use default image for now
+
+                        const SizedBox(height: 20),
+
+                        //button to remove picture chosen
+                        MaterialButton(
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: _image == null ? Colors.grey.shade400 : Colors.grey[300],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              'Remove Picture',
+                              style: TextStyle(
+                                color: _image == null ? Colors.black.withOpacity(0.4) : null,
+                              ),
+                            ),
+                          ),
+                          onPressed: _image == null
+                              ? null
+                              : () {
+                                  setState(() {
+                                    _image = null;
+                                  });
+                                },
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        //save button
+                        MaterialButton(
+                            child: Container(
+                              padding: const EdgeInsets.all(25),
+                              margin: const EdgeInsets.symmetric(horizontal: 25),
+                              decoration: BoxDecoration(
+                                color: isSaveEnabled() ? Colors.grey.shade400 : Colors.black,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Save",
+                                  style: TextStyle(
+                                    //fontWeight: FontWeight.bold,
+                                    color: isSaveEnabled() ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            onPressed: isSaveEnabled()
+                                ? null
+                                : () async {
+                                    //showdialog confirm save
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                              backgroundColor: Colors.white,
+                                              content: const Text(
+                                                "Save changes?",
+                                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                              ),
+                                              actions: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                  children: [
+                                                    IconButton(
+                                                      iconSize: 50,
+                                                      color: Colors.green,
+                                                      onPressed: () async {
+                                                        //code here
+                                                        String capitalizedSentence;
+                                                        String prodPrice;
+                                                        List<String> words;
+                                                        //set name
+                                                        nameController.text == ""
+                                                            ? capitalizedSentence = widget.prod!.name
+                                                            : {
+                                                                words = nameController.text.split(" "),
+                                                                capitalizedSentence = words.map((word) => upperCase(word)).join(" ")
+                                                              };
+
+                                                        //fix price into 0.00 format
+                                                        priceController.text == ""
+                                                            ? prodPrice = widget.prod!.price.toStringAsFixed(2)
+                                                            : prodPrice = double.parse(priceController.text).toStringAsFixed(2);
+
+                                                        User? user = AuthService().getCurrentUser();
+
+                                                        //set file path for current user folder in firebase storage
+                                                        String pathnew = "";
+                                                        String pathprev = "";
+
+                                                        pathprev = '${user?.uid}/${widget.prod!.name}';
+                                                        if (nameController.text != "") {
+                                                          pathnew = '${user?.uid}/${nameController.text}';
+                                                        }
+                                                        //cane nak cek product tu dah ade sama nama ke???
+
+                                                        try {
+                                                          // loading circle-------------------------
+                                                          showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return const Center(
+                                                                child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                                              );
+                                                            },
+                                                          );
+                                                          //upload gambar dalam firebase storage
+                                                          if (_image != null) {
+                                                            FirebaseStorage.instance.ref().child(pathprev).delete();
+                                                            if (nameController.text != "") {
+                                                              FirebaseStorage.instance.ref().child(pathnew).putFile(_image!);
+                                                            } else {
+                                                              FirebaseStorage.instance.ref().child(pathprev).putFile(_image!);
+                                                            }
+                                                            //get file url
+                                                            await obj.downloadUrl(widget.prod!.name, useruid, context).then((url) {
+                                                              src = url;
+                                                            });
+                                                          }
+                                                          //update prod dalam collection categories kat FBFS
+                                                          FirebaseFirestore.instance
+                                                              .collection('users')
+                                                              .doc(user?.uid)
+                                                              .collection(widget.category)
+                                                              .where('name', isEqualTo: widget.prod!.name)
+                                                              .get()
+                                                              .then((querySnapshot) {
+                                                            for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                              documentSnapshot.reference.update({
+                                                                "description": descController.text == ""
+                                                                    ? widget.prod!.description
+                                                                    : descController.text,
+                                                                "url": src,
+                                                                "name": capitalizedSentence,
+                                                                "price": prodPrice,
+                                                              });
+                                                            }
+                                                          });
+
+                                                          await Future.delayed(const Duration(seconds: 2), () {
+                                                            Navigator.pop(context);
+                                                            //pop loading circle---------
+                                                            Navigator.pop(context);
+                                                            //pop save changes dialogue
+                                                            changedData(true);
+                                                            setState(() {
+                                                              inithinttext(
+                                                                  capitalizedSentence,
+                                                                  descController.text == ""
+                                                                      ? widget.prod!.description
+                                                                      : descController.text,
+                                                                  prodPrice);
+                                                              _image = null;
+                                                              descController = TextEditingController();
+                                                              nameController = TextEditingController();
+                                                              priceController = TextEditingController();
+                                                            });
+                                                          });
+                                                        } catch (e) {
+                                                          Navigator.pop(context);
+                                                          //pop loading circle when fail---------
+                                                          ScaffoldMessenger.of(context).showSnackBar(
+                                                            SnackBar(
+                                                              backgroundColor: Colors.black,
+                                                              content: Text(
+                                                                "Fail uploading",
+                                                                style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                                                textAlign: TextAlign.center,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                      icon: const Icon(Icons.check_circle),
+                                                    ),
+                                                    IconButton(
+                                                        iconSize: 50,
+                                                        color: Colors.red,
+                                                        onPressed: () => Navigator.pop(context),
+                                                        icon: const Icon(Icons.cancel)),
+                                                  ],
+                                                )
+                                              ],
+                                            ));
+                                  }),
+
+                        const SizedBox(height: 40),
+                      ],
+                    ),
                   ),
                 ),
-              ), /*Column(
+                const SizedBox(height: 60),
+              ],
+            ),
+          ),
+        ),
+        /* ini untuk display product
+              Column(
           children: [
             //product image
             SizedBox(
@@ -656,7 +634,7 @@ class _EditProdPageState extends State<EditProdPage> {
             const SizedBox(height: 25),
           ],
                 ),*/
-            ),
-          );
+      ),
+    );
   }
 }

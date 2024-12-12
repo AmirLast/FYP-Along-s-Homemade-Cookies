@@ -1,4 +1,3 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/bakedclass.dart';
@@ -32,34 +31,10 @@ class _EditProdPageState extends State<ProdPage> {
   }*/
   late String src;
 
-  void downloadUrl() async {
-    //get Url of product image so it can be displayed
-    var path = widget.prod!.imagePath;
-    try {
-      await FirebaseStorage.instance.ref().child(path).getDownloadURL().then((String url) {
-        setState(() {
-          src = url;
-        });
-      });
-    } on FirebaseException {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.black,
-          content: Text(
-            "Product image does not exist",
-            style: TextStyle(color: Colors.grey.shade400),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-      src = "";
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    downloadUrl();
+    src = widget.prod!.url;
   }
 
   @override
