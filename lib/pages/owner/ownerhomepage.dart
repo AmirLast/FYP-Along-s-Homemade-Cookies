@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/userclass.dart';
@@ -103,8 +104,7 @@ confirmPopUp(context) {
               iconSize: 50,
               color: Colors.green,
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
+                SystemNavigator.pop();
               },
               icon: const Icon(Icons.check_circle),
             ),

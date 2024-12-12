@@ -173,11 +173,11 @@ class _Register2PageState extends State<Register2Page> {
                         //sign up button
                         MaterialButton(
                           child: Container(
-                            padding: const EdgeInsets.all(25),
-                            margin: const EdgeInsets.symmetric(horizontal: 25),
+                            padding: const EdgeInsets.all(20),
+                            margin: const EdgeInsets.symmetric(horizontal: 85),
                             decoration: BoxDecoration(
                               color: Colors.black,
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(40),
                             ),
                             child: Center(
                               child: Text(

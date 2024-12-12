@@ -13,7 +13,17 @@ class MyDrawer extends StatelessWidget {
       context: context,
       builder: (context) {
         return const Center(
-          child: CircularProgressIndicator(color: Colors.black),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(color: Colors.black),
+              SizedBox(width: 10),
+              Text(
+                "Logging Out",
+                style: TextStyle(color: Colors.grey, fontSize: 25),
+              )
+            ],
+          ),
         );
       },
     );
@@ -96,7 +106,9 @@ class MyDrawer extends StatelessWidget {
               await logout(context).then((onValue) {
                 //Navigator.pop(context); no need cause pushandremoveuntil right?
                 //pop circle after logout done
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
+                Future.delayed(const Duration(seconds: 2), () {
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
+                });
               });
             },
           ),

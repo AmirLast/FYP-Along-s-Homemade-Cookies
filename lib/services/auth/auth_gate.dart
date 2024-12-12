@@ -19,14 +19,13 @@ class _AuthGateState extends State<AuthGate> {
 
   stillLoad() {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Container(
         decoration: const BoxDecoration(
           color: Color(0xffd1a271),
           image: DecorationImage(
             image: AssetImage("lib/images/applogo.png"),
             alignment: Alignment.center,
-            scale: 0.5,
+            scale: 1,
           ),
         ),
       ),
@@ -36,11 +35,14 @@ class _AuthGateState extends State<AuthGate> {
   Future<void> whoisuser() async {
     //update user data in local memory
     final obj = UpdateUserData();
-    await obj.updateuserdata().then((temp) {
-      //try tak guna future delayed
-      setState(() {
-        type = temp;
-        isLoading = false;
+
+    await Future.delayed(const Duration(seconds: 1), () {
+      obj.updateuserdata().then((temp) {
+        //try tak guna future delayed
+        setState(() {
+          type = temp;
+          isLoading = false;
+        });
       });
     });
   }

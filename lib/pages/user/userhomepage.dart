@@ -19,10 +19,15 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: MyButton(
+          text: "Hello " + name,
+          onPressed: () {},
+        ),
         backgroundColor: const Color(0xffd1a271),
       ),
       drawer: const MyDrawer(),
       body: Container(
+        width: MediaQuery.of(context).size.width,
         decoration: show.showLogo(),
         child: Column(
           children: [

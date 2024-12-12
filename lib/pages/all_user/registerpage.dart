@@ -179,7 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             enabled: true, //get this value
                             controller: passwordController,
                             keyboardType: TextInputType.visiblePassword,
-                            obscureText: passwordVisibility, //initially false
+                            obscureText: !passwordVisibility, //initially false = hide
                             textCapitalization: TextCapitalization.none,
                             decoration: InputDecoration(
                               disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
@@ -194,7 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     passwordVisibility = !passwordVisibility;
                                   });
                                 },
-                                icon: Icon(passwordVisibility ? Icons.visibility_off : Icons.visibility),
+                                icon: Icon(passwordVisibility ? Icons.visibility : Icons.visibility_off),
                                 color: Colors.black,
                               ),
                               filled: true,
@@ -219,7 +219,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             enabled: true, //get this value
                             controller: confirmpasswordController,
                             keyboardType: TextInputType.visiblePassword,
-                            obscureText: confirmpasswordVisibility, //initially false
+                            obscureText: !confirmpasswordVisibility, //initially false
                             textCapitalization: TextCapitalization.none,
                             decoration: InputDecoration(
                               disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
@@ -234,7 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     confirmpasswordVisibility = !confirmpasswordVisibility;
                                   });
                                 },
-                                icon: Icon(confirmpasswordVisibility ? Icons.visibility_off : Icons.visibility),
+                                icon: Icon(confirmpasswordVisibility ? Icons.visibility : Icons.visibility_off),
                                 color: Colors.black,
                               ),
                               filled: true,
@@ -286,11 +286,11 @@ class _RegisterPageState extends State<RegisterPage> {
                         //sign up button
                         MaterialButton(
                           child: Container(
-                            padding: const EdgeInsets.all(25),
-                            margin: const EdgeInsets.symmetric(horizontal: 25),
+                            padding: const EdgeInsets.all(20),
+                            margin: const EdgeInsets.symmetric(horizontal: 85),
                             decoration: BoxDecoration(
                               color: Colors.black,
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(40),
                             ),
                             child: Center(
                               child: Text(

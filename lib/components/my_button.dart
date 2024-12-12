@@ -16,10 +16,8 @@ class MyButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         maximumSize: Size(MediaQuery.of(context).size.width - 80, 70),
         padding: const EdgeInsets.all(10),
-        backgroundColor: Colors.black,
-        shape: const BeveledRectangleBorder(
-            borderRadius: BorderRadius.horizontal(
-                right: Radius.circular(50), left: Radius.circular(50))),
+        backgroundColor: const Color(0xffc1ff72),
+        shape: const BeveledRectangleBorder(borderRadius: BorderRadius.horizontal(right: Radius.circular(50), left: Radius.circular(50))),
       ),
       onPressed: onPressed,
       child: Center(
