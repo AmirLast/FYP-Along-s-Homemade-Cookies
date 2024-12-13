@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
@@ -21,10 +20,12 @@ class _ShopListPageState extends State<ShopListPage> {
 
   Future<void> updateShop() async {
     //update menu data in local memory
-    await obj.updateshoplist().then((temp) {
-      setState(() {
-        shops = temp;
-        isLoading = false;
+    await Future.delayed(const Duration(seconds: 2), () async {
+      await obj.updateshoplist().then((temp) {
+        setState(() {
+          shops = temp;
+          isLoading = false;
+        });
       });
     });
   }
@@ -38,7 +39,12 @@ class _ShopListPageState extends State<ShopListPage> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const CircularProgressIndicator(color: Color(0xffB67F5F))
+        ? const Scaffold(
+            backgroundColor: Colors.black,
+            body: Center(
+              child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+            ),
+          )
         : Scaffold(
             backgroundColor: const Color(0xffd1a271),
             appBar: AppBar(
@@ -46,7 +52,7 @@ class _ShopListPageState extends State<ShopListPage> {
               title: const Center(
                 child: Text(
                   textAlign: TextAlign.center,
-                  "Manage Menu",
+                  "Browse Shops",
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -70,14 +76,16 @@ class _ShopListPageState extends State<ShopListPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Expanded(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            primary: false,
-                            itemCount: shops.length,
-                            padding: EdgeInsets.zero,
-                            itemBuilder: (context, index) {
-                              return ShopCard(shop: shops[index], onTap: () {});
-                            }))
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: shops.length,
+                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                        itemBuilder: (context, index) {
+                          return ShopCard(shop: shops[index], onTap: () {});
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),

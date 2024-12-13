@@ -88,10 +88,11 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
           width: MediaQuery.of(context).size.width,
           decoration: show.showLogo(),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               MyMenuButton(
                   text: "Browse Shop",
-                  icon: Icons.search,
+                  icon: Icons.shopify_rounded,
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ShopListPage()))),
             ],
           ),

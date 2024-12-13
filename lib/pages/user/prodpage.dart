@@ -96,6 +96,7 @@ class _EditProdPageState extends State<ProdPage> {
               //button -> add to cart
               MyMenuButton(
                 text: "Add to cart",
+                icon: Icons.add_shopping_cart_rounded,
                 onPressed: () {}, /*=> addToCart(
                   widget.prod,
                 ),*/

@@ -28,8 +28,10 @@ class MyDrawer extends StatelessWidget {
       },
     );
     // loading circle-----
-    final authService = AuthService();
-    await authService.signOut();
+    await Future.delayed(const Duration(seconds: 2), () async {
+      final authService = AuthService();
+      await authService.signOut();
+    });
   }
 
   @override
@@ -106,9 +108,7 @@ class MyDrawer extends StatelessWidget {
               await logout(context).then((onValue) {
                 //Navigator.pop(context); no need cause pushandremoveuntil right?
                 //pop circle after logout done
-                Future.delayed(const Duration(seconds: 2), () {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
-                });
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
               });
             },
           ),

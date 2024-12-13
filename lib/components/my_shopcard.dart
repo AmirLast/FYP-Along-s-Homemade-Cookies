@@ -14,40 +14,67 @@ class ShopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: Colors.transparent,
+      elevation: 0,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          //text product detail
-          Expanded(
-            child: ListTile(
-              /*
-              leading: SizedBox(
-                width: MediaQuery.of(context).size.width / 3 - 10,
-                height: MediaQuery.of(context).size.width / 3 - 10,
-                child: Container(
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  child: Text(
+                    shop!.name,
+                    style: const TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  padding: const EdgeInsets.all(20),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 100,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: shop!.bakeds.length,
+                    padding: const EdgeInsets.all(10),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Image.network(shop!.bakeds[index]!.url),
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 4,
-                    ),
+                    color: Colors.grey.shade400,
+                    borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
                   ),
-                  child: Image.network(shop!.bakeds[0]!.url),
-                ),
-              ),*/
-              title: Center(
-                child: Text(
-                  shop!.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 15,
+                  child: GestureDetector(
+                    onTap: onTap,
+                    child: const Row(children: [
+                      Text(
+                        "Check Shop",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Icon(Icons.arrow_circle_right_rounded),
+                    ]),
                   ),
                 ),
-              ),
-              onTap: onTap,
+              ],
             ),
           ),
         ],
