@@ -67,6 +67,78 @@ class _ShopPageState extends State<ShopPage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: widget.bakeds.length, //limit to 10 display
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Container(
+                          color: Colors.grey.withOpacity(0.5),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Row(
+                                children: [
+                                  //text product detail
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          widget.bakeds[index]!.name,
+                                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                        ),
+                                        Text(
+                                          'RM' + widget.bakeds[index]!.price.toStringAsFixed(2),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          widget.bakeds[index]!.description,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  const SizedBox(width: 15),
+
+                                  // prod image
+                                  CircleAvatar(
+                                    radius: 80,
+                                    backgroundImage: NetworkImage(widget.bakeds[index]!.url),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        //divider at the bottom screen
+                        const Divider(
+                          color: Colors.black,
+                          endIndent: 25,
+                          indent: 25,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 100,
+              ),
             ],
           ),
         ),
