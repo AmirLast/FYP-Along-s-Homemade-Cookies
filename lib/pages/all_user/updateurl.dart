@@ -1,4 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DownloadURL {
@@ -6,9 +7,8 @@ class DownloadURL {
   Future<String> downloadUrl(String name, String useruid, BuildContext context) async {
     var path = '$useruid/$name';
     try {
-      await FirebaseStorage.instance.ref().child(path).getDownloadURL().then((String url) {
-        return url;
-      });
+      var url = await FirebaseStorage.instance.ref().child(path).getDownloadURL();
+      return url;
     } on FirebaseException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -20,8 +20,10 @@ class DownloadURL {
           ),
         ),
       );
-      throw Exception(e);
+      if (kDebugMode) {
+        print(e.code.toString());
+      }
+      return "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637";
     }
-    return "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637";
   } //Url of product image so it can be displayed------------------------------------------
 }
