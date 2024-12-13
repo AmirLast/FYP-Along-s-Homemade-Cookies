@@ -42,7 +42,7 @@ class ShopCard extends StatelessWidget {
                   child: ListView.builder(
                     shrinkWrap: true,
                     primary: false,
-                    itemCount: shop!.bakeds.length,
+                    itemCount: 10, //limit to 10 display
                     padding: const EdgeInsets.all(10),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {

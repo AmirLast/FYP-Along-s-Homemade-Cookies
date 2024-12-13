@@ -3,6 +3,7 @@ import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_shopcard.dart';
 import 'package:fyp/models/shopclass.dart';
+import 'package:fyp/pages/user/shoppage.dart';
 import 'package:fyp/pages/user/updateshoplist.dart';
 
 class ShopListPage extends StatefulWidget {
@@ -20,8 +21,8 @@ class _ShopListPageState extends State<ShopListPage> {
 
   Future<void> updateShop() async {
     //update menu data in local memory
-    await Future.delayed(const Duration(seconds: 2), () async {
-      await obj.updateshoplist().then((temp) {
+    await obj.updateshoplist().then((temp) {
+      Future.delayed(const Duration(seconds: 2), () {
         setState(() {
           shops = temp;
           isLoading = false;
@@ -82,7 +83,15 @@ class _ShopListPageState extends State<ShopListPage> {
                         itemCount: shops.length,
                         padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                         itemBuilder: (context, index) {
-                          return ShopCard(shop: shops[index], onTap: () {});
+                          return ShopCard(
+                            shop: shops[index],
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ShopPage(name: shops[index]!.name, bakeds: shops[index]!.bakeds)));
+                            },
+                          );
                         },
                       ),
                     )
