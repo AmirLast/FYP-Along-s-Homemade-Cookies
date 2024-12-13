@@ -66,16 +66,6 @@ class BakedTile extends StatelessWidget {
               ),
             ],
           ),
-          /*
-      // prod image
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              prod!.imagePath,
-              height: 1,
-            ),
-          ),
-      */
         ],
       ),
     );

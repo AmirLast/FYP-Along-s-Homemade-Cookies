@@ -19,8 +19,7 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin {
-  //for logo
-  final Logo show = Logo();
+  final Logo show = Logo(); //for logo
   List cat = UserNow.usernow!.categories;
   List<Bakeds?> menus = [];
   final obj = UpdateMenuData();
