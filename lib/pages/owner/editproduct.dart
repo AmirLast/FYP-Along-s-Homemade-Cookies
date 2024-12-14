@@ -44,7 +44,7 @@ class _EditProdPageState extends State<EditProdPage> {
   @override
   void initState() {
     super.initState();
-    isLoading = true;
+    isLoading = false;
     descController = TextEditingController();
     nameController = TextEditingController();
     priceController = TextEditingController();
