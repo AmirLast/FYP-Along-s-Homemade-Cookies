@@ -89,7 +89,7 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width, //max width for current phone
-          height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
+          height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
           decoration: show.showLogo(), //for logo
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -138,8 +138,17 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                             showDialog(
                                               context: context,
                                               builder: (context) {
-                                                return const Center(
-                                                  child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                                return PopScope(
+                                                  //prevent back button
+                                                  canPop: false,
+                                                  onPopInvokedWithResult: (didPop, result) async {
+                                                    if (didPop) {
+                                                      return;
+                                                    }
+                                                  },
+                                                  child: const Center(
+                                                    child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                                  ),
                                                 );
                                               },
                                             ); //--------------------------------------
@@ -162,12 +171,20 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                               int j = documents.length;
                                               //if theres no product, no document to be delete, this for loop won't be bothered
                                               for (i; i < j; i++) {
+                                                //delete product document in collection
                                                 await FirebaseFirestore.instance
                                                     .collection('users')
                                                     .doc(user.uid)
                                                     .collection(catName)
-                                                    .doc(documents[i]?.name)
-                                                    .delete();
+                                                    .where('name', isEqualTo: documents[i]!.name)
+                                                    .get()
+                                                    .then(
+                                                  (querySnapshot) {
+                                                    for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                      documentSnapshot.reference.delete();
+                                                    }
+                                                  },
+                                                );
                                                 //delete picture in storage
                                                 await FirebaseStorage.instance
                                                     .ref()

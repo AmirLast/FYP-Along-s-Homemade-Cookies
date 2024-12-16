@@ -148,11 +148,11 @@ class _EditProdPageState extends State<EditCategoryPage> {
           ],
         ),
         drawer: const MyDrawer(),
-        body: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width, //max width for current phone
-            height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
-            decoration: show.showLogo(),
+        body: Container(
+          width: MediaQuery.of(context).size.width, //max width for current phone
+          height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
+          decoration: show.showLogo(),
+          child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

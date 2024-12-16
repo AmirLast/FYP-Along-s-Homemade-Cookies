@@ -170,7 +170,7 @@ class _Register2PageState extends State<Register2Page> {
                       const SizedBox(height: 60),
 
                       Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 85),
+                        margin: const EdgeInsets.symmetric(horizontal: 45),
                         child: Row(
                           children: [
                             //go back button

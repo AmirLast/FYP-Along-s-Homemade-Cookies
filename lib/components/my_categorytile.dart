@@ -108,8 +108,17 @@ class _CategoryTileState extends State<CategoryTile> {
                                                 showDialog(
                                                   context: context,
                                                   builder: (context) {
-                                                    return const Center(
-                                                      child: CircularProgressIndicator(color: Colors.black),
+                                                    return PopScope(
+                                                      //prevent back button
+                                                      canPop: false,
+                                                      onPopInvokedWithResult: (didPop, result) async {
+                                                        if (didPop) {
+                                                          return;
+                                                        }
+                                                      },
+                                                      child: const Center(
+                                                        child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                                      ),
                                                     );
                                                   },
                                                 ); //--------------------------------------
@@ -137,6 +146,16 @@ class _CategoryTileState extends State<CategoryTile> {
                                                       }
                                                     },
                                                   ).then((onValue) {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(
+                                                        backgroundColor: Colors.black,
+                                                        content: Text(
+                                                          "Product Deleted",
+                                                          style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                                          textAlign: TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    );
                                                     Navigator.pop(context);
                                                     //pop loading circle---------
                                                     //refresh new menu page

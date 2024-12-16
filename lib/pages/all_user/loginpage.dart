@@ -18,6 +18,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  //text editing controller
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
   //for logo
   final Logo show = Logo();
   // login user
@@ -48,16 +51,26 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    //text editing controller
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
 
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xffd1a271),
       body: Container(
-        height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
+        height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight, //max height for current phone
         decoration: show.showLogo(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

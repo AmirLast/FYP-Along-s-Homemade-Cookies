@@ -52,7 +52,7 @@ class _ForgorPasswordState extends State<ForgorPassword> {
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xffd1a271),
       body: Container(
-        height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
+        height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight, //max height for current phone
         decoration: show.showLogo(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

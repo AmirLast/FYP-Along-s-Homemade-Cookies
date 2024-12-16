@@ -138,7 +138,7 @@ class _AddProductState extends State<AddProduct> {
       drawer: const MyDrawer(),
       body: Container(
         width: MediaQuery.of(context).size.width, //max width for current phone
-        height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
+        height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
         decoration: show.showLogo(),
         child: SingleChildScrollView(
           child: Column(
@@ -319,7 +319,7 @@ class _AddProductState extends State<AddProduct> {
                               String prodPrice = double.parse(priceController.text).toStringAsFixed(2);
                               User? user = AuthService().getCurrentUser();
                               //set file path for current user folder in firebase storage
-                              String path = '${user?.uid}/${nameController.text}';
+                              String path = '${user?.uid}/$capitalizedSentence';
                               //cane nak cek product tu dah ade sama nama ke???
 
                               // loading circle-------------------------
@@ -360,10 +360,18 @@ class _AddProductState extends State<AddProduct> {
                                       "name": capitalizedSentence,
                                       "price": prodPrice,
                                     }).then((onValue) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: Colors.black,
+                                          content: Text(
+                                            "Product Added",
+                                            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      );
                                       Navigator.pop(context);
                                       //pop loading circle
-                                      Navigator.pop(context);
-                                      //pop showdialog
                                       Navigator.pop(context);
                                       //pop add product page
                                       Navigator.push(
