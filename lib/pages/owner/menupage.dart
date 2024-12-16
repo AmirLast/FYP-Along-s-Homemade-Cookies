@@ -87,111 +87,114 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: cat.length,
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (context, index) {
-                    final String catName = cat[index].toString();
-                    //return product tile UI
-                    return CategoryTile(
-                      catName: catName,
-                      baked: menus,
-                      onEdit: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          //calling ProdPage while sending prod values
-                          builder: (context) => EditCategoryPage(
-                            category: catName,
+              Padding(
+                padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight),
+                child: Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: cat.length,
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      final String catName = cat[index].toString();
+                      //return product tile UI
+                      return CategoryTile(
+                        catName: catName,
+                        baked: menus,
+                        onEdit: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            //calling ProdPage while sending prod values
+                            builder: (context) => EditCategoryPage(
+                              category: catName,
+                            ),
                           ),
-                        ),
-                      ), //pop up confirm -> pergi page baru (cam add category) -> update (cam kat addcategory.dart) -> back to menu
-                      //for collection: read the collection data into local data buffer(array) -> delete prev collection -> insert buffer into new collection name
-                      onDel: () {
-                        //confirm pop up
-                        showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                  backgroundColor: Colors.white,
-                                  content: Text(
-                                    "Do you want to delete category named '" + catName + "'? All product will be deleted too.",
-                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                  ),
-                                  actions: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        IconButton(
-                                          iconSize: 50,
-                                          color: Colors.green,
-                                          onPressed: () async {
-                                            User? user = AuthService().getCurrentUser();
-                                            //delete data from firebase categories value
-                                            await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
-                                              'categories': FieldValue.arrayRemove([catName])
-                                            });
-                                            //delete data from firebase collection
-                                            List<Bakeds?> documents = [];
-                                            await obj.updatemenudata(catName).then((temp) {
-                                              documents = temp;
-                                            });
-                                            int i = 0;
-                                            int j = documents.length;
-                                            //if theres no product, no document to be delete, this for loop won't be bothered
-                                            for (i; i < j; i++) {
-                                              await FirebaseFirestore.instance
-                                                  .collection('users')
-                                                  .doc(user.uid)
-                                                  .collection(catName)
-                                                  .doc(documents[i]?.name)
-                                                  .delete();
-                                            }
-                                            //delete data from local class
-                                            UserNow.usernow?.categories.remove(catName);
-
-                                            // loading circle-------------------------
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return const Center(
-                                                  child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                                );
-                                              },
-                                            );
-                                            Future.delayed(const Duration(seconds: 2), () {
-                                              Navigator.pop(context);
-                                              //pop loading circle---------
-                                              //refresh new menu page
-                                              Navigator.pop(context);
-                                              updateMenu();
-                                              /*Navigator.pop(context);
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => const MenuPage(),
-                                                ),
-                                              );*/
-                                            });
-                                          },
-                                          icon: const Icon(Icons.check_circle),
-                                        ),
-                                        IconButton(
+                        ), //pop up confirm -> pergi page baru (cam add category) -> update (cam kat addcategory.dart) -> back to menu
+                        //for collection: read the collection data into local data buffer(array) -> delete prev collection -> insert buffer into new collection name
+                        onDel: () {
+                          //confirm pop up
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    backgroundColor: Colors.white,
+                                    content: Text(
+                                      "Do you want to delete category named '" + catName + "'? All product will be deleted too.",
+                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                    ),
+                                    actions: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          IconButton(
                                             iconSize: 50,
-                                            color: Colors.red,
-                                            onPressed: () => Navigator.pop(context),
-                                            icon: const Icon(Icons.cancel)),
-                                      ],
-                                    )
-                                  ],
-                                ));
-                      }, //pop up delete confirm -> delete FBFS -> delete local data -> pushreplacement ke menupage
-                    );
-                  },
+                                            color: Colors.green,
+                                            onPressed: () async {
+                                              User? user = AuthService().getCurrentUser();
+                                              //delete data from firebase categories value
+                                              await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+                                                'categories': FieldValue.arrayRemove([catName])
+                                              });
+                                              //delete data from firebase collection
+                                              List<Bakeds?> documents = [];
+                                              await obj.updatemenudata(catName).then((temp) async {
+                                                documents = temp;
+                                                int i = 0;
+                                                int j = documents.length;
+                                                //if theres no product, no document to be delete, this for loop won't be bothered
+                                                for (i; i < j; i++) {
+                                                  await FirebaseFirestore.instance
+                                                      .collection('users')
+                                                      .doc(user.uid)
+                                                      .collection(catName)
+                                                      .doc(documents[i]?.name)
+                                                      .delete();
+                                                }
+                                              });
+
+                                              //delete data from local class
+                                              UserNow.usernow?.categories.remove(catName);
+
+                                              // loading circle-------------------------
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return const Center(
+                                                    child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                                  );
+                                                },
+                                              );
+                                              Future.delayed(const Duration(seconds: 2), () {
+                                                Navigator.pop(context);
+                                                //pop loading circle---------
+                                                //refresh new menu page
+                                                Navigator.pop(context);
+                                                updateMenu();
+                                                /*Navigator.pop(context);
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => const MenuPage(),
+                                                  ),
+                                                );*/
+                                              });
+                                            },
+                                            icon: const Icon(Icons.check_circle),
+                                          ),
+                                          IconButton(
+                                              iconSize: 50,
+                                              color: Colors.red,
+                                              onPressed: () => Navigator.pop(context),
+                                              icon: const Icon(Icons.cancel)),
+                                        ],
+                                      )
+                                    ],
+                                  ));
+                        }, //pop up delete confirm -> delete FBFS -> delete local data -> pushreplacement ke menupage
+                      );
+                    },
+                  ),
                 ),
               ),
-              const SizedBox(height: 80),
             ],
           ),
         ),

@@ -466,10 +466,20 @@ class _EditProdPageState extends State<EditProdPage> {
                                                           isLoading = true;
                                                           // loading circle-------------------------
                                                           showDialog(
+                                                            barrierDismissible: !isLoading, //prevent outside click
                                                             context: context,
                                                             builder: (context) {
-                                                              return const Center(
-                                                                child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                                              return PopScope(
+                                                                //prevent back button
+                                                                canPop: false,
+                                                                onPopInvokedWithResult: (didPop, result) async {
+                                                                  if (didPop) {
+                                                                    return;
+                                                                  }
+                                                                },
+                                                                child: const Center(
+                                                                  child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                                                ),
                                                               );
                                                             },
                                                           );
@@ -507,13 +517,13 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                 }
                                                               });
                                                             }).then((onValue) {
-                                                              isLoading = false;
                                                               Navigator.pop(context);
                                                               //pop loading circle---------
                                                               Navigator.pop(context);
                                                               //pop save changes dialogue
                                                               changedData(true);
                                                               setState(() {
+                                                                isLoading = false;
                                                                 inithinttext(
                                                                     capitalizedSentence,
                                                                     descController.text == ""
@@ -552,6 +562,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                               //pop save changes dialogue
                                                               changedData(true);
                                                               setState(() {
+                                                                isLoading = false;
                                                                 inithinttext(
                                                                     capitalizedSentence,
                                                                     descController.text == ""

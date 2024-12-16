@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/all_user/updateurl.dart';
-import 'package:fyp/pages/owner/menupage.dart';
+import 'package:fyp/pages/owner/editproduct.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
 //import 'package:image_picker/image_picker.dart'; dah boleh delete ke?
@@ -322,38 +323,58 @@ class _AddProductState extends State<AddProduct> {
 
                               // loading circle-------------------------
                               showDialog(
+                                barrierDismissible: false, //prevent outside click
                                 context: context,
                                 builder: (context) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                  return PopScope(
+                                    //prevent back button
+                                    canPop: false,
+                                    onPopInvokedWithResult: (didPop, result) async {
+                                      if (didPop) {
+                                        return;
+                                      }
+                                    },
+                                    child: const Center(
+                                      child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                    ),
                                   );
                                 },
                               );
                               try {
+                                //prepare prod to be pushed into edit page
+                                Bakeds newProd = Bakeds(
+                                    name: capitalizedSentence,
+                                    description: descController.text,
+                                    url: "",
+                                    price: double.parse(prodPrice),
+                                    category: widget.category);
                                 //upload gambar dalam firebase storage
-                                FirebaseStorage.instance.ref().child(path).putFile(_image!);
-                                await obj.downloadUrl(widget.category, user!.uid, context).then((url) {
-                                  //update prod dalam collection categories kat FBFS
-                                  FirebaseFirestore.instance.collection('users').doc(user.uid).collection(widget.category).add({
-                                    "description": descController.text,
-                                    "url": url,
-                                    "name": capitalizedSentence,
-                                    "price": prodPrice,
+                                await FirebaseStorage.instance.ref().child(path).putFile(_image!).then((onValue) {
+                                  obj.downloadUrl(widget.category, user!.uid, context).then((url) {
+                                    newProd.url = url;
+                                    //update prod dalam collection categories kat FBFS
+                                    FirebaseFirestore.instance.collection('users').doc(user.uid).collection(widget.category).add({
+                                      "description": descController.text,
+                                      "url": url,
+                                      "name": capitalizedSentence,
+                                      "price": prodPrice,
+                                    }).then((onValue) {
+                                      Navigator.pop(context);
+                                      //pop loading circle
+                                      Navigator.pop(context);
+                                      //pop showdialog
+                                      Navigator.pop(context);
+                                      //pop add product page
+                                      Navigator.pop(context);
+                                      //pop menu page
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => EditProdPage(prod: newProd, category: widget.category),
+                                        ),
+                                      );
+                                    });
                                   });
-                                });
-
-                                await Future.delayed(const Duration(seconds: 2), () {
-                                  Navigator.pop(context);
-                                  //pop loading circle---------
-                                  //go back to menu page
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const MenuPage(),
-                                    ),
-                                  );
                                 });
                               } on FirebaseException {
                                 Navigator.pop(context);
