@@ -89,246 +89,278 @@ class _Register2PageState extends State<Register2Page> {
       body: SingleChildScrollView(
         child: Container(
           decoration: show.showLogo(),
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 60), //to replace safearea
-                //title of current widget
-                const Text(
-                  "Sign Up",
-                  style: TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 60), //to replace safearea
+              //title of current widget
+              const Text(
+                "Sign Up",
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
+              ),
 
-                const SizedBox(height: 25),
+              const SizedBox(height: 25),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 30),
 
-                        const Text(
-                          "Fill in these information",
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.black,
-                          ),
+                      const Text(
+                        "Fill in these information",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
                         ),
+                      ),
 
-                        const SizedBox(height: 60),
+                      const SizedBox(height: 60),
 
-                        //username
-                        //first name
-                        MyTextField(
-                          controller: address1Controller,
-                          caps: TextCapitalization.words,
-                          inputType: TextInputType.text,
-                          labelText: "Address",
-                          hintText: "",
-                          obscureText: false,
-                          isEnabled: true,
-                          isShowhint: false,
-                        ),
+                      //username
+                      //first name
+                      MyTextField(
+                        controller: address1Controller,
+                        caps: TextCapitalization.words,
+                        inputType: TextInputType.text,
+                        labelText: "Address",
+                        hintText: "",
+                        obscureText: false,
+                        isEnabled: true,
+                        isShowhint: false,
+                      ),
 
-                        const SizedBox(height: 30),
+                      const SizedBox(height: 30),
 
-                        //last name
-                        MyTextField(
-                          controller: postcodeController,
-                          caps: TextCapitalization.none,
-                          inputType: TextInputType.number,
-                          labelText: "Post Code",
-                          hintText: "",
-                          obscureText: false,
-                          isEnabled: true,
-                          isShowhint: false,
-                        ),
+                      //last name
+                      MyTextField(
+                        controller: postcodeController,
+                        caps: TextCapitalization.none,
+                        inputType: TextInputType.number,
+                        labelText: "Post Code",
+                        hintText: "",
+                        obscureText: false,
+                        isEnabled: true,
+                        isShowhint: false,
+                      ),
 
-                        const SizedBox(height: 30),
+                      const SizedBox(height: 30),
 
-                        //shop name
-                        MyTextField(
-                          controller: stateController,
-                          caps: TextCapitalization.words,
-                          inputType: TextInputType.text,
-                          labelText: "State",
-                          hintText: "",
-                          obscureText: false,
-                          isEnabled: true,
-                          isShowhint: false,
-                        ),
+                      //shop name
+                      MyTextField(
+                        controller: stateController,
+                        caps: TextCapitalization.words,
+                        inputType: TextInputType.text,
+                        labelText: "State",
+                        hintText: "",
+                        obscureText: false,
+                        isEnabled: true,
+                        isShowhint: false,
+                      ),
 
-                        const SizedBox(height: 60),
+                      const SizedBox(height: 60),
 
-                        //sign up button
-                        MaterialButton(
-                          child: Container(
-                            padding: const EdgeInsets.all(20),
-                            margin: const EdgeInsets.symmetric(horizontal: 85),
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Sign Up",
-                                style: TextStyle(
-                                  //fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade400,
-                                  fontSize: 20,
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 85),
+                        child: Row(
+                          children: [
+                            //go back button
+                            MaterialButton(
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(40),
                                 ),
-                              ),
-                            ),
-                          ),
-                          onPressed: () async {
-                            //some value for error checking---------
-                            var isBlank = false; //blank means no error
-                            String error = ""; //the error description
-                            //User? user;
-
-                            //checking if it is blank
-                            if (address1Controller.text == '') {
-                              error = 'Address is blank';
-                              isBlank = true;
-                            } else if (postcodeController.text == '') {
-                              error = 'Post Code is blank';
-                              isBlank = true;
-                            } else if (stateController.text == '') {
-                              error = 'State is blank';
-                              isBlank = true;
-                            }
-
-                            //if there is error, show it and don't sign up
-                            if (isBlank) {
-                              isBlank = false;
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  backgroundColor: Colors.black,
-                                  content: Text(
-                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                    error,
-                                    textAlign: TextAlign.center,
+                                child: Center(
+                                  child: Text(
+                                    "Go back",
+                                    style: TextStyle(
+                                      color: Colors.grey.shade400,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
-                              );
-                              return;
-                            } else {
-                              // loading circle-----
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                  );
-                                },
-                              );
-                              //--------------------
-                              try {
-                                User? user = await register(email: widget.email, password: widget.password);
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                            ),
 
-                                var userFF = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
+                            const SizedBox(
+                              width: 30,
+                            ),
 
-                                user?.updatePhotoURL(defProfile); //set default user pfp
-                                //name the userfile as uid
-                                userFF.doc(user?.uid).set({
-                                  //set all data that user and owner have in common
-                                  "fname": widget.fname,
-                                  "lname": widget.lname,
-                                  "phone": widget.phone,
-                                  "type": widget.type,
-                                  "passStrength": true, //checked hence true
-                                  //owner need array of categories
-                                  "categories": [],
-                                  //for category edit assist
-                                  "currentdir": "",
-                                  "address":
-                                      address1Controller.text + ", " + postcodeController.text + ", " + stateController.text, //for delivery
-                                });
-                                if (widget.type == 'owner') {
-                                  userFF.doc(user?.uid).set(
-                                      //add other data that only owner have
-                                      {'shop': upperCase(widget.shop)},
-                                      SetOptions(merge: true)).then((value) {
-                                    //Do your stuff.
-                                  });
+                            //sign up button
+                            MaterialButton(
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Sign Up",
+                                    style: TextStyle(
+                                      //fontWeight: FontWeight.bold,
+                                      color: Colors.grey.shade400,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              onPressed: () async {
+                                //some value for error checking---------
+                                var isBlank = false; //blank means no error
+                                String error = ""; //the error description
+                                //User? user;
+
+                                //checking if it is blank
+                                if (address1Controller.text == '') {
+                                  error = 'Address is blank';
+                                  isBlank = true;
+                                } else if (postcodeController.text == '') {
+                                  error = 'Post Code is blank';
+                                  isBlank = true;
+                                } else if (stateController.text == '') {
+                                  error = 'State is blank';
+                                  isBlank = true;
                                 }
-                                await Future.delayed(
-                                  const Duration(seconds: 2),
-                                  () {
-                                    Navigator.of(context).pop();
-                                    // pop loading circle if success register
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                        builder: (context) => const VerifyEmailPage(),
-                                      ),
-                                      (r) => false,
-                                    );
-                                  },
-                                );
-                              } catch (e) {
-                                Future.delayed(const Duration(seconds: 2), () {
-                                  Navigator.pop(context);
-                                  //pop loading circle if fail
+
+                                //if there is error, show it and don't sign up
+                                if (isBlank) {
+                                  isBlank = false;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       backgroundColor: Colors.black,
                                       content: Text(
-                                        "Fail to register",
-                                        style: TextStyle(color: Colors.grey.shade400),
+                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                        error,
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
                                   );
-                                  setState(() {});
-                                });
-                              }
-                            }
-                          },
-                        ),
+                                  return;
+                                } else {
+                                  // loading circle-----
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                      );
+                                    },
+                                  );
+                                  //--------------------
+                                  try {
+                                    User? user = await register(email: widget.email, password: widget.password);
 
-                        const SizedBox(height: 25),
+                                    var userFF = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
 
-                        //to login
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Already have an account?",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            const SizedBox(width: 4),
-                            GestureDetector(
-                              onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage())),
-                              child: const Text(
-                                "Click here to Login",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                                    user?.updatePhotoURL(defProfile); //set default user pfp
+                                    //name the userfile as uid
+                                    userFF.doc(user?.uid).set({
+                                      //set all data that user and owner have in common
+                                      "fname": widget.fname,
+                                      "lname": widget.lname,
+                                      "phone": widget.phone,
+                                      "type": widget.type,
+                                      "passStrength": true, //checked hence true
+                                      //owner need array of categories
+                                      "categories": [],
+                                      //for category edit assist
+                                      "currentdir": "",
+                                      "address": address1Controller.text +
+                                          ", " +
+                                          postcodeController.text +
+                                          ", " +
+                                          stateController.text, //for delivery
+                                    });
+                                    if (widget.type == 'owner') {
+                                      userFF.doc(user?.uid).set(
+                                          //add other data that only owner have
+                                          {'shop': upperCase(widget.shop)},
+                                          SetOptions(merge: true)).then((value) {
+                                        //Do your stuff.
+                                      });
+                                    }
+                                    await Future.delayed(
+                                      const Duration(seconds: 2),
+                                      () {
+                                        Navigator.of(context).pop();
+                                        // pop loading circle if success register
+                                        Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) => const VerifyEmailPage(),
+                                          ),
+                                          (r) => false,
+                                        );
+                                      },
+                                    );
+                                  } catch (e) {
+                                    Future.delayed(const Duration(seconds: 2), () {
+                                      Navigator.pop(context);
+                                      //pop loading circle if fail
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: Colors.black,
+                                          content: Text(
+                                            "Fail to register",
+                                            style: TextStyle(color: Colors.grey.shade400),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      );
+                                      setState(() {});
+                                    });
+                                  }
+                                }
+                              },
                             ),
                           ],
                         ),
+                      ),
 
-                        const SizedBox(height: 40),
-                      ],
-                    ),
+                      const SizedBox(height: 25),
+
+                      //to login
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Already have an account?",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          const SizedBox(width: 4),
+                          GestureDetector(
+                            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage())),
+                            child: const Text(
+                              "Click here to Login",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 40),
+                    ],
                   ),
                 ),
+              ),
 
-                const SizedBox(height: 25),
-              ],
-            ),
+              const SizedBox(height: 25),
+            ],
           ),
         ),
       ),

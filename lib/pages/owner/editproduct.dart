@@ -8,7 +8,7 @@ import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
-import 'package:fyp/pages/all_user/updateurl.dart';
+import 'package:fyp/pages/all_user/functions/updateurl.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -237,6 +237,7 @@ class _EditProdPageState extends State<EditProdPage> {
         body: SingleChildScrollView(
           child: Container(
             width: MediaQuery.of(context).size.width, //max width for current phone
+            height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
             decoration: show.showLogo(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

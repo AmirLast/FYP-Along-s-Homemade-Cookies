@@ -47,7 +47,7 @@ class _ShopPageState extends State<ShopPage> {
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width, //max width for current phone
-          height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight, //max height for current phone
+          height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
           decoration: show.showLogo(),
           child: Column(
             children: [

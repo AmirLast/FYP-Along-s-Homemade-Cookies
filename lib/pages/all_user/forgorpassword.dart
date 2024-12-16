@@ -52,91 +52,90 @@ class _ForgorPasswordState extends State<ForgorPassword> {
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xffd1a271),
       body: Container(
+        height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
         decoration: show.showLogo(),
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 60),
-              //title of current widget
-              const Text(
-                "Reset Password",
-                style: TextStyle(
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(height: 60),
+            //title of current widget
+            const Text(
+              "Reset Password",
+              style: TextStyle(
+                fontSize: 48,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
+            ),
 
-              const SizedBox(height: 25),
+            const SizedBox(height: 25),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 30),
 
-                      const Text(
-                        "Insert E-mail to reset password",
-                        style: TextStyle(
-                          fontSize: 25,
+                    const Text(
+                      "Insert E-mail to reset password",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+
+                    const SizedBox(height: 60),
+
+                    //email
+                    MyTextField(
+                      controller: emailController,
+                      caps: TextCapitalization.none,
+                      inputType: TextInputType.emailAddress,
+                      labelText: "Email",
+                      hintText: "",
+                      obscureText: false,
+                      isEnabled: true,
+                      isShowhint: false,
+                    ),
+
+                    const SizedBox(height: 60),
+
+                    MaterialButton(
+                      onPressed: () {
+                        resetPass();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(25),
+                        margin: const EdgeInsets.symmetric(horizontal: 25),
+                        decoration: BoxDecoration(
                           color: Colors.black,
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                        textAlign: TextAlign.justify,
-                      ),
-
-                      const SizedBox(height: 60),
-
-                      //email
-                      MyTextField(
-                        controller: emailController,
-                        caps: TextCapitalization.none,
-                        inputType: TextInputType.emailAddress,
-                        labelText: "Email",
-                        hintText: "",
-                        obscureText: false,
-                        isEnabled: true,
-                        isShowhint: false,
-                      ),
-
-                      const SizedBox(height: 60),
-
-                      MaterialButton(
-                        onPressed: () {
-                          resetPass();
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(25),
-                          margin: const EdgeInsets.symmetric(horizontal: 25),
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Confirm",
-                              style: TextStyle(
-                                //fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade400,
-                                fontSize: 20,
-                              ),
+                        child: Center(
+                          child: Text(
+                            "Confirm",
+                            style: TextStyle(
+                              //fontWeight: FontWeight.bold,
+                              color: Colors.grey.shade400,
+                              fontSize: 20,
                             ),
                           ),
                         ),
                       ),
+                    ),
 
-                      const SizedBox(height: 40),
-                    ],
-                  ),
+                    const SizedBox(height: 40),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

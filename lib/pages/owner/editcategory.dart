@@ -7,7 +7,7 @@ import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
-import 'package:fyp/pages/owner/updatemenu.dart';
+import 'package:fyp/pages/owner/functions/updatemenu.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 
 class EditCategoryPage extends StatefulWidget {
@@ -151,6 +151,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
         body: SingleChildScrollView(
           child: Container(
             width: MediaQuery.of(context).size.width, //max width for current phone
+            height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
             decoration: show.showLogo(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

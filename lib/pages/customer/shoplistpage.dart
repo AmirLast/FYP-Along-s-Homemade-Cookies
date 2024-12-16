@@ -3,8 +3,8 @@ import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_shopcard.dart';
 import 'package:fyp/models/shopclass.dart';
-import 'package:fyp/pages/user/shoppage.dart';
-import 'package:fyp/pages/user/updateshoplist.dart';
+import 'package:fyp/pages/customer/shoppage.dart';
+import 'package:fyp/pages/customer/functions/updateshoplist.dart';
 
 class ShopListPage extends StatefulWidget {
   const ShopListPage({super.key});
@@ -71,7 +71,7 @@ class _ShopListPageState extends State<ShopListPage> {
             body: SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width, //max width for current phone
-                height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight, //max height for current phone
+                height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
                 decoration: show.showLogo(),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

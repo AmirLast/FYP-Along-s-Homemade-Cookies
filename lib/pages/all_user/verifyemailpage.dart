@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
-import 'package:fyp/services/auth/userplacement.dart';
+import 'package:fyp/services/auth/auth_gate.dart';
 
 class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({super.key});
@@ -76,7 +76,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ? const UserReplacement()
+      ? const AuthGate()
       : PopScope(
           canPop: false,
           onPopInvokedWithResult: (didPop, result) async {

@@ -5,7 +5,7 @@ import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/settingspage.dart';
-import 'package:fyp/pages/user/shoplistpage.dart';
+import 'package:fyp/pages/customer/shoplistpage.dart';
 
 class UserHomePage extends StatefulWidget {
   const UserHomePage({super.key});
@@ -86,6 +86,7 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
         drawer: const MyDrawer(),
         body: Container(
           width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
           decoration: show.showLogo(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

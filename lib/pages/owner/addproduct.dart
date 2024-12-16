@@ -8,7 +8,7 @@ import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
-import 'package:fyp/pages/all_user/updateurl.dart';
+import 'package:fyp/pages/all_user/functions/updateurl.dart';
 import 'package:fyp/pages/owner/editproduct.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -136,10 +136,11 @@ class _AddProductState extends State<AddProduct> {
         ],
       ),
       drawer: const MyDrawer(),
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width, //max width for current phone
-          decoration: show.showLogo(),
+      body: Container(
+        width: MediaQuery.of(context).size.width, //max width for current phone
+        height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight, //max height for current phone
+        decoration: show.showLogo(),
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -349,8 +350,8 @@ class _AddProductState extends State<AddProduct> {
                                     price: double.parse(prodPrice),
                                     category: widget.category);
                                 //upload gambar dalam firebase storage
-                                await FirebaseStorage.instance.ref().child(path).putFile(_image!).then((onValue) {
-                                  obj.downloadUrl(widget.category, user!.uid, context).then((url) {
+                                await FirebaseStorage.instance.ref().child(path).putFile(_image!).then((onValue) async {
+                                  await obj.downloadUrl(capitalizedSentence, user!.uid, context).then((url) {
                                     newProd.url = url;
                                     //update prod dalam collection categories kat FBFS
                                     FirebaseFirestore.instance.collection('users').doc(user.uid).collection(widget.category).add({
@@ -365,8 +366,6 @@ class _AddProductState extends State<AddProduct> {
                                       //pop showdialog
                                       Navigator.pop(context);
                                       //pop add product page
-                                      Navigator.pop(context);
-                                      //pop menu page
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(

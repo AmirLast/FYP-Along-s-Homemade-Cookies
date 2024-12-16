@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/pages/admin/adminhomepage.dart';
 import 'package:fyp/pages/owner/ownerhomepage.dart';
-import 'package:fyp/pages/user/userhomepage.dart';
+import 'package:fyp/pages/customer/userhomepage.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
 import 'package:fyp/services/auth/update_user.dart';
 
@@ -63,7 +63,7 @@ class _AuthGateState extends State<AuthGate> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   // if there is user logged in then
-                  if (type == 'user') {
+                  if (type == 'buyer') {
                     return const UserHomePage();
                   } else if (type == 'admin') {
                     return const AdminHomePage();

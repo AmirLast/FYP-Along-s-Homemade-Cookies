@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_bakedtile.dart';
 import 'package:fyp/models/bakedclass.dart';
@@ -103,20 +104,6 @@ class _CategoryTileState extends State<CategoryTile> {
                                               iconSize: 50,
                                               color: Colors.green,
                                               onPressed: () async {
-                                                User? user = AuthService().getCurrentUser();
-                                                FirebaseFirestore.instance
-                                                    .collection('users')
-                                                    .doc(user!.uid)
-                                                    .collection(widget.catName)
-                                                    .where('name', isEqualTo: categoryMenu[index]!.name)
-                                                    .get()
-                                                    .then(
-                                                  (querySnapshot) {
-                                                    for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-                                                      documentSnapshot.reference.delete();
-                                                    }
-                                                  },
-                                                );
                                                 // loading circle-------------------------
                                                 showDialog(
                                                   context: context,
@@ -125,19 +112,43 @@ class _CategoryTileState extends State<CategoryTile> {
                                                       child: CircularProgressIndicator(color: Colors.black),
                                                     );
                                                   },
-                                                );
-                                                await Future.delayed(const Duration(seconds: 2), () {
-                                                  Navigator.pop(context);
-                                                  //pop loading circle---------
-                                                  //refresh new menu page
-                                                  Navigator.pop(context);
-                                                  Navigator.pop(context);
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) => const MenuPage(),
-                                                    ),
-                                                  );
+                                                ); //--------------------------------------
+
+                                                User? user = AuthService().getCurrentUser();
+                                                String storagePath =
+                                                    '${user?.uid}/${categoryMenu[index]!.name}'; //for now only have folder name
+                                                //delete picture in storage
+                                                await FirebaseStorage.instance
+                                                    .ref()
+                                                    .child(storagePath) //add prod name (name of pic)
+                                                    .delete()
+                                                    .then((onValue) async {
+                                                  //delete product in collection in fbfs
+                                                  await FirebaseFirestore.instance
+                                                      .collection('users')
+                                                      .doc(user!.uid)
+                                                      .collection(widget.catName)
+                                                      .where('name', isEqualTo: categoryMenu[index]!.name)
+                                                      .get()
+                                                      .then(
+                                                    (querySnapshot) {
+                                                      for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                        documentSnapshot.reference.delete();
+                                                      }
+                                                    },
+                                                  ).then((onValue) {
+                                                    Navigator.pop(context);
+                                                    //pop loading circle---------
+                                                    //refresh new menu page
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => const MenuPage(),
+                                                      ),
+                                                    );
+                                                  });
                                                 });
                                               },
                                               icon: const Icon(Icons.check_circle),
