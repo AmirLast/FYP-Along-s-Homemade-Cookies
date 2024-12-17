@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
@@ -130,6 +129,18 @@ class _EditProdPageState extends State<EditCategoryPage> {
         backgroundColor: const Color(0xffd1a271),
         appBar: AppBar(
           backgroundColor: const Color(0xffB67F5F),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            onPressed: () {
+              if (nameController.text == '') {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
+              } else {
+                confirmPopUp(context);
+              }
+            },
+          ),
           title: Center(
             child: Text(
               textAlign: TextAlign.center,
@@ -147,7 +158,6 @@ class _EditProdPageState extends State<EditCategoryPage> {
             ),
           ],
         ),
-        drawer: const MyDrawer(),
         body: Container(
           width: MediaQuery.of(context).size.width, //max width for current phone
           height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
@@ -200,112 +210,142 @@ class _EditProdPageState extends State<EditCategoryPage> {
                         const SizedBox(height: 30),
 
                         //save button
-                        MaterialButton(
-                            child: Container(
-                              padding: const EdgeInsets.all(25),
-                              margin: const EdgeInsets.symmetric(horizontal: 25),
-                              decoration: BoxDecoration(
-                                color: nameController.text == '' ? Colors.grey.shade400 : Colors.black,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Save",
-                                  style: TextStyle(
-                                    //fontWeight: FontWeight.bold,
-                                    color: nameController.text == '' ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
-                                    fontSize: 20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            MaterialButton(
+                              child: Container(
+                                padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                                decoration: BoxDecoration(
+                                  color: nameController.text == '' ? Colors.grey.shade400 : Colors.black,
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Save",
+                                    style: TextStyle(
+                                      //fontWeight: FontWeight.bold,
+                                      color: nameController.text == '' ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            onPressed: nameController.text == ''
-                                ? null
-                                : () async {
-                                    //showdialog confirm save
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                              backgroundColor: Colors.white,
-                                              content: const Text(
-                                                "Save changes?",
-                                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                              ),
-                                              actions: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  children: [
-                                                    IconButton(
-                                                      iconSize: 50,
-                                                      color: Colors.green,
-                                                      onPressed: () async {
-                                                        //code here
-                                                        String capitalizedSentence;
-                                                        List<String> words;
-                                                        //set name
-                                                        words = nameController.text.split(" ");
-                                                        capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
+                              onPressed: nameController.text == ''
+                                  ? null
+                                  : () async {
+                                      late List<String> words;
+                                      late String capitalizedSentence;
+                                      if (nameController.text != "") {
+                                        //uppercase every first letter for each word
+                                        words = nameController.text.split(" ");
+                                        capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
+                                      }
 
-                                                        User? user = AuthService().getCurrentUser();
+                                      if (UserNow.usernow!.categories.contains(capitalizedSentence)) {
+                                        //check categories exist in current data
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.black,
+                                            content: Text(
+                                              "Category '" + nameController.text + "' already exist",
+                                              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        //showdialog confirm save
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            backgroundColor: Colors.white,
+                                            content: const Text(
+                                              "Save changes?",
+                                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                            ),
+                                            actions: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  IconButton(
+                                                    iconSize: 50,
+                                                    color: Colors.green,
+                                                    onPressed: () async {
+                                                      User? user = AuthService().getCurrentUser();
 
-                                                        //cane nak cek category tu dah ade sama nama ke???
-
-                                                        try {
-                                                          // loading circle-------------------------
-                                                          showDialog(
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return const Center(
+                                                      try {
+                                                        // loading circle-------------------------
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return PopScope(
+                                                              canPop: false,
+                                                              onPopInvokedWithResult: (didPop, result) async {
+                                                                if (didPop) {
+                                                                  return;
+                                                                }
+                                                              },
+                                                              child: const Center(
                                                                 child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                                              );
-                                                            },
-                                                          );
+                                                              ),
+                                                            );
+                                                          },
+                                                        ); //-------------------------------------
 
-                                                          //get list of products in this category
-                                                          await obj.updatemenudata(widget.category).then((temp) {
-                                                            menus = temp;
-                                                            int i = 0;
-                                                            int j = menus.length;
-                                                            for (i; i < j; i++) {
-                                                              //tambah prod dalam collection categories baru kat FBFS
-                                                              FirebaseFirestore.instance
-                                                                  .collection('users')
-                                                                  .doc(user?.uid)
-                                                                  .collection(capitalizedSentence)
-                                                                  .add({
-                                                                "description": menus[i]?.description,
-                                                                "url": menus[i]?.url,
-                                                                "name": menus[i]?.name,
-                                                                "price": menus[i]?.price.toStringAsFixed(2),
-                                                              });
-                                                              //delete prod dalam collection categories lama kat FBFS
-                                                              FirebaseFirestore.instance
-                                                                  .collection('users')
-                                                                  .doc(user?.uid)
-                                                                  .collection(widget.category)
-                                                                  .where("name", isEqualTo: menus[i]?.name)
-                                                                  .get()
-                                                                  .then(
-                                                                (querySnapshot) {
-                                                                  for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-                                                                    documentSnapshot.reference.delete();
-                                                                  }
-                                                                },
-                                                              );
-                                                            }
-                                                          });
-
+                                                        //get list of products in this category
+                                                        await obj.updatemenudata(widget.category).then((temp) async {
+                                                          menus = temp;
+                                                          int i = 0;
+                                                          int j = menus.length;
+                                                          for (i; i < j; i++) {
+                                                            //tambah prod dalam collection categories baru kat FBFS
+                                                            await FirebaseFirestore.instance
+                                                                .collection('users')
+                                                                .doc(user?.uid)
+                                                                .collection(capitalizedSentence)
+                                                                .add({
+                                                              "description": menus[i]?.description,
+                                                              "url": menus[i]?.url,
+                                                              "name": menus[i]?.name,
+                                                              "price": menus[i]?.price.toStringAsFixed(2),
+                                                            });
+                                                            //delete prod dalam collection categories lama kat FBFS
+                                                            await FirebaseFirestore.instance
+                                                                .collection('users')
+                                                                .doc(user?.uid)
+                                                                .collection(widget.category)
+                                                                .where("name", isEqualTo: menus[i]?.name)
+                                                                .get()
+                                                                .then(
+                                                              (querySnapshot) {
+                                                                for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                                  documentSnapshot.reference.delete();
+                                                                }
+                                                              },
+                                                            );
+                                                          }
+                                                        }).then((onValue) async {
                                                           //update local userclass data (+ new category)
                                                           UserNow.usernow!.categories.add(capitalizedSentence);
                                                           UserNow.usernow!.categories.remove(widget.category);
+
                                                           //map userclass data pasal categories
                                                           List newArray = UserNow.usernow!.categories;
-                                                          //update array categories (xde prod) data kat FBFS
-                                                          FirebaseFirestore.instance.collection('users').doc(user?.uid).update({
+                                                          //update array categories data kat FBFS
+                                                          await FirebaseFirestore.instance.collection('users').doc(user?.uid).update({
                                                             "categories": newArray,
-                                                          });
-
-                                                          await Future.delayed(const Duration(seconds: 2), () {
+                                                          }).then((onValue) {
+                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                              SnackBar(
+                                                                backgroundColor: Colors.black,
+                                                                content: Text(
+                                                                  "Data Saved",
+                                                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                                                  textAlign: TextAlign.center,
+                                                                ),
+                                                              ),
+                                                            );
                                                             Navigator.pop(context);
                                                             //pop loading circle---------
                                                             Navigator.pop(context);
@@ -316,33 +356,39 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                                               nameController = TextEditingController();
                                                             });
                                                           });
-                                                        } catch (e) {
-                                                          Navigator.pop(context);
-                                                          //pop loading circle when fail---------
-                                                          ScaffoldMessenger.of(context).showSnackBar(
-                                                            SnackBar(
-                                                              backgroundColor: Colors.black,
-                                                              content: Text(
-                                                                "Fail saving",
-                                                                style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                                                textAlign: TextAlign.center,
-                                                              ),
+                                                        });
+                                                      } catch (e) {
+                                                        Navigator.pop(context);
+                                                        //pop loading circle when fail---------
+                                                        ScaffoldMessenger.of(context).showSnackBar(
+                                                          SnackBar(
+                                                            backgroundColor: Colors.black,
+                                                            content: Text(
+                                                              "Fail saving",
+                                                              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                                              textAlign: TextAlign.center,
                                                             ),
-                                                          );
-                                                        }
-                                                      },
-                                                      icon: const Icon(Icons.check_circle),
-                                                    ),
-                                                    IconButton(
-                                                        iconSize: 50,
-                                                        color: Colors.red,
-                                                        onPressed: () => Navigator.pop(context),
-                                                        icon: const Icon(Icons.cancel)),
-                                                  ],
-                                                )
-                                              ],
-                                            ));
-                                  }),
+                                                          ),
+                                                        );
+                                                      }
+                                                    },
+                                                    icon: const Icon(Icons.check_circle),
+                                                  ),
+                                                  IconButton(
+                                                      iconSize: 50,
+                                                      color: Colors.red,
+                                                      onPressed: () => Navigator.pop(context),
+                                                      icon: const Icon(Icons.cancel)),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                    },
+                            ),
+                          ],
+                        ),
 
                         const SizedBox(height: 40),
                       ],

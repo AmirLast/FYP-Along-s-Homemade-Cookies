@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/all_user/functions/updateurl.dart';
+import 'package:fyp/pages/owner/functions/updatemenu.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -36,7 +36,6 @@ class _EditProdPageState extends State<EditProdPage> {
   late TextEditingController nameController;
   late TextEditingController priceController;
   late String src;
-  late bool isLoading;
   late String nameHT;
   late String descHT;
   late String priceHT;
@@ -44,7 +43,6 @@ class _EditProdPageState extends State<EditProdPage> {
   @override
   void initState() {
     super.initState();
-    isLoading = false;
     descController = TextEditingController();
     nameController = TextEditingController();
     priceController = TextEditingController();
@@ -202,20 +200,30 @@ class _EditProdPageState extends State<EditProdPage> {
         if (didPop) {
           return;
         }
-        if (!isLoading) {
-          if (isSaveEnabled()) {
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
-          } else {
-            confirmPopUp(context);
-          }
+        if (isSaveEnabled()) {
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
+        } else {
+          confirmPopUp(context);
         }
       },
       child: Scaffold(
         backgroundColor: const Color(0xffd1a271),
         appBar: AppBar(
           backgroundColor: const Color(0xffB67F5F),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            onPressed: () {
+              if (isSaveEnabled()) {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
+              } else {
+                confirmPopUp(context);
+              }
+            },
+          ),
           title: Center(
             child: Text(
               textAlign: TextAlign.center,
@@ -233,7 +241,6 @@ class _EditProdPageState extends State<EditProdPage> {
             ),
           ],
         ),
-        drawer: const MyDrawer(),
         body: Container(
           width: MediaQuery.of(context).size.width, //max width for current phone
           height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
@@ -395,111 +402,169 @@ class _EditProdPageState extends State<EditProdPage> {
                         const SizedBox(height: 30),
 
                         //save button
-                        MaterialButton(
-                            child: Container(
-                              padding: const EdgeInsets.all(25),
-                              margin: const EdgeInsets.symmetric(horizontal: 25),
-                              decoration: BoxDecoration(
-                                color: isSaveEnabled() ? Colors.grey.shade400 : Colors.black,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Save",
-                                  style: TextStyle(
-                                    //fontWeight: FontWeight.bold,
-                                    color: isSaveEnabled() ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
-                                    fontSize: 20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            MaterialButton(
+                                child: Container(
+                                  padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                                  decoration: BoxDecoration(
+                                    color: isSaveEnabled() ? Colors.grey.shade400 : Colors.black,
+                                    borderRadius: BorderRadius.circular(40),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Save",
+                                      style: TextStyle(
+                                        //fontWeight: FontWeight.bold,
+                                        color: isSaveEnabled() ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
+                                        fontSize: 20,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            onPressed: isSaveEnabled()
-                                ? null
-                                : () async {
-                                    //showdialog confirm save
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                              backgroundColor: Colors.white,
-                                              content: const Text(
-                                                "Save changes?",
-                                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                onPressed: isSaveEnabled()
+                                    ? null
+                                    : () async {
+                                        String capitalizedSentence;
+                                        List<String> words;
+                                        //set name
+                                        nameController.text == ""
+                                            ? capitalizedSentence = widget.prod!.name
+                                            : {
+                                                words = nameController.text.split(" "),
+                                                capitalizedSentence = words.map((word) => upperCase(word)).join(" ")
+                                              };
+                                        UpdateMenuData objProd = UpdateMenuData();
+                                        List<Bakeds?> checkProduct = [];
+                                        //cek product dah ade sama nama ke tak
+                                        await objProd.updatemenudata("").then((onValue) async {
+                                          checkProduct = onValue;
+                                          if (checkProduct.where((test) => test!.name == capitalizedSentence).isNotEmpty) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                backgroundColor: Colors.black,
+                                                content: Text(
+                                                  "Product '" + nameController.text + "' already exist",
+                                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                                  textAlign: TextAlign.center,
+                                                ),
                                               ),
-                                              actions: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  children: [
-                                                    IconButton(
-                                                      iconSize: 50,
-                                                      color: Colors.green,
-                                                      onPressed: () async {
-                                                        //code here
-                                                        String capitalizedSentence;
-                                                        String prodPrice;
-                                                        List<String> words;
-                                                        //set name
-                                                        nameController.text == ""
-                                                            ? capitalizedSentence = widget.prod!.name
-                                                            : {
-                                                                words = nameController.text.split(" "),
-                                                                capitalizedSentence = words.map((word) => upperCase(word)).join(" ")
-                                                              };
+                                            );
+                                          } else {
+                                            //showdialog confirm save
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                backgroundColor: Colors.white,
+                                                content: const Text(
+                                                  "Save changes?",
+                                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                ),
+                                                actions: [
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    children: [
+                                                      IconButton(
+                                                        iconSize: 50,
+                                                        color: Colors.green,
+                                                        onPressed: () async {
+                                                          //code here
+                                                          String prodPrice;
 
-                                                        //fix price into 0.00 format
-                                                        priceController.text == ""
-                                                            ? prodPrice = widget.prod!.price.toStringAsFixed(2)
-                                                            : prodPrice = double.parse(priceController.text).toStringAsFixed(2);
+                                                          //fix price into 0.00 format
+                                                          priceController.text == ""
+                                                              ? prodPrice = widget.prod!.price.toStringAsFixed(2)
+                                                              : prodPrice = double.parse(priceController.text).toStringAsFixed(2);
 
-                                                        User? user = AuthService().getCurrentUser();
+                                                          User? user = AuthService().getCurrentUser();
 
-                                                        //set file path for current user folder in firebase storage
-                                                        String pathnew = "";
-                                                        String pathprev = "";
+                                                          //set file path for current user folder in firebase storage
+                                                          String pathnew = "";
+                                                          String pathprev = "";
 
-                                                        pathprev = '${user?.uid}/${widget.prod!.name}';
-                                                        if (nameController.text != "") {
-                                                          pathnew = '${user?.uid}/${nameController.text}';
-                                                        }
-                                                        //cane nak cek product tu dah ade sama nama ke???
+                                                          pathprev = '${user?.uid}/${widget.prod!.name}';
+                                                          if (nameController.text != "") {
+                                                            pathnew = '${user?.uid}/${nameController.text}';
+                                                          }
+                                                          //cane nak cek product tu dah ade sama nama ke???
 
-                                                        try {
-                                                          isLoading = true;
-                                                          // loading circle-------------------------
-                                                          showDialog(
-                                                            barrierDismissible: !isLoading, //prevent outside click
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return PopScope(
-                                                                //prevent back button
-                                                                canPop: false,
-                                                                onPopInvokedWithResult: (didPop, result) async {
-                                                                  if (didPop) {
-                                                                    return;
+                                                          try {
+                                                            // loading circle-------------------------
+                                                            showDialog(
+                                                              barrierDismissible: false, //prevent outside click
+                                                              context: context,
+                                                              builder: (context) {
+                                                                return PopScope(
+                                                                  //prevent back button
+                                                                  canPop: false,
+                                                                  onPopInvokedWithResult: (didPop, result) async {
+                                                                    if (didPop) {
+                                                                      return;
+                                                                    }
+                                                                  },
+                                                                  child: const Center(
+                                                                    child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ); //--------------------------------------
+                                                            //upload gambar dalam firebase storage
+                                                            if (_image != null) {
+                                                              if (src !=
+                                                                      "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637" &&
+                                                                  nameController.text != "") {
+                                                                await FirebaseStorage.instance.ref().child(pathprev).delete();
+                                                              }
+                                                              if (nameController.text != "") {
+                                                                await FirebaseStorage.instance.ref().child(pathnew).putFile(_image!);
+                                                              } else {
+                                                                await FirebaseStorage.instance.ref().child(pathprev).putFile(_image!);
+                                                              }
+                                                              //get file url
+                                                              await obj.downloadUrl(widget.prod!.name, useruid, context).then((url) {
+                                                                src = url;
+                                                                //update prod dalam collection categories kat FBFS
+                                                                FirebaseFirestore.instance
+                                                                    .collection('users')
+                                                                    .doc(user?.uid)
+                                                                    .collection(widget.category)
+                                                                    .where('name', isEqualTo: widget.prod!.name)
+                                                                    .get()
+                                                                    .then((querySnapshot) {
+                                                                  for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                                    documentSnapshot.reference.update({
+                                                                      "description": descController.text == ""
+                                                                          ? widget.prod!.description
+                                                                          : descController.text,
+                                                                      "url": src,
+                                                                      "name": capitalizedSentence,
+                                                                      "price": prodPrice,
+                                                                    });
                                                                   }
-                                                                },
-                                                                child: const Center(
-                                                                  child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                                                ),
-                                                              );
-                                                            },
-                                                          );
-                                                          //upload gambar dalam firebase storage
-                                                          if (_image != null) {
-                                                            if (src !=
-                                                                "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637") {
-                                                              await FirebaseStorage.instance.ref().child(pathprev).delete();
-                                                            }
-                                                            if (nameController.text != "") {
-                                                              await FirebaseStorage.instance.ref().child(pathnew).putFile(_image!);
+                                                                });
+                                                              }).then((onValue) {
+                                                                Navigator.pop(context);
+                                                                //pop loading circle---------
+                                                                Navigator.pop(context);
+                                                                //pop save changes dialogue
+                                                                changedData(true);
+                                                                setState(() {
+                                                                  inithinttext(
+                                                                      capitalizedSentence,
+                                                                      descController.text == ""
+                                                                          ? widget.prod!.description
+                                                                          : descController.text,
+                                                                      prodPrice);
+                                                                  _image = null;
+                                                                  descController = TextEditingController();
+                                                                  nameController = TextEditingController();
+                                                                  priceController = TextEditingController();
+                                                                });
+                                                              });
                                                             } else {
-                                                              await FirebaseStorage.instance.ref().child(pathprev).putFile(_image!);
-                                                            }
-                                                            //get file url
-                                                            await obj.downloadUrl(widget.prod!.name, useruid, context).then((url) {
-                                                              src = url;
                                                               //update prod dalam collection categories kat FBFS
-                                                              FirebaseFirestore.instance
+                                                              await FirebaseFirestore.instance
                                                                   .collection('users')
                                                                   .doc(user?.uid)
                                                                   .collection(widget.category)
@@ -516,94 +581,58 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                     "price": prodPrice,
                                                                   });
                                                                 }
-                                                              });
-                                                            }).then((onValue) {
-                                                              Navigator.pop(context);
-                                                              //pop loading circle---------
-                                                              Navigator.pop(context);
-                                                              //pop save changes dialogue
-                                                              changedData(true);
-                                                              setState(() {
-                                                                isLoading = false;
-                                                                inithinttext(
-                                                                    capitalizedSentence,
-                                                                    descController.text == ""
-                                                                        ? widget.prod!.description
-                                                                        : descController.text,
-                                                                    prodPrice);
-                                                                _image = null;
-                                                                descController = TextEditingController();
-                                                                nameController = TextEditingController();
-                                                                priceController = TextEditingController();
-                                                              });
-                                                            });
-                                                          } else {
-                                                            //update prod dalam collection categories kat FBFS
-                                                            await FirebaseFirestore.instance
-                                                                .collection('users')
-                                                                .doc(user?.uid)
-                                                                .collection(widget.category)
-                                                                .where('name', isEqualTo: widget.prod!.name)
-                                                                .get()
-                                                                .then((querySnapshot) {
-                                                              for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-                                                                documentSnapshot.reference.update({
-                                                                  "description": descController.text == ""
-                                                                      ? widget.prod!.description
-                                                                      : descController.text,
-                                                                  "url": src,
-                                                                  "name": capitalizedSentence,
-                                                                  "price": prodPrice,
+                                                              }).then((onValue) {
+                                                                Navigator.pop(context);
+                                                                //pop loading circle---------
+                                                                Navigator.pop(context);
+                                                                //pop save changes dialogue
+                                                                changedData(true);
+                                                                setState(() {
+                                                                  inithinttext(
+                                                                      capitalizedSentence,
+                                                                      descController.text == ""
+                                                                          ? widget.prod!.description
+                                                                          : descController.text,
+                                                                      prodPrice);
+                                                                  _image = null;
+                                                                  descController = TextEditingController();
+                                                                  nameController = TextEditingController();
+                                                                  priceController = TextEditingController();
                                                                 });
-                                                              }
-                                                            }).then((onValue) {
-                                                              Navigator.pop(context);
-                                                              //pop loading circle---------
-                                                              Navigator.pop(context);
-                                                              //pop save changes dialogue
-                                                              changedData(true);
-                                                              setState(() {
-                                                                isLoading = false;
-                                                                inithinttext(
-                                                                    capitalizedSentence,
-                                                                    descController.text == ""
-                                                                        ? widget.prod!.description
-                                                                        : descController.text,
-                                                                    prodPrice);
-                                                                _image = null;
-                                                                descController = TextEditingController();
-                                                                nameController = TextEditingController();
-                                                                priceController = TextEditingController();
                                                               });
-                                                            });
-                                                          }
-                                                        } catch (e) {
-                                                          Navigator.pop(context);
-                                                          //pop loading circle when fail---------
-                                                          ScaffoldMessenger.of(context).showSnackBar(
-                                                            SnackBar(
-                                                              backgroundColor: Colors.black,
-                                                              content: Text(
-                                                                "Fail uploading",
-                                                                style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                                                textAlign: TextAlign.center,
+                                                            }
+                                                          } catch (e) {
+                                                            Navigator.pop(context);
+                                                            //pop loading circle when fail---------
+                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                              SnackBar(
+                                                                backgroundColor: Colors.black,
+                                                                content: Text(
+                                                                  "Fail uploading",
+                                                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                                                  textAlign: TextAlign.center,
+                                                                ),
                                                               ),
-                                                            ),
-                                                          );
-                                                        }
-                                                      },
-                                                      icon: const Icon(Icons.check_circle),
-                                                    ),
-                                                    IconButton(
-                                                        iconSize: 50,
-                                                        color: Colors.red,
-                                                        onPressed: () => Navigator.pop(context),
-                                                        icon: const Icon(Icons.cancel)),
-                                                  ],
-                                                )
-                                              ],
-                                            ));
-                                  }),
+                                                            );
+                                                          }
+                                                        },
+                                                        icon: const Icon(Icons.check_circle),
+                                                      ),
+                                                      IconButton(
+                                                          iconSize: 50,
+                                                          color: Colors.red,
+                                                          onPressed: () => Navigator.pop(context),
+                                                          icon: const Icon(Icons.cancel)),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          }
+                                        });
+                                      }),
+                          ],
+                        ),
 
                         const SizedBox(height: 40),
                       ],

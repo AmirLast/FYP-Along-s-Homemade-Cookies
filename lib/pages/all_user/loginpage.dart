@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 60),
+            const SizedBox(height: 120),
             //title of current widget
             const Text(
               "Sign In",
@@ -99,11 +99,14 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     const SizedBox(height: 30),
 
-                    const Text(
-                      "Insert Email and Password",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.black,
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: Text(
+                        "Insert Email and Password",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
 

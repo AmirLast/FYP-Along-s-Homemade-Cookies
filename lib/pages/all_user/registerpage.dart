@@ -88,11 +88,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       const SizedBox(height: 30),
 
-                      const Text(
-                        "Fill in the information",
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 25),
+                        child: Text(
+                          "Fill in the information",
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
 

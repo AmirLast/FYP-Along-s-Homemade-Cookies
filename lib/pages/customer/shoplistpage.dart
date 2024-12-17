@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_shopcard.dart';
 import 'package:fyp/models/shopclass.dart';
@@ -50,6 +49,12 @@ class _ShopListPageState extends State<ShopListPage> {
             backgroundColor: const Color(0xffd1a271),
             appBar: AppBar(
               backgroundColor: const Color(0xffB67F5F),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
               title: const Center(
                 child: Text(
                   textAlign: TextAlign.center,
@@ -67,7 +72,6 @@ class _ShopListPageState extends State<ShopListPage> {
                 ),
               ],
             ),
-            drawer: const MyDrawer(), //default drawer
             body: SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width, //max width for current phone

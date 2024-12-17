@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -7,12 +6,24 @@ class SettingsPage extends StatelessWidget {
   final Logo show = Logo();
   SettingsPage({super.key});
 
+  //add:
+  //can subscribe to premium
+  //change basic data
+  //change delivery data
+  //what else?
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffd1a271),
       appBar: AppBar(
         backgroundColor: const Color(0xffB67F5F),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.pop(context); //change this after popscope is added
+          },
+        ),
         title: const Center(
           child: Text(
             textAlign: TextAlign.center,
@@ -21,7 +32,6 @@ class SettingsPage extends StatelessWidget {
           ),
         ),
       ),
-      drawer: const MyDrawer(),
       body: Container(
         width: MediaQuery.of(context).size.width, //max width for current phone
         height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone

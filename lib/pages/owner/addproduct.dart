@@ -4,15 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/all_user/functions/updateurl.dart';
 import 'package:fyp/pages/owner/editproduct.dart';
+import 'package:fyp/pages/owner/functions/updatemenu.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
-//import 'package:image_picker/image_picker.dart'; dah boleh delete ke?
 
 class AddProduct extends StatefulWidget {
   final String category;
@@ -118,6 +117,12 @@ class _AddProductState extends State<AddProduct> {
       backgroundColor: const Color(0xffd1a271),
       appBar: AppBar(
         backgroundColor: const Color(0xffB67F5F),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Center(
           child: Text(
             textAlign: TextAlign.center,
@@ -135,7 +140,6 @@ class _AddProductState extends State<AddProduct> {
           ),
         ],
       ),
-      drawer: const MyDrawer(),
       body: Container(
         width: MediaQuery.of(context).size.width, //max width for current phone
         height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
@@ -242,163 +246,183 @@ class _AddProductState extends State<AddProduct> {
                       const SizedBox(height: 30),
 
                       //confirm button
-                      MaterialButton(
-                          child: Container(
-                            padding: const EdgeInsets.all(25),
-                            margin: const EdgeInsets.symmetric(horizontal: 25),
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Confirm",
-                                style: TextStyle(
-                                  //fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade400,
-                                  fontSize: 20,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MaterialButton(
+                              child: Container(
+                                padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Confirm",
+                                    style: TextStyle(
+                                      //fontWeight: FontWeight.bold,
+                                      color: Colors.grey.shade400,
+                                      fontSize: 20,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          onPressed: () async {
-                            //check blank
-                            if (nameController.text == '') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  backgroundColor: Colors.black,
-                                  content: Text(
-                                    "Product name is blank",
-                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              );
-                              return;
-                            } else if (descController.text == '') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  backgroundColor: Colors.black,
-                                  content: Text(
-                                    "Description is blank",
-                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              );
-                              return;
-                            } else if (priceController.text == '') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  backgroundColor: Colors.black,
-                                  content: Text(
-                                    "Price is blank",
-                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              );
-                              return;
-                            } else if (_image == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  backgroundColor: Colors.black,
-                                  content: Text(
-                                    "Picture not selected",
-                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              );
-                              return;
-                            } else {
-                              //uppercase every first letter for each word
-                              List<String> words = nameController.text.split(" ");
-                              String capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
-                              //fix price into 0.00 format
-                              String prodPrice = double.parse(priceController.text).toStringAsFixed(2);
-                              User? user = AuthService().getCurrentUser();
-                              //set file path for current user folder in firebase storage
-                              String path = '${user?.uid}/$capitalizedSentence';
-                              //cane nak cek product tu dah ade sama nama ke???
-
-                              // loading circle-------------------------
-                              showDialog(
-                                barrierDismissible: false, //prevent outside click
-                                context: context,
-                                builder: (context) {
-                                  return PopScope(
-                                    //prevent back button
-                                    canPop: false,
-                                    onPopInvokedWithResult: (didPop, result) async {
-                                      if (didPop) {
-                                        return;
-                                      }
-                                    },
-                                    child: const Center(
-                                      child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                              onPressed: () async {
+                                //check blank
+                                if (nameController.text == '') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.black,
+                                      content: Text(
+                                        "Product name is blank",
+                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   );
-                                },
-                              );
-                              try {
-                                //prepare prod to be pushed into edit page
-                                Bakeds newProd = Bakeds(
-                                    name: capitalizedSentence,
-                                    description: descController.text,
-                                    url: "",
-                                    price: double.parse(prodPrice),
-                                    category: widget.category);
-                                //upload gambar dalam firebase storage
-                                await FirebaseStorage.instance.ref().child(path).putFile(_image!).then((onValue) async {
-                                  await obj.downloadUrl(capitalizedSentence, user!.uid, context).then((url) {
-                                    newProd.url = url;
-                                    //update prod dalam collection categories kat FBFS
-                                    FirebaseFirestore.instance.collection('users').doc(user.uid).collection(widget.category).add({
-                                      "description": descController.text,
-                                      "url": url,
-                                      "name": capitalizedSentence,
-                                      "price": prodPrice,
-                                    }).then((onValue) {
+                                } else if (descController.text == '') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.black,
+                                      content: Text(
+                                        "Description is blank",
+                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  );
+                                } else if (priceController.text == '') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.black,
+                                      content: Text(
+                                        "Price is blank",
+                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  );
+                                } else if (_image == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.black,
+                                      content: Text(
+                                        "Picture not selected",
+                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  //uppercase every first letter for each word
+                                  List<String> words = nameController.text.split(" ");
+                                  String capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
+                                  //for checking product name
+                                  UpdateMenuData objProd = UpdateMenuData();
+                                  List<Bakeds?> checkProduct = [];
+                                  //fix price into 0.00 format
+                                  String prodPrice = double.parse(priceController.text).toStringAsFixed(2);
+                                  User? user = AuthService().getCurrentUser();
+                                  //set file path for current user folder in firebase storage
+                                  String path = '${user?.uid}/$capitalizedSentence';
+
+                                  //cek product dah ade sama nama ke tak
+                                  await objProd.updatemenudata("").then((onValue) async {
+                                    checkProduct = onValue;
+                                    if (checkProduct.where((test) => test!.name == capitalizedSentence).isNotEmpty) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                           backgroundColor: Colors.black,
                                           content: Text(
-                                            "Product Added",
+                                            "Product '" + nameController.text + "' already exist",
                                             style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
                                       );
-                                      Navigator.pop(context);
-                                      //pop loading circle
-                                      Navigator.pop(context);
-                                      //pop add product page
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => EditProdPage(prod: newProd, category: widget.category),
-                                        ),
-                                      );
-                                    });
+                                      return; //exit code bracket
+                                    } else {
+                                      // loading circle-------------------------
+                                      showDialog(
+                                        barrierDismissible: false, //prevent outside click
+                                        context: context,
+                                        builder: (context) {
+                                          return PopScope(
+                                            //prevent back button
+                                            canPop: false,
+                                            onPopInvokedWithResult: (didPop, result) async {
+                                              if (didPop) {
+                                                return;
+                                              }
+                                            },
+                                            child: const Center(
+                                              child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                            ),
+                                          );
+                                        },
+                                      ); //----------------------------------------
+                                      try {
+                                        //prepare prod to be pushed into edit page
+                                        Bakeds newProd = Bakeds(
+                                            name: capitalizedSentence,
+                                            description: descController.text,
+                                            url: "",
+                                            price: double.parse(priceController.text),
+                                            category: widget.category);
+                                        //upload gambar dalam firebase storage
+                                        await FirebaseStorage.instance.ref().child(path).putFile(_image!).then((onValue) async {
+                                          await obj.downloadUrl(capitalizedSentence, user!.uid, context).then((url) {
+                                            newProd.url = url;
+                                            //update prod dalam collection categories kat FBFS
+                                            FirebaseFirestore.instance.collection('users').doc(user.uid).collection(widget.category).add({
+                                              "description": descController.text,
+                                              "url": url,
+                                              "name": capitalizedSentence,
+                                              "price": prodPrice,
+                                            }).then((onValue) {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  backgroundColor: Colors.black,
+                                                  content: Text(
+                                                    "Product Added",
+                                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              );
+                                              Navigator.pop(context);
+                                              //pop loading circle
+                                              Navigator.pop(context);
+                                              //pop add product page
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => EditProdPage(prod: newProd, category: widget.category),
+                                                ),
+                                              );
+                                            });
+                                          });
+                                        });
+                                      } on FirebaseException {
+                                        Navigator.pop(context);
+                                        //pop loading circle if fail---------
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.black,
+                                            content: Text(
+                                              "Fail uploading",
+                                              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    }
                                   });
-                                });
-                              } on FirebaseException {
-                                Navigator.pop(context);
-                                //pop loading circle if fail---------
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    backgroundColor: Colors.black,
-                                    content: Text(
-                                      "Fail uploading",
-                                      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                );
-                              }
-                            }
-                          }),
+                                }
+                              }),
+                        ],
+                      ),
 
                       const SizedBox(height: 40),
                     ],

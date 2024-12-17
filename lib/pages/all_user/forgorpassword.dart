@@ -57,7 +57,7 @@ class _ForgorPasswordState extends State<ForgorPassword> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 60),
+            const SizedBox(height: 125),
             //title of current widget
             const Text(
               "Reset Password",
@@ -81,13 +81,16 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                   children: [
                     const SizedBox(height: 30),
 
-                    const Text(
-                      "Insert E-mail to reset password",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.black,
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: Text(
+                        "Insert E-mail\nto reset password",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.justify,
                     ),
 
                     const SizedBox(height: 60),
@@ -106,28 +109,54 @@ class _ForgorPasswordState extends State<ForgorPassword> {
 
                     const SizedBox(height: 60),
 
-                    MaterialButton(
-                      onPressed: () {
-                        resetPass();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(25),
-                        margin: const EdgeInsets.symmetric(horizontal: 25),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //go back button
+                        MaterialButton(
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Go back",
+                                style: TextStyle(
+                                  color: Colors.grey.shade400,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                          onPressed: () => Navigator.pop(context),
                         ),
-                        child: Center(
-                          child: Text(
-                            "Confirm",
-                            style: TextStyle(
-                              //fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade400,
-                              fontSize: 20,
+
+                        //confirm button
+                        MaterialButton(
+                          onPressed: () {
+                            resetPass();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Confirm",
+                                style: TextStyle(
+                                  //fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade400,
+                                  fontSize: 20,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
 
                     const SizedBox(height: 40),

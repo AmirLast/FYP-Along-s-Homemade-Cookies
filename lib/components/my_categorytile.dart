@@ -59,6 +59,7 @@ class _CategoryTileState extends State<CategoryTile> {
                     child: Text(
                       textAlign: TextAlign.center,
                       widget.catName,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,

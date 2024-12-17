@@ -85,7 +85,6 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
           ),
         ],
       ),
-      //drawer: const MyDrawer(), //default drawer
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width, //max width for current phone

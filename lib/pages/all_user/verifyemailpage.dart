@@ -106,7 +106,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   const Text(
                     "Email Verification",
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 48,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -124,13 +124,16 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                       child: Column(
                         children: [
                           const SizedBox(height: 30),
-                          const Text(
-                            "A verification email has been sent to your email",
-                            style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.black,
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 25),
+                            child: Text(
+                              "A verification email has been sent to your email",
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.black,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 60),
                           ElevatedButton.icon(

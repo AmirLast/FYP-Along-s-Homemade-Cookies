@@ -92,7 +92,7 @@ class _Register2PageState extends State<Register2Page> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(height: 60), //to replace safearea
+              const SizedBox(height: 80), //to replace safearea
               //title of current widget
               const Text(
                 "Sign Up",
@@ -116,11 +116,14 @@ class _Register2PageState extends State<Register2Page> {
                     children: [
                       const SizedBox(height: 30),
 
-                      const Text(
-                        "Fill in these information",
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 25),
+                        child: Text(
+                          "Fill in these information",
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
 
@@ -169,164 +172,155 @@ class _Register2PageState extends State<Register2Page> {
 
                       const SizedBox(height: 60),
 
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 45),
-                        child: Row(
-                          children: [
-                            //go back button
-                            MaterialButton(
-                              child: Container(
-                                padding: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(40),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Go back",
-                                    style: TextStyle(
-                                      color: Colors.grey.shade400,
-                                      fontSize: 20,
-                                    ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //go back button
+                          MaterialButton(
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Go back",
+                                  style: TextStyle(
+                                    color: Colors.grey.shade400,
+                                    fontSize: 20,
                                   ),
                                 ),
                               ),
-                              onPressed: () => Navigator.pop(context),
                             ),
+                            onPressed: () => Navigator.pop(context),
+                          ),
 
-                            const SizedBox(
-                              width: 30,
-                            ),
-
-                            //sign up button
-                            MaterialButton(
-                              child: Container(
-                                padding: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(40),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Sign Up",
-                                    style: TextStyle(
-                                      //fontWeight: FontWeight.bold,
-                                      color: Colors.grey.shade400,
-                                      fontSize: 20,
-                                    ),
+                          //sign up button
+                          MaterialButton(
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Sign Up",
+                                  style: TextStyle(
+                                    //fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade400,
+                                    fontSize: 20,
                                   ),
                                 ),
                               ),
-                              onPressed: () async {
-                                //some value for error checking---------
-                                var isBlank = false; //blank means no error
-                                String error = ""; //the error description
-                                //User? user;
+                            ),
+                            onPressed: () async {
+                              //some value for error checking---------
+                              var isBlank = false; //blank means no error
+                              String error = ""; //the error description
+                              //User? user;
 
-                                //checking if it is blank
-                                if (address1Controller.text == '') {
-                                  error = 'Address is blank';
-                                  isBlank = true;
-                                } else if (postcodeController.text == '') {
-                                  error = 'Post Code is blank';
-                                  isBlank = true;
-                                } else if (stateController.text == '') {
-                                  error = 'State is blank';
-                                  isBlank = true;
-                                }
+                              //checking if it is blank
+                              if (address1Controller.text == '') {
+                                error = 'Address is blank';
+                                isBlank = true;
+                              } else if (postcodeController.text == '') {
+                                error = 'Post Code is blank';
+                                isBlank = true;
+                              } else if (stateController.text == '') {
+                                error = 'State is blank';
+                                isBlank = true;
+                              }
 
-                                //if there is error, show it and don't sign up
-                                if (isBlank) {
-                                  isBlank = false;
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      backgroundColor: Colors.black,
-                                      content: Text(
-                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                        error,
-                                        textAlign: TextAlign.center,
-                                      ),
+                              //if there is error, show it and don't sign up
+                              if (isBlank) {
+                                isBlank = false;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Colors.black,
+                                    content: Text(
+                                      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                      error,
+                                      textAlign: TextAlign.center,
                                     ),
-                                  );
-                                  return;
-                                } else {
-                                  // loading circle-----
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                      );
-                                    },
-                                  );
-                                  //--------------------
-                                  try {
-                                    User? user = await register(email: widget.email, password: widget.password);
+                                  ),
+                                );
+                                return;
+                              } else {
+                                // loading circle-----
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                    );
+                                  },
+                                );
+                                //--------------------
+                                try {
+                                  User? user = await register(email: widget.email, password: widget.password);
 
-                                    var userFF = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
+                                  var userFF = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
 
-                                    user?.updatePhotoURL(defProfile); //set default user pfp
-                                    //name the userfile as uid
-                                    userFF.doc(user?.uid).set({
-                                      //set all data that user and owner have in common
-                                      "fname": widget.fname,
-                                      "lname": widget.lname,
-                                      "phone": widget.phone,
-                                      "type": widget.type,
-                                      "passStrength": true, //checked hence true
-                                      //owner need array of categories
-                                      "categories": [],
-                                      //for category edit assist
-                                      "currentdir": "",
-                                      "address": address1Controller.text +
-                                          ", " +
-                                          postcodeController.text +
-                                          ", " +
-                                          stateController.text, //for delivery
-                                    });
+                                  user?.updatePhotoURL(defProfile); //set default user pfp
+                                  //name the userfile as uid
+                                  userFF.doc(user?.uid).set({
+                                    //set all data that user and owner have in common
+                                    "fname": widget.fname,
+                                    "lname": widget.lname,
+                                    "phone": widget.phone,
+                                    "type": widget.type,
+                                    "passStrength": true, //checked hence true
+                                    //for category edit assist
+                                    "currentdir": "",
+                                    "address": address1Controller.text +
+                                        ", " +
+                                        postcodeController.text +
+                                        ", " +
+                                        stateController.text, //for delivery
+                                  }).then((onValue) {
                                     if (widget.type == 'owner') {
                                       userFF.doc(user?.uid).set(
                                           //add other data that only owner have
-                                          {'shop': upperCase(widget.shop)},
-                                          SetOptions(merge: true)).then((value) {
-                                        //Do your stuff.
-                                      });
+                                          {
+                                            'shop': upperCase(widget.shop),
+                                            //owner need array of categories
+                                            "categories": [],
+                                          },
+                                          SetOptions(merge: true));
                                     }
-                                    await Future.delayed(
-                                      const Duration(seconds: 2),
-                                      () {
-                                        Navigator.of(context).pop();
-                                        // pop loading circle if success register
-                                        Navigator.of(context).pushAndRemoveUntil(
-                                          MaterialPageRoute(
-                                            builder: (context) => const VerifyEmailPage(),
-                                          ),
-                                          (r) => false,
-                                        );
-                                      },
+                                  }).then((onValue) {
+                                    Navigator.of(context).pop();
+                                    // pop loading circle if success register
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                        builder: (context) => const VerifyEmailPage(),
+                                      ),
+                                      (r) => false,
                                     );
-                                  } catch (e) {
-                                    Future.delayed(const Duration(seconds: 2), () {
-                                      Navigator.pop(context);
-                                      //pop loading circle if fail
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          backgroundColor: Colors.black,
-                                          content: Text(
-                                            "Fail to register",
-                                            style: TextStyle(color: Colors.grey.shade400),
-                                            textAlign: TextAlign.center,
-                                          ),
+                                  });
+                                } catch (e) {
+                                  Future.delayed(const Duration(seconds: 2), () {
+                                    Navigator.pop(context);
+                                    //pop loading circle if fail
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: Colors.black,
+                                        content: Text(
+                                          "Fail to register",
+                                          style: TextStyle(color: Colors.grey.shade400),
+                                          textAlign: TextAlign.center,
                                         ),
-                                      );
-                                      setState(() {});
-                                    });
-                                  }
+                                      ),
+                                    );
+                                    setState(() {});
+                                  });
                                 }
-                              },
-                            ),
-                          ],
-                        ),
+                              }
+                            },
+                          ),
+                        ],
                       ),
 
                       const SizedBox(height: 25),

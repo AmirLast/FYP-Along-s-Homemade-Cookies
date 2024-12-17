@@ -30,6 +30,7 @@ class BakedTile extends StatelessWidget {
               onTap: onTap,
               title: Text(
                 prod!.name,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,

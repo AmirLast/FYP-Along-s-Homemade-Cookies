@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/userclass.dart';
@@ -45,6 +44,12 @@ class _AddCategoryState extends State<AddCategory> {
       backgroundColor: const Color(0xffd1a271),
       appBar: AppBar(
         backgroundColor: const Color(0xffB67F5F),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: const Center(
           child: Text(
             textAlign: TextAlign.center,
@@ -62,7 +67,6 @@ class _AddCategoryState extends State<AddCategory> {
           ),
         ],
       ),
-      drawer: const MyDrawer(),
       body: Container(
         width: MediaQuery.of(context).size.width, //max width for current phone
         height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
@@ -107,79 +111,118 @@ class _AddCategoryState extends State<AddCategory> {
                     const SizedBox(height: 30),
 
                     //confirm button
-                    MaterialButton(
-                      child: Container(
-                        padding: const EdgeInsets.all(25),
-                        margin: const EdgeInsets.symmetric(horizontal: 25),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Confirm",
-                            style: TextStyle(
-                              //fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade400,
-                              fontSize: 20,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MaterialButton(
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Confirm",
+                                style: TextStyle(
+                                  //fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade400,
+                                  fontSize: 20,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      onPressed: () async {
-                        //check blank
-                        if (nameController.text == '') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: Colors.black,
-                              content: Text(
-                                "Category name is blank",
-                                style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                          return;
-                        } else {
-                          // loading circle-------------------------
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return const Center(
-                                child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                              );
-                            },
-                          );
-                          //uppercase every first letter for each word
-                          List<String> words = nameController.text.split(" ");
-                          String capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
-                          User? user = AuthService().getCurrentUser();
-                          //cane nak cek collection tu dah ade sama nama ke???
-                          //update local userclass data (+ new category)
-                          UserNow.usernow!.categories.add(capitalizedSentence);
-                          //map userclass data pasal categories
-                          List newArray = UserNow.usernow!.categories;
-                          //update array categories (xde prod) data kat FBFS
-                          FirebaseFirestore.instance.collection('users').doc(user?.uid).update({
-                            "categories": newArray,
-                          });
-                          //new collection is automatically create when add product :D
+                          onPressed: () async {
+                            late List<String> words;
+                            late String capitalizedSentence;
+                            if (nameController.text != "") {
+                              //uppercase every first letter for each word
+                              words = nameController.text.split(" ");
+                              capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
+                            }
 
-                          await Future.delayed(const Duration(seconds: 2), () {
-                            Navigator.pop(context);
-                            //pop loading circle-----------------
-                            //go back to menu page
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const MenuPage(),
-                              ),
-                            );
-                          });
-                        }
-                      },
+                            if (nameController.text == '') {
+                              //check blank
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.black,
+                                  content: Text(
+                                    "Category name is blank",
+                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            } else if (UserNow.usernow!.categories.contains(capitalizedSentence)) {
+                              //check categories exist in current data
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.black,
+                                  content: Text(
+                                    "Category '" + nameController.text + "' already exist",
+                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              // loading circle-------------------------
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return PopScope(
+                                    //prevent back button
+                                    canPop: false,
+                                    onPopInvokedWithResult: (didPop, result) async {
+                                      if (didPop) {
+                                        return;
+                                      }
+                                    },
+                                    child: const Center(
+                                      child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                    ),
+                                  );
+                                },
+                              ); //---------------------------------------
+
+                              User? user = AuthService().getCurrentUser();
+                              //update local userclass data (+ new category)
+                              UserNow.usernow!.categories.add(capitalizedSentence);
+                              //map userclass data pasal categories
+                              List newArray = UserNow.usernow!.categories;
+                              //update array categories (xde prod) data kat FBFS
+                              FirebaseFirestore.instance.collection('users').doc(user?.uid).update({
+                                "categories": newArray,
+                              });
+                              //new collection is automatically create when add product :D
+
+                              await Future.delayed(const Duration(seconds: 2), () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Colors.black,
+                                    content: Text(
+                                      "Category Added",
+                                      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                                Navigator.pop(context);
+                                //pop loading circle-----------------
+                                //go back to menu page
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MenuPage(),
+                                  ),
+                                );
+                              });
+                            }
+                          },
+                        ),
+                      ],
                     ),
 
                     const SizedBox(height: 40),
