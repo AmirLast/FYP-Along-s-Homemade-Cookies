@@ -272,49 +272,13 @@ class _AddProductState extends State<AddProduct> {
                               onPressed: () async {
                                 //check blank
                                 if (nameController.text == '') {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      backgroundColor: Colors.black,
-                                      content: Text(
-                                        "Product name is blank",
-                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  );
+                                  scaffoldOBJ.scaffoldmessage("Product name is blank", context);
                                 } else if (descController.text == '') {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      backgroundColor: Colors.black,
-                                      content: Text(
-                                        "Description is blank",
-                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  );
+                                  scaffoldOBJ.scaffoldmessage("Description is blank", context);
                                 } else if (priceController.text == '') {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      backgroundColor: Colors.black,
-                                      content: Text(
-                                        "Price is blank",
-                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  );
+                                  scaffoldOBJ.scaffoldmessage("Price is blank", context);
                                 } else if (_image == null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      backgroundColor: Colors.black,
-                                      content: Text(
-                                        "Picture not selected",
-                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  );
+                                  scaffoldOBJ.scaffoldmessage("Picture not selected", context);
                                 } else {
                                   //uppercase every first letter for each word
                                   List<String> words = nameController.text.split(" ");
@@ -334,16 +298,7 @@ class _AddProductState extends State<AddProduct> {
                                   await objProd.updatemenudata("").then((onValue) async {
                                     checkProduct = onValue;
                                     if (checkProduct.where((test) => test!.name == capitalizedSentence).isNotEmpty) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          backgroundColor: Colors.black,
-                                          content: Text(
-                                            "Product '" + nameController.text + "' already exist",
-                                            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      );
+                                      scaffoldOBJ.scaffoldmessage("Product '" + nameController.text + "' already exist", context);
                                       return; //exit code bracket
                                     } else {
                                       // loading circle-------------------------
@@ -392,7 +347,7 @@ class _AddProductState extends State<AddProduct> {
                                               newProd.imagePath = path;
                                               //upload gambar dalam firebase storage
                                               await FirebaseStorage.instance.ref().child(path).putFile(_image!).then((onValue) async {
-                                                await obj.downloadUrl(capitalizedSentence, user.uid, context).then((url) async {
+                                                await obj.downloadUrl(path, context).then((url) async {
                                                   //get url for uploaded image for easy use
                                                   newProd.url = url;
                                                   await dir.doc(docSnapshot.id).update({
@@ -400,16 +355,7 @@ class _AddProductState extends State<AddProduct> {
                                                     "url": url,
                                                     "imagePath": path,
                                                   }).then((onValue) {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
-                                                      SnackBar(
-                                                        backgroundColor: Colors.black,
-                                                        content: Text(
-                                                          "Product Added",
-                                                          style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                                          textAlign: TextAlign.center,
-                                                        ),
-                                                      ),
-                                                    );
+                                                    scaffoldOBJ.scaffoldmessage("Product Added", context);
                                                     Navigator.pop(context);
                                                     //pop loading circle
                                                     Navigator.pop(context);
@@ -429,16 +375,7 @@ class _AddProductState extends State<AddProduct> {
                                       } on FirebaseException {
                                         Navigator.pop(context);
                                         //pop loading circle if fail---------
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            backgroundColor: Colors.black,
-                                            content: Text(
-                                              "Fail uploading",
-                                              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
+                                        scaffoldOBJ.scaffoldmessage("Fail uploading", context);
                                       }
                                     }
                                   });

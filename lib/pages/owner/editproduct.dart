@@ -209,7 +209,7 @@ class _EditProdPageState extends State<EditProdPage> {
       await FirebaseStorage.instance.ref().child(imagePath).delete();
       await FirebaseStorage.instance.ref().child(imagePath).putFile(_image!).then((onValue) async {
         //get file url
-        await obj.downloadUrl(widget.prod!.name, useruid, context).then((url) async {
+        await obj.downloadUrl(imagePath, context).then((url) async {
           src = url;
           //update prod dalam collection categories kat FBFS
           await FirebaseFirestore.instance.collection('users').doc(useruid).collection(widget.category).doc(docID).update({
@@ -550,7 +550,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                     .putFile(_image!)
                                                                     .then((onValue) async {
                                                                   //get file url
-                                                                  await obj.downloadUrl(widget.prod!.name, useruid, context).then((url) {
+                                                                  await obj.downloadUrl(widget.prod!.imagePath, context).then((url) {
                                                                     src = url;
                                                                     //update prod dalam collection categories kat FBFS
                                                                     FirebaseFirestore.instance

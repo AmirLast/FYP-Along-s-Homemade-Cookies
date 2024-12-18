@@ -6,8 +6,7 @@ import 'package:fyp/components/my_scaffoldmessage.dart';
 class DownloadURL {
   final MyScaffoldmessage obj = MyScaffoldmessage(); //for scaffold message
   //get Url of product image so it can be displayed------------------------------------------
-  Future<String> downloadUrl(String name, String useruid, BuildContext context) async {
-    var path = '$useruid/$name';
+  Future<String> downloadUrl(String path, BuildContext context) async {
     try {
       var url = await FirebaseStorage.instance.ref().child(path).getDownloadURL();
       return url;
