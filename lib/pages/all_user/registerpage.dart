@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/my_scaffoldmessage.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/registerpage2.dart';
 import 'package:fyp/services/auth/checkpass.dart';
@@ -13,8 +14,8 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  //for logo
-  final Logo show = Logo();
+  final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
+  final Logo show = Logo(); //for logo
 //text editing controller
   late TextEditingController confirmpasswordController;
   late TextEditingController emailController;
@@ -308,16 +309,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         onPressed: () async {
                           if (passwordController.text != confirmpasswordController.text) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Colors.black,
-                                content: Text(
-                                  'Passwords don\'t match!',
-                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            );
+                            scaffoldOBJ.scaffoldmessage('Passwords don\'t match!', context);
                             return;
                           }
 
@@ -373,16 +365,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           //if there is error, show it and don't sign up
                           if (isBlank) {
                             isBlank = false;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Colors.black,
-                                content: Text(
-                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                  error,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            );
+                            scaffoldOBJ.scaffoldmessage(error, context);
                             return;
                           } else {
                             // loading circle-----

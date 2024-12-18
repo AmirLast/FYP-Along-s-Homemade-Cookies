@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/my_scaffoldmessage.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/all_user/functions/updateurl.dart';
@@ -28,6 +29,7 @@ class EditProdPage extends StatefulWidget {
 }
 
 class _EditProdPageState extends State<EditProdPage> {
+  final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
   final DownloadURL obj = DownloadURL(); //for url
   final String useruid = AuthService().getCurrentUser()!.uid;
@@ -133,26 +135,15 @@ class _EditProdPageState extends State<EditProdPage> {
   //bahagian upload imej------------------------------------------------------------
 
   //kalau ada changed data-------------------------
-  void changedData(isSaved) {
-    !isSaved
-        ? null
-        : ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.black,
-              content: Text(
-                "Data saved",
-                style: TextStyle(color: Colors.grey.shade400),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          );
+  void changedData() {
+    scaffoldOBJ.scaffoldmessage("Data saved", context);
   } //kalau ada changed data------------------------
 
   //enable save kalau ada changes in textcontroller atau imej je--------------------------------
   bool isSaveEnabled() {
     return (nameController.text == '' && descController.text == '' && priceController.text == '' && _image == null);
   }
-  //enable save kalau ada changes in textcontroller atau imej je--------------------------------
+  //--------------------------------------------------------------------------------------------
 
   //confirm pop up kalau ada unsaved data---------------------------------------
   confirmPopUp(context) {
@@ -191,6 +182,60 @@ class _EditProdPageState extends State<EditProdPage> {
       ),
     );
   } //----------------------------------------------------------------------
+
+  late String docID, imagePath;
+  //fix any default pic-----------------------------------------------------
+  void fixCorner(String useruid, String capitalizedSentence, String prodPrice) async {
+    //get to the exact document
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(useruid)
+        .collection(widget.category)
+        .where("name", isEqualTo: widget.prod!.name)
+        .get()
+        .then((querySnapshot) async {
+      for (var docSnapshot in querySnapshot.docs) {
+        docID = docSnapshot.id;
+        imagePath = "$useruid/$docID";
+        //get document id and set imagePath
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(useruid)
+            .collection(widget.category)
+            .doc(docID)
+            .update({"imagePath": imagePath});
+      }
+    }).then((onValue) async {
+      await FirebaseStorage.instance.ref().child(imagePath).delete();
+      await FirebaseStorage.instance.ref().child(imagePath).putFile(_image!).then((onValue) async {
+        //get file url
+        await obj.downloadUrl(widget.prod!.name, useruid, context).then((url) async {
+          src = url;
+          //update prod dalam collection categories kat FBFS
+          await FirebaseFirestore.instance.collection('users').doc(useruid).collection(widget.category).doc(docID).update({
+            "description": descController.text == "" ? widget.prod!.description : descController.text,
+            "url": src,
+            "name": capitalizedSentence,
+            "price": prodPrice,
+          });
+        }).then((onValue) {
+          Navigator.pop(context);
+          //pop loading circle---------
+          Navigator.pop(context);
+          //pop save changes dialogue
+          changedData();
+          setState(() {
+            inithinttext(capitalizedSentence, descController.text == "" ? widget.prod!.description : descController.text, prodPrice);
+            _image = null;
+            descController = TextEditingController();
+            nameController = TextEditingController();
+            priceController = TextEditingController();
+          });
+        });
+      });
+    });
+  }
+  //------------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -406,51 +451,44 @@ class _EditProdPageState extends State<EditProdPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             MaterialButton(
-                                child: Container(
-                                  padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
-                                  decoration: BoxDecoration(
-                                    color: isSaveEnabled() ? Colors.grey.shade400 : Colors.black,
-                                    borderRadius: BorderRadius.circular(40),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "Save",
-                                      style: TextStyle(
-                                        //fontWeight: FontWeight.bold,
-                                        color: isSaveEnabled() ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
-                                        fontSize: 20,
-                                      ),
+                              child: Container(
+                                padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                                decoration: BoxDecoration(
+                                  color: isSaveEnabled() ? Colors.grey.shade400 : Colors.black,
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Save",
+                                    style: TextStyle(
+                                      //fontWeight: FontWeight.bold,
+                                      color: isSaveEnabled() ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
+                                      fontSize: 20,
                                     ),
                                   ),
                                 ),
-                                onPressed: isSaveEnabled()
-                                    ? null
-                                    : () async {
-                                        String capitalizedSentence;
-                                        List<String> words;
-                                        //set name
-                                        nameController.text == ""
-                                            ? capitalizedSentence = widget.prod!.name
-                                            : {
-                                                words = nameController.text.split(" "),
-                                                capitalizedSentence = words.map((word) => upperCase(word)).join(" ")
-                                              };
-                                        UpdateMenuData objProd = UpdateMenuData();
-                                        List<Bakeds?> checkProduct = [];
-                                        //cek product dah ade sama nama ke tak
-                                        await objProd.updatemenudata("").then((onValue) async {
+                              ),
+                              onPressed: isSaveEnabled()
+                                  ? null
+                                  : () async {
+                                      String capitalizedSentence;
+                                      List<String> words;
+                                      //set name
+                                      nameController.text == ""
+                                          ? capitalizedSentence = widget.prod!.name
+                                          : {
+                                              words = nameController.text.split(" "),
+                                              capitalizedSentence = words.map((word) => upperCase(word)).join(" ")
+                                            };
+                                      UpdateMenuData objProd = UpdateMenuData();
+                                      List<Bakeds?> checkProduct = [];
+                                      await objProd.updatemenudata("").then(
+                                        (onValue) async {
                                           checkProduct = onValue;
-                                          if (checkProduct.where((test) => test!.name == capitalizedSentence).isNotEmpty) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                backgroundColor: Colors.black,
-                                                content: Text(
-                                                  "Product '" + nameController.text + "' already exist",
-                                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            );
+                                          //only check other product name if name input exist
+                                          if (checkProduct.where((test) => test!.name == capitalizedSentence).isNotEmpty &&
+                                              nameController.text != "") {
+                                            scaffoldOBJ.scaffoldmessage("Product '" + nameController.text + "' already exist", context);
                                           } else {
                                             //showdialog confirm save
                                             showDialog(
@@ -479,16 +517,6 @@ class _EditProdPageState extends State<EditProdPage> {
 
                                                           User? user = AuthService().getCurrentUser();
 
-                                                          //set file path for current user folder in firebase storage
-                                                          String pathnew = "";
-                                                          String pathprev = "";
-
-                                                          pathprev = '${user?.uid}/${widget.prod!.name}';
-                                                          if (nameController.text != "") {
-                                                            pathnew = '${user?.uid}/${nameController.text}';
-                                                          }
-                                                          //cane nak cek product tu dah ade sama nama ke???
-
                                                           try {
                                                             // loading circle-------------------------
                                                             showDialog(
@@ -511,57 +539,59 @@ class _EditProdPageState extends State<EditProdPage> {
                                                             ); //--------------------------------------
                                                             //upload gambar dalam firebase storage
                                                             if (_image != null) {
-                                                              if (src !=
-                                                                      "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637" &&
-                                                                  nameController.text != "") {
-                                                                await FirebaseStorage.instance.ref().child(pathprev).delete();
-                                                              }
-                                                              if (nameController.text != "") {
-                                                                await FirebaseStorage.instance.ref().child(pathnew).putFile(_image!);
+                                                              if (src ==
+                                                                  "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637") {
+                                                                fixCorner(useruid, capitalizedSentence, prodPrice);
                                                               } else {
-                                                                await FirebaseStorage.instance.ref().child(pathprev).putFile(_image!);
-                                                              }
-                                                              //get file url
-                                                              await obj.downloadUrl(widget.prod!.name, useruid, context).then((url) {
-                                                                src = url;
-                                                                //update prod dalam collection categories kat FBFS
-                                                                FirebaseFirestore.instance
-                                                                    .collection('users')
-                                                                    .doc(user?.uid)
-                                                                    .collection(widget.category)
-                                                                    .where('name', isEqualTo: widget.prod!.name)
-                                                                    .get()
-                                                                    .then((querySnapshot) {
-                                                                  for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-                                                                    documentSnapshot.reference.update({
-                                                                      "description": descController.text == ""
-                                                                          ? widget.prod!.description
-                                                                          : descController.text,
-                                                                      "url": src,
-                                                                      "name": capitalizedSentence,
-                                                                      "price": prodPrice,
+                                                                await FirebaseStorage.instance.ref().child(widget.prod!.imagePath).delete();
+                                                                await FirebaseStorage.instance
+                                                                    .ref()
+                                                                    .child(widget.prod!.imagePath)
+                                                                    .putFile(_image!)
+                                                                    .then((onValue) async {
+                                                                  //get file url
+                                                                  await obj.downloadUrl(widget.prod!.name, useruid, context).then((url) {
+                                                                    src = url;
+                                                                    //update prod dalam collection categories kat FBFS
+                                                                    FirebaseFirestore.instance
+                                                                        .collection('users')
+                                                                        .doc(user?.uid)
+                                                                        .collection(widget.category)
+                                                                        .where('name', isEqualTo: widget.prod!.name)
+                                                                        .get()
+                                                                        .then((querySnapshot) {
+                                                                      for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                                        documentSnapshot.reference.update({
+                                                                          "description": descController.text == ""
+                                                                              ? widget.prod!.description
+                                                                              : descController.text,
+                                                                          "url": src,
+                                                                          "name": capitalizedSentence,
+                                                                          "price": prodPrice,
+                                                                        });
+                                                                      }
                                                                     });
-                                                                  }
+                                                                  }).then((onValue) {
+                                                                    Navigator.pop(context);
+                                                                    //pop loading circle---------
+                                                                    Navigator.pop(context);
+                                                                    //pop save changes dialogue
+                                                                    changedData();
+                                                                    setState(() {
+                                                                      inithinttext(
+                                                                          capitalizedSentence,
+                                                                          descController.text == ""
+                                                                              ? widget.prod!.description
+                                                                              : descController.text,
+                                                                          prodPrice);
+                                                                      _image = null;
+                                                                      descController = TextEditingController();
+                                                                      nameController = TextEditingController();
+                                                                      priceController = TextEditingController();
+                                                                    });
+                                                                  });
                                                                 });
-                                                              }).then((onValue) {
-                                                                Navigator.pop(context);
-                                                                //pop loading circle---------
-                                                                Navigator.pop(context);
-                                                                //pop save changes dialogue
-                                                                changedData(true);
-                                                                setState(() {
-                                                                  inithinttext(
-                                                                      capitalizedSentence,
-                                                                      descController.text == ""
-                                                                          ? widget.prod!.description
-                                                                          : descController.text,
-                                                                      prodPrice);
-                                                                  _image = null;
-                                                                  descController = TextEditingController();
-                                                                  nameController = TextEditingController();
-                                                                  priceController = TextEditingController();
-                                                                });
-                                                              });
+                                                              }
                                                             } else {
                                                               //update prod dalam collection categories kat FBFS
                                                               await FirebaseFirestore.instance
@@ -586,7 +616,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                 //pop loading circle---------
                                                                 Navigator.pop(context);
                                                                 //pop save changes dialogue
-                                                                changedData(true);
+                                                                changedData();
                                                                 setState(() {
                                                                   inithinttext(
                                                                       capitalizedSentence,
@@ -604,16 +634,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                           } catch (e) {
                                                             Navigator.pop(context);
                                                             //pop loading circle when fail---------
-                                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                              SnackBar(
-                                                                backgroundColor: Colors.black,
-                                                                content: Text(
-                                                                  "Fail uploading",
-                                                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                                                  textAlign: TextAlign.center,
-                                                                ),
-                                                              ),
-                                                            );
+                                                            scaffoldOBJ.scaffoldmessage("Fail uploading", context);
                                                           }
                                                         },
                                                         icon: const Icon(Icons.check_circle),
@@ -629,8 +650,10 @@ class _EditProdPageState extends State<EditProdPage> {
                                               ),
                                             );
                                           }
-                                        });
-                                      }),
+                                        },
+                                      );
+                                    },
+                            ),
                           ],
                         ),
 

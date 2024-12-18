@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/my_scaffoldmessage.dart';
 import 'package:fyp/images/assets.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/verifyemailpage.dart';
@@ -35,8 +36,8 @@ class Register2Page extends StatefulWidget {
 }
 
 class _Register2PageState extends State<Register2Page> {
-  //for logo
-  final Logo show = Logo();
+  final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
+  final Logo show = Logo(); //for logo
 //text editing controller
   late TextEditingController address1Controller;
   late TextEditingController postcodeController;
@@ -236,16 +237,7 @@ class _Register2PageState extends State<Register2Page> {
                               //if there is error, show it and don't sign up
                               if (isBlank) {
                                 isBlank = false;
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    backgroundColor: Colors.black,
-                                    content: Text(
-                                      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                      error,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                );
+                                scaffoldOBJ.scaffoldmessage(error, context);
                                 return;
                               } else {
                                 // loading circle-----
@@ -304,16 +296,7 @@ class _Register2PageState extends State<Register2Page> {
                                   Future.delayed(const Duration(seconds: 2), () {
                                     Navigator.pop(context);
                                     //pop loading circle if fail
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        backgroundColor: Colors.black,
-                                        content: Text(
-                                          "Fail to register",
-                                          style: TextStyle(color: Colors.grey.shade400),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    );
+                                    scaffoldOBJ.scaffoldmessage("Fail to register", context);
                                     setState(() {});
                                   });
                                 }

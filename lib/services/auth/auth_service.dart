@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_scaffoldmessage.dart';
 
 class AuthService {
   // get instance of FB auth
@@ -12,13 +13,11 @@ class AuthService {
   }
 
   // sign in
-  Future<UserCredential> signInWithEmailPassword(
-      String email, password, BuildContext context) async {
+  Future<UserCredential> signInWithEmailPassword(String email, password, BuildContext context) async {
     String error = ""; //for displaying error
     try {
       //sign user in
-      UserCredential userCredential =
-          await _firebaseAuth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -47,17 +46,8 @@ class AuthService {
           if (e.code == "email-already-in-use") {
             error = "This email has it's own account";
           }
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.black,
-              content: Text(
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.secondary),
-                (error == "") ? e.message.toString() : error,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          );
+          MyScaffoldmessage obj = MyScaffoldmessage();
+          obj.scaffoldmessage((error == "") ? e.message.toString() : error, context);
         }
       });
 
@@ -66,12 +56,10 @@ class AuthService {
   }
 
   // sign up
-  Future<UserCredential> signUpWithEmailPassword(
-      String email, password, BuildContext context) async {
+  Future<UserCredential> signUpWithEmailPassword(String email, password, BuildContext context) async {
     try {
       //sign user up
-      UserCredential userCredential =
-          await _firebaseAuth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );

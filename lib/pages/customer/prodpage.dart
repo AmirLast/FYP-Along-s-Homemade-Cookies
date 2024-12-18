@@ -22,13 +22,14 @@ class _EditProdPageState extends State<ProdPage> {
   //alter part: nak refresh kat mana? lepas update/delete
   //access data guna categoryMenu[index] as key different
   //method to add to cart
-  /*void addToCart(Bakeds prod) {
+  void addToCart(Bakeds? prod) {
     // close current prod page
     Navigator.pop(context);
 
     //add to cart
-    context.read<Shop>().addToCart(prod);
-  }*/
+    //context.read<Shop>().addToCart(prod);
+  }
+
   late String src;
 
   @override
@@ -97,9 +98,9 @@ class _EditProdPageState extends State<ProdPage> {
               MyMenuButton(
                 text: "Add to cart",
                 icon: Icons.add_shopping_cart_rounded,
-                onPressed: () {}, /*=> addToCart(
+                onPressed: () => addToCart(
                   widget.prod,
-                ),*/
+                ),
               ),
 
               const SizedBox(height: 25),

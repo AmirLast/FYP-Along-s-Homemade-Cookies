@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/bakedclass.dart';
+import 'package:fyp/pages/customer/prodpage.dart';
 
 class ShopPage extends StatefulWidget {
-  final String name;
-  final List<Bakeds?> bakeds;
+  final String name; //shop name
+  final List<Bakeds?> bakeds; //the shop bakeds with categories
 
   const ShopPage({
     super.key,
@@ -34,7 +35,7 @@ class _ShopPageState extends State<ShopPage> {
         title: Center(
           child: Text(
             textAlign: TextAlign.center,
-            widget.name,
+            widget.name + " Shop",
             style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
@@ -84,7 +85,13 @@ class _ShopPageState extends State<ShopPage> {
                         Container(
                           color: Colors.grey.withOpacity(0.5),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProdPage(prod: widget.bakeds[index], category: widget.bakeds[index]!.category)));
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(15.0),
                               child: Row(

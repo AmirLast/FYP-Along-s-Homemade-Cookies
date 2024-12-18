@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/my_scaffoldmessage.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
@@ -15,8 +16,8 @@ class AddCategory extends StatefulWidget {
 }
 
 class _AddCategoryState extends State<AddCategory> {
-  //for logo
-  final Logo show = Logo();
+  final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
+  final Logo show = Logo(); //for logo
   //uppercase first letter-----------------------------------------
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
@@ -143,28 +144,10 @@ class _AddCategoryState extends State<AddCategory> {
 
                             if (nameController.text == '') {
                               //check blank
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  backgroundColor: Colors.black,
-                                  content: Text(
-                                    "Category name is blank",
-                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              );
+                              scaffoldOBJ.scaffoldmessage("Category name is blank", context);
                             } else if (UserNow.usernow!.categories.contains(capitalizedSentence)) {
                               //check categories exist in current data
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  backgroundColor: Colors.black,
-                                  content: Text(
-                                    "Category '" + nameController.text + "' already exist",
-                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              );
+                              scaffoldOBJ.scaffoldmessage("Category '" + nameController.text + "' already exist", context);
                             } else {
                               // loading circle-------------------------
                               showDialog(
@@ -197,16 +180,7 @@ class _AddCategoryState extends State<AddCategory> {
                               //new collection is automatically create when add product :D
 
                               await Future.delayed(const Duration(seconds: 2), () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    backgroundColor: Colors.black,
-                                    content: Text(
-                                      "Category Added",
-                                      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                );
+                                scaffoldOBJ.scaffoldmessage("Category Added", context);
                                 Navigator.pop(context);
                                 //pop loading circle-----------------
                                 //go back to menu page

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/my_scaffoldmessage.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
 import 'package:fyp/services/auth/auth_gate.dart';
 
@@ -13,8 +14,8 @@ class VerifyEmailPage extends StatefulWidget {
 }
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
-  //for logo
-  final Logo show = Logo();
+  final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
+  final Logo show = Logo(); //for logo
   bool isEmailVerified = false;
   bool canResendEmail = false;
   Timer? timer;
@@ -61,16 +62,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       await Future.delayed(const Duration(seconds: 5));
       setState(() => canResendEmail = true);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.black,
-          content: Text(
-            e.toString(),
-            style: TextStyle(color: Colors.grey.shade400),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
+      scaffoldOBJ.scaffoldmessage(e.toString(), context);
     }
   }
 
@@ -83,16 +75,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             if (didPop) {
               return;
             }
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: Colors.black,
-                content: Text(
-                  "Please verify email to continue",
-                  style: TextStyle(color: Colors.grey.shade400),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
+            scaffoldOBJ.scaffoldmessage("Please verify email to continue", context);
           },
           child: Scaffold(
             resizeToAvoidBottomInset: false,

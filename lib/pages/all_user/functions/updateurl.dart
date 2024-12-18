@@ -1,8 +1,10 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_scaffoldmessage.dart';
 
 class DownloadURL {
+  final MyScaffoldmessage obj = MyScaffoldmessage(); //for scaffold message
   //get Url of product image so it can be displayed------------------------------------------
   Future<String> downloadUrl(String name, String useruid, BuildContext context) async {
     var path = '$useruid/$name';
@@ -10,16 +12,7 @@ class DownloadURL {
       var url = await FirebaseStorage.instance.ref().child(path).getDownloadURL();
       return url;
     } on FirebaseException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.black,
-          content: Text(
-            "Product image does not exist",
-            style: TextStyle(color: Colors.grey.shade400),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
+      obj.scaffoldmessage("Product image does not exist", context);
       if (kDebugMode) {
         print(e.code.toString());
       }

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_bakedtile.dart';
+import 'package:fyp/components/my_scaffoldmessage.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/owner/addproduct.dart';
 import 'package:fyp/pages/owner/editproduct.dart';
@@ -28,6 +29,7 @@ class CategoryTile extends StatefulWidget {
 }
 
 class _CategoryTileState extends State<CategoryTile> {
+  final MyScaffoldmessage obj = MyScaffoldmessage(); //for scaffold message
   @override
   Widget build(BuildContext context) {
     List<Bakeds?> categoryMenu = widget.baked.where((b) => b!.category == widget.catName).toList();
@@ -147,16 +149,7 @@ class _CategoryTileState extends State<CategoryTile> {
                                                       }
                                                     },
                                                   ).then((onValue) {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
-                                                      SnackBar(
-                                                        backgroundColor: Colors.black,
-                                                        content: Text(
-                                                          "Product Deleted",
-                                                          style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                                          textAlign: TextAlign.center,
-                                                        ),
-                                                      ),
-                                                    );
+                                                    obj.scaffoldmessage("Product Deleted", context);
                                                     Navigator.pop(context);
                                                     //pop loading circle---------
                                                     //refresh new menu page

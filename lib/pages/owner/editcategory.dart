@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/my_scaffoldmessage.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/userclass.dart';
@@ -22,6 +23,7 @@ class EditCategoryPage extends StatefulWidget {
 }
 
 class _EditProdPageState extends State<EditCategoryPage> {
+  final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
   //text editing controller
   late TextEditingController nameController;
@@ -56,19 +58,8 @@ class _EditProdPageState extends State<EditCategoryPage> {
   //uppercase first letter-----------------------------------------
 
   //kalau ada changed data-------------------------
-  void changedData(isSaved) {
-    !isSaved
-        ? null
-        : ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.black,
-              content: Text(
-                "Data saved",
-                style: TextStyle(color: Colors.grey.shade400),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          );
+  void changedData() {
+    scaffoldOBJ.scaffoldmessage("Data saved", context);
   } //kalau ada changed data------------------------
 
   //confirm pop up kalau ada unsaved data---------------------------------------
@@ -244,16 +235,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
 
                                       if (UserNow.usernow!.categories.contains(capitalizedSentence)) {
                                         //check categories exist in current data
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            backgroundColor: Colors.black,
-                                            content: Text(
-                                              "Category '" + nameController.text + "' already exist",
-                                              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
+                                        scaffoldOBJ.scaffoldmessage("Category '" + nameController.text + "' already exist", context);
                                       } else {
                                         //showdialog confirm save
                                         showDialog(
@@ -336,21 +318,12 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                                           await FirebaseFirestore.instance.collection('users').doc(user?.uid).update({
                                                             "categories": newArray,
                                                           }).then((onValue) {
-                                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                              SnackBar(
-                                                                backgroundColor: Colors.black,
-                                                                content: Text(
-                                                                  "Data Saved",
-                                                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                                                  textAlign: TextAlign.center,
-                                                                ),
-                                                              ),
-                                                            );
+                                                            scaffoldOBJ.scaffoldmessage("Data Saved", context);
                                                             Navigator.pop(context);
                                                             //pop loading circle---------
                                                             Navigator.pop(context);
                                                             //pop save changes dialogue
-                                                            changedData(true);
+                                                            changedData();
                                                             setState(() {
                                                               inithinttext(capitalizedSentence);
                                                               nameController = TextEditingController();
@@ -360,16 +333,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                                       } catch (e) {
                                                         Navigator.pop(context);
                                                         //pop loading circle when fail---------
-                                                        ScaffoldMessenger.of(context).showSnackBar(
-                                                          SnackBar(
-                                                            backgroundColor: Colors.black,
-                                                            content: Text(
-                                                              "Fail saving",
-                                                              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                                              textAlign: TextAlign.center,
-                                                            ),
-                                                          ),
-                                                        );
+                                                        scaffoldOBJ.scaffoldmessage("Fail saving", context);
                                                       }
                                                     },
                                                     icon: const Icon(Icons.check_circle),

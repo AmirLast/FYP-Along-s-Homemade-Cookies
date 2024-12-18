@@ -5,12 +5,14 @@ class Bakeds {
   String url;
   double price;
   String category;
+  String imagePath;
   Bakeds({
     required this.name,
     required this.description,
     required this.url,
     required this.price,
     required this.category,
+    required this.imagePath,
   });
   static Bakeds? currentBaked; // the object to call all the above
 }

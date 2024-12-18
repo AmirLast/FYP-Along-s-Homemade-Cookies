@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/my_scaffoldmessage.dart';
 import 'package:fyp/components/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/all_user/functions/updateurl.dart';
@@ -22,6 +23,7 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
+  final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final DownloadURL obj = DownloadURL(); //for url
   final Logo show = Logo(); //for logo
   //uppercase first letter-----------------------------------------
@@ -324,7 +326,9 @@ class _AddProductState extends State<AddProduct> {
                                   String prodPrice = double.parse(priceController.text).toStringAsFixed(2);
                                   User? user = AuthService().getCurrentUser();
                                   //set file path for current user folder in firebase storage
-                                  String path = '${user?.uid}/$capitalizedSentence';
+                                  String path = "";
+                                  CollectionReference dir =
+                                      FirebaseFirestore.instance.collection('users').doc(user!.uid).collection(widget.category);
 
                                   //cek product dah ade sama nama ke tak
                                   await objProd.updatemenudata("").then((onValue) async {
@@ -364,43 +368,62 @@ class _AddProductState extends State<AddProduct> {
                                       try {
                                         //prepare prod to be pushed into edit page
                                         Bakeds newProd = Bakeds(
-                                            name: capitalizedSentence,
-                                            description: descController.text,
-                                            url: "",
-                                            price: double.parse(priceController.text),
-                                            category: widget.category);
-                                        //upload gambar dalam firebase storage
-                                        await FirebaseStorage.instance.ref().child(path).putFile(_image!).then((onValue) async {
-                                          await obj.downloadUrl(capitalizedSentence, user!.uid, context).then((url) {
-                                            newProd.url = url;
-                                            //update prod dalam collection categories kat FBFS
-                                            FirebaseFirestore.instance.collection('users').doc(user.uid).collection(widget.category).add({
-                                              "description": descController.text,
-                                              "url": url,
-                                              "name": capitalizedSentence,
-                                              "price": prodPrice,
-                                            }).then((onValue) {
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                  backgroundColor: Colors.black,
-                                                  content: Text(
-                                                    "Product Added",
-                                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              );
-                                              Navigator.pop(context);
-                                              //pop loading circle
-                                              Navigator.pop(context);
-                                              //pop add product page
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => EditProdPage(prod: newProd, category: widget.category),
-                                                ),
-                                              );
-                                            });
+                                          name: capitalizedSentence,
+                                          description: descController.text,
+                                          url: "",
+                                          imagePath: "",
+                                          price: double.parse(priceController.text),
+                                          category: widget.category,
+                                        );
+
+                                        //add prod dalam collection categories kat FBFS so can get random id for product
+                                        await dir.add({
+                                          "description": descController.text,
+                                          "url": "",
+                                          "imagePath": "",
+                                          "name": capitalizedSentence,
+                                          "price": prodPrice,
+                                        }).then((onValue) async {
+                                          //get prod id
+                                          await dir.where("name", isEqualTo: capitalizedSentence).get().then((onValue) async {
+                                            for (var docSnapshot in onValue.docs) {
+                                              //use prod id as path for image in storage
+                                              path = "${user.uid}/${docSnapshot.id}";
+                                              newProd.imagePath = path;
+                                              //upload gambar dalam firebase storage
+                                              await FirebaseStorage.instance.ref().child(path).putFile(_image!).then((onValue) async {
+                                                await obj.downloadUrl(capitalizedSentence, user.uid, context).then((url) async {
+                                                  //get url for uploaded image for easy use
+                                                  newProd.url = url;
+                                                  await dir.doc(docSnapshot.id).update({
+                                                    //update remaining data
+                                                    "url": url,
+                                                    "imagePath": path,
+                                                  }).then((onValue) {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(
+                                                        backgroundColor: Colors.black,
+                                                        content: Text(
+                                                          "Product Added",
+                                                          style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                                          textAlign: TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    );
+                                                    Navigator.pop(context);
+                                                    //pop loading circle
+                                                    Navigator.pop(context);
+                                                    //pop add product page
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => EditProdPage(prod: newProd, category: widget.category),
+                                                      ),
+                                                    );
+                                                  });
+                                                });
+                                              });
+                                            }
                                           });
                                         });
                                       } on FirebaseException {
