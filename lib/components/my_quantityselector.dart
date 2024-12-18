@@ -3,7 +3,7 @@ import 'package:fyp/models/bakedclass.dart';
 
 class QuantitySelector extends StatelessWidget {
   final int quantity;
-  final Bakeds prod;
+  final Bakeds? prod;
   final VoidCallback onInc;
   final VoidCallback onDec;
 
@@ -19,7 +19,7 @@ class QuantitySelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: const Color(0xffd1a271),
         borderRadius: BorderRadius.circular(50),
       ),
       padding: const EdgeInsets.all(8),
@@ -29,10 +29,10 @@ class QuantitySelector extends StatelessWidget {
           //decrease button
           GestureDetector(
             onTap: onDec,
-            child: Icon(
+            child: const Icon(
               Icons.remove,
               size: 20,
-              color: Theme.of(context).colorScheme.primary,
+              color: Colors.black,
             ),
           ),
 
@@ -52,10 +52,10 @@ class QuantitySelector extends StatelessWidget {
           //increase button
           GestureDetector(
             onTap: onInc,
-            child: Icon(
+            child: const Icon(
               Icons.add,
               size: 20,
-              color: Theme.of(context).colorScheme.primary,
+              color: Colors.black,
             ),
           ),
         ],

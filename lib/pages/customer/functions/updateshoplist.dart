@@ -26,6 +26,7 @@ class UpdateShopList {
                   //every document read will be set as Bakeds data and inserted into List<Bakeds>
                   //print('${docSnapshot.id} => ${docSnapshot.data()}');
                   Bakeds.currentBaked = Bakeds(
+                    quantity: docSnapshot2.data()['quantity'],
                     imagePath: docSnapshot2.data()['imagePath'],
                     name: docSnapshot2.data()['name'],
                     description: docSnapshot2.data()['description'],

@@ -11,6 +11,7 @@ import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/all_user/functions/updateurl.dart';
 import 'package:fyp/pages/owner/functions/updatemenu.dart';
 import 'package:fyp/pages/owner/menupage.dart';
+import 'package:fyp/pages/owner/previewproduct.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -37,10 +38,12 @@ class _EditProdPageState extends State<EditProdPage> {
   late TextEditingController descController;
   late TextEditingController nameController;
   late TextEditingController priceController;
+  late TextEditingController quantityController;
   late String src;
   late String nameHT;
   late String descHT;
   late String priceHT;
+  late int quantityHT;
 
   @override
   void initState() {
@@ -48,7 +51,8 @@ class _EditProdPageState extends State<EditProdPage> {
     descController = TextEditingController();
     nameController = TextEditingController();
     priceController = TextEditingController();
-    inithinttext(widget.prod!.name, widget.prod!.description, widget.prod!.price.toStringAsFixed(2));
+    quantityController = TextEditingController();
+    inithinttext(widget.prod!.name, widget.prod!.description, widget.prod!.price.toStringAsFixed(2), widget.prod!.quantity);
     src = widget.prod!.url;
   }
 
@@ -58,13 +62,15 @@ class _EditProdPageState extends State<EditProdPage> {
     descController.dispose();
     nameController.dispose();
     priceController.dispose();
+    quantityController.dispose();
   }
 
   //to initialize hint text--------
-  inithinttext(String name, String desc, String price) {
+  inithinttext(String name, String desc, String price, int quantity) {
     nameHT = name;
     descHT = desc;
     priceHT = price;
+    quantityHT = quantity;
   }
   //to initialize hint text--------
 
@@ -132,16 +138,15 @@ class _EditProdPageState extends State<EditProdPage> {
       ),
     );
   }
-  //bahagian upload imej------------------------------------------------------------
-
-  //kalau ada changed data-------------------------
-  void changedData() {
-    scaffoldOBJ.scaffoldmessage("Data saved", context);
-  } //kalau ada changed data------------------------
+  //bahagian upload imej----------------------------------------------------------
 
   //enable save kalau ada changes in textcontroller atau imej je--------------------------------
   bool isSaveEnabled() {
-    return (nameController.text == '' && descController.text == '' && priceController.text == '' && _image == null);
+    return (nameController.text == '' &&
+        descController.text == '' &&
+        priceController.text == '' &&
+        _image == null &&
+        quantityController.text == '');
   }
   //--------------------------------------------------------------------------------------------
 
@@ -181,11 +186,11 @@ class _EditProdPageState extends State<EditProdPage> {
         ],
       ),
     );
-  } //----------------------------------------------------------------------
+  } //--------------------------------------------------------------------------
 
   late String docID, imagePath;
-  //fix any default pic-----------------------------------------------------
-  void fixCorner(String useruid, String capitalizedSentence, String prodPrice) async {
+  //fix any default pic----------------------------------------------------------------
+  void fixCorner(String useruid, String capitalizedSentence, String prodPrice, int quantity) async {
     //get to the exact document
     await FirebaseFirestore.instance
         .collection('users')
@@ -216,25 +221,28 @@ class _EditProdPageState extends State<EditProdPage> {
             "url": src,
             "name": capitalizedSentence,
             "price": prodPrice,
+            "quantity": quantity,
           });
         }).then((onValue) {
           Navigator.pop(context);
           //pop loading circle---------
           Navigator.pop(context);
           //pop save changes dialogue
-          changedData();
+          scaffoldOBJ.scaffoldmessage("Data saved", context);
           setState(() {
-            inithinttext(capitalizedSentence, descController.text == "" ? widget.prod!.description : descController.text, prodPrice);
+            inithinttext(
+                capitalizedSentence, descController.text == "" ? widget.prod!.description : descController.text, prodPrice, quantity);
             _image = null;
             descController = TextEditingController();
             nameController = TextEditingController();
             priceController = TextEditingController();
+            quantityController = TextEditingController();
           });
         });
       });
     });
   }
-  //------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -313,7 +321,38 @@ class _EditProdPageState extends State<EditProdPage> {
                           ),
                         ),
 
-                        const SizedBox(height: 60),
+                        const SizedBox(height: 30),
+
+                        MaterialButton(
+                          child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Row(
+                                children: [
+                                  Icon(Icons.remove_red_eye_rounded, color: Colors.black),
+                                  Text('Preview Product Page'),
+                                ],
+                              )),
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              //calling ProdPage while sending prod values
+                              builder: (context) => PreviewProdPage(
+                                prod: widget.prod,
+                                src: src,
+                                name: nameHT,
+                                desc: descHT,
+                                price: priceHT,
+                                quantity: quantityHT,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 30),
 
                         //name of product
                         const Padding(
@@ -377,6 +416,25 @@ class _EditProdPageState extends State<EditProdPage> {
                         ),
 
                         const SizedBox(height: 30),
+
+                        //quantity of product
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "Ready Stock Quantity",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        MyTextField(
+                          controller: quantityController,
+                          caps: TextCapitalization.none,
+                          inputType: TextInputType.number,
+                          labelText: quantityHT.toString(),
+                          hintText: quantityHT.toString(),
+                          obscureText: false,
+                          isEnabled: true,
+                          isShowhint: true,
+                        ),
 
                         MaterialButton(
                           child: Container(
@@ -470,6 +528,8 @@ class _EditProdPageState extends State<EditProdPage> {
                               onPressed: isSaveEnabled()
                                   ? null
                                   : () async {
+                                      int newQ =
+                                          quantityController.text == '' ? widget.prod!.quantity : int.parse(quantityController.text.trim());
                                       String capitalizedSentence;
                                       List<String> words;
                                       //set name
@@ -488,6 +548,8 @@ class _EditProdPageState extends State<EditProdPage> {
                                           if (checkProduct.where((test) => test!.name == capitalizedSentence).isNotEmpty &&
                                               nameController.text != "") {
                                             scaffoldOBJ.scaffoldmessage("Product '" + nameController.text + "' already exist", context);
+                                          } else if (newQ <= 0) {
+                                            scaffoldOBJ.scaffoldmessage("Quantity must be more than 0", context);
                                           } else {
                                             //showdialog confirm save
                                             showDialog(
@@ -512,7 +574,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                           //fix price into 0.00 format
                                                           priceController.text == ""
                                                               ? prodPrice = widget.prod!.price.toStringAsFixed(2)
-                                                              : prodPrice = double.parse(priceController.text).toStringAsFixed(2);
+                                                              : prodPrice = double.parse(priceController.text.trim()).toStringAsFixed(2);
 
                                                           User? user = AuthService().getCurrentUser();
 
@@ -540,7 +602,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                             if (_image != null) {
                                                               if (src ==
                                                                   "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637") {
-                                                                fixCorner(useruid, capitalizedSentence, prodPrice);
+                                                                fixCorner(useruid, capitalizedSentence, prodPrice, newQ);
                                                               } else {
                                                                 await FirebaseStorage.instance.ref().child(widget.prod!.imagePath).delete();
                                                                 await FirebaseStorage.instance
@@ -563,10 +625,11 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                         documentSnapshot.reference.update({
                                                                           "description": descController.text == ""
                                                                               ? widget.prod!.description
-                                                                              : descController.text,
+                                                                              : descController.text.trim(),
                                                                           "url": src,
                                                                           "name": capitalizedSentence,
                                                                           "price": prodPrice,
+                                                                          "quantity": newQ,
                                                                         });
                                                                       }
                                                                     });
@@ -575,18 +638,21 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                     //pop loading circle---------
                                                                     Navigator.pop(context);
                                                                     //pop save changes dialogue
-                                                                    changedData();
+                                                                    scaffoldOBJ.scaffoldmessage("Data saved", context);
                                                                     setState(() {
                                                                       inithinttext(
-                                                                          capitalizedSentence,
-                                                                          descController.text == ""
-                                                                              ? widget.prod!.description
-                                                                              : descController.text,
-                                                                          prodPrice);
+                                                                        capitalizedSentence,
+                                                                        descController.text == ""
+                                                                            ? widget.prod!.description
+                                                                            : descController.text.trim(),
+                                                                        prodPrice,
+                                                                        newQ,
+                                                                      );
                                                                       _image = null;
                                                                       descController = TextEditingController();
                                                                       nameController = TextEditingController();
                                                                       priceController = TextEditingController();
+                                                                      quantityController = TextEditingController();
                                                                     });
                                                                   });
                                                                 });
@@ -608,6 +674,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                     "url": src,
                                                                     "name": capitalizedSentence,
                                                                     "price": prodPrice,
+                                                                    "quantity": newQ,
                                                                   });
                                                                 }
                                                               }).then((onValue) {
@@ -615,18 +682,21 @@ class _EditProdPageState extends State<EditProdPage> {
                                                                 //pop loading circle---------
                                                                 Navigator.pop(context);
                                                                 //pop save changes dialogue
-                                                                changedData();
+                                                                scaffoldOBJ.scaffoldmessage("Data saved", context);
                                                                 setState(() {
                                                                   inithinttext(
-                                                                      capitalizedSentence,
-                                                                      descController.text == ""
-                                                                          ? widget.prod!.description
-                                                                          : descController.text,
-                                                                      prodPrice);
+                                                                    capitalizedSentence,
+                                                                    descController.text == ""
+                                                                        ? widget.prod!.description
+                                                                        : descController.text,
+                                                                    prodPrice,
+                                                                    newQ,
+                                                                  );
                                                                   _image = null;
                                                                   descController = TextEditingController();
                                                                   nameController = TextEditingController();
                                                                   priceController = TextEditingController();
+                                                                  quantityController = TextEditingController();
                                                                 });
                                                               });
                                                             }
@@ -666,77 +736,6 @@ class _EditProdPageState extends State<EditProdPage> {
             ),
           ),
         ),
-        /* ini untuk display product
-              Column(
-          children: [
-            //product image
-            SizedBox(
-                height: 150,
-                width: 150,
-                //if url does not exist display default image
-                child: src == ""
-                    ? Image.network(
-                        "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637")
-                    : Image.network(src)),
-              
-            Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //product name
-                    Text(
-                      widget.prod!.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-              
-                    //product price
-                    Text(
-                      'RM' + widget.prod!.price.toString(),
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-              
-                    const SizedBox(height: 10),
-              
-                    //product description
-                    Text(widget.prod!.description),
-              
-                    const SizedBox(height: 10),
-                    Divider(color: Colors.grey.shade400),
-                    const SizedBox(height: 10),
-                  ],
-                ),
-              ),
-            ),
-              
-            //button -> add to cart
-            MyMenuButton(
-              text: "Add to cart",
-              onPressed: () {
-                // loading circle-------------------------
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return const Center(
-                      child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                    );
-                  },
-                );
-                Future.delayed(const Duration(seconds: 2));
-                Navigator.pop(context); //pop loading circle---------
-              },
-            ),
-              
-            const SizedBox(height: 25),
-          ],
-                ),*/
       ),
     );
   }

@@ -138,7 +138,7 @@ class _AddCategoryState extends State<AddCategory> {
                             late String capitalizedSentence;
                             if (nameController.text != "") {
                               //uppercase every first letter for each word
-                              words = nameController.text.split(" ");
+                              words = nameController.text.trim().split(" ");
                               capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
                             }
 

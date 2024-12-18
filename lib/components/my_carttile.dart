@@ -13,7 +13,7 @@ class MyCartTile extends StatelessWidget {
     return Consumer<Shop>(
       builder: (context, shop, child) => Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
+          color: Colors.grey.shade400,
           borderRadius: BorderRadius.circular(8),
         ),
         margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),

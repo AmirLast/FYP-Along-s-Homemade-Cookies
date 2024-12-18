@@ -26,6 +26,7 @@ class UpdateMenuData {
             //every document read will be set as Bakeds data and inserted into List<Bakeds>
             //print('${docSnapshot.id} => ${docSnapshot.data()}');
             Bakeds.currentBaked = Bakeds(
+              quantity: docSnapshot.data()['quantity'],
               imagePath: docSnapshot.data()['imagePath'],
               name: docSnapshot.data()['name'],
               description: docSnapshot.data()['description'],

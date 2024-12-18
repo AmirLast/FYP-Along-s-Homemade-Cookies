@@ -96,6 +96,7 @@ class _AddProductState extends State<AddProduct> {
   late TextEditingController descController;
   late TextEditingController nameController;
   late TextEditingController priceController;
+  late TextEditingController quantityController;
 
   @override
   void initState() {
@@ -103,6 +104,7 @@ class _AddProductState extends State<AddProduct> {
     descController = TextEditingController();
     nameController = TextEditingController();
     priceController = TextEditingController();
+    quantityController = TextEditingController();
   }
 
   @override
@@ -111,6 +113,7 @@ class _AddProductState extends State<AddProduct> {
     descController.dispose();
     nameController.dispose();
     priceController.dispose();
+    quantityController.dispose();
   }
 
   @override
@@ -186,7 +189,7 @@ class _AddProductState extends State<AddProduct> {
 
                       const SizedBox(height: 30),
 
-                      //description of category
+                      //description of product
                       MyTextField(
                         controller: descController,
                         caps: TextCapitalization.none,
@@ -214,6 +217,18 @@ class _AddProductState extends State<AddProduct> {
 
                       const SizedBox(height: 30),
 
+                      //quantity of ready stock
+                      MyTextField(
+                        controller: quantityController,
+                        caps: TextCapitalization.none,
+                        inputType: TextInputType.number,
+                        labelText: "Ready Stock Quantity",
+                        hintText: "",
+                        obscureText: false,
+                        isEnabled: true,
+                        isShowhint: false,
+                      ),
+
                       //image of category
                       MaterialButton(
                         child: Container(
@@ -240,8 +255,13 @@ class _AddProductState extends State<AddProduct> {
                           ),
                           child: _image == null
                               ? Image.network(
-                                  "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637")
-                              : Image.file(_image!),
+                                  "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637",
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.file(
+                                  _image!,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
                       //input file sendiri or use default image for now
@@ -279,15 +299,17 @@ class _AddProductState extends State<AddProduct> {
                                   scaffoldOBJ.scaffoldmessage("Price is blank", context);
                                 } else if (_image == null) {
                                   scaffoldOBJ.scaffoldmessage("Picture not selected", context);
+                                } else if (quantityController.text == '' || int.parse(quantityController.text.trim()) <= 0) {
+                                  scaffoldOBJ.scaffoldmessage("Quantity is wrong", context);
                                 } else {
                                   //uppercase every first letter for each word
-                                  List<String> words = nameController.text.split(" ");
+                                  List<String> words = nameController.text.trim().split(" ");
                                   String capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
                                   //for checking product name
                                   UpdateMenuData objProd = UpdateMenuData();
                                   List<Bakeds?> checkProduct = [];
                                   //fix price into 0.00 format
-                                  String prodPrice = double.parse(priceController.text).toStringAsFixed(2);
+                                  String prodPrice = double.parse(priceController.text.trim()).toStringAsFixed(2);
                                   User? user = AuthService().getCurrentUser();
                                   //set file path for current user folder in firebase storage
                                   String path = "";
@@ -323,17 +345,19 @@ class _AddProductState extends State<AddProduct> {
                                       try {
                                         //prepare prod to be pushed into edit page
                                         Bakeds newProd = Bakeds(
+                                          quantity: int.parse(quantityController.text.trim()),
                                           name: capitalizedSentence,
-                                          description: descController.text,
+                                          description: descController.text.trim(),
                                           url: "",
                                           imagePath: "",
-                                          price: double.parse(priceController.text),
+                                          price: double.parse(priceController.text.trim()),
                                           category: widget.category,
                                         );
 
                                         //add prod dalam collection categories kat FBFS so can get random id for product
                                         await dir.add({
-                                          "description": descController.text,
+                                          "quantity": int.parse(quantityController.text.trim()),
+                                          "description": descController.text.trim(),
                                           "url": "",
                                           "imagePath": "",
                                           "name": capitalizedSentence,

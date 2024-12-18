@@ -122,6 +122,13 @@ class _ShopPageState extends State<ShopPage> {
                                             fontStyle: FontStyle.italic,
                                           ),
                                         ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          "Available Product: " + widget.bakeds[index]!.quantity.toString(),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),

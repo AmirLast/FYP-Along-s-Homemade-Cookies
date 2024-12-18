@@ -57,11 +57,6 @@ class _EditProdPageState extends State<EditCategoryPage> {
 
   //uppercase first letter-----------------------------------------
 
-  //kalau ada changed data-------------------------
-  void changedData() {
-    scaffoldOBJ.scaffoldmessage("Data saved", context);
-  } //kalau ada changed data------------------------
-
   //confirm pop up kalau ada unsaved data---------------------------------------
   confirmPopUp(context) {
     //confirm pop up
@@ -229,7 +224,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                       late String capitalizedSentence;
                                       if (nameController.text != "") {
                                         //uppercase every first letter for each word
-                                        words = nameController.text.split(" ");
+                                        words = nameController.text.trim().split(" ");
                                         capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
                                       }
 
@@ -292,6 +287,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                                               "url": menus[i]?.url,
                                                               "name": menus[i]?.name,
                                                               "price": menus[i]?.price.toStringAsFixed(2),
+                                                              "quantity": menus[i]?.quantity,
                                                             });
                                                             //delete prod dalam collection categories lama kat FBFS
                                                             await FirebaseFirestore.instance
@@ -324,7 +320,6 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                                             //pop loading circle---------
                                                             Navigator.pop(context);
                                                             //pop save changes dialogue
-                                                            changedData();
                                                             setState(() {
                                                               inithinttext(capitalizedSentence);
                                                               nameController = TextEditingController();

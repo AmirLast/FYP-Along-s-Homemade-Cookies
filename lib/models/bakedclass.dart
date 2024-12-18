@@ -6,8 +6,10 @@ class Bakeds {
   double price;
   String category;
   String imagePath;
+  int quantity;
   Bakeds({
     required this.name,
+    required this.quantity,
     required this.description,
     required this.url,
     required this.price,

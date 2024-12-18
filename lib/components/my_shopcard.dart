@@ -49,7 +49,10 @@ class ShopCard extends StatelessWidget {
                       return SizedBox(
                         height: 100,
                         width: 100,
-                        child: Image.network(shop!.bakeds[index]!.url),
+                        child: Image.network(
+                          shop!.bakeds[index]!.url,
+                          fit: BoxFit.cover,
+                        ),
                       );
                     },
                   ),
