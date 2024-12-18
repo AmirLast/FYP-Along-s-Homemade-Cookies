@@ -152,8 +152,7 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                               },
                                             ); //--------------------------------------
 
-                                            User? user = AuthService().getCurrentUser();
-                                            String storagePath = '${user?.uid}/'; //for now only have folder name
+                                            User? user = AuthService().getCurrentUser(); //for doc name in fbfs
 
                                             //delete data from local class
                                             UserNow.usernow?.categories.remove(catName);
@@ -178,17 +177,20 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                                     .where('name', isEqualTo: documents[i]!.name)
                                                     .get()
                                                     .then(
-                                                  (querySnapshot) {
+                                                  (querySnapshot) async {
                                                     for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-                                                      documentSnapshot.reference.delete();
+                                                      //delete picture in storage
+                                                      await FirebaseStorage.instance
+                                                          .ref()
+                                                          .child(documents[i]!.imagePath)
+                                                          .delete()
+                                                          .then((onValue) {
+                                                        //delete document in collection of category
+                                                        documentSnapshot.reference.delete();
+                                                      });
                                                     }
                                                   },
                                                 );
-                                                //delete picture in storage
-                                                await FirebaseStorage.instance
-                                                    .ref()
-                                                    .child(storagePath + '${documents[i]?.name}') //add prod name (name of pic)
-                                                    .delete();
                                               }
                                             }).then((onValue) {
                                               Navigator.pop(context);

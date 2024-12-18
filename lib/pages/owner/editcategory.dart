@@ -287,6 +287,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                                                 .doc(user?.uid)
                                                                 .collection(capitalizedSentence)
                                                                 .add({
+                                                              "imagePath": menus[i]?.imagePath,
                                                               "description": menus[i]?.description,
                                                               "url": menus[i]?.url,
                                                               "name": menus[i]?.name,

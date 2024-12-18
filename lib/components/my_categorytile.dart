@@ -127,12 +127,10 @@ class _CategoryTileState extends State<CategoryTile> {
                                                 ); //--------------------------------------
 
                                                 User? user = AuthService().getCurrentUser();
-                                                String storagePath =
-                                                    '${user?.uid}/${categoryMenu[index]!.name}'; //for now only have folder name
                                                 //delete picture in storage
                                                 await FirebaseStorage.instance
                                                     .ref()
-                                                    .child(storagePath) //add prod name (name of pic)
+                                                    .child(categoryMenu[index]!.imagePath) //add prod name (name of pic)
                                                     .delete()
                                                     .then((onValue) async {
                                                   //delete product in collection in fbfs
