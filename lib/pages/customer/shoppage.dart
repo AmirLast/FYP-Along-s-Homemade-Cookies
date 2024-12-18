@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/bakedclass.dart';
+import 'package:fyp/pages/customer/cartpage.dart';
 import 'package:fyp/pages/customer/prodpage.dart';
 
 class ShopPage extends StatefulWidget {
@@ -41,10 +42,12 @@ class _ShopPageState extends State<ShopPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () => {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const CartPage()));
+            },
             icon: const Icon(
-              Icons.more_vert,
-              color: Colors.transparent,
+              Icons.shopping_cart,
+              color: Colors.black,
             ),
           ),
         ],
@@ -146,9 +149,6 @@ class _ShopPageState extends State<ShopPage> {
                     );
                   },
                 ),
-              ),
-              const SizedBox(
-                height: 100,
               ),
             ],
           ),

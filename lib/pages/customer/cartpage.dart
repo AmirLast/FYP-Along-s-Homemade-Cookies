@@ -15,10 +15,25 @@ class CartPage extends StatelessWidget {
         final userCart = shop.cart;
         //scaffold UI
         return Scaffold(
+          backgroundColor: const Color(0xffd1a271),
           appBar: AppBar(
-            title: const Text("Cart"),
-            backgroundColor: Colors.transparent,
-            foregroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: const Color(0xffB67F5F),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            title: const Center(
+              child: Text(
+                "Cart",
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
+              ),
+            ),
+            foregroundColor: Colors.black,
             actions: [
               //clear cart
               IconButton(
@@ -26,27 +41,41 @@ class CartPage extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text("Are you sure you want to clear the cart?"),
+                      backgroundColor: Colors.white,
+                      content: const Text(
+                        "Are you sure you want to clear the cart?",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                       actions: [
-                        //cancel button
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text("Cancel"),
-                        ),
-
-                        //yes button
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            shop.clearCart();
-                          },
-                          child: const Text("Yes"),
-                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            IconButton(
+                              iconSize: 50,
+                              color: Colors.green,
+                              onPressed: () {
+                                Navigator.pop(context);
+                                shop.clearCart();
+                              },
+                              icon: const Icon(Icons.check_circle),
+                            ),
+                            IconButton(
+                                iconSize: 50,
+                                color: Colors.red,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(Icons.cancel)),
+                          ],
+                        )
                       ],
                     ),
                   );
                 },
-                icon: const Icon(Icons.delete),
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.black,
+                ),
               )
             ],
           ),

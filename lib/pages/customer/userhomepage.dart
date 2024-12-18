@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
@@ -66,12 +67,6 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
       },
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new_rounded),
-            onPressed: () {
-              confirmPopUp(context);
-            },
-          ),
           title: Text(
             "Hello " + name,
             style: const TextStyle(
@@ -88,6 +83,7 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
           ],
           backgroundColor: const Color(0xffd1a271),
         ),
+        drawer: const MyDrawer(),
         body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone

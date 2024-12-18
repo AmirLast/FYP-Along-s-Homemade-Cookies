@@ -27,8 +27,33 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffd1a271),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xffB67F5F),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Center(
+          child: Text(
+            "Receipt",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => {},
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.transparent,
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: _buildBottomNavBar(context),
       body: const Column(
@@ -44,87 +69,91 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
     return Container(
       height: 100,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary,
+        color: Colors.grey.shade400,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(40),
           topRight: Radius.circular(40),
         ),
       ),
-      child: Row(
-        children: [
-          //pfp of driver
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              shape: BoxShape.circle,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+        child: Row(
+          children: [
+            //pfp of driver
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              padding: const EdgeInsets.all(10),
+              child: IconButton(
+                icon: const Icon(Icons.person),
+                onPressed: () {},
+              ),
             ),
-            padding: const EdgeInsets.all(25),
-            child: IconButton(
-              icon: const Icon(Icons.person),
-              onPressed: () {},
+
+            const SizedBox(width: 10),
+
+            //driver detail
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Amir Reka",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  "Driver",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
-          ),
 
-          const SizedBox(width: 10),
+            const Spacer(),
 
-          //driver detail
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Amir Reka",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+            Row(
+              children: [
+                //message button
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: IconButton(
+                    icon: const Icon(Icons.message),
+                    color: Colors.blue.shade900,
+                    onPressed: () {},
+                  ),
                 ),
-              ),
-              Text(
-                "Driver",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ],
-          ),
 
-          const Spacer(),
+                const SizedBox(width: 10),
 
-          Row(
-            children: [
-              //message button
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  shape: BoxShape.circle,
+                //call button
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: IconButton(
+                    icon: const Icon(Icons.call),
+                    color: Colors.green,
+                    onPressed: () {},
+                  ),
                 ),
-                padding: const EdgeInsets.all(25),
-                child: IconButton(
-                  icon: const Icon(Icons.message),
-                  color: Theme.of(context).colorScheme.primary,
-                  onPressed: () {},
-                ),
-              ),
-
-              const SizedBox(width: 10),
-
-              //call button
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  shape: BoxShape.circle,
-                ),
-                padding: const EdgeInsets.all(25),
-                child: IconButton(
-                  icon: const Icon(Icons.call),
-                  color: Colors.green,
-                  onPressed: () {},
-                ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

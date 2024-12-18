@@ -44,92 +44,94 @@ class _EditProdPageState extends State<ProdPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        //scaffold UI
-        Scaffold(
-          appBar: AppBar(),
-          body: Column(
-            children: [
-              //product image
-              SizedBox(
-                  height: 150,
-                  width: 150,
-                  //if url does not exist display default image
-                  child: src == ""
-                      ? Image.network(
-                          "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637")
-                      : Image.network(src)),
-
-              Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //product name
-                      Text(
-                        widget.prod!.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-
-                      //product price
-                      Text(
-                        'RM' + widget.prod!.price.toString(),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      //product description
-                      Text(widget.prod!.description),
-
-                      const SizedBox(height: 10),
-                      Divider(color: Colors.grey.shade400),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
-                ),
-              ),
-
-              //button -> add to cart
-              MyMenuButton(
-                text: "Add to cart",
-                icon: Icons.add_shopping_cart_rounded,
-                onPressed: () => addToCart(
-                  widget.prod,
-                ),
-              ),
-
-              const SizedBox(height: 25),
-            ],
-          ),
-        ),
-
-        //back button
-        SafeArea(
-          child: Opacity(
-            opacity: 0.6,
-            child: Container(
-              margin: const EdgeInsets.only(left: 25),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade400,
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_rounded),
-                onPressed: () => Navigator.pop(context),
-              ),
+    return Scaffold(
+      backgroundColor: const Color(0xffd1a271),
+      appBar: AppBar(
+        backgroundColor: const Color(0xffd1a271),
+        leading: Opacity(
+          opacity: 0.6,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.shade400,
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_rounded),
+              onPressed: () => Navigator.pop(context),
             ),
           ),
         ),
-      ],
+      ),
+      body: Column(
+        children: [
+          //product image
+          SizedBox(
+              height: 150,
+              width: 150,
+              //if url does not exist display default image
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 4,
+                  ),
+                ),
+                child: src == ""
+                    ? Image.network(
+                        "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637",
+                        fit: BoxFit.fill)
+                    : Image.network(src, fit: BoxFit.fill),
+              )),
+
+          Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //product name
+                  Text(
+                    widget.prod!.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+
+                  //product price
+                  Text(
+                    'RM' + widget.prod!.price.toStringAsFixed(2),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  //product description
+                  Text(widget.prod!.description),
+
+                  const SizedBox(height: 10),
+                  const Divider(color: Colors.black),
+                  const SizedBox(height: 10),
+                ],
+              ),
+            ),
+          ),
+
+          //button -> add to cart
+          MyMenuButton(
+            text: "Add to cart",
+            icon: Icons.add_shopping_cart_rounded,
+            onPressed: () => addToCart(
+              widget.prod,
+            ),
+          ),
+
+          const SizedBox(height: 25),
+        ],
+      ),
     );
   }
 }
