@@ -127,39 +127,38 @@ class _CategoryTileState extends State<CategoryTile> {
                                                 ); //--------------------------------------
 
                                                 User? user = AuthService().getCurrentUser();
-                                                //delete picture in storage
-                                                await FirebaseStorage.instance
-                                                    .ref()
-                                                    .child(categoryMenu[index]!.imagePath) //add prod name (name of pic)
-                                                    .delete()
-                                                    .then((onValue) async {
-                                                  //delete product in collection in fbfs
-                                                  await FirebaseFirestore.instance
-                                                      .collection('users')
-                                                      .doc(user!.uid)
-                                                      .collection(widget.catName)
-                                                      .where('name', isEqualTo: categoryMenu[index]!.name)
-                                                      .get()
-                                                      .then(
-                                                    (querySnapshot) {
-                                                      for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-                                                        documentSnapshot.reference.delete();
+
+                                                //delete product in collection in fbfs
+                                                await FirebaseFirestore.instance
+                                                    .collection('users')
+                                                    .doc(user!.uid)
+                                                    .collection(widget.catName)
+                                                    .where('name', isEqualTo: categoryMenu[index]!.name)
+                                                    .get()
+                                                    .then(
+                                                  (querySnapshot) async {
+                                                    for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                      documentSnapshot.reference.delete();
+                                                      //only delete pic if imagepath is not null
+                                                      if (categoryMenu[index]!.imagePath != "") {
+                                                        //delete picture in storage
+                                                        await FirebaseStorage.instance.ref().child(categoryMenu[index]!.imagePath).delete();
                                                       }
-                                                    },
-                                                  ).then((onValue) {
-                                                    obj.scaffoldmessage("Product Deleted", context);
-                                                    Navigator.pop(context);
-                                                    //pop loading circle---------
-                                                    //refresh new menu page
-                                                    Navigator.pop(context);
-                                                    Navigator.pop(context);
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) => const MenuPage(),
-                                                      ),
-                                                    );
-                                                  });
+                                                    }
+                                                  },
+                                                ).then((onValue) {
+                                                  obj.scaffoldmessage("Product Deleted", context);
+                                                  Navigator.pop(context);
+                                                  //pop loading circle---------
+                                                  //refresh new menu page
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => const MenuPage(),
+                                                    ),
+                                                  );
                                                 });
                                               },
                                               icon: const Icon(Icons.check_circle),

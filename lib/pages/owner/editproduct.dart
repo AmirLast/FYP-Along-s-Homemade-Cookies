@@ -206,7 +206,6 @@ class _EditProdPageState extends State<EditProdPage> {
             .update({"imagePath": imagePath});
       }
     }).then((onValue) async {
-      await FirebaseStorage.instance.ref().child(imagePath).delete();
       await FirebaseStorage.instance.ref().child(imagePath).putFile(_image!).then((onValue) async {
         //get file url
         await obj.downloadUrl(imagePath, context).then((url) async {
@@ -477,7 +476,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                       nameController.text == ""
                                           ? capitalizedSentence = widget.prod!.name
                                           : {
-                                              words = nameController.text.split(" "),
+                                              words = nameController.text.trim().split(" "), //trim so no white spaces
                                               capitalizedSentence = words.map((word) => upperCase(word)).join(" ")
                                             };
                                       UpdateMenuData objProd = UpdateMenuData();

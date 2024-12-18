@@ -179,15 +179,13 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                                     .then(
                                                   (querySnapshot) async {
                                                     for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-                                                      //delete picture in storage
-                                                      await FirebaseStorage.instance
-                                                          .ref()
-                                                          .child(documents[i]!.imagePath)
-                                                          .delete()
-                                                          .then((onValue) {
-                                                        //delete document in collection of category
-                                                        documentSnapshot.reference.delete();
-                                                      });
+                                                      //delete document in collection of category
+                                                      documentSnapshot.reference.delete();
+                                                      //only delete if not default value
+                                                      if (documents[i]!.imagePath != "") {
+                                                        //delete picture in storage
+                                                        await FirebaseStorage.instance.ref().child(documents[i]!.imagePath).delete();
+                                                      }
                                                     }
                                                   },
                                                 );
