@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/bakedclass.dart';
+import 'package:fyp/models/shop.dart';
+import 'package:provider/provider.dart';
 
 class ProdPage extends StatefulWidget {
   final Bakeds? prod;
@@ -26,8 +28,10 @@ class _EditProdPageState extends State<ProdPage> {
     // close current prod page
     Navigator.pop(context);
 
+    Bakeds prod2 = prod!;
+
     //add to cart
-    //context.read<Shop>().addToCart(prod);
+    context.read<Shop>().addToCart(prod2);
   }
 
   late String src;
