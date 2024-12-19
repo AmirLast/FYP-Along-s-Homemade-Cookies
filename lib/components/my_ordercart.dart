@@ -17,6 +17,7 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String type = UserNow.usernow!.type;
+    String formattedDate = order!.date;
 
     return Card(
       color: Colors.transparent,
@@ -27,9 +28,9 @@ class OrderCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             type == 'buyer'
-                ? Text("Order On: " + order!.date)
+                ? Text("Order On: " + formattedDate)
                 : Row(
-                    children: [Text("Order On: " + order!.date), Text("Status: " + order!.status)],
+                    children: [Text("Order On: " + formattedDate), Text("Status: " + order!.status)],
                   ),
             const SizedBox(height: 25),
             Container(
