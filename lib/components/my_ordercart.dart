@@ -68,17 +68,16 @@ class OrderCard extends StatelessWidget {
                 MaterialButton(
                   onPressed: onCheck,
                   child: Container(
-                    padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     decoration: BoxDecoration(
                       color: Colors.black,
-                      borderRadius: BorderRadius.circular(40),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
                       child: Text(
                         type == 'buyer' ? order!.status : "Change Status",
                         style: TextStyle(
                           color: Colors.grey.shade400,
-                          fontSize: 20,
                         ),
                       ),
                     ),
