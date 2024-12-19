@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fyp/models/orderclass.dart';
 
 class UpdateOrderData {
@@ -20,7 +21,9 @@ class UpdateOrderData {
       );
       return allOrder;
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
       return allOrder;
     }
   }

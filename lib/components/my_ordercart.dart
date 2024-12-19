@@ -28,11 +28,9 @@ class OrderCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             type == 'buyer'
-                ? Text("Order On: " + formattedDate)
-                : Row(
-                    children: [Text("Order On: " + formattedDate), Text("Status: " + order!.status)],
-                  ),
-            const SizedBox(height: 25),
+                ? Center(child: Text("Order On: " + formattedDate))
+                : Center(child: Text("Order On: " + formattedDate + "\nStatus: " + order!.status)),
+            const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black),
@@ -42,6 +40,7 @@ class OrderCard extends StatelessWidget {
               padding: const EdgeInsets.all(25),
               child: Text(order!.order),
             ),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -49,17 +48,16 @@ class OrderCard extends StatelessWidget {
                 MaterialButton(
                   onPressed: onCancel,
                   child: Container(
-                    padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     decoration: BoxDecoration(
                       color: Colors.black,
-                      borderRadius: BorderRadius.circular(40),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
                       child: Text(
                         "Cancel",
                         style: TextStyle(
                           color: Colors.grey.shade400,
-                          fontSize: 20,
                         ),
                       ),
                     ),
