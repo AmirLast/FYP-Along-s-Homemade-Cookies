@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_carttile.dart';
+import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/pages/customer/paymentpage.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +11,8 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Logo show = Logo();
+
     return Consumer<Shop>(
       builder: (context, shop, child) {
         //cart
@@ -79,45 +83,46 @@ class CartPage extends StatelessWidget {
               )
             ],
           ),
-          body: Column(
-            children: [
-              // list of cart
-              Expanded(
-                child: Column(
-                  children: [
-                    userCart.isEmpty
-                        ? const Expanded(child: Center(child: Text("Cart is empty..")))
-                        : Expanded(
-                            child: ListView.builder(
-                              itemCount: userCart.length,
-                              itemBuilder: (context, index) {
-                                // get individual cart item
-                                final cartItem = userCart[index];
+          body: Container(
+            decoration: show.showLogo(),
+            child: Column(
+              children: [
+                // list of cart
+                Expanded(
+                  child: Column(
+                    children: [
+                      userCart.isEmpty
+                          ? const Expanded(child: Center(child: Text("Cart is empty..")))
+                          : Expanded(
+                              child: ListView.builder(
+                                itemCount: userCart.length,
+                                itemBuilder: (context, index) {
+                                  // get individual cart item
+                                  final cartItem = userCart[index];
 
-                                // return cart tile UI
-                                return ListTile(
-                                  title: Text(cartItem.prod.name),
-                                );
-                              },
+                                  // return cart tile UI
+                                  return MyCartTile(cartItem: cartItem);
+                                },
+                              ),
                             ),
-                          ),
-                  ],
-                ),
-              ),
-              //button to pay
-              MyMenuButton(
-                text: "Go to checkout",
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const PayPage(),
+                    ],
                   ),
                 ),
-                icon: Icons.credit_card_rounded,
-              ),
+                //button to pay
+                MyMenuButton(
+                  text: "Go to checkout",
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PayPage(),
+                    ),
+                  ),
+                  icon: Icons.credit_card_rounded,
+                ),
 
-              const SizedBox(height: 25),
-            ],
+                const SizedBox(height: 25),
+              ],
+            ),
           ),
         );
       },

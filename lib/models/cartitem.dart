@@ -1,7 +1,7 @@
 import "package:fyp/models/bakedclass.dart";
 
 class CartItem {
-  Bakeds prod;
+  Bakeds? prod;
   int quantity;
 
   CartItem({
@@ -10,6 +10,6 @@ class CartItem {
   });
 
   double get totalPrice {
-    return (prod.price) * quantity;
+    return (prod!.price) * quantity;
   }
 }

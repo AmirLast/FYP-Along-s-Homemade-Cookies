@@ -21,11 +21,9 @@ class _ShopListPageState extends State<ShopListPage> {
   Future<void> updateShop() async {
     //update menu data in local memory
     await obj.updateshoplist().then((temp) {
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() {
-          shops = temp;
-          isLoading = false;
-        });
+      setState(() {
+        shops = temp;
+        isLoading = false;
       });
     });
   }
@@ -94,7 +92,8 @@ class _ShopListPageState extends State<ShopListPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ShopPage(name: shops[index]!.name, bakeds: shops[index]!.bakeds)));
+                                      builder: (context) =>
+                                          ShopPage(id: shops[index]!.id, name: shops[index]!.name, bakeds: shops[index]!.bakeds)));
                             },
                           );
                         },

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/models/bakedclass.dart';
+import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/customer/cartpage.dart';
 import 'package:fyp/pages/customer/prodpage.dart';
 
 class ShopPage extends StatefulWidget {
   final String name; //shop name
   final List<Bakeds?> bakeds; //the shop bakeds with categories
+  final String id; //owner user id
 
   const ShopPage({
     super.key,
     required this.name,
     required this.bakeds,
+    required this.id,
   });
 
   @override
@@ -20,6 +23,12 @@ class ShopPage extends StatefulWidget {
 
 class _ShopPageState extends State<ShopPage> {
   final Logo show = Logo(); //for logo
+
+  @override
+  void initState() {
+    super.initState();
+    UserNow.usernow?.currentdir = widget.id;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,18 +92,17 @@ class _ShopPageState extends State<ShopPage> {
                   itemCount: widget.bakeds.length, //limit to 10 display
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) {
+                    bool isAvailable = widget.bakeds[index]!.quantity > 0;
                     return Column(
                       children: [
                         Container(
                           color: Colors.grey.withOpacity(0.5),
                           child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProdPage(prod: widget.bakeds[index], category: widget.bakeds[index]!.category)));
-                            },
+                            onTap: isAvailable
+                                ? () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProdPage(prod: widget.bakeds[index])));
+                                  }
+                                : null,
                             child: Padding(
                               padding: const EdgeInsets.all(15.0),
                               child: Row(
@@ -106,27 +114,31 @@ class _ShopPageState extends State<ShopPage> {
                                       children: [
                                         Text(
                                           widget.bakeds[index]!.name,
-                                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            color: isAvailable ? Colors.black : Colors.black.withOpacity(0.4),
+                                          ),
                                         ),
                                         Text(
                                           'RM' + widget.bakeds[index]!.price.toStringAsFixed(2),
-                                          style: const TextStyle(
-                                            color: Colors.black,
+                                          style: TextStyle(
+                                            color: isAvailable ? Colors.black : Colors.black.withOpacity(0.4),
                                           ),
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
                                           widget.bakeds[index]!.description,
-                                          style: const TextStyle(
-                                            color: Colors.black,
+                                          style: TextStyle(
+                                            color: isAvailable ? Colors.black : Colors.black.withOpacity(0.4),
                                             fontStyle: FontStyle.italic,
                                           ),
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
                                           "Available Product: " + widget.bakeds[index]!.quantity.toString(),
-                                          style: const TextStyle(
-                                            color: Colors.black,
+                                          style: TextStyle(
+                                            color: isAvailable ? Colors.black : Colors.black.withOpacity(0.4),
                                           ),
                                         ),
                                       ],
@@ -136,9 +148,13 @@ class _ShopPageState extends State<ShopPage> {
                                   const SizedBox(width: 15),
 
                                   // prod image
-                                  CircleAvatar(
-                                    radius: 80,
-                                    backgroundImage: NetworkImage(widget.bakeds[index]!.url),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(80),
+                                    child: Image.network(
+                                      widget.bakeds[index]!.url,
+                                      opacity: isAvailable ? null : const AlwaysStoppedAnimation(.5),
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
                                 ],
                               ),

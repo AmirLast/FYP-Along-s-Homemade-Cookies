@@ -5,18 +5,17 @@ import 'package:fyp/models/orderclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/functions/updateorder.dart';
 
-class OwnerOrderPage extends StatefulWidget {
-  const OwnerOrderPage({super.key});
+class BuyerOrder extends StatefulWidget {
+  const BuyerOrder({super.key});
 
   @override
-  State<OwnerOrderPage> createState() => _OwnerOrderPageState();
+  State<BuyerOrder> createState() => _BuyerOrderState();
 }
 
-class _OwnerOrderPageState extends State<OwnerOrderPage> {
+class _BuyerOrderState extends State<BuyerOrder> {
   final Logo show = Logo();
   late List<Orders?> orders;
   UserNow? user = UserNow.usernow;
-  late bool isLoading;
 
   Future<void> updateOrder() async {
     //update menu data in local memory
@@ -29,7 +28,6 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
 
   @override
   void initState() {
-    isLoading = true;
     updateOrder();
     super.initState();
   }
@@ -48,7 +46,7 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
         ),
         title: const Center(
           child: Text(
-            "Order List",
+            "Order History",
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -77,7 +75,7 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
               orders.isEmpty
                   ? const Expanded(
                       child: Padding(
-                      padding: EdgeInsets.all(30.0),
+                      padding: EdgeInsets.only(top: 30.0),
                       child: Text("Order List is empty.."),
                     ))
                   : Expanded(

@@ -20,6 +20,7 @@ class ShopCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          const SizedBox(height: 20),
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -46,12 +47,15 @@ class ShopCard extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Image.network(
-                          shop!.bakeds[index]!.url,
-                          fit: BoxFit.cover,
+                      return Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: Image.network(
+                            shop!.bakeds[index]!.url,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       );
                     },
@@ -80,6 +84,7 @@ class ShopCard extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 20),
         ],
       ),
     );

@@ -66,6 +66,7 @@ class _PreviewProdPageState extends State<PreviewProdPage> {
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,6 +95,11 @@ class _PreviewProdPageState extends State<PreviewProdPage> {
                     Text(widget.desc),
 
                     const SizedBox(height: 10),
+
+                    //product available quantity
+                    Text("Available Product: " + widget.prod!.quantity.toString()),
+
+                    const SizedBox(height: 10),
                     const Divider(color: Colors.black),
                     const SizedBox(height: 10),
                   ],
@@ -101,7 +107,6 @@ class _PreviewProdPageState extends State<PreviewProdPage> {
                 const SizedBox(width: 15),
                 QuantitySelector(
                   quantity: widget.quantity,
-                  prod: widget.prod,
                   onDec: () {},
                   onInc: () {},
                 ),

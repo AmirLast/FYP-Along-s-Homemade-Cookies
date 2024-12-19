@@ -40,7 +40,7 @@ class UpdateShopList {
               //onError: (e) => print("Error completing: $e"),
             );
           }
-          allShops.add(Shops(name: docSnapshot.data()['shop'], bakeds: allMenu));
+          allShops.add(Shops(id: docSnapshot.id, name: docSnapshot.data()['shop'], bakeds: allMenu));
         }
       });
       return allShops;

@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/settingspage.dart';
+import 'package:fyp/pages/customer/orderlist.dart';
 import 'package:fyp/pages/customer/shoplistpage.dart';
 
 class UserHomePage extends StatefulWidget {
@@ -67,6 +69,7 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color(0xffd1a271),
           title: Text(
             "Hello " + name,
             style: const TextStyle(
@@ -81,7 +84,6 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
               icon: const Icon(Icons.account_circle, color: Colors.black),
             ),
           ],
-          backgroundColor: const Color(0xffd1a271),
         ),
         drawer: const MyDrawer(),
         body: Container(
@@ -92,9 +94,16 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               MyMenuButton(
-                  text: "Browse Shop",
-                  icon: Icons.shopify_rounded,
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ShopListPage()))),
+                text: "Browse Shop",
+                icon: Icons.shopify_rounded,
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ShopListPage())),
+              ),
+              const SizedBox(height: 60),
+              MyMenuButton(
+                text: "Order History",
+                icon: CupertinoIcons.tray_full,
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const BuyerOrder())),
+              ),
             ],
           ),
         ),

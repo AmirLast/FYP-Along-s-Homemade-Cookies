@@ -230,7 +230,7 @@ class _CategoryTileState extends State<CategoryTile> {
           ),
 
           //divider at the bottom screen
-          const SizedBox(height: 25),
+          const SizedBox(height: 20),
         ],
       ),
     );

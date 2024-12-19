@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/settingspage.dart';
 import 'package:fyp/pages/owner/menupage.dart';
+import 'package:fyp/pages/owner/ownerorderpage.dart';
 
 class OwnerHomePage extends StatefulWidget {
   const OwnerHomePage({super.key});
@@ -55,10 +58,18 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
           width: MediaQuery.of(context).size.width, //max width for current phone
           height: MediaQuery.of(context).size.height, //max width for current phone
           decoration: show.showLogo(),
-          child: const Column(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              MyMenuButton(
+                icon: CupertinoIcons.news,
+                text: "Customer Order",
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const OwnerOrderPage()),
+                ),
+              ),
               /*
               List function2 owner yang belum terciptakan
               MyMenuButton(
@@ -69,12 +80,6 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
               const SizedBox(
                 height: 60,
               ),
-              MyMenuButton(
-                  text: "Customer Order", onPressed: () {} //=> Navigator.push(
-                  //context,
-                  //MaterialPageRoute(
-                  //builder: (context) => const OwnerOrderPage())),
-                  ),
               const SizedBox(
                 height: 60,
               */

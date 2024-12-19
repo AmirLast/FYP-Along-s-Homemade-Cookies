@@ -16,21 +16,22 @@ class MyCartTile extends StatelessWidget {
           color: Colors.grey.shade400,
           borderRadius: BorderRadius.circular(8),
         ),
-        margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+        margin: const EdgeInsets.fromLTRB(25, 30, 25, 0),
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //food image
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      cartItem.prod.imagePath,
+                    child: Image.network(
+                      cartItem.prod!.url,
                       height: 100,
                       width: 100,
+                      fit: BoxFit.fill,
                     ),
                   ),
 
@@ -41,21 +42,20 @@ class MyCartTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       //the name
-                      Text(cartItem.prod.name),
+                      Text(cartItem.prod!.name),
                       //the price
                       Text(
-                        'RM' + cartItem.prod.price.toString(),
-                        style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                        'RM' + cartItem.prod!.price.toStringAsFixed(2),
+                        style: const TextStyle(color: Colors.purple),
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: 10),
+                  const Spacer(),
 
                   //increment or decrement for quantity
                   QuantitySelector(
                     quantity: cartItem.quantity,
-                    prod: cartItem.prod,
                     onDec: () {
                       shop.removeFromCart(cartItem);
                     },

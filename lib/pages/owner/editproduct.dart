@@ -331,8 +331,10 @@ class _EditProdPageState extends State<EditProdPage> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Row(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Icon(Icons.remove_red_eye_rounded, color: Colors.black),
+                                  SizedBox(width: 10),
                                   Text('Preview Product Page'),
                                 ],
                               )),
@@ -435,6 +437,8 @@ class _EditProdPageState extends State<EditProdPage> {
                           isEnabled: true,
                           isShowhint: true,
                         ),
+
+                        const SizedBox(height: 30),
 
                         MaterialButton(
                           child: Container(

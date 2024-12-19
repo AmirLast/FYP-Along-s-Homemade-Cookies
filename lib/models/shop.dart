@@ -26,7 +26,7 @@ class Shop extends ChangeNotifier {
   //operations----------------------------------
 
   // add to cart
-  void addToCart(Bakeds prod) {
+  void addToCart(Bakeds? prod) {
     //see if there is cart item already w/ same prod and selected addons
     CartItem? cartItem = _cart.firstWhereOrNull((item) {
       // check if food item is same
@@ -70,7 +70,7 @@ class Shop extends ChangeNotifier {
     double total = 0.0;
 
     for (CartItem cartItem in _cart) {
-      double itemTotal = cartItem.prod.price;
+      double itemTotal = cartItem.prod!.price;
 
       total += itemTotal * cartItem.quantity; //betul ke cara kira ni?
     }
@@ -116,7 +116,7 @@ class Shop extends ChangeNotifier {
     receipt.writeln("----------");
 
     for (final cartItem in _cart) {
-      receipt.writeln("${cartItem.quantity} x ${cartItem.prod.name} - ${_formatPrice(cartItem.prod.price)}");
+      receipt.writeln("${cartItem.quantity} x ${cartItem.prod!.name} - ${_formatPrice(cartItem.prod!.price)}");
       receipt.writeln();
     }
 
@@ -132,6 +132,6 @@ class Shop extends ChangeNotifier {
 
   // format double value into money
   String _formatPrice(double price) {
-    return "RM${price.toStringAsFixed(2)}";
+    return "RM ${price.toStringAsFixed(2)}";
   }
 }
