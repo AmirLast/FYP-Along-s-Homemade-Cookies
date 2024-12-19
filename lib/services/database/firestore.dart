@@ -13,7 +13,7 @@ class FirestoreService {
       'order': receipt,
       //add more data later
       'owner': user!.currentdir,
-      'user': user!.user.uid,
+      'buyer': user!.user.uid,
       'status': "Pending",
     });
   }

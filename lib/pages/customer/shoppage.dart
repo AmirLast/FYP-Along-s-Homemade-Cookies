@@ -150,10 +150,14 @@ class _ShopPageState extends State<ShopPage> {
                                   // prod image
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(80),
-                                    child: Image.network(
-                                      widget.bakeds[index]!.url,
-                                      opacity: isAvailable ? null : const AlwaysStoppedAnimation(.5),
-                                      fit: BoxFit.fill,
+                                    child: SizedBox(
+                                      width: 160,
+                                      height: 160,
+                                      child: Image.network(
+                                        widget.bakeds[index]!.url,
+                                        opacity: isAvailable ? null : const AlwaysStoppedAnimation(.5),
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
                                   ),
                                 ],
