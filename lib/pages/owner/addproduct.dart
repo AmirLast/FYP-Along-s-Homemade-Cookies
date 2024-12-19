@@ -229,6 +229,8 @@ class _AddProductState extends State<AddProduct> {
                         isShowhint: false,
                       ),
 
+                      const SizedBox(height: 30),
+
                       //image of category
                       MaterialButton(
                         child: Container(

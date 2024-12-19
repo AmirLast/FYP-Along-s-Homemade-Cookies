@@ -26,40 +26,53 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffd1a271),
-      appBar: AppBar(
-        backgroundColor: const Color(0xffB67F5F),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Center(
-          child: Text(
-            "Receipt",
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => {},
-            icon: const Icon(
-              Icons.more_vert,
-              color: Colors.transparent,
+    return Consumer<Shop>(
+      builder: (context, shop, child) => PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) async {
+          if (didPop) {
+            return;
+          }
+          shop.clearCart();
+          Navigator.popUntil(context, ModalRoute.withName('shop'));
+        },
+        child: Scaffold(
+          backgroundColor: const Color(0xffd1a271),
+          appBar: AppBar(
+            backgroundColor: const Color(0xffB67F5F),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                shop.clearCart();
+                Navigator.popUntil(context, ModalRoute.withName('shop'));
+              },
             ),
+            title: const Center(
+              child: Text(
+                "Receipt",
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
+              ),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () => {},
+                icon: const Icon(
+                  Icons.more_vert,
+                  color: Colors.transparent,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-      bottomNavigationBar: _buildBottomNavBar(context),
-      body: const Column(
-        children: [
-          MyReceipt(),
-        ],
+          bottomNavigationBar: _buildBottomNavBar(context),
+          body: const Column(
+            children: [
+              MyReceipt(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -100,7 +113,7 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Amir Reka",
+                  "Abdul Dilan",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,

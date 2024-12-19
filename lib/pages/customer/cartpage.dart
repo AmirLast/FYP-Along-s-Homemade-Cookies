@@ -83,45 +83,55 @@ class CartPage extends StatelessWidget {
               )
             ],
           ),
-          body: Container(
-            decoration: show.showLogo(),
-            child: Column(
-              children: [
-                // list of cart
-                Expanded(
-                  child: Column(
-                    children: [
-                      userCart.isEmpty
-                          ? const Expanded(child: Center(child: Text("Cart is empty..")))
-                          : Expanded(
-                              child: ListView.builder(
-                                itemCount: userCart.length,
-                                itemBuilder: (context, index) {
-                                  // get individual cart item
-                                  final cartItem = userCart[index];
+          body: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width, //max width for current phone
+              height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
+              decoration: show.showLogo(),
+              child: Column(
+                children: [
+                  // list of cart
+                  Expanded(
+                    child: Column(
+                      children: [
+                        userCart.isEmpty
+                            ? const Expanded(
+                                child: Padding(
+                                padding: EdgeInsets.only(top: 30.0),
+                                child: Text("Cart is empty.."),
+                              ))
+                            : Expanded(
+                                child: ListView.builder(
+                                  itemCount: userCart.length,
+                                  itemBuilder: (context, index) {
+                                    // get individual cart item
+                                    final cartItem = userCart[index];
 
-                                  // return cart tile UI
-                                  return MyCartTile(cartItem: cartItem);
-                                },
+                                    // return cart tile UI
+                                    return MyCartTile(cartItem: cartItem);
+                                  },
+                                ),
                               ),
-                            ),
-                    ],
-                  ),
-                ),
-                //button to pay
-                MyMenuButton(
-                  text: "Go to checkout",
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PayPage(),
+                      ],
                     ),
                   ),
-                  icon: Icons.credit_card_rounded,
-                ),
+                  //button to pay
+                  MyMenuButton(
+                    text: "Go to checkout",
+                    onPressed: userCart.isEmpty
+                        ? null
+                        : () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PayPage(),
+                              ),
+                            ),
+                    icon: Icons.credit_card_rounded,
+                  ),
 
-                const SizedBox(height: 25),
-              ],
+                  const SizedBox(height: 25),
+                ],
+              ),
             ),
           ),
         );

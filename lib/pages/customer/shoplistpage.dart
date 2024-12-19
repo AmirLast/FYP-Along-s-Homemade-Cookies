@@ -93,7 +93,8 @@ class _ShopListPageState extends State<ShopListPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          ShopPage(id: shops[index]!.id, name: shops[index]!.name, bakeds: shops[index]!.bakeds)));
+                                          ShopPage(id: shops[index]!.id, name: shops[index]!.name, bakeds: shops[index]!.bakeds),
+                                      settings: const RouteSettings(name: "shop")));
                             },
                           );
                         },
