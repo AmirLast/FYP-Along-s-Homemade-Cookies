@@ -10,7 +10,8 @@ class UpdateOrderData {
         (querySnapshot) {
           for (var docSnapshot in querySnapshot.docs) {
             Orders.currentOrder = Orders(
-              date: docSnapshot.get('date'),
+              dateString: docSnapshot.get('date'),
+              dateDT: DateTime.parse(docSnapshot.get('date')),
               order: docSnapshot.get('order'),
               status: docSnapshot.get('status'),
             );

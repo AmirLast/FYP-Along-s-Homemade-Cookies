@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_cachednetworkimage.dart';
 import 'package:fyp/components/my_menubutton.dart';
-//import 'package:fyp/components/my_quantityselector.dart';
+import 'package:fyp/components/my_scaffoldmessage.dart';
+import 'package:fyp/images/assets.dart';
 import 'package:fyp/models/bakedclass.dart';
-import 'package:fyp/models/cartitem.dart';
 import 'package:fyp/models/shop.dart';
 import 'package:provider/provider.dart';
 
@@ -15,143 +16,272 @@ class ProdPage extends StatefulWidget {
 }
 
 class _EditProdPageState extends State<ProdPage> {
-  //method to add to cart
-  void addToCart(Bakeds? prod) {
-    // close current prod page
-    Navigator.pop(context);
-
-    Bakeds prod2 = prod!;
-
-    //add to cart
-    context.read<Shop>().addToCart(prod2);
-  }
-
   late String src;
-  late CartItem cartItem = CartItem(prod: widget.prod);
+  late int q;
+  final obj = MyScaffoldmessage();
+  final obj2 = MyCachednetworkimage();
+  bool isBlock = false;
+
+  //method to add to cart
+  void addToCart(Bakeds? prod, int quantity) {
+    Navigator.pop(context);
+    // close current prod page
+    Bakeds prod2 = prod!;
+    //add to cart
+    context.read<Shop>().addToCart(prod2, quantity);
+  }
 
   @override
   void initState() {
     super.initState();
     src = widget.prod!.url;
+    q = 0;
+  }
+
+  //confirm pop up kalau ada unsaved data---------------------------------------
+  confirmPopUp(context) {
+    //confirm pop up
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        content: const Text(
+          "You didn/'t add to cart. Proceed to exit?",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                iconSize: 50,
+                color: Colors.green,
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.check_circle),
+              ),
+              IconButton(
+                  iconSize: 50,
+                  color: Colors.red,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.cancel)),
+            ],
+          )
+        ],
+      ),
+    );
+  } //----------------------------------------------------------------------
+
+  void blockButton() async {
+    if (!isBlock) {
+      setState(() {
+        isBlock = true;
+        obj.scaffoldmessage("Exceed available quantity", context);
+      });
+      await Future.delayed(const Duration(seconds: 4));
+      setState(() => isBlock = false);
+    }
+  }
+
+  void toPop() {
+    if (q == 0) {
+      Navigator.pop(context);
+    } else {
+      confirmPopUp(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Shop>(
-      builder: (context, shop, child) {
-        return Scaffold(
-          backgroundColor: const Color(0xffd1a271),
-          appBar: AppBar(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          return;
+        }
+        toPop();
+      },
+      child: Consumer<Shop>(
+        builder: (context, shop, child) {
+          return Scaffold(
             backgroundColor: const Color(0xffd1a271),
-            leading: Opacity(
-              opacity: 0.6,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_rounded),
-                  onPressed: () => Navigator.pop(context),
+            appBar: AppBar(
+              backgroundColor: const Color(0xffd1a271),
+              leading: Opacity(
+                opacity: 0.6,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade400,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios_rounded),
+                      onPressed: () {
+                        toPop();
+                      }),
                 ),
               ),
             ),
-          ),
-          body: Column(
-            children: [
-              //product image
-              SizedBox(
-                  height: 150,
-                  width: 150,
-                  //if url does not exist display default image
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 4,
+            body: Column(
+              children: [
+                //product image
+                SizedBox(
+                    height: 150,
+                    width: 150,
+                    //if url does not exist display default image
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 4,
+                        ),
                       ),
-                    ),
-                    child: src == ""
-                        ? Image.network(
-                            "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637",
-                            fit: BoxFit.fill)
-                        : Image.network(src, fit: BoxFit.fill),
-                  )),
+                      child: src == "" ? obj2.showImage(defItem) : obj2.showImage(src),
+                    )),
 
-              Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //product name
-                        Text(
-                          widget.prod!.name,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //product name
+                              Text(
+                                widget.prod!.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+
+                              //product price
+                              Text(
+                                'RM' + widget.prod!.price.toStringAsFixed(2),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+
+                              const SizedBox(height: 10),
+
+                              //product description
+                              Text(
+                                widget.prod!.description,
+                                style: const TextStyle(fontStyle: FontStyle.italic),
+                              ),
+
+                              const SizedBox(height: 10),
+
+                              //product available quantity
+                              Text("Available Product: " + widget.prod!.quantity.toString()),
+                            ],
                           ),
-                        ),
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            //increment or decrement for quantity
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            padding: const EdgeInsets.all(8),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                //decrease button
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (q == 0) {
+                                        q = 0;
+                                      } else {
+                                        q--;
+                                      }
+                                    });
+                                  },
+                                  child: const Icon(
+                                    Icons.remove,
+                                    size: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
 
-                        //product price
-                        Text(
-                          'RM' + widget.prod!.price.toStringAsFixed(2),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
+                                //quantity counter
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                                  child: SizedBox(
+                                    width: 20,
+                                    child: Center(
+                                      child: Text(
+                                        q.toString(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                //increase button
+                                GestureDetector(
+                                  onTap: () {
+                                    if (!(q + shop.getQuantity(widget.prod) == widget.prod!.quantity)) {
+                                      setState(() {
+                                        q++;
+                                      });
+                                    } else {
+                                      blockButton();
+                                    }
+                                  },
+                                  child: const Icon(
+                                    Icons.add,
+                                    size: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        //product description
-                        Text(widget.prod!.description),
-
-                        const SizedBox(height: 10),
-
-                        //product available quantity
-                        Text("Available Product: " + widget.prod!.quantity.toString()),
-
-                        const SizedBox(height: 10),
-                        const Divider(color: Colors.black),
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-                    const SizedBox(width: 15),
-
-                    //increment or decrement for quantity
-                    // QuantitySelector(
-                    //     quantity: cartItem.quantity,
-                    //     onDec: () {
-                    //       setState(() {
-                    //         shop.removeFromCart(cartItem);
-                    //       });
-                    //     },
-                    //     onInc: () {
-                    //       setState(() {
-                    //         shop.addToCart(cartItem.prod);
-                    //       });
-                    //     }),
-                  ],
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text('Currently in cart: ' + shop.getQuantity(widget.prod).toString()),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
 
-              //button -> add to cart
-              MyMenuButton(
-                text: "Add to cart",
-                icon: Icons.add_shopping_cart_rounded,
-                onPressed: () => addToCart(
-                  cartItem.prod,
+                const SizedBox(height: 10),
+                const Divider(color: Colors.black),
+                const SizedBox(height: 10),
+
+                //button -> add to cart
+                MyMenuButton(
+                  text: "Add to cart",
+                  icon: Icons.add_shopping_cart_rounded,
+                  onPressed: q == 0 ? () {} : () => addToCart(widget.prod, q),
                 ),
-              ),
 
-              const SizedBox(height: 25),
-            ],
-          ),
-        );
-      },
+                const SizedBox(height: 25),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

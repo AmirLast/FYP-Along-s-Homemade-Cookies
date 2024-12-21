@@ -240,7 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             floatingLabelStyle: const TextStyle(color: Colors.black),
                             floatingLabelBehavior: null,
                             hintText: "",
-                            hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
+                            hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
                           ),
                         ),
                       ),
@@ -280,7 +280,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             floatingLabelStyle: const TextStyle(color: Colors.black),
                             floatingLabelBehavior: null,
                             hintText: "",
-                            hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
+                            hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
                           ),
                         ),
                       ),
@@ -370,10 +370,19 @@ class _RegisterPageState extends State<RegisterPage> {
                           } else {
                             // loading circle-----
                             showDialog(
+                              barrierDismissible: false, //to prevent outside click
                               context: context,
                               builder: (context) {
-                                return const Center(
-                                  child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                return PopScope(
+                                  canPop: false,
+                                  onPopInvokedWithResult: (didPop, result) {
+                                    if (didPop) {
+                                      return;
+                                    }
+                                  },
+                                  child: const Center(
+                                    child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                  ),
                                 );
                               },
                             );

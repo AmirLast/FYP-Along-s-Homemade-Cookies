@@ -15,14 +15,14 @@ class UpdateUserData {
       var dir = FirebaseFirestore.instance.collection('users');
       await dir.doc(user.uid).get().then((value) {
         UserNow.usernow = UserNow(
-          value.data()?['fname'],
-          value.data()?['lname'],
-          value.data()?['phone'],
-          user,
-          value.data()?['type'],
-          value.data()?['currentdir'],
-          value.data()?['passStrength'],
-          value.data()?['address'],
+          fname: value.data()?['fname'],
+          lname: value.data()?['lname'],
+          phone: value.data()?['phone'],
+          user: user,
+          type: value.data()?['type'],
+          currentdir: value.data()?['currentdir'],
+          passStrength: value.data()?['passStrength'],
+          address: value.data()?['address'],
         );
         //check user type
         if (value.data()?['type'] == "owner") {

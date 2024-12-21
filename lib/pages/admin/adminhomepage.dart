@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_button.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
+import 'package:fyp/pages/all_user/endscreen.dart';
+import 'package:fyp/pages/all_user/settingspage.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -14,26 +16,91 @@ class AdminHomePage extends StatefulWidget {
 class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProviderStateMixin {
   //for logo
   final Logo show = Logo();
-  String fname = UserNow.usernow!.fname;
+  String name = UserNow.usernow!.fname;
+
+  confirmPopUp(context) {
+    //confirm pop up
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        content: const Text(
+          "Are you sure you want to exit?",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                iconSize: 50,
+                color: Colors.green,
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute<void>(builder: (BuildContext context) => const EndScreen()),
+                    ModalRoute.withName('/'),
+                  );
+                },
+                icon: const Icon(Icons.check_circle),
+              ),
+              IconButton(
+                  iconSize: 50,
+                  color: Colors.red,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.cancel)),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffd1a271),
-      appBar: AppBar(
-        backgroundColor: const Color(0xffd1a271),
-      ),
-      drawer: const MyDrawer(),
-      body: Container(
-        width: MediaQuery.of(context).size.width, //max width for current phone
-        height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
-        decoration: show.showLogo(),
-        child: Column(
-          children: [
-            MyButton(
-              text: "Hello " + fname,
-              onPressed: () {},
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          return;
+        }
+        confirmPopUp(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color(0xffd1a271),
+          title: Text(
+            "Hello " + name,
+            style: const TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
+              icon: const Icon(Icons.account_circle, color: Colors.black),
             ),
           ],
+        ),
+        drawer: const MyDrawer(),
+        body: Container(
+          width: MediaQuery.of(context).size.width, //max width for current phone
+          height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
+          decoration: show.showLogo(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MyMenuButton(
+                text: "User List",
+                icon: Icons.person,
+                onPressed: () {},
+              )
+            ],
+          ),
         ),
       ),
     );

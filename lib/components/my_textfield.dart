@@ -46,7 +46,7 @@ class MyTextField extends StatelessWidget {
           floatingLabelStyle: const TextStyle(color: Colors.black),
           floatingLabelBehavior: isShowhint ? FloatingLabelBehavior.never : null,
           hintText: hintText,
-          hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
+          hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
         ),
       ),
     );

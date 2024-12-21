@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/my_shopproducttile.dart';
 import 'package:fyp/models/bakedclass.dart';
+import 'package:fyp/models/shop.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/customer/cartpage.dart';
-import 'package:fyp/pages/customer/prodpage.dart';
+import 'package:provider/provider.dart';
 
 class ShopPage extends StatefulWidget {
   final String name; //shop name
   final List<Bakeds?> bakeds; //the shop bakeds with categories
   final String id; //owner user id
+  final List categories; //owner shop list of category
 
   const ShopPage({
     super.key,
     required this.name,
     required this.bakeds,
     required this.id,
+    required this.categories,
   });
 
   @override
@@ -30,154 +34,168 @@ class _ShopPageState extends State<ShopPage> {
     UserNow.usernow?.currentdir = widget.id;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffd1a271),
-      appBar: AppBar(
-        backgroundColor: const Color(0xffB67F5F),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Center(
-          child: Text(
-            textAlign: TextAlign.center,
-            widget.name + " Shop",
-            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
+  //confirm pop up kalau ada unsaved data---------------------------------------
+  confirmPopUp(Shop shop, context) {
+    //confirm pop up
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        content: const Text(
+          "You have items in cart for this shop. Exiting will result in clearing cart. Proceed to exit?",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const CartPage()));
-            },
-            icon: const Icon(
-              Icons.shopping_cart,
-              color: Colors.black,
-            ),
-          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                iconSize: 50,
+                color: Colors.green,
+                onPressed: () {
+                  shop.clearCart();
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.check_circle),
+              ),
+              IconButton(
+                  iconSize: 50,
+                  color: Colors.red,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.cancel)),
+            ],
+          )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width, //max width for current phone
-          height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
-          decoration: show.showLogo(),
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              Container(
-                height: 30,
-                width: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.grey,
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [Text("Sort by"), Icon(Icons.arrow_drop_down_sharp)],
-                  ),
-                ),
+    );
+  } //----------------------------------------------------------------------
+
+  void toPop(Shop shop) {
+    if (shop.cart.isEmpty) {
+      Navigator.pop(context);
+    } else {
+      confirmPopUp(shop, context);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<Shop>(
+      builder: (context, shop, child) => PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) {
+            return;
+          }
+          toPop(shop);
+        },
+        child: Scaffold(
+          backgroundColor: const Color(0xffd1a271),
+          appBar: AppBar(
+            backgroundColor: const Color(0xffB67F5F),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded),
+              onPressed: () {
+                toPop(shop);
+              },
+            ),
+            title: Center(
+              child: Text(
+                textAlign: TextAlign.center,
+                widget.name + " Shop",
+                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: widget.bakeds.length, //limit to 10 display
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (context, index) {
-                    bool isAvailable = widget.bakeds[index]!.quantity > 0;
-                    return Column(
-                      children: [
-                        Container(
-                          color: Colors.grey.withOpacity(0.5),
-                          child: GestureDetector(
-                            onTap: isAvailable
-                                ? () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProdPage(prod: widget.bakeds[index])));
-                                  }
-                                : null,
-                            child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Row(
-                                children: [
-                                  //text product detail
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          widget.bakeds[index]!.name,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                            color: isAvailable ? Colors.black : Colors.black.withOpacity(0.4),
-                                          ),
-                                        ),
-                                        Text(
-                                          'RM' + widget.bakeds[index]!.price.toStringAsFixed(2),
-                                          style: TextStyle(
-                                            color: isAvailable ? Colors.black : Colors.black.withOpacity(0.4),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                          widget.bakeds[index]!.description,
-                                          style: TextStyle(
-                                            color: isAvailable ? Colors.black : Colors.black.withOpacity(0.4),
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                          "Available Product: " + widget.bakeds[index]!.quantity.toString(),
-                                          style: TextStyle(
-                                            color: isAvailable ? Colors.black : Colors.black.withOpacity(0.4),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-
-                                  const SizedBox(width: 15),
-
-                                  // prod image
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(80),
-                                    child: SizedBox(
-                                      width: 160,
-                                      height: 160,
-                                      child: Image.network(
-                                        widget.bakeds[index]!.url,
-                                        opacity: isAvailable ? null : const AlwaysStoppedAnimation(.5),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        //divider at the bottom screen
-                        const Divider(
-                          color: Colors.black,
-                          endIndent: 25,
-                          indent: 25,
-                        ),
-                      ],
-                    );
-                  },
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => const CartPage(), settings: const RouteSettings(name: "cart")));
+                },
+                icon: const Icon(
+                  Icons.shopping_cart,
+                  color: Colors.black,
                 ),
               ),
             ],
+          ),
+          body: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width, //max width for current phone
+              height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
+              decoration: show.showLogo(),
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Container(
+                    height: 30,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.grey,
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [Text("Sort by"), Icon(Icons.arrow_drop_down_sharp)],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: widget.categories.length,
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, bottom: 5),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        color: Colors.white.withValues(alpha: 0.75),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
+                                        child: Center(
+                                          child: Text(
+                                            widget.categories[index],
+                                            style: const TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              fontSize: 30,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  MyProdTile(bakeds: widget.bakeds, category: widget.categories[index]),
+                                ],
+                              ),
+                            ],
+                          );
+                        }),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

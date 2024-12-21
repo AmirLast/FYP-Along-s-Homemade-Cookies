@@ -23,6 +23,7 @@ class _BuyerOrderState extends State<BuyerOrder> {
     await UpdateOrderData().updateorderdata(user!.user.uid, user!.type).then((temp) {
       setState(() {
         orders = temp;
+        orders.sort((a, b) => a!.dateDT.compareTo(b!.dateDT));
         isLoading = false;
       });
     });

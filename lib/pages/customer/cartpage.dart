@@ -115,21 +115,22 @@ class CartPage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 12),
                   //button to pay
                   MyMenuButton(
                     text: "Go to checkout",
                     onPressed: userCart.isEmpty
-                        ? null
+                        ? () {}
                         : () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const PayPage(),
+                                builder: (context) => PayPage(cartItem: userCart),
                               ),
                             ),
                     icon: Icons.credit_card_rounded,
                   ),
 
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 13),
                 ],
               ),
             ),

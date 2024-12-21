@@ -22,7 +22,11 @@ class MyMenuButton extends StatelessWidget {
         onPressed: onPressed,
         child: Row(
           children: [
-            Icon(icon, color: Colors.black),
+            Icon(
+              icon,
+              color: Colors.black,
+              size: 25,
+            ),
             const SizedBox(width: 10),
             Center(
               child: Text(

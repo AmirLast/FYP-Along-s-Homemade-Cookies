@@ -1,10 +1,10 @@
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_drawer.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
+import 'package:fyp/pages/all_user/endscreen.dart';
 import 'package:fyp/pages/all_user/settingspage.dart';
 import 'package:fyp/pages/customer/orderlist.dart';
 import 'package:fyp/pages/customer/shoplistpage.dart';
@@ -39,7 +39,11 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
                 iconSize: 50,
                 color: Colors.green,
                 onPressed: () {
-                  exit(0);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute<void>(builder: (BuildContext context) => const EndScreen()),
+                    ModalRoute.withName('/'),
+                  );
                 },
                 icon: const Icon(Icons.check_circle),
               ),
@@ -96,7 +100,8 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
               MyMenuButton(
                 text: "Browse Shop",
                 icon: Icons.shopify_rounded,
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ShopListPage())),
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const ShopListPage(), settings: const RouteSettings(name: "shoplist"))),
               ),
               const SizedBox(height: 60),
               MyMenuButton(

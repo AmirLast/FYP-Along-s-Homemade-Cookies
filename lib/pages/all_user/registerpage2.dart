@@ -242,10 +242,19 @@ class _Register2PageState extends State<Register2Page> {
                               } else {
                                 // loading circle-----
                                 showDialog(
+                                  barrierDismissible: false, //to prevent outside click
                                   context: context,
                                   builder: (context) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                    return PopScope(
+                                      canPop: false,
+                                      onPopInvokedWithResult: (didPop, result) {
+                                        if (didPop) {
+                                          return;
+                                        }
+                                      },
+                                      child: const Center(
+                                        child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+                                      ),
                                     );
                                   },
                                 );
@@ -288,6 +297,7 @@ class _Register2PageState extends State<Register2Page> {
                                     Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
                                         builder: (context) => const VerifyEmailPage(),
+                                        settings: const RouteSettings(name: "/"),
                                       ),
                                       (r) => false,
                                     );

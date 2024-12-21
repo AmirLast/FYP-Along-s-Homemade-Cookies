@@ -78,6 +78,8 @@ class _EditProdPageState extends State<EditCategoryPage> {
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
                 },
                 icon: const Icon(Icons.check_circle),
               ),
@@ -95,6 +97,16 @@ class _EditProdPageState extends State<EditCategoryPage> {
     );
   } //----------------------------------------------------------------------
 
+  void toPop() {
+    if (nameController.text == '') {
+      Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
+    } else {
+      confirmPopUp(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -102,13 +114,6 @@ class _EditProdPageState extends State<EditCategoryPage> {
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) {
           return;
-        }
-        if (nameController.text == '') {
-          Navigator.pop(context);
-          Navigator.pop(context);
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
-        } else {
-          confirmPopUp(context);
         }
       },
       child: Scaffold(
@@ -118,13 +123,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new_rounded),
             onPressed: () {
-              if (nameController.text == '') {
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
-              } else {
-                confirmPopUp(context);
-              }
+              toPop();
             },
           ),
           title: Center(
@@ -211,7 +210,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                     "Save",
                                     style: TextStyle(
                                       //fontWeight: FontWeight.bold,
-                                      color: nameController.text == '' ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
+                                      color: nameController.text == '' ? Colors.black.withValues(alpha: 0.4) : Colors.grey.shade400,
                                       fontSize: 20,
                                     ),
                                   ),
@@ -254,6 +253,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                                       try {
                                                         // loading circle-------------------------
                                                         showDialog(
+                                                          barrierDismissible: false, //to prevent outside click
                                                           context: context,
                                                           builder: (context) {
                                                             return PopScope(

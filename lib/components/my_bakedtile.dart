@@ -18,56 +18,44 @@ class BakedTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.grey.shade400,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          //text product detail
-          Expanded(
-            child: ListTile(
-              onTap: onTap,
-              title: Text(
-                prod!.name,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 15,
+      color: Colors.transparent,
+      elevation: 0,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Colors.grey.shade400,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            //text product detail
+            Expanded(
+              child: ListTile(
+                onTap: onTap,
+                title: Text(
+                  prod!.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 15,
+                  ),
                 ),
               ),
             ),
-          ),
-
-          //const SizedBox(width: 10),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                onPressed: onEdit,
-                child: const Icon(Icons.edit, color: Colors.black),
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  //padding: const EdgeInsets.all(5),
-                  backgroundColor: Colors.grey.shade400, // <-- Button color
-                  //foregroundColor: Colors.red, // <-- Splash color
-                ),
-              ),
-              //const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: onDel,
-                child: const Icon(Icons.close_rounded, color: Colors.black),
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  //padding: const EdgeInsets.all(5),
-                  backgroundColor: Colors.grey.shade400, // <-- Button color
-                  //foregroundColor: Colors.red, // <-- Splash color
-                ),
-              ),
-            ],
-          ),
-        ],
+            GestureDetector(
+              onTap: onEdit,
+              child: const Icon(Icons.edit, size: 20, color: Colors.black),
+            ),
+            const SizedBox(width: 15),
+            GestureDetector(
+              onTap: onDel,
+              child: const Icon(Icons.close_rounded, size: 25, color: Colors.black),
+            ),
+            const SizedBox(width: 10),
+          ],
+        ),
       ),
     );
   }

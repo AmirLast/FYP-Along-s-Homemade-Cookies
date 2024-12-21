@@ -31,10 +31,19 @@ class _LoginPageState extends State<LoginPage> {
 
     // loading circle
     showDialog(
+      barrierDismissible: false, //to prevent outside click
       context: context,
       builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) {
+              return;
+            }
+          },
+          child: const Center(
+            child: CircularProgressIndicator(color: Color(0xffB67F5F)),
+          ),
         );
       },
     );
@@ -153,14 +162,14 @@ class _LoginPageState extends State<LoginPage> {
                         await dir.doc(user!.uid).get().then((value) {
                           //these are general data loads for any user
                           UserNow.usernow = UserNow(
-                            value.data()?['fname'],
-                            value.data()?['lname'],
-                            value.data()?['phone'],
-                            user,
-                            value.data()?['type'],
-                            value.data()?['currentdir'],
-                            value.data()?['passStrength'],
-                            value.data()?['address'],
+                            fname: value.data()?['fname'],
+                            lname: value.data()?['lname'],
+                            phone: value.data()?['phone'],
+                            user: user,
+                            type: value.data()?['type'],
+                            currentdir: value.data()?['currentdir'],
+                            passStrength: value.data()?['passStrength'],
+                            address: value.data()?['address'],
                           );
                           //check user type
                           if (value.data()?['type'] != "admin") {
@@ -184,6 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                               builder: (context) => const VerifyEmailPage(),
+                              settings: const RouteSettings(name: "/"),
                             ),
                             (r) => false,
                           );

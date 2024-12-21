@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_cachednetworkimage.dart';
 import 'package:fyp/components/my_menubutton.dart';
 import 'package:fyp/components/my_quantityselector.dart';
 import 'package:fyp/models/bakedclass.dart';
@@ -26,6 +27,7 @@ class PreviewProdPage extends StatefulWidget {
 }
 
 class _PreviewProdPageState extends State<PreviewProdPage> {
+  final obj = MyCachednetworkimage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +62,7 @@ class _PreviewProdPageState extends State<PreviewProdPage> {
                     width: 4,
                   ),
                 ),
-                child: Image.network(widget.src, fit: BoxFit.fill),
+                child: obj.showImage(widget.src),
               )),
 
           Padding(
@@ -92,7 +94,10 @@ class _PreviewProdPageState extends State<PreviewProdPage> {
                     const SizedBox(height: 10),
 
                     //product description
-                    Text(widget.desc),
+                    Text(
+                      widget.desc,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
 
                     const SizedBox(height: 10),
 
@@ -106,9 +111,17 @@ class _PreviewProdPageState extends State<PreviewProdPage> {
                 ),
                 const SizedBox(width: 15),
                 QuantitySelector(
-                  quantity: widget.quantity,
+                  quantity: 0,
                   onDec: () {},
                   onInc: () {},
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text('Currently in cart: 0'),
                 ),
               ],
             ),

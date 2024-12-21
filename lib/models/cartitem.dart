@@ -6,7 +6,7 @@ class CartItem {
 
   CartItem({
     required this.prod,
-    this.quantity = 1, //initial value is 1
+    this.quantity = 0, //initial value is 0
   });
 
   double get totalPrice {

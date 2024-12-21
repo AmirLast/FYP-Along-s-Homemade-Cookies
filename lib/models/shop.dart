@@ -25,8 +25,34 @@ class Shop extends ChangeNotifier {
 
   //operations----------------------------------
 
+  //get current cart
+  CartItem? getCurrentCart(Bakeds? prod) {
+    CartItem? cartItem = _cart.firstWhereOrNull((item) {
+      // check if food item is same
+      bool isSameFood = item.prod == prod;
+      return isSameFood;
+    });
+    return cartItem;
+  }
+
+  //get current quantity for current item
+  int getQuantity(Bakeds? prod) {
+    //see if the cart item contain the same prod and selected addons
+    CartItem? cartItem = _cart.firstWhereOrNull((item) {
+      // check if food item is same
+      bool isSameFood = item.prod == prod;
+      return isSameFood;
+    });
+
+    if (cartItem != null) {
+      return cartItem.quantity;
+    } else {
+      return 0;
+    }
+  }
+
   // add to cart
-  void addToCart(Bakeds? prod) {
+  void addToCart(Bakeds? prod, int quantity) {
     //see if there is cart item already w/ same prod and selected addons
     CartItem? cartItem = _cart.firstWhereOrNull((item) {
       // check if food item is same
@@ -37,13 +63,18 @@ class Shop extends ChangeNotifier {
 
     //if item already exist -> increase quantity
     if (cartItem != null) {
-      cartItem.quantity++;
-    }
-    //if not exit -> add new into cart
-    else {
+      if (quantity == 0) {
+        //0 means from cart, so change quantity directly
+        cartItem.quantity++;
+      } else {
+        cartItem.quantity += quantity;
+      }
+    } else {
+      //if not exit -> add new into cart
       _cart.add(
         CartItem(
           prod: prod,
+          quantity: quantity,
         ),
       );
     }
@@ -113,14 +144,16 @@ class Shop extends ChangeNotifier {
 
     receipt.writeln(formattedDate);
     receipt.writeln();
-    receipt.writeln("----------");
+    receipt.writeln("--------------------------------------------------");
 
     for (final cartItem in _cart) {
       receipt.writeln("${cartItem.quantity} x ${cartItem.prod!.name} - ${_formatPrice(cartItem.prod!.price)}");
-      receipt.writeln();
+      if (_cart.last != cartItem) {
+        receipt.writeln();
+      }
     }
 
-    receipt.writeln("----------");
+    receipt.writeln("--------------------------------------------------");
     receipt.writeln();
     receipt.writeln("Total Items: ${getTotalItemCount()}");
     receipt.writeln("Total Price: ${_formatPrice(getTotalPrice())}");

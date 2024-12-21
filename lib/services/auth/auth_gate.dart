@@ -25,7 +25,7 @@ class _AuthGateState extends State<AuthGate> {
           image: DecorationImage(
             image: AssetImage("lib/images/applogo.png"),
             alignment: Alignment.center,
-            scale: 1,
+            scale: 3.5,
           ),
         ),
       ),
@@ -65,6 +65,13 @@ class _AuthGateState extends State<AuthGate> {
                   // if there is user logged in then
                   if (type == 'buyer') {
                     return const UserHomePage();
+                    /*Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const UserHomePage(),
+                        settings: const RouteSettings(name: "home"),
+                      ),
+                    );*/
                   } else if (type == 'admin') {
                     return const AdminHomePage();
                   } else if (type == 'owner') {

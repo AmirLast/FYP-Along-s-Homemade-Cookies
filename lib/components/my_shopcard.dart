@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_cachednetworkimage.dart';
 import 'package:fyp/models/shopclass.dart';
 
-class ShopCard extends StatelessWidget {
+class ShopCard extends StatefulWidget {
   final Shops? shop;
   final void Function()? onTap;
 
@@ -10,6 +11,17 @@ class ShopCard extends StatelessWidget {
     required this.shop,
     required this.onTap,
   });
+
+  @override
+  State<ShopCard> createState() => _ShopCardState();
+}
+
+class _ShopCardState extends State<ShopCard> {
+  final obj = MyCachednetworkimage();
+
+  int remainingProd(int total) {
+    return total - 5;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +44,7 @@ class ShopCard extends StatelessWidget {
               children: [
                 Container(
                   child: Text(
-                    shop!.name,
+                    widget.shop!.name,
                     style: const TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   padding: const EdgeInsets.all(20),
@@ -43,21 +55,51 @@ class ShopCard extends StatelessWidget {
                   child: ListView.builder(
                     shrinkWrap: true,
                     primary: false,
-                    itemCount: shop!.bakeds.length,
+                    itemCount: widget.shop!.bakeds.length > 5 ? 5 : widget.shop!.bakeds.length,
                     padding: const EdgeInsets.all(10),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: Image.network(
-                            shop!.bakeds[index]!.url,
-                            fit: BoxFit.cover,
+                      if (index == 4) {
+                        return Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: SizedBox(
+                                height: 100,
+                                width: 100,
+                                child: obj.showImage(widget.shop!.bakeds[index]!.url),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Container(
+                                decoration: const BoxDecoration(color: Colors.grey),
+                                height: 100,
+                                width: 100,
+                                child: Center(
+                                  child: Text(
+                                    "+" + remainingProd(widget.shop!.bakeds.length).toString(),
+                                    style: TextStyle(
+                                      color: Colors.black.withValues(alpha: 0.4),
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: obj.showImage(widget.shop!.bakeds[index]!.url),
                           ),
-                        ),
-                      );
+                        );
+                      }
                     },
                   ),
                 ),
@@ -68,7 +110,7 @@ class ShopCard extends StatelessWidget {
                     borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
                   ),
                   child: GestureDetector(
-                    onTap: onTap,
+                    onTap: widget.onTap,
                     child: const Row(children: [
                       Text(
                         "Check Shop",

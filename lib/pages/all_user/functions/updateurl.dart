@@ -2,6 +2,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_scaffoldmessage.dart';
+import 'package:fyp/images/assets.dart';
 
 class DownloadURL {
   final MyScaffoldmessage obj = MyScaffoldmessage(); //for scaffold message
@@ -15,7 +16,7 @@ class DownloadURL {
       if (kDebugMode) {
         print(e.code.toString());
       }
-      return "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637";
+      return defItem;
     }
   } //Url of product image so it can be displayed------------------------------------------
 }

@@ -13,6 +13,15 @@ class UserNow {
   //below is for owner
   List categories = [];
   String shop = "";
-  UserNow(this.fname, this.lname, this.phone, this.user, this.type, this.currentdir, this.passStrength, this.address);
+  UserNow({
+    required this.fname,
+    required this.lname,
+    required this.phone,
+    required this.user,
+    required this.type,
+    required this.currentdir,
+    required this.passStrength,
+    required this.address,
+  });
   static UserNow? usernow; //the object to call all the above data
 }

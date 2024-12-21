@@ -7,11 +7,11 @@ class Logo {
       image: DecorationImage(
         image: const AssetImage("lib/images/applogo.png"),
         colorFilter: ColorFilter.mode(
-          const Color(0xffd1a271).withOpacity(0.2),
+          const Color(0xffd1a271).withValues(alpha: 0.2),
           BlendMode.dstATop,
         ),
         alignment: Alignment.center,
-        scale: 0.5,
+        scale: 1.65,
       ),
     );
   }

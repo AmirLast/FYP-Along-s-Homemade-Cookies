@@ -134,6 +134,7 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                           onPressed: () async {
                                             // loading circle-------------------------
                                             showDialog(
+                                              barrierDismissible: false, //to prevent outside click
                                               context: context,
                                               builder: (context) {
                                                 return PopScope(

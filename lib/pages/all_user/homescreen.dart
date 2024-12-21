@@ -37,14 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
           const SizedBox(height: 15),
 
-          ColorFiltered(
-            colorFilter: const ColorFilter.mode(
-              Color(0xffd1a271),
-              BlendMode.color,
-            ),
-            child: Image.asset(
-              "lib/images/applogo.png",
-              height: 250,
+          Padding(
+            padding: const EdgeInsets.only(top: 55.0, bottom: 55),
+            child: ColorFiltered(
+              colorFilter: const ColorFilter.mode(
+                Color(0xffd1a271),
+                BlendMode.color,
+              ),
+              child: Image.asset(
+                "lib/images/applogo.png",
+                height: 160,
+              ),
             ),
           ),
 

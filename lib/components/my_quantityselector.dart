@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 
 class QuantitySelector extends StatelessWidget {
   final int quantity;
-  //final Bakeds? prod;
   final VoidCallback onInc;
   final VoidCallback onDec;
 
   const QuantitySelector({
     super.key,
     required this.quantity,
-    //required this.prod,
     required this.onDec,
     required this.onInc,
   });

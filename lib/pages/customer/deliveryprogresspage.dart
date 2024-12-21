@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/my_receipt.dart';
 import 'package:fyp/models/shop.dart';
+import 'package:fyp/pages/customer/shoplistpage.dart';
 import 'package:fyp/services/database/firestore.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +25,15 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
     db.saveOrderToDatabase(receipt);
   }
 
+  void toPop(Shop shop) {
+    shop.clearCart();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute<void>(builder: (BuildContext context) => const ShopListPage()),
+      ModalRoute.withName('/'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<Shop>(
@@ -33,8 +43,7 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
           if (didPop) {
             return;
           }
-          shop.clearCart();
-          Navigator.popUntil(context, ModalRoute.withName('shop'));
+          toPop(shop);
         },
         child: Scaffold(
           backgroundColor: const Color(0xffd1a271),
@@ -46,8 +55,7 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
                 color: Colors.black,
               ),
               onPressed: () {
-                shop.clearCart();
-                Navigator.popUntil(context, ModalRoute.withName('shop'));
+                toPop(shop);
               },
             ),
             title: const Center(

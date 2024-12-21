@@ -151,6 +151,7 @@ class _AddCategoryState extends State<AddCategory> {
                             } else {
                               // loading circle-------------------------
                               showDialog(
+                                barrierDismissible: false, //to prevent outside click
                                 context: context,
                                 builder: (context) {
                                   return PopScope(

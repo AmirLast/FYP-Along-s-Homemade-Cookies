@@ -4,9 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_cachednetworkimage.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_scaffoldmessage.dart';
 import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/images/assets.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/all_user/functions/updateurl.dart';
 import 'package:fyp/pages/owner/functions/updatemenu.dart';
@@ -32,6 +34,7 @@ class EditProdPage extends StatefulWidget {
 class _EditProdPageState extends State<EditProdPage> {
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
+  final obj2 = MyCachednetworkimage();
   final DownloadURL obj = DownloadURL(); //for url
   final String useruid = AuthService().getCurrentUser()!.uid;
   //text editing controller
@@ -142,7 +145,7 @@ class _EditProdPageState extends State<EditProdPage> {
 
   //enable save kalau ada changes in textcontroller atau imej je--------------------------------
   bool isSaveEnabled() {
-    return (nameController.text == '' &&
+    return !(nameController.text == '' &&
         descController.text == '' &&
         priceController.text == '' &&
         _image == null &&
@@ -170,7 +173,12 @@ class _EditProdPageState extends State<EditProdPage> {
                 color: Colors.green,
                 onPressed: () {
                   Navigator.pop(context);
+                  //pop alert dialogue
                   Navigator.pop(context);
+                  //pop edit product page
+                  Navigator.pop(context);
+                  //pop menu page
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
                 },
                 icon: const Icon(Icons.check_circle),
               ),
@@ -244,6 +252,16 @@ class _EditProdPageState extends State<EditProdPage> {
   }
   //-----------------------------------------------------------------------------------
 
+  void toPop() {
+    if (!isSaveEnabled()) {
+      Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
+    } else {
+      confirmPopUp(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -252,13 +270,7 @@ class _EditProdPageState extends State<EditProdPage> {
         if (didPop) {
           return;
         }
-        if (isSaveEnabled()) {
-          Navigator.pop(context);
-          Navigator.pop(context);
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
-        } else {
-          confirmPopUp(context);
-        }
+        toPop();
       },
       child: Scaffold(
         backgroundColor: const Color(0xffd1a271),
@@ -267,13 +279,7 @@ class _EditProdPageState extends State<EditProdPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new_rounded),
             onPressed: () {
-              if (isSaveEnabled()) {
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const MenuPage()));
-              } else {
-                confirmPopUp(context);
-              }
+              toPop();
             },
           ),
           title: Center(
@@ -466,10 +472,7 @@ class _EditProdPageState extends State<EditProdPage> {
                             ),
                             child: _image == null
                                 //kalau belum pick show current
-                                ? Image.network(
-                                    src,
-                                    fit: BoxFit.cover,
-                                  )
+                                ? obj2.showImage(src)
                                 //kalau dah pick show chosen image
                                 : Image.file(
                                     _image!,
@@ -492,7 +495,7 @@ class _EditProdPageState extends State<EditProdPage> {
                             child: Text(
                               'Remove Picture',
                               style: TextStyle(
-                                color: _image == null ? Colors.black.withOpacity(0.4) : null,
+                                color: _image == null ? Colors.black.withValues(alpha: 0.4) : null,
                               ),
                             ),
                           ),
@@ -515,7 +518,7 @@ class _EditProdPageState extends State<EditProdPage> {
                               child: Container(
                                 padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
                                 decoration: BoxDecoration(
-                                  color: isSaveEnabled() ? Colors.grey.shade400 : Colors.black,
+                                  color: !isSaveEnabled() ? Colors.grey.shade400 : Colors.black,
                                   borderRadius: BorderRadius.circular(40),
                                 ),
                                 child: Center(
@@ -523,13 +526,13 @@ class _EditProdPageState extends State<EditProdPage> {
                                     "Save",
                                     style: TextStyle(
                                       //fontWeight: FontWeight.bold,
-                                      color: isSaveEnabled() ? Colors.black.withOpacity(0.4) : Colors.grey.shade400,
+                                      color: !isSaveEnabled() ? Colors.black.withValues(alpha: 0.4) : Colors.grey.shade400,
                                       fontSize: 20,
                                     ),
                                   ),
                                 ),
                               ),
-                              onPressed: isSaveEnabled()
+                              onPressed: !isSaveEnabled()
                                   ? null
                                   : () async {
                                       int newQ =
@@ -604,8 +607,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                             ); //--------------------------------------
                                                             //upload gambar dalam firebase storage
                                                             if (_image != null) {
-                                                              if (src ==
-                                                                  "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637") {
+                                                              if (src == defItem) {
                                                                 fixCorner(useruid, capitalizedSentence, prodPrice, newQ);
                                                               } else {
                                                                 await FirebaseStorage.instance.ref().child(widget.prod!.imagePath).delete();

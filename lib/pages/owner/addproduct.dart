@@ -4,9 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/my_cachednetworkimage.dart';
 import 'package:fyp/components/my_logo.dart';
 import 'package:fyp/components/my_scaffoldmessage.dart';
 import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/images/assets.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/all_user/functions/updateurl.dart';
 import 'package:fyp/pages/owner/editproduct.dart';
@@ -24,6 +26,7 @@ class AddProduct extends StatefulWidget {
 
 class _AddProductState extends State<AddProduct> {
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
+  final obj2 = MyCachednetworkimage();
   final DownloadURL obj = DownloadURL(); //for url
   final Logo show = Logo(); //for logo
   //uppercase first letter-----------------------------------------
@@ -234,12 +237,13 @@ class _AddProductState extends State<AddProduct> {
                       //image of category
                       MaterialButton(
                         child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Text('Select Product Image')),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Text('Select Product Image'),
+                        ),
                         onPressed: showOptions,
                       ),
 
@@ -256,10 +260,7 @@ class _AddProductState extends State<AddProduct> {
                             ),
                           ),
                           child: _image == null
-                              ? Image.network(
-                                  "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637",
-                                  fit: BoxFit.cover,
-                                )
+                              ? obj2.showImage(defItem)
                               : Image.file(
                                   _image!,
                                   fit: BoxFit.cover,
