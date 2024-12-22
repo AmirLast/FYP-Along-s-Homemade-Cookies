@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_cachednetworkimage.dart';
-import 'package:fyp/components/my_menubutton.dart';
-import 'package:fyp/components/my_quantityselector.dart';
+import 'package:fyp/components/general/my_cachednetworkimage.dart';
+import 'package:fyp/components/general/my_menubutton.dart';
+import 'package:fyp/components/customer/my_quantityselector.dart';
 import 'package:fyp/models/bakedclass.dart';
 
 class PreviewProdPage extends StatefulWidget {

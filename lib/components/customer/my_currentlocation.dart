@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/models/shop.dart';
+import 'package:fyp/models/shoppingclass.dart';
 import 'package:provider/provider.dart';
 
 class MyCurrentLocation extends StatelessWidget {

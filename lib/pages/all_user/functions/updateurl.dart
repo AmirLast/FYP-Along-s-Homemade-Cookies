@@ -1,7 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_scaffoldmessage.dart';
+import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/images/assets.dart';
 
 class DownloadURL {

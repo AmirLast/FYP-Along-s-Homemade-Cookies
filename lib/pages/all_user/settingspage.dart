@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/general/my_logo.dart';
 
 class SettingsPage extends StatelessWidget {
   //for logo

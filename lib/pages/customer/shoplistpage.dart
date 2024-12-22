@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_shopcard.dart';
-import 'package:fyp/models/shop.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/customer/my_shopcard.dart';
+import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/shopclass.dart';
 import 'package:fyp/pages/customer/shoppage.dart';
 import 'package:fyp/pages/customer/functions/updateshoplist.dart';

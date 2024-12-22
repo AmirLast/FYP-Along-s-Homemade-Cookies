@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_carttile.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_menubutton.dart';
+import 'package:fyp/components/customer/my_carttile.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/pages/customer/paymentpage.dart';
 import 'package:provider/provider.dart';
-import 'package:fyp/models/shop.dart';
+import 'package:fyp/models/shoppingclass.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});

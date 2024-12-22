@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_cachednetworkimage.dart';
-import 'package:fyp/components/my_quantityselector.dart';
-import 'package:fyp/components/my_scaffoldmessage.dart';
+import 'package:fyp/components/general/my_cachednetworkimage.dart';
+import 'package:fyp/components/customer/my_quantityselector.dart';
+import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/models/cartitem.dart';
-import 'package:fyp/models/shop.dart';
+import 'package:fyp/models/shoppingclass.dart';
 import 'package:provider/provider.dart';
 
 class MyCartTile extends StatefulWidget {
@@ -26,7 +26,7 @@ class _MyCartTileState extends State<MyCartTile> {
         isBlock = true;
         obj.scaffoldmessage("Exceed available quantity", context);
       });
-      await Future.delayed(const Duration(seconds: 4));
+      await Future.delayed(const Duration(seconds: 5));
       setState(() => isBlock = false);
     }
   }

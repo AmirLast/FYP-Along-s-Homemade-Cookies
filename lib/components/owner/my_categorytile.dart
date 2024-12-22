@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_bakedtile.dart';
-import 'package:fyp/components/my_scaffoldmessage.dart';
+import 'package:fyp/components/owner/my_bakedtile.dart';
+import 'package:fyp/components/general/my_loading.dart';
+import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/owner/addproduct.dart';
 import 'package:fyp/pages/owner/editproduct.dart';
@@ -31,6 +32,7 @@ class CategoryTile extends StatefulWidget {
 class _CategoryTileState extends State<CategoryTile> {
   bool isExpand = false;
   final MyScaffoldmessage obj = MyScaffoldmessage(); //for scaffold message
+  final load = Loading();
   @override
   Widget build(BuildContext context) {
     List<Bakeds?> categoryMenu = widget.baked.where((b) => b!.category == widget.catName).toList();
@@ -133,24 +135,8 @@ class _CategoryTileState extends State<CategoryTile> {
                                                   color: Colors.green,
                                                   onPressed: () async {
                                                     // loading circle-------------------------
-                                                    showDialog(
-                                                      barrierDismissible: false, //to prevent outside click
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return PopScope(
-                                                          //prevent back button
-                                                          canPop: false,
-                                                          onPopInvokedWithResult: (didPop, result) async {
-                                                            if (didPop) {
-                                                              return;
-                                                            }
-                                                          },
-                                                          child: const Center(
-                                                            child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ); //--------------------------------------
+                                                    load.loading(context);
+                                                    //--------------------------------------
 
                                                     User? user = AuthService().getCurrentUser();
 

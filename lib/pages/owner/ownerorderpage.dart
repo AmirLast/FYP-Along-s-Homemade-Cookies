@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_ordercart.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/customer/my_ordercart.dart';
 import 'package:fyp/models/orderclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/functions/updateorder.dart';

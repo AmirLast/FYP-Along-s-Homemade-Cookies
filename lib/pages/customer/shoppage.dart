@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_shopproducttile.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/customer/my_shopproducttile.dart';
 import 'package:fyp/models/bakedclass.dart';
-import 'package:fyp/models/shop.dart';
+import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/customer/cartpage.dart';
 import 'package:provider/provider.dart';

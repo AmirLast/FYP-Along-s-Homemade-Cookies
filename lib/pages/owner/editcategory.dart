@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_scaffoldmessage.dart';
-import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/components/general/my_loading.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_scaffoldmessage.dart';
+import 'package:fyp/components/general/my_textfield.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
@@ -30,6 +31,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
   late String nameHT;
   List<Bakeds?> menus = [];
   final obj = UpdateMenuData();
+  final load = Loading();
 
   @override
   void initState() {
@@ -252,23 +254,8 @@ class _EditProdPageState extends State<EditCategoryPage> {
 
                                                       try {
                                                         // loading circle-------------------------
-                                                        showDialog(
-                                                          barrierDismissible: false, //to prevent outside click
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return PopScope(
-                                                              canPop: false,
-                                                              onPopInvokedWithResult: (didPop, result) async {
-                                                                if (didPop) {
-                                                                  return;
-                                                                }
-                                                              },
-                                                              child: const Center(
-                                                                child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                                              ),
-                                                            );
-                                                          },
-                                                        ); //-------------------------------------
+                                                        load.loading(context);
+                                                        //-------------------------------------
 
                                                         //get list of products in this category
                                                         await obj.updatemenudata(widget.category).then((temp) async {

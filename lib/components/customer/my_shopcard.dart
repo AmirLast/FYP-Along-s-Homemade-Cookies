@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_cachednetworkimage.dart';
+import 'package:fyp/components/general/my_cachednetworkimage.dart';
 import 'package:fyp/models/shopclass.dart';
 
 class ShopCard extends StatefulWidget {

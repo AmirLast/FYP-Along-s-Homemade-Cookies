@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_drawer.dart';
-import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/general/my_drawer.dart';
+import 'package:fyp/components/general/my_logo.dart';
 
 class SummaryPage extends StatefulWidget {
   const SummaryPage({super.key});

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_scaffoldmessage.dart';
+import 'package:fyp/components/general/my_scaffoldmessage.dart';
 
 class AuthService {
   // get instance of FB auth

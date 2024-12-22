@@ -4,10 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_cachednetworkimage.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_scaffoldmessage.dart';
-import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/components/general/my_cachednetworkimage.dart';
+import 'package:fyp/components/general/my_loading.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_scaffoldmessage.dart';
+import 'package:fyp/components/general/my_textfield.dart';
 import 'package:fyp/images/assets.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/all_user/functions/updateurl.dart';
@@ -29,6 +30,7 @@ class _AddProductState extends State<AddProduct> {
   final obj2 = MyCachednetworkimage();
   final DownloadURL obj = DownloadURL(); //for url
   final Logo show = Logo(); //for logo
+  final load = Loading();
   //uppercase first letter-----------------------------------------
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
@@ -327,24 +329,8 @@ class _AddProductState extends State<AddProduct> {
                                       return; //exit code bracket
                                     } else {
                                       // loading circle-------------------------
-                                      showDialog(
-                                        barrierDismissible: false, //prevent outside click
-                                        context: context,
-                                        builder: (context) {
-                                          return PopScope(
-                                            //prevent back button
-                                            canPop: false,
-                                            onPopInvokedWithResult: (didPop, result) async {
-                                              if (didPop) {
-                                                return;
-                                              }
-                                            },
-                                            child: const Center(
-                                              child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                            ),
-                                          );
-                                        },
-                                      ); //----------------------------------------
+                                      load.loading(context);
+                                      //----------------------------------------
                                       try {
                                         //prepare prod to be pushed into edit page
                                         Bakeds newProd = Bakeds(

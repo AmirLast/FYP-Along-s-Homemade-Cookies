@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_drawer.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_menubutton.dart';
+import 'package:fyp/components/general/my_drawer.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/endscreen.dart';
 import 'package:fyp/pages/all_user/settingspage.dart';
 import 'package:fyp/pages/customer/orderlist.dart';
 import 'package:fyp/pages/customer/shoplistpage.dart';
+import 'package:fyp/pages/customer/sizepage.dart';
 
 class UserHomePage extends StatefulWidget {
   const UserHomePage({super.key});
@@ -108,6 +109,12 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
                 text: "Order History",
                 icon: CupertinoIcons.tray_full,
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const BuyerOrder())),
+              ),
+              const SizedBox(height: 60),
+              MyMenuButton(
+                text: "Word Sizes",
+                icon: CupertinoIcons.search,
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SizePage())),
               ),
             ],
           ),

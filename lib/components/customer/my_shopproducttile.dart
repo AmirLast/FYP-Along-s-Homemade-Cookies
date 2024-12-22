@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_cachednetworkimage.dart';
+import 'package:fyp/components/general/my_cachednetworkimage.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/customer/prodpage.dart';
 
@@ -32,14 +32,14 @@ class _MyProdTileState extends State<MyProdTile> {
         return Column(
           children: [
             Container(height: 2, color: Colors.black),
-            Container(
-              color: Colors.grey.withValues(alpha: 0.5),
-              child: GestureDetector(
-                onTap: isAvailable
-                    ? () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProdPage(prod: currentBakeds[index])));
-                      }
-                    : null,
+            GestureDetector(
+              onTap: isAvailable
+                  ? () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProdPage(prod: currentBakeds[index])));
+                    }
+                  : null,
+              child: Container(
+                color: const Color(0xffc1ff72).withValues(alpha: 0.5),
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Row(

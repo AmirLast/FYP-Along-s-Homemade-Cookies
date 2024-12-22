@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_textfield.dart';
 
 class ForgorPassword extends StatefulWidget {
   const ForgorPassword({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_cachednetworkimage.dart';
-import 'package:fyp/components/my_menubutton.dart';
-import 'package:fyp/components/my_scaffoldmessage.dart';
+import 'package:fyp/components/general/my_cachednetworkimage.dart';
+import 'package:fyp/components/general/my_menubutton.dart';
+import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/images/assets.dart';
 import 'package:fyp/models/bakedclass.dart';
-import 'package:fyp/models/shop.dart';
+import 'package:fyp/models/shoppingclass.dart';
 import 'package:provider/provider.dart';
 
 class ProdPage extends StatefulWidget {
@@ -82,7 +82,7 @@ class _EditProdPageState extends State<ProdPage> {
         isBlock = true;
         obj.scaffoldmessage("Exceed available quantity", context);
       });
-      await Future.delayed(const Duration(seconds: 4));
+      await Future.delayed(const Duration(seconds: 5));
       setState(() => isBlock = false);
     }
   }
@@ -147,6 +147,7 @@ class _EditProdPageState extends State<ProdPage> {
                   padding: const EdgeInsets.all(25.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Column(
                         children: [
@@ -188,7 +189,7 @@ class _EditProdPageState extends State<ProdPage> {
                         ],
                       ),
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Container(
                             //increment or decrement for quantity

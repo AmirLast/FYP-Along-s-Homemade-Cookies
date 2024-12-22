@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
-import 'package:fyp/components/my_menubutton.dart';
+import 'package:fyp/components/general/my_loading.dart';
+import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/models/cartitem.dart';
-import 'package:fyp/models/shop.dart';
+import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/customer/deliveryprogresspage.dart';
 import 'package:fyp/pages/customer/shoplistpage.dart';
@@ -25,6 +26,7 @@ class _PayPageState extends State<PayPage> {
   String cvvCode = '';
   bool isCvvFocused = false;
   String id = UserNow.usernow!.currentdir; //for knowing owner shop id
+  final load = Loading();
 
   //user wants to pay-----------------------------------------
   void userTappedPay(Shop shop) {
@@ -96,23 +98,8 @@ class _PayPageState extends State<PayPage> {
 
   void checkCurrentQuantity(Shop shop) async {
     // loading circle-------------------------
-    showDialog(
-      barrierDismissible: false, //to prevent outside click
-      context: context,
-      builder: (context) {
-        return PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (didPop, result) async {
-            if (didPop) {
-              return;
-            }
-          },
-          child: const Center(
-            child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-          ),
-        );
-      },
-    ); //-------------------------------------
+    load.loading(context);
+    //-------------------------------------
     int i = 0;
     int j = widget.cartItem.length;
     var dir = FirebaseFirestore.instance.collection('users').doc(id).collection(widget.cartItem[i].prod!.category);

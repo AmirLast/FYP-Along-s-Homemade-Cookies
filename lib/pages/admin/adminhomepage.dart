@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_drawer.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_menubutton.dart';
+import 'package:fyp/components/general/my_drawer.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/endscreen.dart';
 import 'package:fyp/pages/all_user/settingspage.dart';

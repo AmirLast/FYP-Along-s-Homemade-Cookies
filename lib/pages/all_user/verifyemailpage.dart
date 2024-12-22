@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_scaffoldmessage.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
 import 'package:fyp/services/auth/auth_gate.dart';
 

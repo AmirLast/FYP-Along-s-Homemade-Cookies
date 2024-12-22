@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_categorytile.dart';
-import 'package:fyp/components/my_logo.dart';
+import 'package:fyp/components/owner/my_categorytile.dart';
+import 'package:fyp/components/general/my_loading.dart';
+import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/addcategory.dart';
@@ -23,6 +24,7 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
   List cat = UserNow.usernow!.categories;
   List<Bakeds?> menus = [];
   final obj = UpdateMenuData();
+  final load = Loading();
 
   Future<void> updateMenu() async {
     //update menu data in local memory
@@ -133,24 +135,8 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                           color: Colors.green,
                                           onPressed: () async {
                                             // loading circle-------------------------
-                                            showDialog(
-                                              barrierDismissible: false, //to prevent outside click
-                                              context: context,
-                                              builder: (context) {
-                                                return PopScope(
-                                                  //prevent back button
-                                                  canPop: false,
-                                                  onPopInvokedWithResult: (didPop, result) async {
-                                                    if (didPop) {
-                                                      return;
-                                                    }
-                                                  },
-                                                  child: const Center(
-                                                    child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                                  ),
-                                                );
-                                              },
-                                            ); //--------------------------------------
+                                            load.loading(context);
+                                            //--------------------------------------
 
                                             User? user = AuthService().getCurrentUser(); //for doc name in fbfs
 

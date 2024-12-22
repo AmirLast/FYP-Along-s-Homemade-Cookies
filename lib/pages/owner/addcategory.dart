@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_scaffoldmessage.dart';
-import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/components/general/my_loading.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_scaffoldmessage.dart';
+import 'package:fyp/components/general/my_textfield.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
@@ -18,6 +19,7 @@ class AddCategory extends StatefulWidget {
 class _AddCategoryState extends State<AddCategory> {
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
+  final load = Loading();
   //uppercase first letter-----------------------------------------
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
@@ -150,24 +152,8 @@ class _AddCategoryState extends State<AddCategory> {
                               scaffoldOBJ.scaffoldmessage("Category '" + nameController.text + "' already exist", context);
                             } else {
                               // loading circle-------------------------
-                              showDialog(
-                                barrierDismissible: false, //to prevent outside click
-                                context: context,
-                                builder: (context) {
-                                  return PopScope(
-                                    //prevent back button
-                                    canPop: false,
-                                    onPopInvokedWithResult: (didPop, result) async {
-                                      if (didPop) {
-                                        return;
-                                      }
-                                    },
-                                    child: const Center(
-                                      child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                    ),
-                                  );
-                                },
-                              ); //---------------------------------------
+                              load.loading(context);
+                              //---------------------------------------
 
                               User? user = AuthService().getCurrentUser();
                               //update local userclass data (+ new category)

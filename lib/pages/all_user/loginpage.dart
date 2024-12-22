@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_textfield.dart';
+import 'package:fyp/components/general/my_loading.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_textfield.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/forgorpassword.dart';
 import 'package:fyp/pages/all_user/registerpage.dart';
@@ -21,32 +22,17 @@ class _LoginPageState extends State<LoginPage> {
   //text editing controller
   late TextEditingController emailController;
   late TextEditingController passwordController;
-  //for logo
-  final Logo show = Logo();
+  late bool passwordVisibility;
+  final load = Loading();
+  final Logo show = Logo(); //for logo
   // login user
-  static Future<User?> login({required String email, required String password, required BuildContext context}) async {
+  Future<User?> login({required String email, required String password, required BuildContext context}) async {
     //authenticating
     final _authService = AuthService();
     User? user;
 
     // loading circle
-    showDialog(
-      barrierDismissible: false, //to prevent outside click
-      context: context,
-      builder: (context) {
-        return PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (didPop, result) {
-            if (didPop) {
-              return;
-            }
-          },
-          child: const Center(
-            child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-          ),
-        );
-      },
-    );
+    load.loading(context);
 
     //try sign in
     await _authService.signInWithEmailPassword(
@@ -64,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     emailController = TextEditingController();
     passwordController = TextEditingController();
+    passwordVisibility = false;
   }
 
   @override
@@ -136,15 +123,41 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 30),
 
                     //password
-                    MyTextField(
-                      controller: passwordController,
-                      caps: TextCapitalization.none,
-                      inputType: TextInputType.visiblePassword,
-                      labelText: "Password",
-                      hintText: "",
-                      obscureText: true,
-                      isEnabled: true,
-                      isShowhint: false,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: TextField(
+                        cursorColor: Colors.black,
+                        autofocus: false,
+                        enabled: true, //get this value
+                        controller: passwordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: !passwordVisibility, //initially false = hide
+                        textCapitalization: TextCapitalization.none,
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                passwordVisibility = !passwordVisibility;
+                              });
+                            },
+                            icon: Icon(passwordVisibility ? Icons.visibility : Icons.visibility_off),
+                            color: Colors.black,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey.shade400,
+                          labelText: "Password",
+                          floatingLabelStyle: const TextStyle(color: Colors.black),
+                          floatingLabelBehavior: null,
+                          hintText: "",
+                          hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
+                        ),
+                      ),
                     ),
 
                     const SizedBox(height: 60),

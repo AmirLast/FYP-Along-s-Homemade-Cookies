@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_scaffoldmessage.dart';
+import 'package:fyp/components/general/my_loading.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/registerpage2.dart';
 import 'package:fyp/services/auth/checkpass.dart';
-import '../../components/my_textfield.dart';
+import '../../components/general/my_textfield.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -16,6 +17,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
+  final load = Loading();
 //text editing controller
   late TextEditingController confirmpasswordController;
   late TextEditingController emailController;
@@ -369,23 +371,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             return;
                           } else {
                             // loading circle-----
-                            showDialog(
-                              barrierDismissible: false, //to prevent outside click
-                              context: context,
-                              builder: (context) {
-                                return PopScope(
-                                  canPop: false,
-                                  onPopInvokedWithResult: (didPop, result) {
-                                    if (didPop) {
-                                      return;
-                                    }
-                                  },
-                                  child: const Center(
-                                    child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                  ),
-                                );
-                              },
-                            );
+                            load.loading(context);
                             // loading circle-----
                             Future.delayed(const Duration(seconds: 1), () {
                               Navigator.of(context).pop();

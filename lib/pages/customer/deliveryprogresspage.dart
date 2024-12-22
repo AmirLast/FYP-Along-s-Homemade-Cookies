@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_receipt.dart';
-import 'package:fyp/models/shop.dart';
+import 'package:fyp/components/customer/my_receipt.dart';
+import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/pages/customer/shoplistpage.dart';
 import 'package:fyp/services/database/firestore.dart';
 import 'package:provider/provider.dart';

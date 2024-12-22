@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/my_logo.dart';
-import 'package:fyp/components/my_scaffoldmessage.dart';
+import 'package:fyp/components/general/my_loading.dart';
+import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/images/assets.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/verifyemailpage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
-import '../../components/my_textfield.dart';
+import '../../components/general/my_textfield.dart';
 
 class Register2Page extends StatefulWidget {
   final String email;
@@ -38,6 +39,7 @@ class Register2Page extends StatefulWidget {
 class _Register2PageState extends State<Register2Page> {
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
+  final load = Loading();
 //text editing controller
   late TextEditingController address1Controller;
   late TextEditingController postcodeController;
@@ -241,23 +243,7 @@ class _Register2PageState extends State<Register2Page> {
                                 return;
                               } else {
                                 // loading circle-----
-                                showDialog(
-                                  barrierDismissible: false, //to prevent outside click
-                                  context: context,
-                                  builder: (context) {
-                                    return PopScope(
-                                      canPop: false,
-                                      onPopInvokedWithResult: (didPop, result) {
-                                        if (didPop) {
-                                          return;
-                                        }
-                                      },
-                                      child: const Center(
-                                        child: CircularProgressIndicator(color: Color(0xffB67F5F)),
-                                      ),
-                                    );
-                                  },
-                                );
+                                load.loading(context);
                                 //--------------------
                                 try {
                                   User? user = await register(email: widget.email, password: widget.password);
@@ -268,24 +254,24 @@ class _Register2PageState extends State<Register2Page> {
                                   //name the userfile as uid
                                   userFF.doc(user?.uid).set({
                                     //set all data that user and owner have in common
-                                    "fname": widget.fname,
-                                    "lname": widget.lname,
-                                    "phone": widget.phone,
+                                    "fname": widget.fname.trim(),
+                                    "lname": widget.lname.trim(),
+                                    "phone": widget.phone.trim(),
                                     "type": widget.type,
                                     "passStrength": true, //checked hence true
                                     //for category edit assist
                                     "currentdir": "",
-                                    "address": address1Controller.text +
+                                    "address": address1Controller.text.trim() +
                                         ", " +
-                                        postcodeController.text +
+                                        postcodeController.text.trim() +
                                         ", " +
-                                        stateController.text, //for delivery
+                                        stateController.text.trim(), //for delivery
                                   }).then((onValue) {
                                     if (widget.type == 'owner') {
                                       userFF.doc(user?.uid).set(
                                           //add other data that only owner have
                                           {
-                                            'shop': upperCase(widget.shop),
+                                            'shop': upperCase(widget.shop.trim()),
                                             //owner need array of categories
                                             "categories": [],
                                           },
