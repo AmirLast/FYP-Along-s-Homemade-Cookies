@@ -18,7 +18,7 @@ class Shopping extends ChangeNotifier {
   final List<CartItem> _cart = [];
 
   //delivery address (user can change)
-  String _deliveryAddress = UserNow.usernow.address;
+  String _deliveryAddress = UserNow.usernow.address.map((word) => (word)).join(", ");
 
 //getters----------------------------------
   List<CartItem> get cart => _cart;

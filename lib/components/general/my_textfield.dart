@@ -9,6 +9,7 @@ class MyTextField extends StatelessWidget {
   final bool isEnabled;
   final String hintText;
   final bool isShowhint;
+  final int maxLength;
 
   const MyTextField({
     super.key,
@@ -20,6 +21,7 @@ class MyTextField extends StatelessWidget {
     required this.isEnabled,
     required this.hintText,
     required this.isShowhint,
+    required this.maxLength,
   });
 
   @override
@@ -27,6 +29,7 @@ class MyTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextField(
+        maxLength: maxLength,
         cursorColor: Colors.black,
         autofocus: isShowhint,
         enabled: isEnabled, //get this value

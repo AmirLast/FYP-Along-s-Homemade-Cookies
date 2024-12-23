@@ -182,6 +182,7 @@ class _AddProductState extends State<AddProduct> {
 
                       //name of product
                       MyTextField(
+                        maxLength: TextField.noMaxLength,
                         controller: nameController,
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
@@ -196,6 +197,7 @@ class _AddProductState extends State<AddProduct> {
 
                       //description of product
                       MyTextField(
+                        maxLength: TextField.noMaxLength,
                         controller: descController,
                         caps: TextCapitalization.none,
                         inputType: TextInputType.text,
@@ -210,6 +212,7 @@ class _AddProductState extends State<AddProduct> {
 
                       //price of category
                       MyTextField(
+                        maxLength: TextField.noMaxLength,
                         controller: priceController,
                         caps: TextCapitalization.none,
                         inputType: TextInputType.number,
@@ -224,6 +227,7 @@ class _AddProductState extends State<AddProduct> {
 
                       //quantity of ready stock
                       MyTextField(
+                        maxLength: TextField.noMaxLength,
                         controller: quantityController,
                         caps: TextCapitalization.none,
                         inputType: TextInputType.number,

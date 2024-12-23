@@ -101,6 +101,7 @@ class _AddCategoryState extends State<AddCategory> {
 
                     //name of category
                     MyTextField(
+                      maxLength: TextField.noMaxLength,
                       controller: nameController,
                       caps: TextCapitalization.words,
                       inputType: TextInputType.text,

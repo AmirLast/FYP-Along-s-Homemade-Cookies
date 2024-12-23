@@ -8,7 +8,7 @@ class UserNow {
   User? user;
   String currentdir = "";
   bool passStrength = false;
-  String address = "";
+  List<String> address = [];
   //below is for owner
   List categories = [];
   String shop = "";
@@ -19,7 +19,6 @@ class UserNow {
     required this.type,
     required this.currentdir,
     required this.passStrength,
-    required this.address,
   });
   static UserNow usernow = UserNow(
     fullname: "",
@@ -28,6 +27,5 @@ class UserNow {
     type: "",
     currentdir: "",
     passStrength: true,
-    address: "",
   ); //the object to call all the above data
 }

@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
   //final String password;
   final String phone = UserNow.usernow.phone;
   final String photoURL = UserNow.usernow.user?.photoURL ?? defProfile;
-  final String address = UserNow.usernow.address;
+  final String address = UserNow.usernow.address.map((word) => (word)).join(", ");
   //text editing controller
   late TextEditingController dnameController;
   late TextEditingController fnameController;
@@ -380,6 +380,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   //displayname
                   MyTextField(
+                    maxLength: TextField.noMaxLength,
                     controller: dnameController,
                     labelText: dnameHT,
                     obscureText: false,
@@ -408,6 +409,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   //fullname
                   MyTextField(
+                    maxLength: TextField.noMaxLength,
                     controller: fnameController,
                     labelText: fnameHT,
                     obscureText: false,
@@ -436,6 +438,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   //phone
                   MyTextField(
+                    maxLength: 12,
                     controller: phoneController,
                     labelText: phoneHT,
                     obscureText: false,
@@ -464,6 +467,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   //address
                   MyTextField(
+                    maxLength: TextField.noMaxLength,
                     controller: addressController,
                     labelText: addressHT,
                     obscureText: false,

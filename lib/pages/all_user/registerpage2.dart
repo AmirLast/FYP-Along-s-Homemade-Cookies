@@ -47,6 +47,7 @@ class _Register2PageState extends State<Register2Page> {
   late TextEditingController address1Controller;
   late TextEditingController postcodeController;
   late TextEditingController stateController;
+  late TextEditingController cityController;
 
   @override
   void initState() {
@@ -54,6 +55,7 @@ class _Register2PageState extends State<Register2Page> {
     address1Controller = TextEditingController();
     postcodeController = TextEditingController();
     stateController = TextEditingController();
+    cityController = TextEditingController();
   }
 
   @override
@@ -62,6 +64,7 @@ class _Register2PageState extends State<Register2Page> {
     address1Controller.dispose();
     postcodeController.dispose();
     stateController.dispose();
+    cityController.dispose();
   }
 
   Future<User?> register({
@@ -135,9 +138,9 @@ class _Register2PageState extends State<Register2Page> {
 
                       const SizedBox(height: 60),
 
-                      //username
-                      //first name
+                      //address house + town
                       MyTextField(
+                        maxLength: TextField.noMaxLength,
                         controller: address1Controller,
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
@@ -150,8 +153,9 @@ class _Register2PageState extends State<Register2Page> {
 
                       const SizedBox(height: 30),
 
-                      //last name
+                      //post code
                       MyTextField(
+                        maxLength: 5,
                         controller: postcodeController,
                         caps: TextCapitalization.none,
                         inputType: TextInputType.number,
@@ -164,8 +168,24 @@ class _Register2PageState extends State<Register2Page> {
 
                       const SizedBox(height: 30),
 
-                      //shop name
+                      //city
                       MyTextField(
+                        maxLength: TextField.noMaxLength,
+                        controller: cityController,
+                        caps: TextCapitalization.words,
+                        inputType: TextInputType.text,
+                        labelText: "City",
+                        hintText: "",
+                        obscureText: false,
+                        isEnabled: true,
+                        isShowhint: false,
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      //state
+                      MyTextField(
+                        maxLength: TextField.noMaxLength,
                         controller: stateController,
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
@@ -234,6 +254,9 @@ class _Register2PageState extends State<Register2Page> {
                               } else if (postcodeController.text == '') {
                                 error = 'Post Code is blank';
                                 isBlank = true;
+                              } else if (cityController.text == '') {
+                                error = 'City is blank';
+                                isBlank = true;
                               } else if (stateController.text == '') {
                                 error = 'State is blank';
                                 isBlank = true;
@@ -253,11 +276,8 @@ class _Register2PageState extends State<Register2Page> {
 
                                   var userFF = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
 
-                                  //user.phoneNumber
-                                  //user.displayName
                                   //user?.linkWithCredential(credential)
                                   //user.linkWithPhoneNumber(phoneNumber)
-                                  //user.reload()
 
                                   //for full name capitalization
                                   late List<String> words;
@@ -268,7 +288,16 @@ class _Register2PageState extends State<Register2Page> {
                                       ", " +
                                       postcodeController.text.trim() +
                                       ", " +
-                                      stateController.text.trim();
+                                      cityController.text.trim() +
+                                      ", " +
+                                      stateController.text.trim() +
+                                      ".";
+                                  List<String> addressList = [
+                                    address1Controller.text.trim(),
+                                    postcodeController.text.trim(),
+                                    cityController.text.trim(),
+                                    stateController.text.trim()
+                                  ];
                                   //set default user pfp and displayname and phone
                                   user?.updateProfile(displayName: widget.displayName.trim(), photoURL: defProfile);
 
@@ -292,12 +321,8 @@ class _Register2PageState extends State<Register2Page> {
                                       type: widget.type,
                                       currentdir: "",
                                       passStrength: widget.passStrength,
-                                      address: address1Controller.text.trim() +
-                                          ", " +
-                                          postcodeController.text.trim() +
-                                          ", " +
-                                          stateController.text.trim(),
                                     );
+                                    UserNow.usernow.address = addressList;
                                     if (widget.type == 'owner') {
                                       //update userclass
                                       UserNow.usernow.shop = upperCase(widget.shop.trim());

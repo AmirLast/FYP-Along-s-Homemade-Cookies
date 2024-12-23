@@ -110,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     //email
                     MyTextField(
+                      maxLength: TextField.noMaxLength,
                       controller: emailController,
                       caps: TextCapitalization.none,
                       inputType: TextInputType.emailAddress,
@@ -181,12 +182,11 @@ class _LoginPageState extends State<LoginPage> {
                             type: value.data()?['type'],
                             currentdir: value.data()?['currentdir'],
                             passStrength: value.data()?['passStrength'],
-                            address: value.data()?['address'],
                           );
                           //check user type
                           if (value.data()?['type'] != "admin") {
                             //for owner and user has address
-                            UserNow.usernow.shop = value.data()?['address'];
+                            UserNow.usernow.address = value.data()?['address'];
                             if (value.data()?['type'] == "owner") {
                               //for owner, they have extra data
                               UserNow.usernow.categories = value.data()?['categories'];

@@ -21,8 +21,8 @@ class UpdateUserData {
           type: value.data()?['type'],
           currentdir: value.data()?['currentdir'],
           passStrength: value.data()?['passStrength'],
-          address: value.data()?['address'],
         );
+        UserNow.usernow.address = value.data()?['address'];
         //check user type
         if (value.data()?['type'] == "owner") {
           //for owner, they have extra data

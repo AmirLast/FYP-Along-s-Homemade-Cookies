@@ -373,6 +373,7 @@ class _EditProdPageState extends State<EditProdPage> {
                           ),
                         ),
                         MyTextField(
+                          maxLength: TextField.noMaxLength,
                           controller: nameController,
                           caps: TextCapitalization.words,
                           inputType: TextInputType.text,
@@ -394,6 +395,7 @@ class _EditProdPageState extends State<EditProdPage> {
                           ),
                         ),
                         MyTextField(
+                          maxLength: TextField.noMaxLength,
                           controller: descController,
                           caps: TextCapitalization.none,
                           inputType: TextInputType.text,
@@ -415,6 +417,7 @@ class _EditProdPageState extends State<EditProdPage> {
                           ),
                         ),
                         MyTextField(
+                          maxLength: TextField.noMaxLength,
                           controller: priceController,
                           caps: TextCapitalization.none,
                           inputType: TextInputType.number,
@@ -436,6 +439,7 @@ class _EditProdPageState extends State<EditProdPage> {
                           ),
                         ),
                         MyTextField(
+                          maxLength: TextField.noMaxLength,
                           controller: quantityController,
                           caps: TextCapitalization.none,
                           inputType: TextInputType.number,

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/components/customer/my_currentlocation.dart';
 import 'package:fyp/components/general/my_drawer.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_menubutton.dart';
@@ -101,8 +100,6 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              MyCurrentLocation(),
-              const SizedBox(height: 60),
               MyMenuButton(
                 text: "Browse Shop",
                 icon: Icons.shopify_rounded,
