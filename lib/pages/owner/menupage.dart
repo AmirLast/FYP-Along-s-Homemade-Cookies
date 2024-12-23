@@ -21,7 +21,7 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin {
   final Logo show = Logo(); //for logo
-  List cat = UserNow.usernow!.categories;
+  List cat = UserNow.usernow.categories;
   List<Bakeds?> menus = [];
   final obj = UpdateMenuData();
   final load = Loading();
@@ -141,7 +141,7 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                             User? user = AuthService().getCurrentUser(); //for doc name in fbfs
 
                                             //delete data from local class
-                                            UserNow.usernow?.categories.remove(catName);
+                                            UserNow.usernow.categories.remove(catName);
 
                                             //delete data from firebase categories value
                                             await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({

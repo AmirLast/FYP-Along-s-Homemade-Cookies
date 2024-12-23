@@ -2,11 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class UserNow {
   //list down all data in user database
-  String fname = "";
-  String lname = "";
+  String fullname = "";
   String phone = "";
   String type = ""; //to know if they are user or admin
-  User user;
+  User? user;
   String currentdir = "";
   bool passStrength = false;
   String address = "";
@@ -14,8 +13,7 @@ class UserNow {
   List categories = [];
   String shop = "";
   UserNow({
-    required this.fname,
-    required this.lname,
+    required this.fullname,
     required this.phone,
     required this.user,
     required this.type,
@@ -23,5 +21,13 @@ class UserNow {
     required this.passStrength,
     required this.address,
   });
-  static UserNow? usernow; //the object to call all the above data
+  static UserNow usernow = UserNow(
+    fullname: "",
+    phone: "",
+    user: FirebaseAuth.instance.currentUser,
+    type: "",
+    currentdir: "",
+    passStrength: true,
+    address: "",
+  ); //the object to call all the above data
 }

@@ -28,17 +28,18 @@ class _SizePageState extends State<SizePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.brown,
       appBar: AppBar(),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: TextField(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
                 cursorColor: Colors.black,
                 enabled: true, //get this value
                 controller: tobesized,
@@ -56,47 +57,57 @@ class _SizePageState extends State<SizePage> {
                   floatingLabelStyle: const TextStyle(color: Colors.black),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-            Row(
-              children: [
-                MaterialButton(
-                  onPressed: tobesized.text == ""
-                      ? () {}
-                      : () {
-                          final textSpan = TextSpan(
-                            text: tobesized.text,
-                            style: DefaultTextStyle.of(context).style,
-                          );
-                          final media = MediaQuery.of(context);
-                          final tp = TextPainter(
-                            text: textSpan,
-                            textDirection: TextDirection.ltr,
-                            textScaler: media.textScaler,
-                          );
-                          tp.layout();
-                          setState(() {
-                            sizeText = tp.size.width;
-                          });
-                        },
-                  child: Container(
+              const SizedBox(height: 60),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MaterialButton(
+                    onPressed: tobesized.text == ""
+                        ? () {}
+                        : () {
+                            final textSpan = TextSpan(
+                              text: tobesized.text,
+                              style: DefaultTextStyle.of(context).style,
+                            );
+                            final media = MediaQuery.of(context);
+                            final tp = TextPainter(
+                              text: textSpan,
+                              textDirection: TextDirection.ltr,
+                              textScaler: media.textScaler,
+                            );
+                            tp.layout();
+                            setState(() {
+                              sizeText = tp.size.width;
+                            });
+                          },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("Change"),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Container(
+                    width: 100,
                     decoration: BoxDecoration(
                       color: Colors.grey,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Change"),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(child: Text(sizeText.toString())),
                     ),
                   ),
-                ),
-                const SizedBox(width: 20),
-                Center(child: Text(sizeText.toString())),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

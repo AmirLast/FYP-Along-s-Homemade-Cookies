@@ -175,8 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                         await dir.doc(user!.uid).get().then((value) {
                           //these are general data loads for any user
                           UserNow.usernow = UserNow(
-                            fname: value.data()?['fname'],
-                            lname: value.data()?['lname'],
+                            fullname: value.data()?['fullname'],
                             phone: value.data()?['phone'],
                             user: user,
                             type: value.data()?['type'],
@@ -187,11 +186,11 @@ class _LoginPageState extends State<LoginPage> {
                           //check user type
                           if (value.data()?['type'] != "admin") {
                             //for owner and user has address
-                            UserNow.usernow?.shop = value.data()?['address'];
+                            UserNow.usernow.shop = value.data()?['address'];
                             if (value.data()?['type'] == "owner") {
                               //for owner, they have extra data
-                              UserNow.usernow?.categories = value.data()?['categories'];
-                              UserNow.usernow?.shop = value.data()?['shop'];
+                              UserNow.usernow.categories = value.data()?['categories'];
+                              UserNow.usernow.shop = value.data()?['shop'];
                             }
                           }
                         });

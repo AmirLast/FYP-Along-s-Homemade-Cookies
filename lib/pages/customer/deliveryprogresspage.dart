@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/customer/my_receipt.dart';
 import 'package:fyp/models/shoppingclass.dart';
-import 'package:fyp/pages/customer/shoplistpage.dart';
+import 'package:fyp/models/userclass.dart';
+import 'package:fyp/pages/all_user/functions/showloading.dart';
+import 'package:fyp/pages/customer/shoppage.dart';
 import 'package:fyp/services/database/firestore.dart';
 import 'package:provider/provider.dart';
 
@@ -13,37 +15,39 @@ class DeliveryProgressPage extends StatefulWidget {
 }
 
 class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
-  //get access to db
-  FirestoreService db = FirestoreService();
+  final gotoNext = Showloading();
+  FirestoreService db = FirestoreService(); //get access to db
 
   @override
   void initState() {
     super.initState();
 
     //submit order to firestore db
-    String receipt = context.read<Shop>().displayCartReceipt();
+    String receipt = context.read<Shopping>().displayCartReceipt();
     db.saveOrderToDatabase(receipt);
   }
 
-  void toPop(Shop shop) {
+  void toPop(Shopping shop) {
     shop.clearCart();
-    Navigator.pushAndRemoveUntil(
+    gotoNext.showloading(
+      UserNow.usernow.currentdir,
+      (BuildContext context) => ShopPage(id: UserNow.usernow.currentdir),
+      null,
+      'shoplist',
       context,
-      MaterialPageRoute<void>(builder: (BuildContext context) => const ShopListPage()),
-      ModalRoute.withName('/'),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Shop>(
-      builder: (context, shop, child) => PopScope(
+    return Consumer<Shopping>(
+      builder: (context, shopping, child) => PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, result) async {
           if (didPop) {
             return;
           }
-          toPop(shop);
+          toPop(shopping);
         },
         child: Scaffold(
           backgroundColor: const Color(0xffd1a271),
@@ -55,7 +59,7 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
                 color: Colors.black,
               ),
               onPressed: () {
-                toPop(shop);
+                toPop(shopping);
               },
             ),
             title: const Center(

@@ -576,6 +576,7 @@ class _EditProdPageState extends State<EditProdPage> {
                                                       IconButton(
                                                         iconSize: 50,
                                                         color: Colors.green,
+                                                        icon: const Icon(Icons.check_circle),
                                                         onPressed: () async {
                                                           //code here
                                                           String prodPrice;
@@ -698,13 +699,13 @@ class _EditProdPageState extends State<EditProdPage> {
                                                             scaffoldOBJ.scaffoldmessage("Fail uploading", context);
                                                           }
                                                         },
-                                                        icon: const Icon(Icons.check_circle),
                                                       ),
                                                       IconButton(
-                                                          iconSize: 50,
-                                                          color: Colors.red,
-                                                          onPressed: () => Navigator.pop(context),
-                                                          icon: const Icon(Icons.cancel)),
+                                                        iconSize: 50,
+                                                        color: Colors.red,
+                                                        onPressed: () => Navigator.pop(context),
+                                                        icon: const Icon(Icons.cancel),
+                                                      ),
                                                     ],
                                                   )
                                                 ],

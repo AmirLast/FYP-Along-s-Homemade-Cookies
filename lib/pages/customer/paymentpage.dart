@@ -25,11 +25,11 @@ class _PayPageState extends State<PayPage> {
   String cardHolderName = '';
   String cvvCode = '';
   bool isCvvFocused = false;
-  String id = UserNow.usernow!.currentdir; //for knowing owner shop id
+  String id = UserNow.usernow.currentdir; //for knowing owner shop id
   final load = Loading();
 
   //user wants to pay-----------------------------------------
-  void userTappedPay(Shop shop) {
+  void userTappedPay(Shopping shop) {
     if (formKey.currentState!.validate()) {
       //only show dialog if form is valid
       showDialog(
@@ -67,7 +67,7 @@ class _PayPageState extends State<PayPage> {
   } //---------------------------------------------------------
 
   //confirm pop up kalau ada unsaved data---------------------------------------
-  confirmPopUp(context, String prodName, Shop shop) {
+  confirmPopUp(context, String prodName, Shopping shop) {
     //confirm pop up
     showDialog(
       context: context,
@@ -96,21 +96,21 @@ class _PayPageState extends State<PayPage> {
     );
   } //----------------------------------------------------------------------
 
-  void checkCurrentQuantity(Shop shop) async {
+  void checkCurrentQuantity(Shopping shop) async {
     // loading circle-------------------------
     load.loading(context);
     //-------------------------------------
     int i = 0;
     int j = widget.cartItem.length;
-    var dir = FirebaseFirestore.instance.collection('users').doc(id).collection(widget.cartItem[i].prod!.category);
+    var dir = FirebaseFirestore.instance.collection('users').doc(id).collection(widget.cartItem[i].prod.category);
     for (i; i < j; i++) {
-      await dir.where("name", isEqualTo: widget.cartItem[i].prod!.name).get().then((onValue) async {
+      await dir.where("name", isEqualTo: widget.cartItem[i].prod.name).get().then((onValue) async {
         for (var docSnapshot in onValue.docs) {
           if (docSnapshot.get("quantity") < widget.cartItem[i].quantity) {
             //if someone checkout first and the quantity exceed available then don't update
             Navigator.pop(context);
             Navigator.pop(context);
-            confirmPopUp(context, widget.cartItem[i].prod!.name, shop);
+            confirmPopUp(context, widget.cartItem[i].prod.name, shop);
           } else {
             await dir.doc(docSnapshot.id).update(({"quantity": docSnapshot.get("quantity") - widget.cartItem[i].quantity})).then((onValue) {
               if (i + j == j) {
@@ -130,8 +130,8 @@ class _PayPageState extends State<PayPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Shop>(
-      builder: (context, shop, child) => Scaffold(
+    return Consumer<Shopping>(
+      builder: (context, shopping, child) => Scaffold(
         backgroundColor: const Color(0xffd1a271),
         appBar: AppBar(
           backgroundColor: const Color(0xffB67F5F),
@@ -198,9 +198,10 @@ class _PayPageState extends State<PayPage> {
                 MyMenuButton(
                   text: "Pay now",
                   onPressed: () {
-                    userTappedPay(shop);
+                    userTappedPay(shopping);
                   },
                   icon: Icons.attach_money_rounded,
+                  size: 0,
                 ),
 
                 const SizedBox(height: 30),

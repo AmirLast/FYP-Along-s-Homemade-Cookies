@@ -229,7 +229,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                         capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
                                       }
 
-                                      if (UserNow.usernow!.categories.contains(capitalizedSentence)) {
+                                      if (UserNow.usernow.categories.contains(capitalizedSentence)) {
                                         //check categories exist in current data
                                         scaffoldOBJ.scaffoldmessage("Category '" + nameController.text + "' already exist", context);
                                       } else {
@@ -293,11 +293,11 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                                           }
                                                         }).then((onValue) async {
                                                           //update local userclass data (+ new category)
-                                                          UserNow.usernow!.categories.add(capitalizedSentence);
-                                                          UserNow.usernow!.categories.remove(widget.category);
+                                                          UserNow.usernow.categories.add(capitalizedSentence);
+                                                          UserNow.usernow.categories.remove(widget.category);
 
                                                           //map userclass data pasal categories
-                                                          List newArray = UserNow.usernow!.categories;
+                                                          List newArray = UserNow.usernow.categories;
                                                           //update array categories data kat FBFS
                                                           await FirebaseFirestore.instance.collection('users').doc(user?.uid).update({
                                                             "categories": newArray,

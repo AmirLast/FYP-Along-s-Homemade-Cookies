@@ -16,7 +16,7 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String type = UserNow.usernow!.type;
+    String type = UserNow.usernow.type;
     String formattedDate = order!.dateString;
 
     return Card(

@@ -13,10 +13,10 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Logo show = Logo();
 
-    return Consumer<Shop>(
-      builder: (context, shop, child) {
+    return Consumer<Shopping>(
+      builder: (context, shopping, child) {
         //cart
-        final userCart = shop.cart;
+        final userCart = shopping.cart;
         //scaffold UI
         return Scaffold(
           backgroundColor: const Color(0xffd1a271),
@@ -59,7 +59,7 @@ class CartPage extends StatelessWidget {
                               color: Colors.green,
                               onPressed: () {
                                 Navigator.pop(context);
-                                shop.clearCart();
+                                shopping.clearCart();
                               },
                               icon: const Icon(Icons.check_circle),
                             ),
@@ -128,6 +128,7 @@ class CartPage extends StatelessWidget {
                               ),
                             ),
                     icon: Icons.credit_card_rounded,
+                    size: 0,
                   ),
 
                   const SizedBox(height: 13),

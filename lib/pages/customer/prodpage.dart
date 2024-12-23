@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_cachednetworkimage.dart';
+import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/images/assets.dart';
@@ -20,6 +21,7 @@ class _EditProdPageState extends State<ProdPage> {
   late int q;
   final obj = MyScaffoldmessage();
   final obj2 = MyCachednetworkimage();
+  final logo = Logo();
   bool isBlock = false;
 
   //method to add to cart
@@ -28,7 +30,7 @@ class _EditProdPageState extends State<ProdPage> {
     // close current prod page
     Bakeds prod2 = prod!;
     //add to cart
-    context.read<Shop>().addToCart(prod2, quantity);
+    context.read<Shopping>().addToCart(prod2, quantity);
   }
 
   @override
@@ -82,7 +84,7 @@ class _EditProdPageState extends State<ProdPage> {
         isBlock = true;
         obj.scaffoldmessage("Exceed available quantity", context);
       });
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 4));
       setState(() => isBlock = false);
     }
   }
@@ -105,8 +107,8 @@ class _EditProdPageState extends State<ProdPage> {
         }
         toPop();
       },
-      child: Consumer<Shop>(
-        builder: (context, shop, child) {
+      child: Consumer<Shopping>(
+        builder: (context, shopping, child) {
           return Scaffold(
             backgroundColor: const Color(0xffd1a271),
             appBar: AppBar(
@@ -126,10 +128,12 @@ class _EditProdPageState extends State<ProdPage> {
                 ),
               ),
             ),
-            body: Column(
-              children: [
-                //product image
-                SizedBox(
+            body: Container(
+              decoration: logo.showLogo(),
+              child: Column(
+                children: [
+                  //product image
+                  SizedBox(
                     height: 150,
                     width: 150,
                     //if url does not exist display default image
@@ -141,20 +145,24 @@ class _EditProdPageState extends State<ProdPage> {
                         ),
                       ),
                       child: src == "" ? obj2.showImage(defItem) : obj2.showImage(src),
-                    )),
+                    ),
+                  ),
 
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Column(
+                  const SizedBox(height: 30),
+
+                  Container(height: 2, color: Colors.black),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xffc1ff72).withValues(alpha: 0.5),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 25, 15, 25),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              //product name
                               Text(
                                 widget.prod!.name,
                                 style: const TextStyle(
@@ -186,99 +194,101 @@ class _EditProdPageState extends State<ProdPage> {
                               Text("Available Product: " + widget.prod!.quantity.toString()),
                             ],
                           ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            //increment or decrement for quantity
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            padding: const EdgeInsets.all(8),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                //decrease button
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (q == 0) {
-                                        q = 0;
-                                      } else {
-                                        q--;
-                                      }
-                                    });
-                                  },
-                                  child: const Icon(
-                                    Icons.remove,
-                                    size: 20,
-                                    color: Colors.black,
-                                  ),
+                          Column(
+                            children: [
+                              Container(
+                                //increment or decrement for quantity
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(50),
                                 ),
-
-                                //quantity counter
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                                  child: SizedBox(
-                                    width: 20,
-                                    child: Center(
-                                      child: Text(
-                                        q.toString(),
+                                padding: const EdgeInsets.all(8),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    //decrease button
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          if (q == 0) {
+                                            q = 0;
+                                          } else {
+                                            q--;
+                                          }
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Icons.remove,
+                                        size: 20,
+                                        color: Colors.black,
                                       ),
                                     ),
-                                  ),
-                                ),
 
-                                //increase button
-                                GestureDetector(
-                                  onTap: () {
-                                    if (!(q + shop.getQuantity(widget.prod) == widget.prod!.quantity)) {
-                                      setState(() {
-                                        q++;
-                                      });
-                                    } else {
-                                      blockButton();
-                                    }
-                                  },
-                                  child: const Icon(
-                                    Icons.add,
-                                    size: 20,
-                                    color: Colors.black,
-                                  ),
+                                    //quantity counter
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                                      child: SizedBox(
+                                        width: 20,
+                                        child: Center(
+                                          child: Text(
+                                            q.toString(),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    //increase button
+                                    GestureDetector(
+                                      onTap: () {
+                                        if (!(q + shopping.getQuantity(widget.prod) == widget.prod!.quantity)) {
+                                          setState(() {
+                                            q++;
+                                          });
+                                        } else {
+                                          blockButton();
+                                        }
+                                      },
+                                      child: const Icon(
+                                        Icons.add,
+                                        size: 20,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text('Currently in cart: ' + shop.getQuantity(widget.prod).toString()),
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  border: Border.all(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text('Currently in cart: ' + shopping.getQuantity(widget.prod).toString()),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                  Container(height: 2, color: Colors.black),
 
-                const SizedBox(height: 10),
-                const Divider(color: Colors.black),
-                const SizedBox(height: 10),
+                  const Spacer(),
 
-                //button -> add to cart
-                MyMenuButton(
-                  text: "Add to cart",
-                  icon: Icons.add_shopping_cart_rounded,
-                  onPressed: q == 0 ? () {} : () => addToCart(widget.prod, q),
-                ),
+                  //button -> add to cart
+                  MyMenuButton(
+                    text: "Add to cart",
+                    icon: Icons.add_shopping_cart_rounded,
+                    onPressed: q == 0 ? () {} : () => addToCart(widget.prod, q),
+                    size: 0,
+                  ),
 
-                const SizedBox(height: 25),
-              ],
+                  const SizedBox(height: 25),
+                ],
+              ),
             ),
           );
         },

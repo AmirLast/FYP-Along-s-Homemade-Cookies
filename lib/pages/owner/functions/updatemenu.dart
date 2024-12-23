@@ -10,7 +10,7 @@ class UpdateMenuData {
     if (option != "") {
       cat.add(option);
     } else {
-      cat = UserNow.usernow!.categories;
+      cat = UserNow.usernow.categories;
     }
     int i = cat.length; //check how many categories
     int j = 0; //starts from index 0

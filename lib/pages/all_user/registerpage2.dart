@@ -5,16 +5,19 @@ import 'package:fyp/components/general/my_loading.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/images/assets.dart';
+import 'package:fyp/models/shoppingclass.dart';
+import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/verifyemailpage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
+import 'package:provider/provider.dart';
 import '../../components/general/my_textfield.dart';
 
 class Register2Page extends StatefulWidget {
   final String email;
   final String password;
-  final String fname;
-  final String lname;
+  final String displayName;
+  final String fullName;
   final String type;
   final String shop;
   final String phone;
@@ -24,8 +27,8 @@ class Register2Page extends StatefulWidget {
     super.key,
     required this.email,
     required this.password,
-    required this.fname,
-    required this.lname,
+    required this.displayName,
+    required this.fullName,
     required this.type,
     required this.shop,
     required this.phone,
@@ -250,32 +253,65 @@ class _Register2PageState extends State<Register2Page> {
 
                                   var userFF = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
 
-                                  user?.updatePhotoURL(defProfile); //set default user pfp
+                                  //user.phoneNumber
+                                  //user.displayName
+                                  //user?.linkWithCredential(credential)
+                                  //user.linkWithPhoneNumber(phoneNumber)
+                                  //user.reload()
+
+                                  //for full name capitalization
+                                  late List<String> words;
+                                  late String capitalizedSentence;
+                                  words = widget.fullName.trim().split(" ");
+                                  capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
+                                  String fullAddress = address1Controller.text.trim() +
+                                      ", " +
+                                      postcodeController.text.trim() +
+                                      ", " +
+                                      stateController.text.trim();
+                                  //set default user pfp and displayname and phone
+                                  user?.updateProfile(displayName: widget.displayName.trim(), photoURL: defProfile);
+
                                   //name the userfile as uid
                                   userFF.doc(user?.uid).set({
                                     //set all data that user and owner have in common
-                                    "fname": widget.fname.trim(),
-                                    "lname": widget.lname.trim(),
+                                    "fullname": capitalizedSentence,
                                     "phone": widget.phone.trim(),
                                     "type": widget.type,
                                     "passStrength": true, //checked hence true
                                     //for category edit assist
                                     "currentdir": "",
-                                    "address": address1Controller.text.trim() +
-                                        ", " +
-                                        postcodeController.text.trim() +
-                                        ", " +
-                                        stateController.text.trim(), //for delivery
+                                    "address": fullAddress, //for delivery
                                   }).then((onValue) {
+                                    context.read<Shopping>().updateDeliveryAddress(fullAddress);
+                                    //update userclass
+                                    UserNow.usernow = UserNow(
+                                      fullname: widget.fullName,
+                                      phone: widget.phone,
+                                      user: user,
+                                      type: widget.type,
+                                      currentdir: "",
+                                      passStrength: widget.passStrength,
+                                      address: address1Controller.text.trim() +
+                                          ", " +
+                                          postcodeController.text.trim() +
+                                          ", " +
+                                          stateController.text.trim(),
+                                    );
                                     if (widget.type == 'owner') {
+                                      //update userclass
+                                      UserNow.usernow.shop = upperCase(widget.shop.trim());
+                                      UserNow.usernow.categories = [];
+
                                       userFF.doc(user?.uid).set(
-                                          //add other data that only owner have
-                                          {
-                                            'shop': upperCase(widget.shop.trim()),
-                                            //owner need array of categories
-                                            "categories": [],
-                                          },
-                                          SetOptions(merge: true));
+                                        //add other data that only owner have
+                                        {
+                                          'shop': upperCase(widget.shop.trim()),
+                                          //owner need array of categories
+                                          "categories": [],
+                                        },
+                                        SetOptions(merge: true),
+                                      );
                                     }
                                   }).then((onValue) {
                                     Navigator.of(context).pop();

@@ -31,7 +31,7 @@ class MyCurrentLocation extends StatelessWidget {
             onPressed: () {
               //update delivery address
               String newAddress = textController.text;
-              context.read<Shop>().updateDeliveryAddress(newAddress);
+              context.read<Shopping>().updateDeliveryAddress(newAddress);
               Navigator.pop(context);
               textController.clear();
             },
@@ -51,18 +51,18 @@ class MyCurrentLocation extends StatelessWidget {
         children: [
           Text(
             "Deliver now",
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            style: TextStyle(color: Colors.blue[900]),
           ),
           GestureDetector(
             onTap: () => openLocationSearchBox(context),
             child: Row(
               children: [
                 //address
-                Consumer<Shop>(
-                  builder: (context, shop, child) => Text(
-                    shop.deliveryAddress,
+                Consumer<Shopping>(
+                  builder: (context, shopping, child) => Text(
+                    shopping.deliveryAddress,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Colors.blue[900],
                       fontWeight: FontWeight.bold,
                     ),
                   ),

@@ -147,7 +147,7 @@ class _AddCategoryState extends State<AddCategory> {
                             if (nameController.text == '') {
                               //check blank
                               scaffoldOBJ.scaffoldmessage("Category name is blank", context);
-                            } else if (UserNow.usernow!.categories.contains(capitalizedSentence)) {
+                            } else if (UserNow.usernow.categories.contains(capitalizedSentence)) {
                               //check categories exist in current data
                               scaffoldOBJ.scaffoldmessage("Category '" + nameController.text + "' already exist", context);
                             } else {
@@ -157,9 +157,9 @@ class _AddCategoryState extends State<AddCategory> {
 
                               User? user = AuthService().getCurrentUser();
                               //update local userclass data (+ new category)
-                              UserNow.usernow!.categories.add(capitalizedSentence);
+                              UserNow.usernow.categories.add(capitalizedSentence);
                               //map userclass data pasal categories
-                              List newArray = UserNow.usernow!.categories;
+                              List newArray = UserNow.usernow.categories;
                               //update array categories (xde prod) data kat FBFS
                               FirebaseFirestore.instance.collection('users').doc(user?.uid).update({
                                 "categories": newArray,

@@ -1,3 +1,4 @@
-const String defProfile = 'gs://fyp-along-shomemadecookies.appspot.com/default_user.png';
+const String defProfile =
+    "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_user.png?alt=media&token=88f1e63f-70de-443d-8c83-fca1ca8b6773";
 const String defItem =
     "https://firebasestorage.googleapis.com/v0/b/fyp-along-shomemadecookies.appspot.com/o/default_item.png?alt=media&token=a6c87415-83da-4936-81dc-249ac4d89637";

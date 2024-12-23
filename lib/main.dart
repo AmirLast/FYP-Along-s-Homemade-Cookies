@@ -13,7 +13,7 @@ void main() async {
     MultiProvider(
       providers: [
         //shop provider
-        ChangeNotifierProvider(create: (context) => Shop()),
+        ChangeNotifierProvider(create: (context) => Shopping()),
       ],
       child: const MyApp(),
     ),
@@ -25,10 +25,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       color: Colors.transparent,
-      home: AuthGate(),
+      home: const AuthGate(),
+      theme: ThemeData(
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Colors.black,
+          selectionColor: Colors.black,
+          selectionHandleColor: Colors.black.withValues(alpha: 0.75),
+        ),
+      ),
     );
   }
 }

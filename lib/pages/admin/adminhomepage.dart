@@ -4,7 +4,7 @@ import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/endscreen.dart';
-import 'package:fyp/pages/all_user/settingspage.dart';
+import 'package:fyp/pages/all_user/profile.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -16,7 +16,7 @@ class AdminHomePage extends StatefulWidget {
 class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProviderStateMixin {
   //for logo
   final Logo show = Logo();
-  String name = UserNow.usernow!.fname;
+  String? name = UserNow.usernow.user?.displayName ?? "";
 
   confirmPopUp(context) {
     //confirm pop up
@@ -72,7 +72,7 @@ class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProvider
         appBar: AppBar(
           backgroundColor: const Color(0xffd1a271),
           title: Text(
-            "Hello " + name,
+            "Hello " + name.toString(),
             style: const TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -81,7 +81,7 @@ class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProvider
           ),
           actions: [
             IconButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage())),
               icon: const Icon(Icons.account_circle, color: Colors.black),
             ),
           ],
@@ -98,6 +98,7 @@ class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProvider
                 text: "User List",
                 icon: Icons.person,
                 onPressed: () {},
+                size: 0,
               )
             ],
           ),

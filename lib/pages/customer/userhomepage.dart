@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/customer/my_currentlocation.dart';
 import 'package:fyp/components/general/my_drawer.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/endscreen.dart';
-import 'package:fyp/pages/all_user/settingspage.dart';
-import 'package:fyp/pages/customer/orderlist.dart';
+import 'package:fyp/pages/all_user/functions/showloading.dart';
+import 'package:fyp/pages/all_user/functions/updateorder.dart';
+import 'package:fyp/pages/all_user/profile.dart';
 import 'package:fyp/pages/customer/shoplistpage.dart';
 import 'package:fyp/pages/customer/sizepage.dart';
 
@@ -18,9 +20,10 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderStateMixin {
-  String name = UserNow.usernow!.fname;
-  //for logo
-  final Logo show = Logo();
+  String? name = UserNow.usernow.user?.displayName ?? "";
+  final gotoNext = Showloading();
+  final Logo show = Logo(); //for logo
+  final gotoOrder = UpdateOrderData();
 
   confirmPopUp(context) {
     //confirm pop up
@@ -76,7 +79,7 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
         appBar: AppBar(
           backgroundColor: const Color(0xffd1a271),
           title: Text(
-            "Hello " + name,
+            "Hello " + name.toString(),
             style: const TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -85,7 +88,7 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
           ),
           actions: [
             IconButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage())),
               icon: const Icon(Icons.account_circle, color: Colors.black),
             ),
           ],
@@ -98,22 +101,36 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              MyCurrentLocation(),
+              const SizedBox(height: 60),
               MyMenuButton(
                 text: "Browse Shop",
                 icon: Icons.shopify_rounded,
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const ShopListPage(), settings: const RouteSettings(name: "shoplist"))),
+                size: 0,
+                onPressed: () {
+                  gotoNext.showloading(
+                    "",
+                    (BuildContext context) => const ShopListPage(),
+                    const RouteSettings(name: "shoplist"),
+                    "/",
+                    context,
+                  );
+                },
               ),
               const SizedBox(height: 60),
               MyMenuButton(
                 text: "Order History",
                 icon: CupertinoIcons.tray_full,
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const BuyerOrder())),
+                size: 0,
+                onPressed: () {
+                  gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "buyer", context);
+                },
               ),
               const SizedBox(height: 60),
               MyMenuButton(
                 text: "Word Sizes",
                 icon: CupertinoIcons.search,
+                size: 0,
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SizePage())),
               ),
             ],

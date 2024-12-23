@@ -16,5 +16,13 @@ class Bakeds {
     required this.category,
     required this.imagePath,
   });
-  static Bakeds? currentBaked; // the object to call all the above
+  static Bakeds currentBaked = Bakeds(
+    name: "",
+    quantity: 0,
+    description: "",
+    url: "",
+    price: 0,
+    category: "",
+    imagePath: "",
+  ); // the object to call all the above
 }

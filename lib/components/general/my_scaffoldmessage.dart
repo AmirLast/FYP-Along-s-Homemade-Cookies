@@ -12,7 +12,7 @@ class MyScaffoldmessage {
         ),
         showCloseIcon: true,
         closeIconColor: Colors.black,
-        duration: const Duration(seconds: 5),
+        duration: const Duration(seconds: 4),
         behavior: SnackBarBehavior.floating,
         elevation: 10,
       ),

@@ -26,15 +26,15 @@ class _MyCartTileState extends State<MyCartTile> {
         isBlock = true;
         obj.scaffoldmessage("Exceed available quantity", context);
       });
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 4));
       setState(() => isBlock = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Shop>(
-      builder: (context, shop, child) => Container(
+    return Consumer<Shopping>(
+      builder: (context, shopping, child) => Container(
         decoration: BoxDecoration(
           color: Colors.grey.shade400,
           borderRadius: BorderRadius.circular(8),
@@ -53,7 +53,7 @@ class _MyCartTileState extends State<MyCartTile> {
                       child: SizedBox(
                         height: 100,
                         width: 100,
-                        child: obj2.showImage(widget.cartItem.prod!.url),
+                        child: obj2.showImage(widget.cartItem.prod.url),
                       )),
 
                   const SizedBox(width: 10),
@@ -63,10 +63,10 @@ class _MyCartTileState extends State<MyCartTile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       //the name
-                      Text(widget.cartItem.prod!.name),
+                      Text(widget.cartItem.prod.name),
                       //the price
                       Text(
-                        'RM' + widget.cartItem.prod!.price.toStringAsFixed(2),
+                        'RM' + widget.cartItem.prod.price.toStringAsFixed(2),
                         style: const TextStyle(color: Colors.purple),
                       ),
                     ],
@@ -78,13 +78,13 @@ class _MyCartTileState extends State<MyCartTile> {
                   QuantitySelector(
                     quantity: widget.cartItem.quantity,
                     onDec: () {
-                      shop.removeFromCart(widget.cartItem);
+                      shopping.removeFromCart(widget.cartItem);
                     },
                     onInc: () {
-                      if (widget.cartItem.quantity == widget.cartItem.prod!.quantity) {
+                      if (widget.cartItem.quantity == widget.cartItem.prod.quantity) {
                         blockButton();
                       } else {
-                        shop.addToCart(widget.cartItem.prod, 0);
+                        shopping.addToCart(widget.cartItem.prod, 0);
                       }
                     },
                   ),

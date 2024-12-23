@@ -2,23 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/customer/my_shopproducttile.dart';
 import 'package:fyp/models/bakedclass.dart';
+import 'package:fyp/models/shopclass.dart';
 import 'package:fyp/models/shoppingclass.dart';
-import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/customer/cartpage.dart';
 import 'package:provider/provider.dart';
 
 class ShopPage extends StatefulWidget {
-  final String name; //shop name
-  final List<Bakeds?> bakeds; //the shop bakeds with categories
-  final String id; //owner user id
-  final List categories; //owner shop list of category
-
+  final String id;
   const ShopPage({
     super.key,
-    required this.name,
-    required this.bakeds,
     required this.id,
-    required this.categories,
   });
 
   @override
@@ -26,16 +19,23 @@ class ShopPage extends StatefulWidget {
 }
 
 class _ShopPageState extends State<ShopPage> {
+  late Shops? shop;
+  late String name; //shop name
+  late List<Bakeds?> bakeds; //the shop bakeds with categories
+  late List categories; //owner shop list of category
   final Logo show = Logo(); //for logo
 
   @override
   void initState() {
     super.initState();
-    UserNow.usernow?.currentdir = widget.id;
+    shop = Shops.currentShop.shops.firstWhere((x) => x.id == widget.id);
+    name = shop!.name;
+    bakeds = shop!.bakeds;
+    categories = shop!.categories;
   }
 
   //confirm pop up kalau ada unsaved data---------------------------------------
-  confirmPopUp(Shop shop, context) {
+  confirmPopUp(Shopping shop, context) {
     //confirm pop up
     showDialog(
       context: context,
@@ -73,7 +73,7 @@ class _ShopPageState extends State<ShopPage> {
     );
   } //----------------------------------------------------------------------
 
-  void toPop(Shop shop) {
+  void toPop(Shopping shop) {
     if (shop.cart.isEmpty) {
       Navigator.pop(context);
     } else {
@@ -83,14 +83,14 @@ class _ShopPageState extends State<ShopPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Shop>(
-      builder: (context, shop, child) => PopScope(
+    return Consumer<Shopping>(
+      builder: (context, shopping, child) => PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, result) {
           if (didPop) {
             return;
           }
-          toPop(shop);
+          toPop(shopping);
         },
         child: Scaffold(
           backgroundColor: const Color(0xffd1a271),
@@ -99,13 +99,13 @@ class _ShopPageState extends State<ShopPage> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new_rounded),
               onPressed: () {
-                toPop(shop);
+                toPop(shopping);
               },
             ),
             title: Center(
               child: Text(
                 textAlign: TextAlign.center,
-                widget.name + " Shop",
+                name + " Shop",
                 style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
@@ -149,7 +149,7 @@ class _ShopPageState extends State<ShopPage> {
                     child: ListView.builder(
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: widget.categories.length,
+                        itemCount: categories.length,
                         padding: EdgeInsets.zero,
                         itemBuilder: (context, index) {
                           return Column(
@@ -169,7 +169,7 @@ class _ShopPageState extends State<ShopPage> {
                                         padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
                                         child: Center(
                                           child: Text(
-                                            widget.categories[index],
+                                            categories[index],
                                             style: const TextStyle(
                                               overflow: TextOverflow.ellipsis,
                                               fontSize: 30,
@@ -186,7 +186,7 @@ class _ShopPageState extends State<ShopPage> {
                               Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  MyProdTile(bakeds: widget.bakeds, category: widget.categories[index]),
+                                  MyProdTile(bakeds: bakeds, category: categories[index]),
                                 ],
                               ),
                             ],

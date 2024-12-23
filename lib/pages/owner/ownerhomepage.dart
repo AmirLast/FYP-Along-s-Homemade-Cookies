@@ -5,9 +5,9 @@ import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/endscreen.dart';
-import 'package:fyp/pages/all_user/settingspage.dart';
+import 'package:fyp/pages/all_user/functions/updateorder.dart';
+import 'package:fyp/pages/all_user/profile.dart';
 import 'package:fyp/pages/owner/menupage.dart';
-import 'package:fyp/pages/owner/ownerorderpage.dart';
 
 class OwnerHomePage extends StatefulWidget {
   const OwnerHomePage({super.key});
@@ -17,8 +17,9 @@ class OwnerHomePage extends StatefulWidget {
 }
 
 class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProviderStateMixin {
-  String fname = UserNow.usernow!.fname; //owner data from ownerclass.dart
+  String? name = UserNow.usernow.user?.displayName ?? ""; //owner data from ownerclass.dart
   final Logo show = Logo(); //for logo
+  final gotoOrder = UpdateOrderData();
 
   confirmPopUp(context) {
     //confirm pop up
@@ -73,7 +74,7 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            "Hello " + fname,
+            "Hello " + name.toString(),
             style: const TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -82,11 +83,13 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
           ),
           actions: [
             IconButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage())),
               icon: const Icon(Icons.account_circle, color: Colors.black),
             ),
             IconButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPage())),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPage()));
+              },
               icon: const Icon(Icons.add_shopping_cart, color: Colors.black),
             ),
           ],
@@ -104,10 +107,10 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
               MyMenuButton(
                 icon: CupertinoIcons.news,
                 text: "Customer Order",
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const OwnerOrderPage()),
-                ),
+                size: 0,
+                onPressed: () {
+                  gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "owner", context);
+                },
               ),
               /*
               List function2 owner yang belum terciptakan

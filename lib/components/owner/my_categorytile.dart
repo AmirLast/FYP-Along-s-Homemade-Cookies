@@ -59,7 +59,7 @@ class _CategoryTileState extends State<CategoryTile> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   collapsedBackgroundColor: Colors.grey.shade400,
-                  backgroundColor: Colors.white,
+                  backgroundColor: Colors.grey.shade400,
                   title: Row(
                     children: [
                       const SizedBox(width: 15),
@@ -76,146 +76,156 @@ class _CategoryTileState extends State<CategoryTile> {
                       const Spacer(),
                       GestureDetector(
                         onTap: widget.onEdit,
-                        child: const Icon(Icons.edit, size: 20, color: Colors.black),
+                        child: Container(
+                          color: Colors.grey.shade400,
+                          child: const Padding(
+                            padding: EdgeInsets.only(left: 25, right: 12.0),
+                            child: Icon(Icons.edit, size: 20, color: Colors.black),
+                          ),
+                        ),
                       ),
-                      const SizedBox(width: 15),
                       GestureDetector(
                         onTap: widget.onDel,
-                        child: const Icon(Icons.close_rounded, size: 25, color: Colors.black),
+                        child: Container(
+                          color: Colors.grey.shade400,
+                          child: const Padding(
+                            padding: EdgeInsets.only(left: 13.0, right: 5),
+                            child: Icon(Icons.close_rounded, size: 25, color: Colors.black),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  onExpansionChanged: (value) {
-                    setState(() {
-                      isExpand = value;
-                    });
-                  },
                   iconColor: Colors.black,
                   collapsedIconColor: Colors.black,
                   children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: categoryMenu.length,
-                          primary: false,
-                          padding: const EdgeInsets.only(left: 16.0, right: 16),
-                          itemBuilder: (context, index) {
-                            return BakedTile(
-                              prod: categoryMenu[index],
-                              onTap: () {},
-                              onEdit: () => Navigator.push(
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 5),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: categoryMenu.length,
+                            primary: false,
+                            padding: const EdgeInsets.only(left: 16.0, right: 16),
+                            itemBuilder: (context, index) {
+                              return BakedTile(
+                                prod: categoryMenu[index],
+                                onTap: () {},
+                                onEdit: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    //calling ProdPage while sending prod values
+                                    builder: (context) => EditProdPage(
+                                      prod: categoryMenu[index],
+                                      category: widget.catName,
+                                    ),
+                                  ),
+                                ), //pergi page baru (cam add category) + access data guna func update cam kat addcategory
+                                onDel: () {
+                                  //confirm pop up
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            backgroundColor: Colors.white,
+                                            content: Text(
+                                              "Do you want to delete product named '" + categoryMenu[index]!.name + "'?",
+                                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                            ),
+                                            actions: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  IconButton(
+                                                    iconSize: 50,
+                                                    color: Colors.green,
+                                                    onPressed: () async {
+                                                      // loading circle-------------------------
+                                                      load.loading(context);
+                                                      //--------------------------------------
+
+                                                      User? user = AuthService().getCurrentUser();
+
+                                                      //delete product in collection in fbfs
+                                                      await FirebaseFirestore.instance
+                                                          .collection('users')
+                                                          .doc(user!.uid)
+                                                          .collection(widget.catName)
+                                                          .where('name', isEqualTo: categoryMenu[index]!.name)
+                                                          .get()
+                                                          .then(
+                                                        (querySnapshot) async {
+                                                          for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                            documentSnapshot.reference.delete();
+                                                            //only delete pic if imagepath is not null
+                                                            if (categoryMenu[index]!.imagePath != "") {
+                                                              //delete picture in storage
+                                                              await FirebaseStorage.instance
+                                                                  .ref()
+                                                                  .child(categoryMenu[index]!.imagePath)
+                                                                  .delete();
+                                                            }
+                                                          }
+                                                        },
+                                                      ).then((onValue) {
+                                                        obj.scaffoldmessage("Product Deleted", context);
+                                                        Navigator.pop(context);
+                                                        //pop loading circle---------
+                                                        //refresh new menu page
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) => const MenuPage(),
+                                                          ),
+                                                        );
+                                                      });
+                                                    },
+                                                    icon: const Icon(Icons.check_circle),
+                                                  ),
+                                                  IconButton(
+                                                      iconSize: 50,
+                                                      color: Colors.red,
+                                                      onPressed: () => Navigator.pop(context),
+                                                      icon: const Icon(Icons.cancel)),
+                                                ],
+                                              )
+                                            ],
+                                          ));
+                                },
+                              );
+                            },
+                          ),
+                          //button add product
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: ElevatedButton(
+                              onPressed: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  //calling ProdPage while sending prod values
-                                  builder: (context) => EditProdPage(
-                                    prod: categoryMenu[index],
-                                    category: widget.catName,
-                                  ),
+                                  //calling AddProduct while sending prod name
+                                  builder: (context) => AddProduct(category: widget.catName),
                                 ),
-                              ), //pergi page baru (cam add category) + access data guna func update cam kat addcategory
-                              onDel: () {
-                                //confirm pop up
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          backgroundColor: Colors.white,
-                                          content: Text(
-                                            "Do you want to delete product named '" + categoryMenu[index]!.name + "'?",
-                                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                          ),
-                                          actions: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                              children: [
-                                                IconButton(
-                                                  iconSize: 50,
-                                                  color: Colors.green,
-                                                  onPressed: () async {
-                                                    // loading circle-------------------------
-                                                    load.loading(context);
-                                                    //--------------------------------------
-
-                                                    User? user = AuthService().getCurrentUser();
-
-                                                    //delete product in collection in fbfs
-                                                    await FirebaseFirestore.instance
-                                                        .collection('users')
-                                                        .doc(user!.uid)
-                                                        .collection(widget.catName)
-                                                        .where('name', isEqualTo: categoryMenu[index]!.name)
-                                                        .get()
-                                                        .then(
-                                                      (querySnapshot) async {
-                                                        for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-                                                          documentSnapshot.reference.delete();
-                                                          //only delete pic if imagepath is not null
-                                                          if (categoryMenu[index]!.imagePath != "") {
-                                                            //delete picture in storage
-                                                            await FirebaseStorage.instance
-                                                                .ref()
-                                                                .child(categoryMenu[index]!.imagePath)
-                                                                .delete();
-                                                          }
-                                                        }
-                                                      },
-                                                    ).then((onValue) {
-                                                      obj.scaffoldmessage("Product Deleted", context);
-                                                      Navigator.pop(context);
-                                                      //pop loading circle---------
-                                                      //refresh new menu page
-                                                      Navigator.pop(context);
-                                                      Navigator.pop(context);
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) => const MenuPage(),
-                                                        ),
-                                                      );
-                                                    });
-                                                  },
-                                                  icon: const Icon(Icons.check_circle),
-                                                ),
-                                                IconButton(
-                                                    iconSize: 50,
-                                                    color: Colors.red,
-                                                    onPressed: () => Navigator.pop(context),
-                                                    icon: const Icon(Icons.cancel)),
-                                              ],
-                                            )
-                                          ],
-                                        ));
-                              },
-                            );
-                          },
-                        ),
-                        //button add product
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: ElevatedButton(
-                            onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                //calling AddProduct while sending prod name
-                                builder: (context) => AddProduct(category: widget.catName),
+                              ),
+                              child: const Icon(
+                                Icons.add_rounded,
+                                size: 35,
+                                color: Colors.black,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: const CircleBorder(),
+                                backgroundColor: Colors.grey.shade400, // <-- Button color
+                                //foregroundColor: Colors.red, // <-- Splash color
                               ),
                             ),
-                            child: const Icon(
-                              Icons.add_rounded,
-                              size: 35,
-                              color: Colors.black,
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                              backgroundColor: Colors.grey.shade400, // <-- Button color
-                              //foregroundColor: Colors.red, // <-- Splash color
-                            ),
                           ),
-                        ),
-                        const SizedBox(height: 5),
-                      ],
+                          const SizedBox(height: 5),
+                        ],
+                      ),
                     ),
                   ], //letak list baked by category
                 ),

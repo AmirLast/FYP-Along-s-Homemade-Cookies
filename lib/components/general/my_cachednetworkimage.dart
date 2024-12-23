@@ -8,6 +8,7 @@ class MyCachednetworkimage {
       placeholder: (context, url) => const Center(
         child: CircularProgressIndicator(
           color: Color(0xffB67F5F),
+          backgroundColor: Colors.white,
         ),
       ),
       errorWidget: (context, url, error) => const Center(

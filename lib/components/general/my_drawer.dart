@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_drawer_tile.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
+import 'package:fyp/pages/all_user/profile.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import '../../pages/all_user/settingspage.dart';
 
@@ -66,7 +67,15 @@ class MyDrawer extends StatelessWidget {
           MyDrawerTile(
             text: "P R O F I L E",
             icon: Icons.person,
-            onTap: () => Navigator.pop(context), //go to profile setting
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(),
+                ),
+              );
+            }, //go to profile setting
           ),
 
           //setting list tile

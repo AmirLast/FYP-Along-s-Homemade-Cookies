@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/cartitem.dart';
+import 'package:fyp/models/userclass.dart';
 import 'package:intl/intl.dart';
 
 //these will be in database, but how to make it into a List after reading
@@ -10,14 +11,14 @@ import 'package:intl/intl.dart';
 //read in changenotifier?
 //and then make page to edit the product
 
-class Shop extends ChangeNotifier {
+class Shopping extends ChangeNotifier {
   //list product menu
 
   // user cart
   final List<CartItem> _cart = [];
 
   //delivery address (user can change)
-  String _deliveryAddress = 'Earth, Milky Way';
+  String _deliveryAddress = UserNow.usernow.address;
 
 //getters----------------------------------
   List<CartItem> get cart => _cart;
@@ -52,7 +53,7 @@ class Shop extends ChangeNotifier {
   }
 
   // add to cart
-  void addToCart(Bakeds? prod, int quantity) {
+  void addToCart(Bakeds prod, int quantity) {
     //see if there is cart item already w/ same prod and selected addons
     CartItem? cartItem = _cart.firstWhereOrNull((item) {
       // check if food item is same
@@ -101,7 +102,7 @@ class Shop extends ChangeNotifier {
     double total = 0.0;
 
     for (CartItem cartItem in _cart) {
-      double itemTotal = cartItem.prod!.price;
+      double itemTotal = cartItem.prod.price;
 
       total += itemTotal * cartItem.quantity; //betul ke cara kira ni?
     }
@@ -144,16 +145,17 @@ class Shop extends ChangeNotifier {
 
     receipt.writeln(formattedDate);
     receipt.writeln();
-    receipt.writeln("--------------------------------------------------");
+    receipt.writeln("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
 
     for (final cartItem in _cart) {
-      receipt.writeln("${cartItem.quantity} x ${cartItem.prod!.name} - ${_formatPrice(cartItem.prod!.price)}");
+      receipt.writeln("${cartItem.quantity} x ${cartItem.prod.name}");
+      receipt.writeln("                                                  - " + _formatPrice(cartItem.prod.price * cartItem.quantity));
       if (_cart.last != cartItem) {
         receipt.writeln();
       }
     }
 
-    receipt.writeln("--------------------------------------------------");
+    receipt.writeln("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
     receipt.writeln();
     receipt.writeln("Total Items: ${getTotalItemCount()}");
     receipt.writeln("Total Price: ${_formatPrice(getTotalPrice())}");
@@ -165,6 +167,10 @@ class Shop extends ChangeNotifier {
 
   // format double value into money
   String _formatPrice(double price) {
-    return "RM ${price.toStringAsFixed(2)}";
+    if (price < 10) {
+      return "RM  ${price.toStringAsFixed(2)}";
+    } else {
+      return "RM${price.toStringAsFixed(2)}";
+    }
   }
 }

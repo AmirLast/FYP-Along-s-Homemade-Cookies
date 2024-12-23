@@ -46,12 +46,23 @@ class BakedTile extends StatelessWidget {
             ),
             GestureDetector(
               onTap: onEdit,
-              child: const Icon(Icons.edit, size: 20, color: Colors.black),
+              child: Container(
+                color: Colors.grey.shade400,
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Icon(Icons.edit, size: 20, color: Colors.black),
+                ),
+              ),
             ),
-            const SizedBox(width: 15),
             GestureDetector(
               onTap: onDel,
-              child: const Icon(Icons.close_rounded, size: 25, color: Colors.black),
+              child: Container(
+                color: Colors.grey.shade400,
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Icon(Icons.close_rounded, size: 25, color: Colors.black),
+                ),
+              ),
             ),
             const SizedBox(width: 10),
           ],

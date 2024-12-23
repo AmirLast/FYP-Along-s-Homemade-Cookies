@@ -21,8 +21,8 @@ class _RegisterPageState extends State<RegisterPage> {
 //text editing controller
   late TextEditingController confirmpasswordController;
   late TextEditingController emailController;
-  late TextEditingController fnameController;
-  late TextEditingController lnameController;
+  late TextEditingController displaynameController;
+  late TextEditingController fullnameController;
   late TextEditingController phoneController;
   late TextEditingController passwordController;
   late bool passwordVisibility; //for?
@@ -36,8 +36,8 @@ class _RegisterPageState extends State<RegisterPage> {
     super.initState();
     confirmpasswordController = TextEditingController();
     emailController = TextEditingController();
-    fnameController = TextEditingController();
-    lnameController = TextEditingController();
+    displaynameController = TextEditingController();
+    fullnameController = TextEditingController();
     phoneController = TextEditingController();
     passwordController = TextEditingController();
     shopController = TextEditingController();
@@ -50,8 +50,8 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
     confirmpasswordController.dispose();
     emailController.dispose();
-    fnameController.dispose();
-    lnameController.dispose();
+    displaynameController.dispose();
+    fullnameController.dispose();
     passwordController.dispose();
     phoneController.dispose();
     shopController.dispose();
@@ -107,10 +107,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       //username
                       //first name
                       MyTextField(
-                        controller: fnameController,
+                        controller: displaynameController,
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
-                        labelText: "Firstname",
+                        labelText: "Display Name",
                         hintText: "",
                         obscureText: false,
                         isEnabled: true,
@@ -121,10 +121,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       //last name
                       MyTextField(
-                        controller: lnameController,
+                        controller: fullnameController,
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
-                        labelText: "Lastname",
+                        labelText: "Full Name",
                         hintText: "",
                         obscureText: false,
                         isEnabled: true,
@@ -326,11 +326,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           passStrength = obj.checkpass(password: passwordController.text);
 
                           //checking if it is blank or wrong length or password weak
-                          if (fnameController.text == '') {
-                            error = 'First name is blank';
+                          if (displaynameController.text == '') {
+                            error = 'Display name is blank';
                             isBlank = true;
-                          } else if (lnameController.text == '') {
-                            error = 'Last name is blank';
+                          } else if (fullnameController.text == '') {
+                            error = 'Full name is blank';
                             isBlank = true;
                           } else if (shopController.text == '' && isOwner) {
                             error = 'Shop name is blank';
@@ -381,8 +381,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                   builder: (context) => Register2Page(
                                     email: emailController.text,
                                     password: passwordController.text,
-                                    fname: fnameController.text,
-                                    lname: lnameController.text,
+                                    displayName: displaynameController.text,
+                                    fullName: fullnameController.text,
                                     type: type,
                                     shop: isOwner ? shopController.text : "",
                                     phone: phoneController.text,
