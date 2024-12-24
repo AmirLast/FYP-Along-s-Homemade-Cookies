@@ -114,8 +114,7 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                             category: catName,
                           ),
                         ),
-                      ), //pop up confirm -> pergi page baru (cam add category) -> update (cam kat addcategory.dart) -> back to menu
-                      //for collection: read the collection data into local data buffer(array) -> delete prev collection -> insert buffer into new collection name
+                      ),
                       onDel: () {
                         //confirm pop up
                         showDialog(

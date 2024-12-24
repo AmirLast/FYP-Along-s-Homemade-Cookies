@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/models/shoppingclass.dart';
+import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/profile.dart';
 import 'package:provider/provider.dart';
 
@@ -55,7 +56,7 @@ class MyCurrentLocation extends StatelessWidget {
 
               //drop down menu
               GestureDetector(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage())),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(type: UserNow.usernow.type))),
                 child: const Icon(
                   Icons.mode_edit_outline_rounded,
                   size: 15,

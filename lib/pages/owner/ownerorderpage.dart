@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_loading.dart';
 import 'package:fyp/components/general/my_logo.dart';
-import 'package:fyp/components/general/my_ordercart.dart';
+import 'package:fyp/components/general/my_ordercard.dart';
 import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/models/orderclass.dart';
 
@@ -15,13 +15,26 @@ class OwnerOrderPage extends StatefulWidget {
 
 class _OwnerOrderPageState extends State<OwnerOrderPage> {
   final Logo show = Logo();
-  late List<Orders> orders = Orders.currentOrder.orders;
+  late List<Orders> orders;
+  late List<Orders> pin, pending, past;
   final load = Loading();
   final obj = MyScaffoldmessage();
 
   @override
   void initState() {
     super.initState();
+    reorder();
+  }
+
+  void reorder() {
+    orders = Orders.currentOrder.orders;
+    pin = orders.where((d) => d.status == "Pin").toList();
+    pending = orders.where((d) => d.status == "Pending").toList();
+    past = orders.where((d) => d.status == "Complete" || d.status == "Cancel").toList();
+    pin.sort((x, y) => x.dateDT.compareTo(y.dateDT));
+    pending.sort((x, y) => x.dateDT.compareTo(y.dateDT));
+    past.sort((x, y) => x.dateDT.compareTo(y.dateDT)); //all past order sort by date
+    pin += pending; //all current order but pin is first, all sort by date
   }
 
   void changeStatus(String status, String id) {
@@ -39,12 +52,16 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                 onPressed: () async {
                   load.loading(context);
                   await FirebaseFirestore.instance.collection('orders').doc(id).update({
-                    "status": status,
+                    "status": status == "Unpin" ? "Pending" : status,
                   }).then((onValue) {
+                    Orders.currentOrder.orders[Orders.currentOrder.orders.indexWhere((test) => test.id == id)].status =
+                        status == "Unpin" ? "Pending" : status;
                     Navigator.pop(context);
                     Navigator.pop(context);
                     obj.scaffoldmessage("Status updated to $status", context);
-                    setState(() {});
+                    setState(() {
+                      reorder();
+                    });
                   });
                 },
                 icon: const Icon(Icons.check_circle),
@@ -62,6 +79,18 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
         ],
       ),
     );
+  }
+
+  void onCancel(String id) {
+    changeStatus("Cancel", id);
+  }
+
+  void onComplete(String id) {
+    changeStatus("Complete", id);
+  }
+
+  void onPin(String id, String status) {
+    changeStatus(status == "Pin" ? "Unpin" : "Pin", id);
   }
 
   @override
@@ -114,25 +143,55 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: orders.length,
-                        padding: const EdgeInsets.fromLTRB(50, 10, 50, 10),
+                        itemCount: pin.length,
+                        padding: const EdgeInsets.only(bottom: 10),
                         itemBuilder: (context, index) {
                           return OrderCard(
-                            order: orders[index],
+                            title: "Current Order",
+                            index: index,
+                            order: pin[index],
                             onCancel: () {
-                              changeStatus("Cancel", orders[index].id);
+                              onCancel(pin[index].id);
                             },
                             onComplete: () {
-                              changeStatus("Complete", orders[index].id);
+                              onComplete(pin[index].id);
                             },
                             onInfo: () {},
                             onPin: () {
-                              changeStatus("Pin", orders[index].id);
+                              onPin(pin[index].id, pin[index].status);
                             },
                           );
                         },
                       ),
-                    )
+                    ),
+              Visibility(
+                visible: past.isNotEmpty,
+                child: Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: past.length,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    itemBuilder: (context, index) {
+                      return OrderCard(
+                        title: "Past Order",
+                        index: index,
+                        order: past[index],
+                        onCancel: () {
+                          onCancel(past[index].id);
+                        },
+                        onComplete: () {
+                          onComplete(past[index].id);
+                        },
+                        onInfo: () {},
+                        onPin: () {
+                          onPin(past[index].id, past[index].status);
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
         ),

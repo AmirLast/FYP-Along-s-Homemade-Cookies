@@ -16,7 +16,7 @@ class AdminHomePage extends StatefulWidget {
 class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProviderStateMixin {
   //for logo
   final Logo show = Logo();
-  String? name = UserNow.usernow.user?.displayName ?? "";
+  late String? name;
 
   confirmPopUp(context) {
     //confirm pop up
@@ -59,6 +59,12 @@ class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProvider
   }
 
   @override
+  void initState() {
+    super.initState();
+    name = UserNow.usernow.user?.displayName ?? "";
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
@@ -81,7 +87,7 @@ class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProvider
           ),
           actions: [
             IconButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage())),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(type: UserNow.usernow.type))),
               icon: const Icon(Icons.account_circle, color: Colors.black),
             ),
           ],

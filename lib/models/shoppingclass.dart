@@ -115,7 +115,7 @@ class Shopping extends ChangeNotifier {
     for (CartItem cartItem in _cart) {
       double itemTotal = cartItem.prod.price;
 
-      total += itemTotal * cartItem.quantity; //betul ke cara kira ni?
+      total += itemTotal * cartItem.quantity + 2 /*harga delivery*/;
     }
     return total;
   }
@@ -140,7 +140,7 @@ class Shopping extends ChangeNotifier {
   //update delivery address
   void updateDeliveryAddress(List<String> newAddress) {
     _deliveryAddress = newAddress.map((word) => (word)).join(", ");
-    _deliveryAddressShort = newAddress[0] + ", " + newAddress[2] + ", " + newAddress[3];
+    _deliveryAddressShort = newAddress[0] + ", " + newAddress[2] + ", " + newAddress[3] + ", " + newAddress[4];
     _deliveryPCode = newAddress[1];
     notifyListeners();
   }
@@ -151,7 +151,7 @@ class Shopping extends ChangeNotifier {
     await FirebaseFirestore.instance.collection('users').doc(currentdir).get().then((value) {
       dynamic = value.data()?['address'];
     }).then((value) {
-      _deliveryAddressShop = dynamic[0] + ", " + dynamic[2] + ", " + dynamic[3];
+      _deliveryAddressShop = dynamic[0] + ", " + dynamic[2] + ", " + dynamic[3] + ", " + dynamic[4];
       _deliveryPCodeShop = dynamic[1];
     });
     notifyListeners();
@@ -181,6 +181,7 @@ class Shopping extends ChangeNotifier {
     }
 
     receipt.writeln("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+    receipt.writeln("Delivery fee: RM  2.00");
     receipt.writeln("Total Items: ${getTotalItemCount()}");
     receipt.writeln("Total Price: ${_formatPrice(getTotalPrice())}");
     receipt.writeln("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_drawer_tile.dart';
+import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
 import 'package:fyp/pages/all_user/profile.dart';
 import 'package:fyp/services/auth/auth_service.dart';
@@ -72,7 +73,7 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
+                  builder: (context) => ProfilePage(type: UserNow.usernow.type),
                 ),
               );
             }, //go to profile setting

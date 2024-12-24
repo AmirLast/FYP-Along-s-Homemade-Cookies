@@ -21,7 +21,7 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderStateMixin {
-  String? name = UserNow.usernow.user?.displayName ?? "";
+  late String? name;
   final gotoNext = Showloading();
   final Logo show = Logo(); //for logo
   final gotoOrder = UpdateOrderData();
@@ -67,7 +67,13 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
   }
 
   void refreshAddress() {
-    List<String> address = [UserNow.usernow.address[0], UserNow.usernow.address[1], UserNow.usernow.address[2], UserNow.usernow.address[3]];
+    List<String> address = [
+      UserNow.usernow.address[0],
+      UserNow.usernow.address[1],
+      UserNow.usernow.address[2],
+      UserNow.usernow.address[3],
+      UserNow.usernow.address[4]
+    ];
     context.read<Shopping>().updateDeliveryAddress(address);
   }
 
@@ -75,6 +81,7 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
   void initState() {
     super.initState();
     refreshAddress();
+    name = UserNow.usernow.user?.displayName ?? "";
   }
 
   @override
@@ -118,7 +125,7 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
               icon: const Icon(CupertinoIcons.tray_full, color: Colors.black),
             ),
             IconButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage())),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(type: UserNow.usernow.type))),
               icon: const Icon(Icons.account_circle, color: Colors.black),
             ),
           ],
@@ -154,29 +161,6 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
                 ),
                 const MyDescBox(),
                 const SizedBox(height: 60),
-                /*MyMenuButton(
-                  text: "Browse Shop",
-                  icon: Icons.shopify_rounded,
-                  size: 0,
-                  onPressed: () {
-                    gotoNext.showloading(
-                      "",
-                      (BuildContext context) => const ShopListPage(),
-                      const RouteSettings(name: "shoplist"),
-                      "/",
-                      context,
-                    );
-                  },
-                ),
-                const SizedBox(height: 60),
-                MyMenuButton(
-                  text: "Order History",
-                  icon: CupertinoIcons.tray_full,
-                  size: 0,
-                  onPressed: () {
-                    gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "buyer", context);
-                  },
-                ),*/
               ],
             ),
           ),

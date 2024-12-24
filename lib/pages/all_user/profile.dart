@@ -13,13 +13,17 @@ import 'package:fyp/components/general/my_textfield.dart';
 import 'package:fyp/images/assets.dart';
 import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/userclass.dart';
+import 'package:fyp/pages/admin/adminhomepage.dart';
 import 'package:fyp/pages/all_user/functions/updateurl.dart';
+import 'package:fyp/pages/customer/userhomepage.dart';
+import 'package:fyp/pages/owner/ownerhomepage.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final String type;
+  const ProfilePage({super.key, required this.type});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -37,6 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final String postcode = UserNow.usernow.address[1];
   final String city = UserNow.usernow.address[2];
   final String state = UserNow.usernow.address[3];
+  final String country = UserNow.usernow.address[4];
   //text editing controller
   late TextEditingController dnameController;
   late TextEditingController fnameController;
@@ -45,6 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController postcodeController;
   late TextEditingController cityController;
   late TextEditingController stateController;
+  late TextEditingController countryController;
   late String src;
   late String dnameHT;
   late String fnameHT;
@@ -53,6 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late String pcodeHT;
   late String cityHT;
   late String stateHT;
+  late String countryHT;
   bool isEdit = false;
   final obj2 = MyCachednetworkimage();
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
@@ -70,6 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
     postcodeController.dispose();
     cityController.dispose();
     stateController.dispose();
+    countryController.dispose();
   }
 
   @override
@@ -82,12 +90,13 @@ class _ProfilePageState extends State<ProfilePage> {
     postcodeController = TextEditingController();
     cityController = TextEditingController();
     stateController = TextEditingController();
-    inithinttext(displayName, fullname, phone, address, postcode, city, state);
+    countryController = TextEditingController();
+    inithinttext(displayName, fullname, phone, address, postcode, city, state, country);
     src = user?.photoURL ?? defProfile;
   }
 
   //to initialize hint text--------
-  inithinttext(String dname, String fname, String phone, String address, String postcode, String city, String state) {
+  inithinttext(String dname, String fname, String phone, String address, String postcode, String city, String state, String country) {
     dnameHT = dname;
     fnameHT = fname;
     phoneHT = phone;
@@ -95,6 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
     pcodeHT = postcode;
     cityHT = city;
     stateHT = state;
+    countryHT = country;
   }
   //to initialize hint text--------
 
@@ -104,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   //uppercase first letter-----------------------------------------
-  //untuk bahagian upload image-----------------------------------------------------
+  //untuk bahagian upload image---------------------------------------------------
   File? _image;
   final picker = ImagePicker();
 
@@ -170,7 +180,11 @@ class _ProfilePageState extends State<ProfilePage> {
         fnameController.text != '' ||
         phoneController.text != '' ||
         _image != null ||
-        (addressController.text != '' || postcodeController.text != '' || cityController.text != '' || stateController.text != '');
+        (addressController.text != '' ||
+            postcodeController.text != '' ||
+            cityController.text != '' ||
+            stateController.text != '' ||
+            countryController.text != '');
   }
   //--------------------------------------------------------------------------------------------
 
@@ -193,8 +207,28 @@ class _ProfilePageState extends State<ProfilePage> {
                 iconSize: 50,
                 color: Colors.green,
                 onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                  if (widget.type == "owner") {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const OwnerHomePage(), settings: const RouteSettings(name: "/")),
+                      (Route<dynamic> route) => false,
+                    );
+                  } else if (widget.type == "buyer") {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const UserHomePage(), settings: const RouteSettings(name: "/")),
+                      (Route<dynamic> route) => false,
+                    );
+                  } else {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const AdminHomePage(), settings: const RouteSettings(name: "/")),
+                      (Route<dynamic> route) => false,
+                    );
+                  }
                 },
                 icon: const Icon(Icons.check_circle),
               ),
@@ -214,7 +248,25 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void toPop() {
     if (!isSaveEnabled()) {
-      Navigator.pop(context);
+      if (widget.type == "owner") {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute<void>(builder: (BuildContext context) => const OwnerHomePage(), settings: const RouteSettings(name: "/")),
+          (Route<dynamic> route) => false,
+        );
+      } else if (widget.type == "buyer") {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute<void>(builder: (BuildContext context) => const UserHomePage(), settings: const RouteSettings(name: "/")),
+          (Route<dynamic> route) => false,
+        );
+      } else {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute<void>(builder: (BuildContext context) => const AdminHomePage(), settings: const RouteSettings(name: "/")),
+          (Route<dynamic> route) => false,
+        );
+      }
     } else {
       confirmPopUp(context);
     }
@@ -603,34 +655,110 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  //state
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        child: Text(
-                          "State",
-                          style: TextStyle(color: Colors.black),
+                  //state and country
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            child: Text(
+                              "State",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            child: Text(
+                              "Country",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 85),
+                    ],
                   ),
-                  //state
-                  MyTextField(
-                    maxLength: 0,
-                    controller: stateController,
-                    labelText: stateHT,
-                    obscureText: false,
-                    inputType: TextInputType.text,
-                    caps: TextCapitalization.words,
-                    isEnabled: isEdit,
-                    hintText: stateHT,
-                    isShowhint: true,
+                  //textfield for state and country
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        SizedBox(
+                          width: (MediaQuery.of(context).size.width - 50) / 2 - 10,
+                          child: TextField(
+                            cursorColor: Colors.black,
+                            autofocus: true,
+                            enabled: isEdit, //get this value
+                            controller: stateController,
+                            keyboardType: TextInputType.text,
+                            obscureText: false,
+                            textCapitalization: TextCapitalization.words,
+                            decoration: InputDecoration(
+                              disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade400,
+                              labelText: stateHT,
+                              floatingLabelStyle: const TextStyle(color: Colors.black),
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              hintText: stateHT,
+                              hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          width: (MediaQuery.of(context).size.width - 50) / 2 - 10,
+                          child: TextField(
+                            cursorColor: Colors.black,
+                            autofocus: true,
+                            enabled: isEdit, //get this value
+                            controller: countryController,
+                            keyboardType: TextInputType.text,
+                            obscureText: false,
+                            textCapitalization: TextCapitalization.words,
+                            decoration: InputDecoration(
+                              disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade400,
+                              labelText: countryHT,
+                              floatingLabelStyle: const TextStyle(color: Colors.black),
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              hintText: countryHT,
+                              hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 50),
                   Row(
@@ -646,7 +774,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           } else if (isSaveEnabled()) {
                             //save here
                             String newdname, newfname, newpnum;
-                            List<String> words = [], names = [], newadd = ["", "", "", ""];
+                            List<String> words = [], names = [], newadd = ["", "", "", "", ""];
                             fnameController.text == ""
                                 ? newfname = fullname
                                 : {
@@ -696,14 +824,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 newadd[1] = postcode;
                                               }
                                               if (cityController.text != '') {
-                                                newadd[2] = cityController.text.trim();
+                                                newadd[2] = upperCase(cityController.text.trim());
                                               } else {
                                                 newadd[2] = city;
                                               }
                                               if (stateController.text != '') {
-                                                newadd[3] = stateController.text.trim();
+                                                newadd[3] = upperCase(stateController.text.trim());
                                               } else {
                                                 newadd[3] = state;
+                                              }
+                                              if (countryController.text != '') {
+                                                newadd[4] = upperCase(countryController.text.trim());
+                                              } else {
+                                                newadd[4] = state;
                                               }
                                               try {
                                                 String imagePath = "${UserNow.usernow.user?.uid}/profilePic";
@@ -745,8 +878,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         //pop save changes dialogue
                                                         scaffoldOBJ.scaffoldmessage("Data saved", context);
                                                         setState(() {
-                                                          inithinttext(
-                                                              newdname, newfname, newpnum, newadd[0], newadd[1], newadd[2], newadd[3]);
+                                                          inithinttext(newdname, newfname, newpnum, newadd[0], newadd[1], newadd[2],
+                                                              newadd[3], newadd[4]);
                                                           _image = null;
                                                           dnameController = TextEditingController();
                                                           fnameController = TextEditingController();
@@ -755,6 +888,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           postcodeController = TextEditingController();
                                                           cityController = TextEditingController();
                                                           stateController = TextEditingController();
+                                                          countryController = TextEditingController();
                                                           isEdit = false;
                                                           UserNow.usernow.user = _auth.getCurrentUser();
                                                         });
@@ -781,7 +915,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     //pop save changes dialogue
                                                     scaffoldOBJ.scaffoldmessage("Data saved", context);
                                                     setState(() {
-                                                      inithinttext(newdname, newfname, newpnum, newadd[0], newadd[1], newadd[2], newadd[3]);
+                                                      inithinttext(newdname, newfname, newpnum, newadd[0], newadd[1], newadd[2], newadd[3],
+                                                          newadd[4]);
                                                       _image = null;
                                                       dnameController = TextEditingController();
                                                       fnameController = TextEditingController();
@@ -790,6 +925,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       postcodeController = TextEditingController();
                                                       cityController = TextEditingController();
                                                       stateController = TextEditingController();
+                                                      countryController = TextEditingController();
                                                       isEdit = false;
                                                       UserNow.usernow.user = _auth.getCurrentUser();
                                                     });

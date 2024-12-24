@@ -197,7 +197,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         isShowhint: false,
                       ),
 
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 10),
 
                       //email
                       MyTextField(

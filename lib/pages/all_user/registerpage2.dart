@@ -48,6 +48,7 @@ class _Register2PageState extends State<Register2Page> {
   late TextEditingController postcodeController;
   late TextEditingController stateController;
   late TextEditingController cityController;
+  late TextEditingController countryController;
 
   @override
   void initState() {
@@ -56,6 +57,7 @@ class _Register2PageState extends State<Register2Page> {
     postcodeController = TextEditingController();
     stateController = TextEditingController();
     cityController = TextEditingController();
+    countryController = TextEditingController();
   }
 
   @override
@@ -65,6 +67,7 @@ class _Register2PageState extends State<Register2Page> {
     postcodeController.dispose();
     stateController.dispose();
     cityController.dispose();
+    countryController.dispose();
   }
 
   Future<User?> register({
@@ -138,7 +141,7 @@ class _Register2PageState extends State<Register2Page> {
 
                       const SizedBox(height: 60),
 
-                      //address house + town
+                      //address house + building + town
                       MyTextField(
                         maxLength: 0,
                         controller: address1Controller,
@@ -166,7 +169,7 @@ class _Register2PageState extends State<Register2Page> {
                         isShowhint: false,
                       ),
 
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 10),
 
                       //city
                       MyTextField(
@@ -190,6 +193,21 @@ class _Register2PageState extends State<Register2Page> {
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
                         labelText: "State",
+                        hintText: "",
+                        obscureText: false,
+                        isEnabled: true,
+                        isShowhint: false,
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      //country
+                      MyTextField(
+                        maxLength: 0,
+                        controller: countryController,
+                        caps: TextCapitalization.words,
+                        inputType: TextInputType.text,
+                        labelText: "Country",
                         hintText: "",
                         obscureText: false,
                         isEnabled: true,
@@ -260,6 +278,9 @@ class _Register2PageState extends State<Register2Page> {
                               } else if (stateController.text == '') {
                                 error = 'State is blank';
                                 isBlank = true;
+                              } else if (countryController.text == '') {
+                                error = 'Country is blank';
+                                isBlank = true;
                               }
 
                               //if there is error, show it and don't sign up
@@ -287,8 +308,9 @@ class _Register2PageState extends State<Register2Page> {
                                   List<String> addressList = [
                                     address1Controller.text.trim(),
                                     postcodeController.text.trim(),
-                                    cityController.text.trim(),
-                                    stateController.text.trim()
+                                    upperCase(cityController.text.trim()),
+                                    upperCase(stateController.text.trim()),
+                                    upperCase(countryController.text.trim())
                                   ];
                                   //set default user pfp and displayname and phone
                                   user?.updateProfile(displayName: widget.displayName.trim(), photoURL: defProfile);

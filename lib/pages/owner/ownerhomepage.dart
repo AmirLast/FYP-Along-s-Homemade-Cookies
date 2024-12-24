@@ -17,7 +17,7 @@ class OwnerHomePage extends StatefulWidget {
 }
 
 class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProviderStateMixin {
-  String? name = UserNow.usernow.user?.displayName ?? ""; //owner data from ownerclass.dart
+  late String? name;
   final Logo show = Logo(); //for logo
   final gotoOrder = UpdateOrderData();
 
@@ -62,6 +62,12 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
   }
 
   @override
+  void initState() {
+    super.initState();
+    name = UserNow.usernow.user?.displayName ?? "";
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
@@ -83,7 +89,7 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
           ),
           actions: [
             IconButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage())),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(type: UserNow.usernow.type))),
               icon: const Icon(Icons.account_circle, color: Colors.black),
             ),
             IconButton(
@@ -112,14 +118,6 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
                   gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "owner", context);
                 },
               ),
-              /*
-              List function2 owner yang belum terciptakan
-              MyMenuButton(
-                  text: "Business Summary",
-                  onPressed: () {} //=> Navigator.push(context,
-                  //MaterialPageRoute(builder: (context) => const SummaryPage())),
-                  ),
-              */
             ],
           ),
         ),
