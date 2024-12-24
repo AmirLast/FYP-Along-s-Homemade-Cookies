@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_logo.dart';
-import 'package:fyp/components/customer/my_ordercart.dart';
+import 'package:fyp/components/general/my_ordercart.dart';
 import 'package:fyp/models/orderclass.dart';
 import 'package:fyp/models/userclass.dart';
 
@@ -75,7 +75,13 @@ class _BuyerOrderState extends State<BuyerOrder> {
                         itemCount: orders.length,
                         padding: const EdgeInsets.fromLTRB(50, 10, 50, 10),
                         itemBuilder: (context, index) {
-                          return OrderCard(order: orders[index], onCancel: () {}, onCheck: () {});
+                          return OrderCard(
+                            order: orders[index],
+                            onCancel: () {},
+                            onComplete: () {},
+                            onInfo: () {},
+                            onPin: () {},
+                          );
                         },
                       ),
                     )

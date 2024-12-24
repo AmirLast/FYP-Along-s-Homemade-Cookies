@@ -11,16 +11,19 @@ class UpdateOrderData {
   void updateorderdata(String userid, String type, BuildContext context) async {
     load.loading(context); //show loading screen for both option
     Orders.currentOrder.orders.clear(); //clear current order list
+    //final cartitems = <Map<String, int>>[];
     Orders oneOrder;
     try {
       await FirebaseFirestore.instance.collection('orders').where(type, isEqualTo: userid).get().then(
         (querySnapshot) {
           for (var docSnapshot in querySnapshot.docs) {
             oneOrder = Orders(
+              id: docSnapshot.id,
               dateString: docSnapshot.get('date'),
               dateDT: DateTime.parse(docSnapshot.get('date')),
               order: docSnapshot.get('order'),
               status: docSnapshot.get('status'),
+              cartitems: docSnapshot.get('cartitem'),
             );
             Orders.currentOrder.orders.add(oneOrder);
           }

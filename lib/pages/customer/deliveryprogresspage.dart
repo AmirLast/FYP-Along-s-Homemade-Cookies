@@ -24,7 +24,7 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
 
     //submit order to firestore db
     String receipt = context.read<Shopping>().displayCartReceipt();
-    db.saveOrderToDatabase(receipt);
+    db.saveOrderToDatabase(receipt, context);
   }
 
   void toPop(Shopping shop) {
