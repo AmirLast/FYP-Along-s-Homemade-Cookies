@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/components/customer/my_currentlocation.dart';
 import 'package:fyp/components/general/my_drawer.dart';
 import 'package:fyp/components/general/my_logo.dart';
-import 'package:fyp/components/general/my_menubutton.dart';
+import 'package:fyp/components/my_descbox.dart';
+import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/endscreen.dart';
 import 'package:fyp/pages/all_user/functions/showloading.dart';
 import 'package:fyp/pages/all_user/functions/updateorder.dart';
 import 'package:fyp/pages/all_user/profile.dart';
 import 'package:fyp/pages/customer/shoplistpage.dart';
-import 'package:fyp/pages/customer/sizepage.dart';
+import 'package:provider/provider.dart';
 
 class UserHomePage extends StatefulWidget {
   const UserHomePage({super.key});
@@ -64,6 +66,17 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
     );
   }
 
+  void refreshAddress() {
+    List<String> address = [UserNow.usernow.address[0], UserNow.usernow.address[1], UserNow.usernow.address[2], UserNow.usernow.address[3]];
+    context.read<Shopping>().updateDeliveryAddress(address);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    refreshAddress();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -87,6 +100,24 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
           ),
           actions: [
             IconButton(
+              onPressed: () {
+                gotoNext.showloading(
+                  "",
+                  (BuildContext context) => const ShopListPage(),
+                  const RouteSettings(name: "shoplist"),
+                  "/",
+                  context,
+                );
+              },
+              icon: const Icon(Icons.shopping_cart, color: Colors.black),
+            ),
+            IconButton(
+              onPressed: () {
+                gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "buyer", context);
+              },
+              icon: const Icon(CupertinoIcons.tray_full, color: Colors.black),
+            ),
+            IconButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage())),
               icon: const Icon(Icons.account_circle, color: Colors.black),
             ),
@@ -97,40 +128,57 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
           decoration: show.showLogo(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MyMenuButton(
-                text: "Browse Shop",
-                icon: Icons.shopify_rounded,
-                size: 0,
-                onPressed: () {
-                  gotoNext.showloading(
-                    "",
-                    (BuildContext context) => const ShopListPage(),
-                    const RouteSettings(name: "shoplist"),
-                    "/",
-                    context,
-                  );
-                },
-              ),
-              const SizedBox(height: 60),
-              MyMenuButton(
-                text: "Order History",
-                icon: CupertinoIcons.tray_full,
-                size: 0,
-                onPressed: () {
-                  gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "buyer", context);
-                },
-              ),
-              const SizedBox(height: 60),
-              MyMenuButton(
-                text: "Word Sizes",
-                icon: CupertinoIcons.search,
-                size: 0,
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SizePage())),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width - 50,
+                  decoration: const BoxDecoration(color: Colors.white),
+                  child: const Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("This"),
+                        Text("Is"),
+                        Text("Advertisement"),
+                        Text("Placeholder"),
+                      ],
+                    ),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: MyCurrentLocation(),
+                ),
+                const MyDescBox(),
+                const SizedBox(height: 60),
+                /*MyMenuButton(
+                  text: "Browse Shop",
+                  icon: Icons.shopify_rounded,
+                  size: 0,
+                  onPressed: () {
+                    gotoNext.showloading(
+                      "",
+                      (BuildContext context) => const ShopListPage(),
+                      const RouteSettings(name: "shoplist"),
+                      "/",
+                      context,
+                    );
+                  },
+                ),
+                const SizedBox(height: 60),
+                MyMenuButton(
+                  text: "Order History",
+                  icon: CupertinoIcons.tray_full,
+                  size: 0,
+                  onPressed: () {
+                    gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "buyer", context);
+                  },
+                ),*/
+              ],
+            ),
           ),
         ),
       ),

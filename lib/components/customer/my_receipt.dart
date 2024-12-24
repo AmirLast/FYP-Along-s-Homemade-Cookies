@@ -8,7 +8,7 @@ class MyReceipt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 50, left: 25, right: 25, bottom: 25),
+      padding: const EdgeInsets.only(top: 50, left: 55, right: 55, bottom: 25),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -26,8 +26,8 @@ class MyReceipt extends StatelessWidget {
                 builder: (context, shopping, child) => Text(shopping.displayCartReceipt()),
               ),
             ),
-            // const SizedBox(height: 25),
-            // const Text("Estimated delivery time is: 12:30 PM"),
+            const SizedBox(height: 25),
+            const Text("Estimated delivery time is 3~5 business days"),
           ],
         ),
       ),

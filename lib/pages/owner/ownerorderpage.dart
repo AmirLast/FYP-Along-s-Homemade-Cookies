@@ -70,7 +70,7 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                         shrinkWrap: true,
                         primary: false,
                         itemCount: orders.length,
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                        padding: const EdgeInsets.fromLTRB(50, 10, 50, 10),
                         itemBuilder: (context, index) {
                           return OrderCard(order: orders[index], onCancel: () {}, onCheck: () {});
                         },

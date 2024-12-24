@@ -8,7 +8,7 @@ class UserNow {
   User? user;
   String currentdir = "";
   bool passStrength = false;
-  List<String> address = [];
+  List address = [];
   //below is for owner
   List categories = [];
   String shop = "";

@@ -97,7 +97,7 @@ class _ForgorPasswordState extends State<ForgorPassword> {
 
                     //email
                     MyTextField(
-                      maxLength: TextField.noMaxLength,
+                      maxLength: 0,
                       controller: emailController,
                       caps: TextCapitalization.none,
                       inputType: TextInputType.emailAddress,

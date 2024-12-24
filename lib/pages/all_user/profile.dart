@@ -33,17 +33,26 @@ class _ProfilePageState extends State<ProfilePage> {
   //final String password;
   final String phone = UserNow.usernow.phone;
   final String photoURL = UserNow.usernow.user?.photoURL ?? defProfile;
-  final String address = UserNow.usernow.address.map((word) => (word)).join(", ");
+  final String address = UserNow.usernow.address[0];
+  final String postcode = UserNow.usernow.address[1];
+  final String city = UserNow.usernow.address[2];
+  final String state = UserNow.usernow.address[3];
   //text editing controller
   late TextEditingController dnameController;
   late TextEditingController fnameController;
   late TextEditingController phoneController;
   late TextEditingController addressController;
+  late TextEditingController postcodeController;
+  late TextEditingController cityController;
+  late TextEditingController stateController;
   late String src;
   late String dnameHT;
   late String fnameHT;
   late String phoneHT;
   late String addressHT;
+  late String pcodeHT;
+  late String cityHT;
+  late String stateHT;
   bool isEdit = false;
   final obj2 = MyCachednetworkimage();
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
@@ -58,6 +67,9 @@ class _ProfilePageState extends State<ProfilePage> {
     fnameController.dispose();
     phoneController.dispose();
     addressController.dispose();
+    postcodeController.dispose();
+    cityController.dispose();
+    stateController.dispose();
   }
 
   @override
@@ -67,16 +79,22 @@ class _ProfilePageState extends State<ProfilePage> {
     fnameController = TextEditingController();
     phoneController = TextEditingController();
     addressController = TextEditingController();
-    inithinttext(displayName, fullname, phone, address);
+    postcodeController = TextEditingController();
+    cityController = TextEditingController();
+    stateController = TextEditingController();
+    inithinttext(displayName, fullname, phone, address, postcode, city, state);
     src = user?.photoURL ?? defProfile;
   }
 
   //to initialize hint text--------
-  inithinttext(String dname, String fname, String phone, String address) {
+  inithinttext(String dname, String fname, String phone, String address, String postcode, String city, String state) {
     dnameHT = dname;
     fnameHT = fname;
     phoneHT = phone;
     addressHT = address;
+    pcodeHT = postcode;
+    cityHT = city;
+    stateHT = state;
   }
   //to initialize hint text--------
 
@@ -148,11 +166,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   //enable save kalau ada changes in textcontroller atau imej je--------------------------------
   bool isSaveEnabled() {
-    return !(dnameController.text == '' &&
-        fnameController.text == '' &&
-        phoneController.text == '' &&
-        _image == null &&
-        addressController.text == '');
+    return dnameController.text != '' ||
+        fnameController.text != '' ||
+        phoneController.text != '' ||
+        _image != null ||
+        (addressController.text != '' || postcodeController.text != '' || cityController.text != '' || stateController.text != '');
   }
   //--------------------------------------------------------------------------------------------
 
@@ -380,7 +398,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   //displayname
                   MyTextField(
-                    maxLength: TextField.noMaxLength,
+                    maxLength: 0,
                     controller: dnameController,
                     labelText: dnameHT,
                     obscureText: false,
@@ -409,7 +427,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   //fullname
                   MyTextField(
-                    maxLength: TextField.noMaxLength,
+                    maxLength: 0,
                     controller: fnameController,
                     labelText: fnameHT,
                     obscureText: false,
@@ -448,7 +466,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     hintText: phoneHT,
                     isShowhint: true,
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
@@ -467,7 +485,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   //address
                   MyTextField(
-                    maxLength: TextField.noMaxLength,
+                    maxLength: 0,
                     controller: addressController,
                     labelText: addressHT,
                     obscureText: false,
@@ -475,6 +493,143 @@ class _ProfilePageState extends State<ProfilePage> {
                     caps: TextCapitalization.words,
                     isEnabled: isEdit,
                     hintText: addressHT,
+                    isShowhint: true,
+                  ),
+                  const SizedBox(height: 30),
+                  //postcode and city
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            child: Text(
+                              "PostCode",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            child: Text(
+                              "City",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 110),
+                    ],
+                  ),
+                  //textfield for postcode and city
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        SizedBox(
+                          width: (MediaQuery.of(context).size.width - 50) / 2 - 10,
+                          child: TextField(
+                            maxLength: 5,
+                            cursorColor: Colors.black,
+                            autofocus: true,
+                            enabled: isEdit, //get this value
+                            controller: postcodeController,
+                            keyboardType: TextInputType.number,
+                            obscureText: false,
+                            textCapitalization: TextCapitalization.none,
+                            decoration: InputDecoration(
+                              disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade400,
+                              labelText: pcodeHT,
+                              floatingLabelStyle: const TextStyle(color: Colors.black),
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              hintText: pcodeHT,
+                              hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          width: (MediaQuery.of(context).size.width - 50) / 2 - 10,
+                          child: TextField(
+                            cursorColor: Colors.black,
+                            autofocus: true,
+                            enabled: isEdit, //get this value
+                            controller: cityController,
+                            keyboardType: TextInputType.text,
+                            obscureText: false,
+                            textCapitalization: TextCapitalization.words,
+                            decoration: InputDecoration(
+                              disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade400,
+                              labelText: cityHT,
+                              floatingLabelStyle: const TextStyle(color: Colors.black),
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              hintText: cityHT,
+                              hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  //state
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        child: Text(
+                          "State",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                  //state
+                  MyTextField(
+                    maxLength: 0,
+                    controller: stateController,
+                    labelText: stateHT,
+                    obscureText: false,
+                    inputType: TextInputType.text,
+                    caps: TextCapitalization.words,
+                    isEnabled: isEdit,
+                    hintText: stateHT,
                     isShowhint: true,
                   ),
                   const SizedBox(height: 50),
@@ -490,8 +645,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             });
                           } else if (isSaveEnabled()) {
                             //save here
-                            String newdname, newfname, newpnum, newadd;
-                            List<String> words = [], names = [];
+                            String newdname, newfname, newpnum;
+                            List<String> words = [], names = [], newadd = ["", "", "", ""];
                             fnameController.text == ""
                                 ? newfname = fullname
                                 : {
@@ -530,12 +685,26 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       newdname = words.map((word) => upperCase(word)).join(" "),
                                                     };
                                               phoneController.text == "" ? newpnum = phone : newpnum = phoneController.text.trim();
-                                              addressController.text == ""
-                                                  ? newadd = address
-                                                  : {
-                                                      newadd = addressController.text.trim(),
-                                                      context.read<Shopping>().updateDeliveryAddress(newadd),
-                                                    };
+                                              if (addressController.text != '') {
+                                                newadd[0] = addressController.text.trim();
+                                              } else {
+                                                newadd[0] = address;
+                                              }
+                                              if (postcodeController.text != '') {
+                                                newadd[1] = postcodeController.text.trim();
+                                              } else {
+                                                newadd[1] = postcode;
+                                              }
+                                              if (cityController.text != '') {
+                                                newadd[2] = cityController.text.trim();
+                                              } else {
+                                                newadd[2] = city;
+                                              }
+                                              if (stateController.text != '') {
+                                                newadd[3] = stateController.text.trim();
+                                              } else {
+                                                newadd[3] = state;
+                                              }
                                               try {
                                                 String imagePath = "${UserNow.usernow.user?.uid}/profilePic";
                                                 // loading circle-------------------------
@@ -565,6 +734,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           print(e.toString());
                                                         }
                                                       }
+                                                      context.read<Shopping>().updateDeliveryAddress(newadd);
                                                       await FirebaseFirestore.instance.collection("users").doc(user?.uid).update({
                                                         "fullname": newfname,
                                                         "phone": newpnum,
@@ -575,12 +745,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         //pop save changes dialogue
                                                         scaffoldOBJ.scaffoldmessage("Data saved", context);
                                                         setState(() {
-                                                          inithinttext(newdname, newfname, newpnum, newadd);
+                                                          inithinttext(
+                                                              newdname, newfname, newpnum, newadd[0], newadd[1], newadd[2], newadd[3]);
                                                           _image = null;
                                                           dnameController = TextEditingController();
                                                           fnameController = TextEditingController();
                                                           phoneController = TextEditingController();
                                                           addressController = TextEditingController();
+                                                          postcodeController = TextEditingController();
+                                                          cityController = TextEditingController();
+                                                          stateController = TextEditingController();
                                                           isEdit = false;
                                                           UserNow.usernow.user = _auth.getCurrentUser();
                                                         });
@@ -596,6 +770,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       print(e.toString());
                                                     }
                                                   }
+                                                  context.read<Shopping>().updateDeliveryAddress(newadd);
                                                   await FirebaseFirestore.instance.collection("users").doc(user?.uid).update({
                                                     "fullname": newfname,
                                                     "phone": newpnum,
@@ -606,11 +781,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     //pop save changes dialogue
                                                     scaffoldOBJ.scaffoldmessage("Data saved", context);
                                                     setState(() {
-                                                      inithinttext(newdname, newfname, newpnum, newadd);
+                                                      inithinttext(newdname, newfname, newpnum, newadd[0], newadd[1], newadd[2], newadd[3]);
+                                                      _image = null;
                                                       dnameController = TextEditingController();
                                                       fnameController = TextEditingController();
                                                       phoneController = TextEditingController();
                                                       addressController = TextEditingController();
+                                                      postcodeController = TextEditingController();
+                                                      cityController = TextEditingController();
+                                                      stateController = TextEditingController();
                                                       isEdit = false;
                                                       UserNow.usernow.user = _auth.getCurrentUser();
                                                     });

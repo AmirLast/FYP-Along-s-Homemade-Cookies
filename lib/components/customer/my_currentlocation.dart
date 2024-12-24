@@ -1,43 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/models/shoppingclass.dart';
+import 'package:fyp/pages/all_user/profile.dart';
 import 'package:provider/provider.dart';
 
 class MyCurrentLocation extends StatelessWidget {
-  MyCurrentLocation({super.key});
-
-  final textController = TextEditingController();
+  const MyCurrentLocation({super.key});
 
   void openLocationSearchBox(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        backgroundColor: Colors.white,
         title: const Text("Your location"),
-        content: TextField(
-          controller: textController,
-          decoration: const InputDecoration(hintText: "Enter address.."),
+        content: Padding(
+          padding: const EdgeInsets.fromLTRB(4, 0, 4, 10),
+          child: Text(context.read<Shopping>().deliveryAddress),
         ),
-        actions: [
-          //cancel button
-          MaterialButton(
-            onPressed: () {
-              Navigator.pop(context);
-              textController.clear();
-            },
-            child: const Text("Cancel"),
-          ),
-          //save button
-          MaterialButton(
-            onPressed: () {
-              //update delivery address
-              String newAddress = textController.text;
-              context.read<Shopping>().updateDeliveryAddress(newAddress);
-              Navigator.pop(context);
-              textController.clear();
-            },
-            child: const Text("Save"),
-          ),
-        ],
       ),
     );
   }
@@ -49,32 +27,42 @@ class MyCurrentLocation extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Deliver now",
-            style: TextStyle(color: Colors.blue[900]),
+          const Text(
+            "Delivery Address",
+            style: TextStyle(color: Colors.black),
           ),
-          GestureDetector(
-            onTap: () => openLocationSearchBox(context),
-            child: Row(
-              children: [
-                //address
-                Consumer<Shopping>(
-                  builder: (context, shopping, child) => Text(
-                    shopping.deliveryAddress,
-                    style: TextStyle(
-                      color: Colors.blue[900],
-                      fontWeight: FontWeight.bold,
+          Row(
+            children: [
+              //address
+              GestureDetector(
+                onTap: () => openLocationSearchBox(context),
+                child: Consumer<Shopping>(
+                  builder: (context, shopping, child) => SizedBox(
+                    width: MediaQuery.of(context).size.width - 66 - 5 - 15,
+                    child: Text(
+                      shopping.deliveryAddress,
+                      style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
+              ),
 
-                //drop down menu
-                Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  color: Theme.of(context).colorScheme.primary,
+              const SizedBox(width: 5),
+
+              //drop down menu
+              GestureDetector(
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage())),
+                child: const Icon(
+                  Icons.mode_edit_outline_rounded,
+                  size: 15,
+                  color: Colors.black,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

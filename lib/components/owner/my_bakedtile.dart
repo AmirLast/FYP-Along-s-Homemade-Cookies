@@ -49,7 +49,7 @@ class BakedTile extends StatelessWidget {
               child: Container(
                 color: Colors.grey.shade400,
                 child: const Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
                   child: Icon(Icons.edit, size: 20, color: Colors.black),
                 ),
               ),
@@ -57,9 +57,11 @@ class BakedTile extends StatelessWidget {
             GestureDetector(
               onTap: onDel,
               child: Container(
-                color: Colors.grey.shade400,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
+                ),
                 child: const Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
                   child: Icon(Icons.close_rounded, size: 25, color: Colors.black),
                 ),
               ),

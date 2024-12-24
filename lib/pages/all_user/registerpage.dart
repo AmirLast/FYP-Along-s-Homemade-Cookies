@@ -107,7 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       //username
                       //first name
                       MyTextField(
-                        maxLength: TextField.noMaxLength,
+                        maxLength: 0,
                         controller: displaynameController,
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
@@ -122,7 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       //last name
                       MyTextField(
-                        maxLength: TextField.noMaxLength,
+                        maxLength: 0,
                         controller: fullnameController,
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
@@ -171,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       //shop name
                       MyTextField(
-                        maxLength: TextField.noMaxLength,
+                        maxLength: 0,
                         controller: shopController,
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
@@ -201,7 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       //email
                       MyTextField(
-                        maxLength: TextField.noMaxLength,
+                        maxLength: 0,
                         controller: emailController,
                         caps: TextCapitalization.none,
                         inputType: TextInputType.emailAddress,

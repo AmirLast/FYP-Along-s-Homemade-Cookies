@@ -140,7 +140,7 @@ class _Register2PageState extends State<Register2Page> {
 
                       //address house + town
                       MyTextField(
-                        maxLength: TextField.noMaxLength,
+                        maxLength: 0,
                         controller: address1Controller,
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
@@ -170,7 +170,7 @@ class _Register2PageState extends State<Register2Page> {
 
                       //city
                       MyTextField(
-                        maxLength: TextField.noMaxLength,
+                        maxLength: 0,
                         controller: cityController,
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
@@ -185,7 +185,7 @@ class _Register2PageState extends State<Register2Page> {
 
                       //state
                       MyTextField(
-                        maxLength: TextField.noMaxLength,
+                        maxLength: 0,
                         controller: stateController,
                         caps: TextCapitalization.words,
                         inputType: TextInputType.text,
@@ -284,14 +284,6 @@ class _Register2PageState extends State<Register2Page> {
                                   late String capitalizedSentence;
                                   words = widget.fullName.trim().split(" ");
                                   capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
-                                  String fullAddress = address1Controller.text.trim() +
-                                      ", " +
-                                      postcodeController.text.trim() +
-                                      ", " +
-                                      cityController.text.trim() +
-                                      ", " +
-                                      stateController.text.trim() +
-                                      ".";
                                   List<String> addressList = [
                                     address1Controller.text.trim(),
                                     postcodeController.text.trim(),
@@ -310,9 +302,9 @@ class _Register2PageState extends State<Register2Page> {
                                     "passStrength": true, //checked hence true
                                     //for category edit assist
                                     "currentdir": "",
-                                    "address": fullAddress, //for delivery
+                                    "address": addressList, //for delivery
                                   }).then((onValue) {
-                                    context.read<Shopping>().updateDeliveryAddress(fullAddress);
+                                    context.read<Shopping>().updateDeliveryAddress(addressList);
                                     //update userclass
                                     UserNow.usernow = UserNow(
                                       fullname: widget.fullName,

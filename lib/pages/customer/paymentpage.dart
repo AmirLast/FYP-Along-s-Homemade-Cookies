@@ -55,7 +55,8 @@ class _PayPageState extends State<PayPage> {
 
             //yes button
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                await context.read<Shopping>().updateShopAddress(UserNow.usernow.currentdir);
                 checkCurrentQuantity(shop);
               },
               child: const Text("Yes", style: TextStyle(color: Colors.black)),

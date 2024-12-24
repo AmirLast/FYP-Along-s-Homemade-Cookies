@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/cartitem.dart';
-import 'package:fyp/models/userclass.dart';
 import 'package:intl/intl.dart';
 
 //these will be in database, but how to make it into a List after reading
@@ -18,11 +18,22 @@ class Shopping extends ChangeNotifier {
   final List<CartItem> _cart = [];
 
   //delivery address (user can change)
-  String _deliveryAddress = UserNow.usernow.address.map((word) => (word)).join(", ");
+  String _deliveryAddress = "";
+  String _deliveryAddressShort = "";
+  String _deliveryPCode = "";
 
+  //delivery address of shop
+  String _deliveryAddressShop = "";
+  String _deliveryPCodeShop = "";
 //getters----------------------------------
   List<CartItem> get cart => _cart;
+  //recipient
   String get deliveryAddress => _deliveryAddress;
+  String get deliveryAddressShort => _deliveryAddressShort;
+  String get deliveryPCode => _deliveryPCode;
+  //sender
+  String get deliveryAddressShop => _deliveryAddressShop;
+  String get deliveryPCodeShop => _deliveryPCodeShop;
 
   //operations----------------------------------
 
@@ -127,8 +138,22 @@ class Shopping extends ChangeNotifier {
   }
 
   //update delivery address
-  void updateDeliveryAddress(String newAddress) {
-    _deliveryAddress = newAddress;
+  void updateDeliveryAddress(List<String> newAddress) {
+    _deliveryAddress = newAddress.map((word) => (word)).join(", ");
+    _deliveryAddressShort = newAddress[0] + ", " + newAddress[2] + ", " + newAddress[3];
+    _deliveryPCode = newAddress[1];
+    notifyListeners();
+  }
+
+  //update delivery address
+  Future<void> updateShopAddress(String currentdir) async {
+    List dynamic = [];
+    await FirebaseFirestore.instance.collection('users').doc(currentdir).get().then((value) {
+      dynamic = value.data()?['address'];
+    }).then((value) {
+      _deliveryAddressShop = dynamic[0] + ", " + dynamic[2] + ", " + dynamic[3];
+      _deliveryPCodeShop = dynamic[1];
+    });
     notifyListeners();
   }
 
@@ -156,11 +181,22 @@ class Shopping extends ChangeNotifier {
     }
 
     receipt.writeln("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-    receipt.writeln();
     receipt.writeln("Total Items: ${getTotalItemCount()}");
     receipt.writeln("Total Price: ${_formatPrice(getTotalPrice())}");
+    receipt.writeln("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+    receipt.writeln("[Recipient Details]");
+    receipt.writeln("Address:");
+    receipt.writeln(deliveryAddressShort);
     receipt.writeln();
-    receipt.writeln("Delivering to: $deliveryAddress");
+    receipt.writeln("Postcode:");
+    receipt.writeln(deliveryPCode);
+    receipt.writeln("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+    receipt.writeln("[Sender Details]");
+    receipt.writeln("Address:");
+    receipt.writeln(deliveryAddressShop);
+    receipt.writeln();
+    receipt.writeln("Postcode:");
+    receipt.writeln(deliveryPCodeShop);
 
     return receipt.toString();
   }

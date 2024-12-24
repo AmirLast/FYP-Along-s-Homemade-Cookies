@@ -32,6 +32,7 @@ class _ShopPageState extends State<ShopPage> {
     name = shop!.name;
     bakeds = shop!.bakeds;
     categories = shop!.categories;
+    context.read<Shopping>().clearCart();
   }
 
   //confirm pop up kalau ada unsaved data---------------------------------------

@@ -79,7 +79,7 @@ class _CategoryTileState extends State<CategoryTile> {
                         child: Container(
                           color: Colors.grey.shade400,
                           child: const Padding(
-                            padding: EdgeInsets.only(left: 25, right: 12.0),
+                            padding: EdgeInsets.fromLTRB(25, 10, 12, 10),
                             child: Icon(Icons.edit, size: 20, color: Colors.black),
                           ),
                         ),
@@ -89,7 +89,7 @@ class _CategoryTileState extends State<CategoryTile> {
                         child: Container(
                           color: Colors.grey.shade400,
                           child: const Padding(
-                            padding: EdgeInsets.only(left: 13.0, right: 5),
+                            padding: EdgeInsets.fromLTRB(13, 7, 5, 7),
                             child: Icon(Icons.close_rounded, size: 25, color: Colors.black),
                           ),
                         ),

@@ -27,6 +27,7 @@ class UpdateOrderData {
         },
         //onError: (e) => print("Error completing: $e"),
       ).then((onValue) {
+        Orders.currentOrder.orders.sort((a, b) => a.dateDT.compareTo(b.dateDT));
         if (type == "owner") {
           Navigator.pushAndRemoveUntil(
             context,

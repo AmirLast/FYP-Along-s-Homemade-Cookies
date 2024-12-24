@@ -28,7 +28,6 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
   }
 
   void toPop(Shopping shop) {
-    shop.clearCart();
     gotoNext.showloading(
       UserNow.usernow.currentdir,
       (BuildContext context) => ShopPage(id: UserNow.usernow.currentdir),
@@ -79,10 +78,12 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
             ],
           ),
           bottomNavigationBar: _buildBottomNavBar(context),
-          body: const Column(
-            children: [
-              MyReceipt(),
-            ],
+          body: const SingleChildScrollView(
+            child: Column(
+              children: [
+                MyReceipt(),
+              ],
+            ),
           ),
         ),
       ),

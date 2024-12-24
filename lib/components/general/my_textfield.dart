@@ -29,7 +29,7 @@ class MyTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextField(
-        maxLength: maxLength,
+        maxLength: maxLength == 0 ? null : maxLength,
         cursorColor: Colors.black,
         autofocus: isShowhint,
         enabled: isEnabled, //get this value

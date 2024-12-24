@@ -184,7 +184,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
                           ),
                         ),
                         MyTextField(
-                          maxLength: TextField.noMaxLength,
+                          maxLength: 0,
                           controller: nameController,
                           caps: TextCapitalization.words,
                           inputType: TextInputType.text,
