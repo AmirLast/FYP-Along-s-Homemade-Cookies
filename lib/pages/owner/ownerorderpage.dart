@@ -15,10 +15,12 @@ class OwnerOrderPage extends StatefulWidget {
 
 class _OwnerOrderPageState extends State<OwnerOrderPage> {
   final Logo show = Logo();
-  late List<Orders> orders;
-  late List<Orders> pin, pending, past;
+  late List<Orders> orders, pin, pending, past, current;
+  late String title;
+  late int showNext = 0;
   final load = Loading();
   final obj = MyScaffoldmessage();
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -35,6 +37,18 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
     pending.sort((x, y) => x.dateDT.compareTo(y.dateDT));
     past.sort((x, y) => x.dateDT.compareTo(y.dateDT)); //all past order sort by date
     pin += pending; //all current order but pin is first, all sort by date
+    if (pin.isEmpty) {
+      current = past;
+      title = "Past Order";
+      past = [];
+    } else {
+      current = pin;
+      title = "Current Order";
+    }
+    showNext = current.length;
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void changeStatus(String status, String id) {
@@ -95,107 +109,106 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffd1a271),
-      appBar: AppBar(
-        backgroundColor: const Color(0xffB67F5F),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Center(
-          child: Text(
-            "Order List",
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+    return isLoading
+        ? const Scaffold(
+            backgroundColor: Colors.black,
+            body: Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
             ),
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => {},
-            icon: const Icon(
-              Icons.more_vert,
-              color: Colors.transparent,
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width, //max width for current phone
-          height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
-          decoration: show.showLogo(),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              orders.isEmpty
-                  ? const Expanded(
-                      child: Padding(
-                      padding: EdgeInsets.all(30.0),
-                      child: Text("Order List is empty.."),
-                    ))
-                  : Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: pin.length,
-                        padding: const EdgeInsets.only(bottom: 10),
-                        itemBuilder: (context, index) {
-                          return OrderCard(
-                            title: "Current Order",
-                            index: index,
-                            order: pin[index],
-                            onCancel: () {
-                              onCancel(pin[index].id);
-                            },
-                            onComplete: () {
-                              onComplete(pin[index].id);
-                            },
-                            onInfo: () {},
-                            onPin: () {
-                              onPin(pin[index].id, pin[index].status);
-                            },
-                          );
-                        },
-                      ),
-                    ),
-              Visibility(
-                visible: past.isNotEmpty,
-                child: Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: past.length,
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    itemBuilder: (context, index) {
-                      return OrderCard(
-                        title: "Past Order",
-                        index: index,
-                        order: past[index],
-                        onCancel: () {
-                          onCancel(past[index].id);
-                        },
-                        onComplete: () {
-                          onComplete(past[index].id);
-                        },
-                        onInfo: () {},
-                        onPin: () {
-                          onPin(past[index].id, past[index].status);
-                        },
-                      );
-                    },
+          )
+        : Scaffold(
+            backgroundColor: const Color(0xffd1a271),
+            appBar: AppBar(
+              backgroundColor: const Color(0xffB67F5F),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: const Center(
+                child: Text(
+                  "Order List",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+              actions: [
+                IconButton(
+                  onPressed: () => {},
+                  icon: const Icon(
+                    Icons.more_vert,
+                    color: Colors.transparent,
+                  ),
+                ),
+              ],
+            ),
+            body: SingleChildScrollView(
+              child: Container(
+                width: MediaQuery.of(context).size.width, //max width for current phone
+                height:
+                    MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
+                decoration: show.showLogo(),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    orders.isEmpty
+                        ? const Expanded(
+                            child: Padding(
+                            padding: EdgeInsets.all(30.0),
+                            child: Text("Order List is empty.."),
+                          ))
+                        : Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount: current.length + past.length,
+                              padding: const EdgeInsets.only(bottom: 10),
+                              itemBuilder: (context, index1) {
+                                showNext -= 1;
+                                return showNext >= 0
+                                    ? OrderCard(
+                                        title: title,
+                                        index: index1,
+                                        order: current[index1],
+                                        onCancel: () {
+                                          onCancel(current[index1].id);
+                                        },
+                                        onComplete: () {
+                                          onComplete(current[index1].id);
+                                        },
+                                        onInfo: () {},
+                                        onPin: () {
+                                          onPin(current[index1].id, current[index1].status);
+                                        },
+                                      )
+                                    : OrderCard(
+                                        title: "Past Order",
+                                        index: index1 - current.length,
+                                        order: past[index1 - current.length],
+                                        onCancel: () {
+                                          onCancel(past[index1 - current.length].id);
+                                        },
+                                        onComplete: () {
+                                          onComplete(past[index1 - current.length].id);
+                                        },
+                                        onInfo: () {},
+                                        onPin: () {
+                                          onPin(past[index1 - current.length].id, past[index1 - current.length].status);
+                                        },
+                                      );
+                              },
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+            ),
+          );
   }
 }
