@@ -6,6 +6,7 @@ class Orders {
   List<Orders> orders = [];
   List cartitems;
   String id;
+  String reasonOrdate = "";
   Orders({
     required this.id,
     required this.dateString,

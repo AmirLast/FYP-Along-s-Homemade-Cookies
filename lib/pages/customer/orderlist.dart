@@ -15,9 +15,7 @@ class BuyerOrder extends StatefulWidget {
 
 class _BuyerOrderState extends State<BuyerOrder> {
   final Logo show = Logo();
-  late List<Orders> orders, currentO, pastO, list;
-  late String title;
-  late int showNext = 0;
+  late List<Orders> orders, currentO, pastO;
   final load = Loading();
   final obj = MyScaffoldmessage();
 
@@ -41,22 +39,13 @@ class _BuyerOrderState extends State<BuyerOrder> {
     pastO = orders.where((a) => a.status == "Complete" || a.status == "Cancel").toList();
     currentO.sort((x, y) => x.dateDT.compareTo(y.dateDT)); //all current order sort by date
     pastO.sort((x, y) => x.dateDT.compareTo(y.dateDT)); //all past order sort by date
-    if (currentO.isEmpty) {
-      list = pastO;
-      title = "Past Order";
-      pastO = [];
-    } else {
-      list = currentO;
-      title = "Current Order";
-    }
-    showNext = 0;
     setState(() {
       reasonCancel = TextEditingController();
     });
   }
 
-  void onCancel(String id) {
-    showDialog(
+  void onCancel(String id) async {
+    await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("Please add your reasoning before cancelling", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
@@ -89,18 +78,28 @@ class _BuyerOrderState extends State<BuyerOrder> {
                 iconSize: 50,
                 color: Colors.green,
                 onPressed: () async {
-                  load.loading(context);
-                  await FirebaseFirestore.instance.collection('orders').doc(id).update({
-                    "status": "Cancel",
-                  }).then((onValue) {
-                    Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Cancel";
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    obj.scaffoldmessage("Status updated to Cancel", context);
-                    setState(() {
-                      reorder();
+                  if (reasonCancel.text.length < 10) {
+                    obj.scaffoldmessage("Please put appropriate reason", context);
+                  } else {
+                    load.loading(context);
+                    await FirebaseFirestore.instance.collection('orders').doc(id).update({
+                      "status": "Cancel",
+                    }).then((onValue) async {
+                      await FirebaseFirestore.instance.collection('cancel').doc().set({
+                        "id": id,
+                        "reason": reasonCancel.text.trim(),
+                      });
+                    }).then((onValue) {
+                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Cancel";
+                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate = reasonCancel.text.trim();
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      obj.scaffoldmessage("Status updated to Cancel", context);
+                      setState(() {
+                        reorder();
+                      });
                     });
-                  });
+                  }
                 },
                 icon: const Icon(Icons.check_circle),
               ),
@@ -108,6 +107,7 @@ class _BuyerOrderState extends State<BuyerOrder> {
                 iconSize: 50,
                 color: Colors.red,
                 onPressed: () {
+                  reasonCancel = TextEditingController();
                   Navigator.pop(context);
                 },
                 icon: const Icon(Icons.cancel),
@@ -187,17 +187,16 @@ class _BuyerOrderState extends State<BuyerOrder> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: list.length + pastO.length,
+                        itemCount: currentO.length + pastO.length,
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         itemBuilder: (context, index) {
-                          showNext++;
-                          return showNext <= list.length
+                          return index < currentO.length
                               ? OrderCard(
-                                  title: title,
+                                  title: "Current Order",
                                   index: index,
-                                  order: list[index],
+                                  order: currentO[index],
                                   onCancel: () {
-                                    onCancel(list[index].id);
+                                    onCancel(currentO[index].id);
                                   },
                                   onComplete: () {},
                                   onInfo: onInfo,
@@ -205,8 +204,8 @@ class _BuyerOrderState extends State<BuyerOrder> {
                                 )
                               : OrderCard(
                                   title: "Past Order",
-                                  index: index - list.length,
-                                  order: pastO[index - list.length],
+                                  index: index - currentO.length,
+                                  order: pastO[index - currentO.length],
                                   onCancel: () {},
                                   onComplete: () {},
                                   onInfo: onInfo,

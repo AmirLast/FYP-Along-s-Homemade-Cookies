@@ -54,7 +54,11 @@ class _OrderCardState extends State<OrderCard> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Center(child: Text("Order On: $formattedDate")),
+                                Center(
+                                    child: Text(
+                                  "Order On: $formattedDate",
+                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                )),
                                 const SizedBox(height: 10),
                                 Container(
                                   decoration: BoxDecoration(
@@ -93,6 +97,44 @@ class _OrderCardState extends State<OrderCard> {
                           child: Text(
                             "Status: " + status,
                             style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Visibility(
+                          visible: !isEnabled,
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  title: Text(
+                                    textAlign: TextAlign.center,
+                                    widget.order!.status == "Cancel" ? "Cancelled for" : "Completed on",
+                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                  ),
+                                  content: Text(
+                                    widget.order!.reasonOrdate,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5.0),
+                              child: Container(
+                                width: 270,
+                                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    widget.order!.status == "Cancel"
+                                        ? "Cancelled for: ${widget.order!.reasonOrdate}"
+                                        : "Completed On: ${widget.order!.reasonOrdate}",
+                                    style: const TextStyle(color: Colors.black, overflow: TextOverflow.ellipsis),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                         Center(

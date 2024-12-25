@@ -5,6 +5,7 @@ import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_ordercard.dart';
 import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/models/orderclass.dart';
+import 'package:intl/intl.dart';
 
 class OwnerOrderPage extends StatefulWidget {
   const OwnerOrderPage({super.key});
@@ -15,16 +16,22 @@ class OwnerOrderPage extends StatefulWidget {
 
 class _OwnerOrderPageState extends State<OwnerOrderPage> {
   final Logo show = Logo();
-  late List<Orders> orders, pin, pending, past, current;
-  late String title;
-  late int showNext = 0;
+  late List<Orders> orders, pin, pending, past;
   final load = Loading();
   final obj = MyScaffoldmessage();
+
+  late TextEditingController reason;
 
   @override
   void initState() {
     super.initState();
     reorder();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    reason.dispose();
   }
 
   void reorder() {
@@ -36,23 +43,91 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
     pending.sort((x, y) => x.dateDT.compareTo(y.dateDT));
     past.sort((x, y) => x.dateDT.compareTo(y.dateDT)); //all past order sort by date
     pin += pending; //all current order but pin is first, all sort by date
-    if (pin.isEmpty) {
-      current = past;
-      title = "Past Order";
-      past = [];
-    } else {
-      current = pin;
-      title = "Current Order";
-    }
-    showNext = current.length;
-    setState(() {});
+    setState(() {
+      reason = TextEditingController();
+    });
   }
 
-  void changeStatus(String status, String id) {
+  void onCancel(String id) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Please add your reasoning before cancelling", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        content: TextField(
+          cursorColor: Colors.black,
+          autofocus: false,
+          enabled: true, //get this value
+          controller: reason,
+          keyboardType: TextInputType.text,
+          textCapitalization: TextCapitalization.words,
+          decoration: InputDecoration(
+            disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+            ),
+            filled: true,
+            fillColor: Colors.grey.shade400,
+            floatingLabelStyle: const TextStyle(color: Colors.black),
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+            hintText: "write your reason here...",
+            hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
+          ),
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                iconSize: 50,
+                color: Colors.green,
+                onPressed: () async {
+                  if (reason.text.length < 10) {
+                    obj.scaffoldmessage("Please put appropriate reason", context);
+                  } else {
+                    load.loading(context);
+                    await FirebaseFirestore.instance.collection('orders').doc(id).update({
+                      "status": "Cancel",
+                    }).then((onValue) async {
+                      await FirebaseFirestore.instance.collection('cancel').doc().set({
+                        "id": id,
+                        "reason": reason.text.trim(),
+                      });
+                    }).then((onValue) {
+                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Cancel";
+                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate = reason.text.trim();
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      obj.scaffoldmessage("Status updated to Cancel", context);
+                      setState(() {
+                        reorder();
+                      });
+                    });
+                  }
+                },
+                icon: const Icon(Icons.check_circle),
+              ),
+              IconButton(
+                iconSize: 50,
+                color: Colors.red,
+                onPressed: () {
+                  reason = TextEditingController();
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.cancel),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  void onComplete(String id) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Confirm '$status'?", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        title: const Text("Confirm Complete?", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         actions: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -63,13 +138,19 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                 onPressed: () async {
                   load.loading(context);
                   await FirebaseFirestore.instance.collection('orders').doc(id).update({
-                    "status": status == "Unpin" ? "Pending" : status,
+                    "status": "Complete",
+                  }).then((onValue) async {
+                    await FirebaseFirestore.instance.collection('complete').doc().set({
+                      "id": id,
+                      'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+                    });
                   }).then((onValue) {
-                    Orders.currentOrder.orders[Orders.currentOrder.orders.indexWhere((test) => test.id == id)].status =
-                        status == "Unpin" ? "Pending" : status;
+                    Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Complete";
+                    Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate =
+                        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    obj.scaffoldmessage("Status updated to $status", context);
+                    obj.scaffoldmessage("Status updated to Complete", context);
                     setState(() {
                       reorder();
                     });
@@ -92,16 +173,48 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
     );
   }
 
-  void onCancel(String id) {
-    changeStatus("Cancel", id);
-  }
-
-  void onComplete(String id) {
-    changeStatus("Complete", id);
-  }
-
   void onPin(String id, String status) {
-    changeStatus(status == "Pin" ? "Unpin" : "Pin", id);
+    String newStatus = status == "Pin" ? "Unpin" : "Pin";
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Confirm $newStatus?", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                iconSize: 50,
+                color: Colors.green,
+                onPressed: () async {
+                  load.loading(context);
+                  await FirebaseFirestore.instance.collection('orders').doc(id).update({
+                    "status": newStatus,
+                  }).then((onValue) {
+                    Orders.currentOrder.orders[Orders.currentOrder.orders.indexWhere((test) => test.id == id)].status = newStatus;
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    obj.scaffoldmessage("Status updated to $newStatus", context);
+                    setState(() {
+                      reorder();
+                    });
+                  });
+                },
+                icon: const Icon(Icons.check_circle),
+              ),
+              IconButton(
+                iconSize: 50,
+                color: Colors.red,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.cancel),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -154,39 +267,38 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: current.length + past.length,
+                        itemCount: pin.length + past.length,
                         padding: const EdgeInsets.only(bottom: 10),
-                        itemBuilder: (context, index1) {
-                          showNext -= 1;
-                          return showNext >= 0
+                        itemBuilder: (context, index) {
+                          return index < pin.length
                               ? OrderCard(
-                                  title: title,
-                                  index: index1,
-                                  order: current[index1],
+                                  title: "Current Order",
+                                  index: index,
+                                  order: pin[index],
                                   onCancel: () {
-                                    onCancel(current[index1].id);
+                                    onCancel(pin[index].id);
                                   },
                                   onComplete: () {
-                                    onComplete(current[index1].id);
+                                    onComplete(pin[index].id);
                                   },
                                   onInfo: () {},
                                   onPin: () {
-                                    onPin(current[index1].id, current[index1].status);
+                                    onPin(pin[index].id, pin[index].status);
                                   },
                                 )
                               : OrderCard(
                                   title: "Past Order",
-                                  index: index1 - current.length,
-                                  order: past[index1 - current.length],
+                                  index: index - pin.length,
+                                  order: past[index - pin.length],
                                   onCancel: () {
-                                    onCancel(past[index1 - current.length].id);
+                                    onCancel(past[index - pin.length].id);
                                   },
                                   onComplete: () {
-                                    onComplete(past[index1 - current.length].id);
+                                    onComplete(past[index - pin.length].id);
                                   },
                                   onInfo: () {},
                                   onPin: () {
-                                    onPin(past[index1 - current.length].id, past[index1 - current.length].status);
+                                    onPin(past[index - pin.length].id, past[index - pin.length].status);
                                   },
                                 );
                         },

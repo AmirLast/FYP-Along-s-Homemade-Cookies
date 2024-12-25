@@ -15,7 +15,7 @@ class UpdateOrderData {
     Orders oneOrder;
     try {
       await FirebaseFirestore.instance.collection('orders').where(type, isEqualTo: userid).get().then(
-        (querySnapshot) {
+        (querySnapshot) async {
           for (var docSnapshot in querySnapshot.docs) {
             oneOrder = Orders(
               id: docSnapshot.id,
@@ -25,6 +25,20 @@ class UpdateOrderData {
               status: docSnapshot.get('status'),
               cartitems: docSnapshot.get('cartitem'),
             );
+            if (oneOrder.status == "Complete") {
+              await FirebaseFirestore.instance.collection('complete').where("id", isEqualTo: oneOrder.id).get().then((value) {
+                for (var dSs in value.docs) {
+                  oneOrder.reasonOrdate = dSs.get('date');
+                }
+              });
+            }
+            if (oneOrder.status == "Cancel") {
+              await FirebaseFirestore.instance.collection('cancel').where("id", isEqualTo: oneOrder.id).get().then((value) {
+                for (var dSs in value.docs) {
+                  oneOrder.reasonOrdate = dSs.get('reason');
+                }
+              });
+            }
             Orders.currentOrder.orders.add(oneOrder);
           }
         },
