@@ -8,6 +8,7 @@ import 'package:fyp/pages/all_user/endscreen.dart';
 import 'package:fyp/pages/all_user/functions/updateorder.dart';
 import 'package:fyp/pages/all_user/profile.dart';
 import 'package:fyp/pages/owner/menupage.dart';
+import 'package:fyp/pages/owner/summarypage.dart';
 
 class OwnerHomePage extends StatefulWidget {
   const OwnerHomePage({super.key});
@@ -113,9 +114,18 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
               MyMenuButton(
                 icon: CupertinoIcons.news,
                 text: "Customer Order",
-                size: 0,
+                size: 280,
                 onPressed: () {
                   gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "owner", context);
+                },
+              ),
+              const SizedBox(height: 30),
+              MyMenuButton(
+                icon: CupertinoIcons.news,
+                text: "Business Summary",
+                size: 280,
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SummaryPage()));
                 },
               ),
             ],

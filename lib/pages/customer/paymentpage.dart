@@ -103,8 +103,8 @@ class _PayPageState extends State<PayPage> {
     //-------------------------------------
     int i = 0;
     int j = widget.cartItem.length;
-    var dir = FirebaseFirestore.instance.collection('users').doc(id).collection(widget.cartItem[i].prod.category);
     for (i; i < j; i++) {
+      var dir = FirebaseFirestore.instance.collection('users').doc(id).collection(widget.cartItem[i].prod.category);
       await dir.where("name", isEqualTo: widget.cartItem[i].prod.name).get().then((onValue) async {
         for (var docSnapshot in onValue.docs) {
           if (docSnapshot.get("quantity") < widget.cartItem[i].quantity) {

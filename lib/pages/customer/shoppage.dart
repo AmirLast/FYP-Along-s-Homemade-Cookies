@@ -5,6 +5,7 @@ import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/shopclass.dart';
 import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/pages/customer/cartpage.dart';
+import 'package:fyp/pages/customer/review.dart';
 import 'package:provider/provider.dart';
 
 class ShopPage extends StatefulWidget {
@@ -131,20 +132,41 @@ class _ShopPageState extends State<ShopPage> {
               child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  Container(
-                    height: 30,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.grey,
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [Text("Sort by"), Icon(Icons.arrow_drop_down_sharp)],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        height: 30,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.grey,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          child: Row(
+                            children: [Text("Sort by"), Spacer(), Icon(Icons.arrow_drop_down_sharp)],
+                          ),
+                        ),
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ReviewPage())),
+                        child: Container(
+                          height: 30,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white,
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: Row(
+                              children: [Icon(Icons.edit, size: 15), Spacer(), Text("Reviews")],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   Expanded(
                     child: ListView.builder(

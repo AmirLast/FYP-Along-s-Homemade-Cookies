@@ -33,6 +33,7 @@ class _CategoryTileState extends State<CategoryTile> {
   bool isExpand = false;
   final MyScaffoldmessage obj = MyScaffoldmessage(); //for scaffold message
   final load = Loading();
+
   @override
   Widget build(BuildContext context) {
     List<Bakeds?> categoryMenu = widget.baked.where((b) => b!.category == widget.catName).toList();
@@ -52,6 +53,14 @@ class _CategoryTileState extends State<CategoryTile> {
               const SizedBox(width: 15),
               Expanded(
                 child: ExpansionTile(
+                  onExpansionChanged: (value) {
+                    setState(() {
+                      isExpand = value;
+                    });
+                  },
+                  trailing: Icon(
+                    isExpand ? Icons.keyboard_arrow_down_rounded : Icons.keyboard_arrow_right_rounded,
+                  ),
                   collapsedShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),

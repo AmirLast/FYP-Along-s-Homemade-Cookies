@@ -10,6 +10,7 @@ import 'package:fyp/pages/all_user/endscreen.dart';
 import 'package:fyp/pages/all_user/functions/showloading.dart';
 import 'package:fyp/pages/all_user/functions/updateorder.dart';
 import 'package:fyp/pages/all_user/profile.dart';
+import 'package:fyp/pages/customer/membership.dart';
 import 'package:fyp/pages/customer/shoplistpage.dart';
 import 'package:provider/provider.dart';
 
@@ -161,6 +162,28 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
                 ),
                 const MyDescBox(),
                 const SizedBox(height: 60),
+                GestureDetector(
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MembershipPage())),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 4),
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Center(
+                          child: Text(
+                            "Try Membership! Be a Premium User",
+                            style: TextStyle(color: Colors.black, fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
