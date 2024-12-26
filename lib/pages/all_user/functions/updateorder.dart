@@ -39,13 +39,27 @@ class UpdateOrderData {
                 }
               });
             }
+            if (oneOrder.status == "Confirm") {
+              await FirebaseFirestore.instance.collection('confirm').where("id", isEqualTo: oneOrder.id).get().then((value) {
+                for (var dSs in value.docs) {
+                  oneOrder.review = dSs.get('review');
+                  oneOrder.reviewID = dSs.get('seller');
+                }
+              }).then((onValue) async {
+                await FirebaseFirestore.instance.collection('complete').where("id", isEqualTo: oneOrder.id).get().then((value) {
+                  for (var dSs in value.docs) {
+                    oneOrder.reasonOrdate = dSs.get('date');
+                  }
+                });
+              });
+            }
             Orders.currentOrder.orders.add(oneOrder);
           }
         },
         //onError: (e) => print("Error completing: $e"),
       ).then((onValue) {
         Orders.currentOrder.orders.sort((a, b) => a.dateDT.compareTo(b.dateDT));
-        if (type == "owner") {
+        if (type == "seller") {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const OwnerOrderPage()),

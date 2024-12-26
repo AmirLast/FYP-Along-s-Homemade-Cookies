@@ -5,6 +5,7 @@ import 'package:fyp/components/general/my_loading.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/images/assets.dart';
+import 'package:fyp/models/memberclass.dart';
 import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
@@ -336,9 +337,9 @@ class _Register2PageState extends State<Register2Page> {
                                       currentdir: "",
                                       passStrength: widget.passStrength,
                                     );
-                                    UserNow.usernow.address = addressList;
-                                    if (widget.type == 'owner') {
+                                    if (widget.type == 'seller') {
                                       //update userclass
+                                      UserNow.usernow.address = addressList;
                                       UserNow.usernow.shop = upperCase(widget.shop.trim());
                                       UserNow.usernow.categories = [];
 
@@ -348,6 +349,22 @@ class _Register2PageState extends State<Register2Page> {
                                           'shop': upperCase(widget.shop.trim()),
                                           //owner need array of categories
                                           "categories": [],
+                                        },
+                                        SetOptions(merge: true),
+                                      );
+                                    } else {
+                                      //update userclass
+                                      UserNow.usernow.address = addressList;
+                                      UserNow.usernow.isMember = false;
+                                      Member.member = Member(memPoint: 0, firstPurchase: true);
+
+                                      userFF.doc(user?.uid).set(
+                                        //add other data that only owner have
+                                        {
+                                          //ni untuk user je
+                                          "ismember": false,
+                                          "mempoint": 0,
+                                          "firstpurchase": true,
                                         },
                                         SetOptions(merge: true),
                                       );

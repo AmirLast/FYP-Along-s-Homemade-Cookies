@@ -107,6 +107,13 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
             ),
           ),
           actions: [
+            Visibility(
+              visible: UserNow.usernow.isMember,
+              child: IconButton(
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MembershipPage())),
+                icon: const Icon(Icons.star, color: Colors.amber),
+              ),
+            ),
             IconButton(
               onPressed: () {
                 gotoNext.showloading(
@@ -161,7 +168,7 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
                   child: MyCurrentLocation(),
                 ),
                 const MyDescBox(),
-                const SizedBox(height: 60),
+                const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MembershipPage())),
                   child: Padding(

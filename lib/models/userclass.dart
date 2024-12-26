@@ -8,6 +8,7 @@ class UserNow {
   User? user;
   String currentdir = "";
   bool passStrength = false;
+  bool isMember = false;
   List address = [];
   //below is for owner
   List categories = [];

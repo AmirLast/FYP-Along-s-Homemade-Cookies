@@ -116,7 +116,7 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
                 text: "Customer Order",
                 size: 280,
                 onPressed: () {
-                  gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "owner", context);
+                  gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "seller", context);
                 },
               ),
               const SizedBox(height: 30),

@@ -5,6 +5,7 @@ import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_ordercard.dart';
 import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/models/orderclass.dart';
+import 'package:fyp/models/userclass.dart';
 
 class BuyerOrder extends StatefulWidget {
   const BuyerOrder({super.key});
@@ -20,6 +21,7 @@ class _BuyerOrderState extends State<BuyerOrder> {
   final obj = MyScaffoldmessage();
 
   late TextEditingController reasonCancel;
+  late TextEditingController review;
 
   @override
   void initState() {
@@ -31,16 +33,18 @@ class _BuyerOrderState extends State<BuyerOrder> {
   void dispose() {
     super.dispose();
     reasonCancel.dispose();
+    review.dispose();
   }
 
   void reorder() {
     orders = Orders.currentOrder.orders;
     currentO = orders.where((a) => a.status == "Pin" || a.status == "Pending").toList();
-    pastO = orders.where((a) => a.status == "Complete" || a.status == "Cancel").toList();
+    pastO = orders.where((a) => a.status == "Complete" || a.status == "Cancel" || a.status == "Confirm").toList();
     currentO.sort((x, y) => x.dateDT.compareTo(y.dateDT)); //all current order sort by date
     pastO.sort((x, y) => x.dateDT.compareTo(y.dateDT)); //all past order sort by date
     setState(() {
       reasonCancel = TextEditingController();
+      review = TextEditingController();
     });
   }
 
@@ -136,6 +140,91 @@ class _BuyerOrderState extends State<BuyerOrder> {
     );
   }
 
+  void onReceive(String id) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        title: const Text(
+          "Confirm Receive",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              "Before confirming, you can put a review in the text box.",
+              style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic),
+            ),
+            TextField(
+              cursorColor: Colors.black,
+              autofocus: false,
+              enabled: true, //get this value
+              controller: review,
+              keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(
+                disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+                enabledBorder:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                filled: true,
+                fillColor: Colors.grey.shade400,
+                floatingLabelStyle: const TextStyle(color: Colors.black),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                hintText: "write your review here...",
+                hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                iconSize: 50,
+                color: Colors.green,
+                onPressed: () async {
+                  load.loading(context);
+                  await FirebaseFirestore.instance.collection('orders').doc(id).update({
+                    "status": "Confirm",
+                  }).then((onValue) async {
+                    await FirebaseFirestore.instance.collection('confirm').doc().set({
+                      "id": id,
+                      "seller": UserNow.usernow.currentdir,
+                      "review": review.text.trim(),
+                    });
+                  }).then((onValue) {
+                    Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Confirm";
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    obj.scaffoldmessage("Order confirmed received", context);
+                    setState(() {
+                      reorder();
+                    });
+                  });
+                },
+                icon: const Icon(Icons.check_circle),
+              ),
+              IconButton(
+                iconSize: 50,
+                color: Colors.red,
+                onPressed: () {
+                  reasonCancel = TextEditingController();
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.cancel),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,6 +290,9 @@ class _BuyerOrderState extends State<BuyerOrder> {
                                   onComplete: () {},
                                   onInfo: onInfo,
                                   onPin: () {},
+                                  onReceive: () {
+                                    onReceive(currentO[index].id);
+                                  },
                                 )
                               : OrderCard(
                                   title: "Past Order",
@@ -210,6 +302,9 @@ class _BuyerOrderState extends State<BuyerOrder> {
                                   onComplete: () {},
                                   onInfo: onInfo,
                                   onPin: () {},
+                                  onReceive: () {
+                                    onReceive(pastO[index - currentO.length].id);
+                                  },
                                 );
                         },
                       ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_loading.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_textfield.dart';
+import 'package:fyp/models/memberclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/forgorpassword.dart';
 import 'package:fyp/pages/all_user/registerpage.dart';
@@ -183,15 +184,17 @@ class _LoginPageState extends State<LoginPage> {
                             currentdir: value.data()?['currentdir'],
                             passStrength: value.data()?['passStrength'],
                           );
-                          //check user type
-                          if (value.data()?['type'] != "admin") {
-                            //for owner and user has address
+                          //special data for buyer
+                          if (value.data()?['type'] == "buyer") {
                             UserNow.usernow.address = value.data()?['address'];
-                            if (value.data()?['type'] == "owner") {
-                              //for owner, they have extra data
-                              UserNow.usernow.categories = value.data()?['categories'];
-                              UserNow.usernow.shop = value.data()?['shop'];
-                            }
+                            UserNow.usernow.isMember = value.data()?['ismember'];
+                            Member.member = Member(memPoint: value.data()?['mempoint'], firstPurchase: value.data()?['firstpurchase']);
+                          }
+                          //special data for seller
+                          if (value.data()?['type'] == "seller") {
+                            UserNow.usernow.address = value.data()?['address'];
+                            UserNow.usernow.categories = value.data()?['categories'];
+                            UserNow.usernow.shop = value.data()?['shop'];
                           }
                         });
                         //update password strength value

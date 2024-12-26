@@ -4,15 +4,22 @@ import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:fyp/components/general/my_loading.dart';
 import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/models/cartitem.dart';
+import 'package:fyp/models/memberclass.dart';
 import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/customer/deliveryprogresspage.dart';
-import 'package:fyp/pages/customer/shoplistpage.dart';
 import 'package:provider/provider.dart';
 
 class PayPage extends StatefulWidget {
+  final double priceReduct;
+  final int currentPoint;
   final List<CartItem> cartItem;
-  const PayPage({super.key, required this.cartItem});
+  const PayPage({
+    super.key,
+    required this.cartItem,
+    required this.priceReduct,
+    required this.currentPoint,
+  });
 
   @override
   State<PayPage> createState() => _PayPageState();
@@ -84,10 +91,9 @@ class _PayPageState extends State<PayPage> {
             onPressed: () {
               Navigator.pop(context); //pop this confirm dialogue
               shop.clearCart();
-              Navigator.pushAndRemoveUntil(
+              Navigator.popUntil(
                 context,
-                MaterialPageRoute<void>(builder: (BuildContext context) => const ShopListPage()),
-                ModalRoute.withName('/'),
+                ModalRoute.withName('shoplist'),
               );
             },
             child: const Text("Proceed", style: TextStyle(color: Colors.black)),
@@ -113,14 +119,39 @@ class _PayPageState extends State<PayPage> {
             Navigator.pop(context);
             confirmPopUp(context, widget.cartItem[i].prod.name, shop);
           } else {
-            await dir.doc(docSnapshot.id).update(({"quantity": docSnapshot.get("quantity") - widget.cartItem[i].quantity})).then((onValue) {
-              if (i + j == j) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DeliveryProgressPage(),
-                  ),
-                );
+            await dir
+                .doc(docSnapshot.id)
+                .update(({"quantity": docSnapshot.get("quantity") - widget.cartItem[i].quantity}))
+                .then((onValue) async {
+              if (i + 1 == j) {
+                if (UserNow.usernow.isMember) {
+                  load.loading(context);
+                  context.read<Shopping>().updatePriceReduct(widget.priceReduct);
+                  int newPoint = widget.currentPoint + context.read<Shopping>().getTotalPrice().round();
+                  if (Member.member.firstPurchase) {
+                    newPoint += 100;
+                  }
+                  Member.member.memPoint = newPoint;
+                  //update member point after paying
+                  await FirebaseFirestore.instance.collection('users').doc(UserNow.usernow.user?.uid).update({
+                    'mempoint': newPoint,
+                    'firstpurchase': false, //whether it's first or not, it will always go to false after the purchase
+                  }).then((onValue) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DeliveryProgressPage(),
+                      ),
+                    );
+                  });
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DeliveryProgressPage(),
+                    ),
+                  );
+                }
               }
             });
           }

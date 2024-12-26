@@ -154,8 +154,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           RadioListTile(
                             activeColor: Colors.black,
-                            title: const Text("Owner"),
-                            value: "owner",
+                            title: const Text("Seller"),
+                            value: "seller",
                             groupValue: type,
                             onChanged: (value) {
                               setState(() {

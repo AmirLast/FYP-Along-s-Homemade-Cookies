@@ -10,6 +10,7 @@ class OrderCard extends StatefulWidget {
   final void Function()? onComplete;
   final void Function()? onInfo;
   final void Function()? onPin;
+  final void Function()? onReceive;
 
   const OrderCard({
     super.key,
@@ -18,6 +19,7 @@ class OrderCard extends StatefulWidget {
     required this.onComplete,
     required this.onInfo,
     required this.onPin,
+    required this.onReceive,
     required this.title,
     required this.index,
   });
@@ -28,8 +30,10 @@ class OrderCard extends StatefulWidget {
 
 class _OrderCardState extends State<OrderCard> {
   Widget theCard(BuildContext context, String formattedDate, String status, bool isOwner) {
-    bool isEnabled = !(status == "Cancel" || status == "Complete");
-    Color? textColor = isEnabled ? Colors.black : Colors.black.withValues(alpha: 0.4);
+    bool isPinnable = status == "Pin" || status == "Unpin" || status == "Pending";
+    bool isComplete = status == "Complete";
+    bool isConfirm = status == "Confirm"; //to disable confirm receive
+    Color? textColor = isPinnable ? Colors.black : Colors.black.withValues(alpha: 0.4);
     return Card(
       color: Colors.transparent,
       elevation: 0,
@@ -86,7 +90,7 @@ class _OrderCardState extends State<OrderCard> {
                     child: Column(
                       children: [
                         Visibility(
-                          visible: widget.order!.status == "Pin" && UserNow.usernow.type == "owner",
+                          visible: widget.order!.status == "Pin" && UserNow.usernow.type == "seller",
                           child: const Icon(
                             Icons.star,
                             color: Colors.amber,
@@ -100,7 +104,7 @@ class _OrderCardState extends State<OrderCard> {
                           ),
                         ),
                         Visibility(
-                          visible: !isEnabled,
+                          visible: !isPinnable,
                           child: GestureDetector(
                             onTap: () {
                               showDialog(
@@ -188,11 +192,11 @@ class _OrderCardState extends State<OrderCard> {
               Visibility(
                 visible: isOwner,
                 child: MaterialButton(
-                  onPressed: !isEnabled ? null : widget.onComplete,
+                  onPressed: isPinnable ? widget.onComplete : null,
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     decoration: BoxDecoration(
-                      color: isEnabled ? Colors.lightGreenAccent : Colors.lightGreenAccent.withValues(alpha: 0.4),
+                      color: isPinnable ? Colors.lightGreenAccent : Colors.lightGreenAccent.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
@@ -207,20 +211,46 @@ class _OrderCardState extends State<OrderCard> {
                 ),
               ),
 
-              //cancel button
-              MaterialButton(
-                onPressed: !isEnabled ? null : widget.onCancel,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  decoration: BoxDecoration(
-                    color: !isEnabled ? Colors.red.withValues(alpha: 0.4) : Colors.red,
-                    borderRadius: BorderRadius.circular(20),
+              //on receive button
+              Visibility(
+                visible: !isOwner && (isComplete || isConfirm),
+                child: MaterialButton(
+                  onPressed: isComplete ? widget.onReceive : null,
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    decoration: BoxDecoration(
+                      color: !isComplete ? Colors.white.withValues(alpha: 0.4) : Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Confirm Receive",
+                        style: TextStyle(
+                          color: !isComplete ? Colors.black.withValues(alpha: 0.4) : Colors.black,
+                        ),
+                      ),
+                    ),
                   ),
-                  child: Center(
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(
-                        color: textColor,
+                ),
+              ),
+
+              //cancel button
+              Visibility(
+                visible: !(!isOwner && (isComplete || isConfirm)),
+                child: MaterialButton(
+                  onPressed: isPinnable ? widget.onCancel : null,
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    decoration: BoxDecoration(
+                      color: !isPinnable ? Colors.red.withValues(alpha: 0.4) : Colors.red,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(
+                          color: textColor,
+                        ),
                       ),
                     ),
                   ),
@@ -231,11 +261,11 @@ class _OrderCardState extends State<OrderCard> {
               Visibility(
                 visible: isOwner,
                 child: MaterialButton(
-                  onPressed: !isEnabled ? null : widget.onPin,
+                  onPressed: isPinnable ? widget.onPin : null,
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     decoration: BoxDecoration(
-                      color: isEnabled ? Colors.deepPurple : Colors.deepPurple.withValues(alpha: 0.4),
+                      color: isPinnable ? Colors.deepPurple : Colors.deepPurple.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
@@ -306,7 +336,7 @@ class _OrderCardState extends State<OrderCard> {
 
   @override
   Widget build(BuildContext context) {
-    bool isOwner = UserNow.usernow.type == "owner";
+    bool isOwner = UserNow.usernow.type == "seller";
     String formattedDate = widget.order!.dateString;
     String status = widget.order!.status == "Pin" ? "Pending" : widget.order!.status;
 

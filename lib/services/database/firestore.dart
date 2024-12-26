@@ -26,7 +26,7 @@ class FirestoreService {
       'order': receipt,
       'cartitem': orders,
       //add more data later
-      'owner': user!.currentdir,
+      'seller': user!.currentdir,
       'buyer': user!.user!.uid,
       'status': "Pending",
     });

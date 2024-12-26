@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/customer/my_carttile.dart';
 import 'package:fyp/components/general/my_logo.dart';
-import 'package:fyp/components/general/my_menubutton.dart';
-import 'package:fyp/pages/customer/paymentpage.dart';
 import 'package:provider/provider.dart';
 import 'package:fyp/models/shoppingclass.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
 
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     final Logo show = Logo();
@@ -108,30 +111,17 @@ class CartPage extends StatelessWidget {
                                     final cartItem = userCart[index];
 
                                     // return cart tile UI
-                                    return MyCartTile(cartItem: cartItem);
+                                    return MyCartTile(
+                                      cartItem: cartItem,
+                                      index: userCart.length - index,
+                                      userCart: userCart,
+                                    );
                                   },
                                 ),
                               ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  //button to pay
-                  MyMenuButton(
-                    text: "Go to checkout",
-                    onPressed: userCart.isEmpty
-                        ? () {}
-                        : () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PayPage(cartItem: userCart),
-                              ),
-                            ),
-                    icon: Icons.credit_card_rounded,
-                    size: 0,
-                  ),
-
-                  const SizedBox(height: 13),
                 ],
               ),
             ),

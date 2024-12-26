@@ -7,6 +7,8 @@ class Orders {
   List cartitems;
   String id;
   String reasonOrdate = "";
+  String review = "";
+  String reviewID = "";
   Orders({
     required this.id,
     required this.dateString,

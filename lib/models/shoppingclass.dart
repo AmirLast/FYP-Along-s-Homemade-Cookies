@@ -25,6 +25,9 @@ class Shopping extends ChangeNotifier {
   //delivery address of shop
   String _deliveryAddressShop = "";
   String _deliveryPCodeShop = "";
+
+  //member point usage
+  double _priceReduct = 0;
 //getters----------------------------------
   List<CartItem> get cart => _cart;
   //recipient
@@ -34,6 +37,8 @@ class Shopping extends ChangeNotifier {
   //sender
   String get deliveryAddressShop => _deliveryAddressShop;
   String get deliveryPCodeShop => _deliveryPCodeShop;
+  //member point usage
+  double get priceReduct => _priceReduct;
 
   //operations----------------------------------
 
@@ -115,9 +120,9 @@ class Shopping extends ChangeNotifier {
     for (CartItem cartItem in _cart) {
       double itemTotal = cartItem.prod.price;
 
-      total += itemTotal * cartItem.quantity + 2 /*harga delivery*/;
+      total += itemTotal * cartItem.quantity;
     }
-    return total;
+    return total - priceReduct + 2 /*harga delivery*/;
   }
 
   // total item
@@ -129,6 +134,11 @@ class Shopping extends ChangeNotifier {
     }
 
     return totalItemCount;
+  }
+
+  void updatePriceReduct(double toReduct) {
+    _priceReduct = toReduct;
+    notifyListeners();
   }
 
   // clear cart
@@ -182,6 +192,9 @@ class Shopping extends ChangeNotifier {
 
     receipt.writeln("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
     receipt.writeln("Delivery fee: RM  2.00");
+    if (priceReduct > 0) {
+      receipt.writeln("Memberpoint reduct: ${_formatPrice(priceReduct)}");
+    }
     receipt.writeln("Total Items: ${getTotalItemCount()}");
     receipt.writeln("Total Price: ${_formatPrice(getTotalPrice())}");
     receipt.writeln("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");

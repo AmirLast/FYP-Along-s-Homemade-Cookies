@@ -5,7 +5,7 @@ import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/shopclass.dart';
 import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/pages/customer/cartpage.dart';
-import 'package:fyp/pages/customer/review.dart';
+import 'package:fyp/pages/customer/reviewlist.dart';
 import 'package:provider/provider.dart';
 
 class ShopPage extends StatefulWidget {
@@ -153,16 +153,14 @@ class _ShopPageState extends State<ShopPage> {
                         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ReviewPage())),
                         child: Container(
                           height: 30,
-                          width: 100,
+                          width: 80,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.white,
                           ),
                           child: const Padding(
                             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: Row(
-                              children: [Icon(Icons.edit, size: 15), Spacer(), Text("Reviews")],
-                            ),
+                            child: Center(child: Text("Reviews")),
                           ),
                         ),
                       ),

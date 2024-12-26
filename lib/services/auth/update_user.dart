@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fyp/models/memberclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 
@@ -22,12 +23,17 @@ class UpdateUserData {
           currentdir: value.data()?['currentdir'],
           passStrength: value.data()?['passStrength'],
         );
-        UserNow.usernow.address = value.data()?['address'];
         //check user type
-        if (value.data()?['type'] == "owner") {
+        if (value.data()?['type'] == "seller") {
           //for owner, they have extra data
+          UserNow.usernow.address = value.data()?['address'];
           UserNow.usernow.categories = value.data()?['categories'];
           UserNow.usernow.shop = value.data()?['shop'];
+        }
+        if (value.data()?['type'] == "buyer") {
+          UserNow.usernow.address = value.data()?['address'];
+          UserNow.usernow.isMember = value.data()?['ismember'];
+          Member.member = Member(memPoint: value.data()?['mempoint'], firstPurchase: value.data()?['firstpurchase']);
         }
       });
       return UserNow.usernow.type;

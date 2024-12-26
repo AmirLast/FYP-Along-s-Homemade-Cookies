@@ -207,7 +207,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 iconSize: 50,
                 color: Colors.green,
                 onPressed: () {
-                  if (widget.type == "owner") {
+                  if (widget.type == "seller") {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute<void>(
@@ -248,7 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void toPop() {
     if (!isSaveEnabled()) {
-      if (widget.type == "owner") {
+      if (widget.type == "seller") {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute<void>(builder: (BuildContext context) => const OwnerHomePage(), settings: const RouteSettings(name: "/")),

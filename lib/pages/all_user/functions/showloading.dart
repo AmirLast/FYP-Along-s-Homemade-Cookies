@@ -18,7 +18,7 @@ class Showloading {
       int j = 0; //starts from index 0
       List<Bakeds?> allMenu = []; //to store menus
       try {
-        await FirebaseFirestore.instance.collection('users').where("type", isEqualTo: "owner").get().then((querySnapshot) async {
+        await FirebaseFirestore.instance.collection('users').where("type", isEqualTo: "seller").get().then((querySnapshot) async {
           for (var docSnapshot in querySnapshot.docs) {
             cat = docSnapshot.data()['categories'];
             i = cat.length;

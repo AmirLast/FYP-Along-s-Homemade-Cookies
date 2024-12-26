@@ -38,7 +38,7 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
     orders = Orders.currentOrder.orders;
     pin = orders.where((d) => d.status == "Pin").toList();
     pending = orders.where((d) => d.status == "Pending").toList();
-    past = orders.where((d) => d.status == "Complete" || d.status == "Cancel").toList();
+    past = orders.where((d) => d.status == "Complete" || d.status == "Cancel" || d.status == "Confirm").toList();
     pin.sort((x, y) => x.dateDT.compareTo(y.dateDT));
     pending.sort((x, y) => x.dateDT.compareTo(y.dateDT));
     past.sort((x, y) => x.dateDT.compareTo(y.dateDT)); //all past order sort by date
@@ -285,6 +285,7 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                                   onPin: () {
                                     onPin(pin[index].id, pin[index].status);
                                   },
+                                  onReceive: () {},
                                 )
                               : OrderCard(
                                   title: "Past Order",
@@ -300,6 +301,7 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                                   onPin: () {
                                     onPin(past[index - pin.length].id, past[index - pin.length].status);
                                   },
+                                  onReceive: () {},
                                 );
                         },
                       ),

@@ -193,10 +193,11 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                           icon: const Icon(Icons.check_circle),
                                         ),
                                         IconButton(
-                                            iconSize: 50,
-                                            color: Colors.red,
-                                            onPressed: () => Navigator.pop(context),
-                                            icon: const Icon(Icons.cancel)),
+                                          iconSize: 50,
+                                          color: Colors.red,
+                                          onPressed: () => Navigator.pop(context),
+                                          icon: const Icon(Icons.cancel),
+                                        ),
                                       ],
                                     )
                                   ],
