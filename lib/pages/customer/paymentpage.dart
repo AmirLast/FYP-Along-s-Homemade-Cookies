@@ -78,6 +78,7 @@ class _PayPageState extends State<PayPage> {
   confirmPopUp(context, String prodName, Shopping shop) {
     //confirm pop up
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
@@ -89,11 +90,11 @@ class _PayPageState extends State<PayPage> {
           //proceed button
           TextButton(
             onPressed: () {
-              Navigator.pop(context); //pop this confirm dialogue
+              Navigator.pop(context);
               shop.clearCart();
               Navigator.popUntil(
                 context,
-                ModalRoute.withName('shoplist'),
+                ModalRoute.withName('shoplist'), //pop until shoplist
               );
             },
             child: const Text("Proceed", style: TextStyle(color: Colors.black)),

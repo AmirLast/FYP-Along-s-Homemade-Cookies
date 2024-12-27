@@ -314,10 +314,11 @@ class _Register2PageState extends State<Register2Page> {
                                     upperCase(countryController.text.trim())
                                   ];
                                   //set default user pfp and displayname and phone
-                                  user?.updateProfile(displayName: widget.displayName.trim(), photoURL: defProfile);
+                                  await user?.updateProfile(displayName: widget.displayName.trim(), photoURL: defProfile);
+                                  await user?.reload();
 
                                   //name the userfile as uid
-                                  userFF.doc(user?.uid).set({
+                                  await userFF.doc(user?.uid).set({
                                     //set all data that user and owner have in common
                                     "fullname": capitalizedSentence,
                                     "phone": widget.phone.trim(),

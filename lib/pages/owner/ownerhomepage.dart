@@ -7,7 +7,9 @@ import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/endscreen.dart';
 import 'package:fyp/pages/all_user/functions/updateorder.dart';
 import 'package:fyp/pages/all_user/profile.dart';
+import 'package:fyp/pages/all_user/reviewlist.dart';
 import 'package:fyp/pages/owner/menupage.dart';
+import 'package:fyp/pages/owner/ownerorderpage.dart';
 import 'package:fyp/pages/owner/summarypage.dart';
 
 class OwnerHomePage extends StatefulWidget {
@@ -116,18 +118,36 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
                 text: "Customer Order",
                 size: 280,
                 onPressed: () {
-                  gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "seller", context);
+                  gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "seller", context, (context) => const OwnerOrderPage(), "/");
                 },
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 50),
               MyMenuButton(
-                icon: CupertinoIcons.news,
+                icon: Icons.auto_graph_rounded,
                 text: "Business Summary",
                 size: 280,
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SummaryPage()));
                 },
               ),
+              const SizedBox(height: 50),
+              MyMenuButton(
+                icon: Icons.comment_rounded,
+                text: "Reviews",
+                size: 280,
+                onPressed: () {
+                  gotoOrder.updateorderdata(
+                    UserNow.usernow.user!.uid,
+                    "seller",
+                    context,
+                    (context) => ReviewPage(
+                      shopID: UserNow.usernow.user!.uid,
+                    ),
+                    "/",
+                  );
+                },
+              ),
+              const SizedBox(height: kBottomNavigationBarHeight + kToolbarHeight),
             ],
           ),
         ),

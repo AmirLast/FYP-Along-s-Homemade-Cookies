@@ -335,7 +335,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     color: Colors.grey[300],
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: const Text('Change Product Image')),
+                                  child: const Text('Change Profile Picture')),
                               onPressed: showOptions,
                             ),
                           ),
@@ -366,64 +366,67 @@ class _ProfilePageState extends State<ProfilePage> {
                           Visibility(
                             visible: isEdit,
                             child: MaterialButton(
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(10),
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    _image == null ? 'Remove Picture' : "Remove Selected Picture",
+                                  ),
                                 ),
-                                child: const Text(
-                                  'Remove Picture',
-                                ),
-                              ),
-                              onPressed: _image == null
-                                  ? () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          backgroundColor: Colors.white,
-                                          content: const Text(
-                                            "Confirm delete profile picture?",
-                                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                          ),
-                                          actions: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                              children: [
-                                                IconButton(
-                                                  onPressed: () async {
-                                                    load.loading(context);
-                                                    src = defProfile;
-                                                    await user?.updatePhotoURL(defProfile);
-                                                    await FirebaseAuth.instance.currentUser?.reload().then((a) {
-                                                      UserNow.usernow.user = _auth.getCurrentUser();
-                                                      Navigator.pop(context);
-                                                      Navigator.pop(context);
-                                                      setState(() {});
-                                                    });
-                                                  },
-                                                  iconSize: 50,
-                                                  color: Colors.green,
-                                                  icon: const Icon(Icons.check_circle),
+                                onPressed: _image == null && src == defProfile
+                                    ? null
+                                    : _image == null
+                                        ? () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                backgroundColor: Colors.white,
+                                                content: const Text(
+                                                  "Confirm delete profile picture?",
+                                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                                 ),
-                                                IconButton(
-                                                  iconSize: 50,
-                                                  color: Colors.red,
-                                                  onPressed: () => Navigator.pop(context),
-                                                  icon: const Icon(Icons.cancel),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                  : () {
-                                      setState(() {
-                                        _image = null;
-                                      });
-                                    },
-                            ),
+                                                actions: [
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    children: [
+                                                      IconButton(
+                                                        onPressed: () async {
+                                                          load.loading(context);
+                                                          src = defProfile;
+                                                          await user?.updatePhotoURL(defProfile);
+                                                          await FirebaseAuth.instance.currentUser?.reload().then((a) {
+                                                            UserNow.usernow.user = _auth.getCurrentUser();
+                                                            Navigator.pop(context);
+                                                            Navigator.pop(context);
+                                                            setState(() {
+                                                              scaffoldOBJ.scaffoldmessage("Removed Picture", context);
+                                                            });
+                                                          });
+                                                        },
+                                                        iconSize: 50,
+                                                        color: Colors.green,
+                                                        icon: const Icon(Icons.check_circle),
+                                                      ),
+                                                      IconButton(
+                                                        iconSize: 50,
+                                                        color: Colors.red,
+                                                        onPressed: () => Navigator.pop(context),
+                                                        icon: const Icon(Icons.cancel),
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          }
+                                        : () {
+                                            setState(() {
+                                              _image = null;
+                                            });
+                                          }),
                           ),
 
                           const SizedBox(height: 30),
@@ -815,28 +818,38 @@ class _ProfilePageState extends State<ProfilePage> {
                                               phoneController.text == "" ? newpnum = phone : newpnum = phoneController.text.trim();
                                               if (addressController.text != '') {
                                                 newadd[0] = addressController.text.trim();
+                                                UserNow.usernow.address[0] = addressController.text.trim();
                                               } else {
                                                 newadd[0] = address;
+                                                UserNow.usernow.address[0] = address;
                                               }
                                               if (postcodeController.text != '') {
                                                 newadd[1] = postcodeController.text.trim();
+                                                UserNow.usernow.address[1] = postcodeController.text.trim();
                                               } else {
                                                 newadd[1] = postcode;
+                                                UserNow.usernow.address[1] = postcode;
                                               }
                                               if (cityController.text != '') {
                                                 newadd[2] = upperCase(cityController.text.trim());
+                                                UserNow.usernow.address[2] = upperCase(cityController.text.trim());
                                               } else {
                                                 newadd[2] = city;
+                                                UserNow.usernow.address[2] = city;
                                               }
                                               if (stateController.text != '') {
                                                 newadd[3] = upperCase(stateController.text.trim());
+                                                UserNow.usernow.address[3] = upperCase(stateController.text.trim());
                                               } else {
                                                 newadd[3] = state;
+                                                UserNow.usernow.address[3] = state;
                                               }
                                               if (countryController.text != '') {
                                                 newadd[4] = upperCase(countryController.text.trim());
+                                                UserNow.usernow.address[4] = upperCase(countryController.text.trim());
                                               } else {
-                                                newadd[4] = state;
+                                                newadd[4] = country;
+                                                UserNow.usernow.address[4] = country;
                                               }
                                               try {
                                                 String imagePath = "${UserNow.usernow.user?.uid}/profilePic";
@@ -867,7 +880,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           print(e.toString());
                                                         }
                                                       }
-                                                      context.read<Shopping>().updateDeliveryAddress(newadd);
+                                                      //context.read<Shopping>().updateDeliveryAddress(newadd); will update add new homepage
                                                       await FirebaseFirestore.instance.collection("users").doc(user?.uid).update({
                                                         "fullname": newfname,
                                                         "phone": newpnum,
@@ -904,7 +917,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       print(e.toString());
                                                     }
                                                   }
-                                                  context.read<Shopping>().updateDeliveryAddress(newadd);
+                                                  //context.read<Shopping>().updateDeliveryAddress(newadd); will update at new homepage
                                                   await FirebaseFirestore.instance.collection("users").doc(user?.uid).update({
                                                     "fullname": newfname,
                                                     "phone": newpnum,

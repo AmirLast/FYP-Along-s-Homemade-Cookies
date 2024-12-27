@@ -3,12 +3,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_loading.dart';
 import 'package:fyp/models/orderclass.dart';
-import 'package:fyp/pages/customer/orderlist.dart';
-import 'package:fyp/pages/owner/ownerorderpage.dart';
 
 class UpdateOrderData {
   final load = Loading(); //to show loading screen
-  void updateorderdata(String userid, String type, BuildContext context) async {
+  void updateorderdata(
+    String userid,
+    String type,
+    BuildContext context,
+    Widget Function(BuildContext) page,
+    String predicate,
+  ) async {
     load.loading(context); //show loading screen for both option
     Orders.currentOrder.orders.clear(); //clear current order list
     //final cartitems = <Map<String, int>>[];
@@ -59,19 +63,11 @@ class UpdateOrderData {
         //onError: (e) => print("Error completing: $e"),
       ).then((onValue) {
         Orders.currentOrder.orders.sort((a, b) => a.dateDT.compareTo(b.dateDT));
-        if (type == "seller") {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const OwnerOrderPage()),
-            ModalRoute.withName("/"),
-          );
-        } else {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const BuyerOrder()),
-            ModalRoute.withName("/"),
-          );
-        }
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: page),
+          ModalRoute.withName(predicate),
+        );
       });
     } catch (e) {
       if (kDebugMode) {

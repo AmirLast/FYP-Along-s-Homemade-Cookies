@@ -4,8 +4,10 @@ import 'package:fyp/components/customer/my_shopproducttile.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/shopclass.dart';
 import 'package:fyp/models/shoppingclass.dart';
+import 'package:fyp/models/userclass.dart';
+import 'package:fyp/pages/all_user/functions/updateorder.dart';
 import 'package:fyp/pages/customer/cartpage.dart';
-import 'package:fyp/pages/customer/reviewlist.dart';
+import 'package:fyp/pages/all_user/reviewlist.dart';
 import 'package:provider/provider.dart';
 
 class ShopPage extends StatefulWidget {
@@ -25,6 +27,7 @@ class _ShopPageState extends State<ShopPage> {
   late List<Bakeds?> bakeds; //the shop bakeds with categories
   late List categories; //owner shop list of category
   final Logo show = Logo(); //for logo
+  final gotoOrder = UpdateOrderData();
 
   @override
   void initState() {
@@ -150,7 +153,15 @@ class _ShopPageState extends State<ShopPage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ReviewPage())),
+                        onTap: () {
+                          gotoOrder.updateorderdata(
+                            UserNow.usernow.currentdir,
+                            "seller",
+                            context,
+                            (context) => ReviewPage(shopID: UserNow.usernow.currentdir),
+                            "shoppage",
+                          );
+                        },
                         child: Container(
                           height: 30,
                           width: 80,

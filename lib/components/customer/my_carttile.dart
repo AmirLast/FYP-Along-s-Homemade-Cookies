@@ -241,6 +241,7 @@ class _MyCartTileState extends State<MyCartTile> {
                                                         onPressed: () {
                                                           if (q != 0) {
                                                             memPointPrice = double.parse("$q");
+                                                            currentmemPoint -= q * 100;
                                                             Navigator.pop(context);
                                                             Navigator.push(
                                                               context,
@@ -248,7 +249,7 @@ class _MyCartTileState extends State<MyCartTile> {
                                                                 builder: (context) => PayPage(
                                                                   cartItem: widget.userCart,
                                                                   priceReduct: memPointPrice,
-                                                                  currentPoint: currentmemPoint - q * 100,
+                                                                  currentPoint: currentmemPoint,
                                                                 ),
                                                               ),
                                                             );

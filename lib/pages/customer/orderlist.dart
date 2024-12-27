@@ -5,7 +5,6 @@ import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_ordercard.dart';
 import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/models/orderclass.dart';
-import 'package:fyp/models/userclass.dart';
 
 class BuyerOrder extends StatefulWidget {
   const BuyerOrder({super.key});
@@ -188,22 +187,27 @@ class _BuyerOrderState extends State<BuyerOrder> {
                 iconSize: 50,
                 color: Colors.green,
                 onPressed: () async {
+                  String sellerID = "";
                   load.loading(context);
                   await FirebaseFirestore.instance.collection('orders').doc(id).update({
                     "status": "Confirm",
                   }).then((onValue) async {
-                    await FirebaseFirestore.instance.collection('confirm').doc().set({
-                      "id": id,
-                      "seller": UserNow.usernow.currentdir,
-                      "review": review.text.trim(),
-                    });
-                  }).then((onValue) {
-                    Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Confirm";
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    obj.scaffoldmessage("Order confirmed received", context);
-                    setState(() {
-                      reorder();
+                    await FirebaseFirestore.instance.collection('orders').doc(id).get().then((value) {
+                      sellerID = value.data()?['seller'];
+                    }).then((onValue) async {
+                      await FirebaseFirestore.instance.collection('confirm').doc().set({
+                        "id": id,
+                        "seller": sellerID,
+                        "review": review.text.trim(),
+                      });
+                    }).then((onValue) {
+                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Confirm";
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      obj.scaffoldmessage("Order confirmed received", context);
+                      setState(() {
+                        reorder();
+                      });
                     });
                   });
                 },
@@ -266,7 +270,7 @@ class _BuyerOrderState extends State<BuyerOrder> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              currentO.isEmpty
+              orders.isEmpty
                   ? const Expanded(
                       child: Padding(
                       padding: EdgeInsets.only(top: 30.0),

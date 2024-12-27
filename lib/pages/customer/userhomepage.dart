@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/customer/my_currentlocation.dart';
 import 'package:fyp/components/general/my_drawer.dart';
 import 'package:fyp/components/general/my_logo.dart';
-import 'package:fyp/components/my_descbox.dart';
+import 'package:fyp/components/general/my_descbox.dart';
 import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/endscreen.dart';
@@ -11,6 +11,7 @@ import 'package:fyp/pages/all_user/functions/showloading.dart';
 import 'package:fyp/pages/all_user/functions/updateorder.dart';
 import 'package:fyp/pages/all_user/profile.dart';
 import 'package:fyp/pages/customer/membership.dart';
+import 'package:fyp/pages/customer/orderlist.dart';
 import 'package:fyp/pages/customer/shoplistpage.dart';
 import 'package:provider/provider.dart';
 
@@ -128,7 +129,7 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
             ),
             IconButton(
               onPressed: () {
-                gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "buyer", context);
+                gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "buyer", context, (context) => const BuyerOrder(), "/");
               },
               icon: const Icon(CupertinoIcons.tray_full, color: Colors.black),
             ),

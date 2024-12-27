@@ -74,7 +74,7 @@ class _ShopListPageState extends State<ShopListPage> {
                         gotoNext.showloading(
                           shops[index]!.id,
                           (context) => ShopPage(id: shops[index]!.id),
-                          null,
+                          const RouteSettings(name: "shoppage"),
                           "shoplist",
                           context,
                         );

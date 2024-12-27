@@ -31,7 +31,7 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
     gotoNext.showloading(
       UserNow.usernow.currentdir,
       (BuildContext context) => ShopPage(id: UserNow.usernow.currentdir),
-      null,
+      const RouteSettings(name: "shoppage"),
       'shoplist',
       context,
     );

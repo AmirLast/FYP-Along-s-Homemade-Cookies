@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_menubutton.dart';
+import 'package:fyp/models/userclass.dart';
 
 class SettingsPage extends StatelessWidget {
   final Logo show = Logo(); //for logo
@@ -53,13 +54,20 @@ class SettingsPage extends StatelessWidget {
               size: 350,
             ),
             const SizedBox(height: 50),
-            MyMenuButton(
-              text: "Subscribe to Premium",
-              onPressed: () {},
-              icon: Icons.library_add_check_rounded,
-              size: 350,
+            Visibility(
+              visible: UserNow.usernow.type == "buyer",
+              child: Column(
+                children: [
+                  MyMenuButton(
+                    text: "Subscribe to Premium",
+                    onPressed: () {},
+                    icon: Icons.library_add_check_rounded,
+                    size: 350,
+                  ),
+                  const SizedBox(height: 50),
+                ],
+              ),
             ),
-            const SizedBox(height: 50),
             MyMenuButton(
               text: "Change Email or Password",
               onPressed: () {},

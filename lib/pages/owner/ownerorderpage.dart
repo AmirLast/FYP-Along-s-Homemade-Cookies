@@ -92,15 +92,15 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                       await FirebaseFirestore.instance.collection('cancel').doc().set({
                         "id": id,
                         "reason": reason.text.trim(),
-                      });
-                    }).then((onValue) {
-                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Cancel";
-                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate = reason.text.trim();
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      obj.scaffoldmessage("Status updated to Cancel", context);
-                      setState(() {
-                        reorder();
+                      }).then((onValue) {
+                        Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Cancel";
+                        Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate = reason.text.trim();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        obj.scaffoldmessage("Status updated to Cancel", context);
+                        setState(() {
+                          reorder();
+                        });
                       });
                     });
                   }
@@ -143,16 +143,16 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                     await FirebaseFirestore.instance.collection('complete').doc().set({
                       "id": id,
                       'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-                    });
-                  }).then((onValue) {
-                    Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Complete";
-                    Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate =
-                        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    obj.scaffoldmessage("Status updated to Complete", context);
-                    setState(() {
-                      reorder();
+                    }).then((onValue) {
+                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Complete";
+                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate =
+                          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      obj.scaffoldmessage("Status updated to Complete", context);
+                      setState(() {
+                        reorder();
+                      });
                     });
                   });
                 },
