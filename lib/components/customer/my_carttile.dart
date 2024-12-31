@@ -7,7 +7,7 @@ import 'package:fyp/models/cartitem.dart';
 import 'package:fyp/models/memberclass.dart';
 import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/userclass.dart';
-import 'package:fyp/pages/customer/paymentpage.dart';
+import 'package:fyp/pages/customer/payoption.dart';
 import 'package:provider/provider.dart';
 
 class MyCartTile extends StatefulWidget {
@@ -69,84 +69,86 @@ class _MyCartTileState extends State<MyCartTile> {
               color: Colors.grey.shade400,
               borderRadius: BorderRadius.circular(8),
             ),
-            margin: const EdgeInsets.fromLTRB(25, 30, 25, 0),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+            margin: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        shopping.removeFromCart(widget.cartItem, true);
+                      },
+                      child: const Icon(Icons.close_rounded, color: Colors.black, size: 20),
+                    ),
+                  ),
+                  //food image
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: obj2.showImage(widget.cartItem.prod.url),
+                    ),
+                  ),
+
+                  const SizedBox(width: 10),
+
+                  //name and price
+                  SizedBox(
+                    width: 150,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //the name
+                        Text(
+                          widget.cartItem.prod.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        //the price
+                        const SizedBox(height: 10),
+                        Text(
+                          'RM' + widget.cartItem.prod.price.toStringAsFixed(2),
+                          style: const TextStyle(color: Colors.purple),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const Spacer(),
+
+                  Column(
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              shopping.removeFromCart(widget.cartItem, true);
-                            },
-                            child: const Icon(Icons.cancel, color: Colors.black, size: 10),
-                          ),
-                        ],
+                      QuantitySelector(
+                        //increment or decrement for quantity
+                        quantity: widget.cartItem.quantity,
+                        onDec: () {
+                          shopping.removeFromCart(widget.cartItem, false);
+                        },
+                        onInc: () {
+                          if (widget.cartItem.quantity == widget.cartItem.prod.quantity) {
+                            blockButton();
+                          } else {
+                            shopping.addToCart(widget.cartItem.prod, 0);
+                          }
+                        },
                       ),
-                      //food image
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: obj2.showImage(widget.cartItem.prod.url),
-                          )),
-
-                      const SizedBox(width: 10),
-
-                      //name and price
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //the name
-                          Text(widget.cartItem.prod.name),
-                          //the price
-                          Text(
-                            'RM' + widget.cartItem.prod.price.toStringAsFixed(2),
-                            style: const TextStyle(color: Colors.purple),
-                          ),
-                        ],
-                      ),
-
-                      const Spacer(),
-
-                      Column(
-                        children: [
-                          QuantitySelector(
-                            //increment or decrement for quantity
-                            quantity: widget.cartItem.quantity,
-                            onDec: () {
-                              shopping.removeFromCart(widget.cartItem, false);
-                            },
-                            onInc: () {
-                              if (widget.cartItem.quantity == widget.cartItem.prod.quantity) {
-                                blockButton();
-                              } else {
-                                shopping.addToCart(widget.cartItem.prod, 0);
-                              }
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              border: Border.all(color: Colors.black),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text('RM ${(widget.cartItem.quantity * widget.cartItem.prod.price).toStringAsFixed(2)}'),
-                          ),
-                        ],
+                      const SizedBox(height: 10),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text('RM ${(widget.cartItem.quantity * widget.cartItem.prod.price).toStringAsFixed(2)}'),
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           //show total price and check out button and use point button
@@ -257,7 +259,7 @@ class _MyCartTileState extends State<MyCartTile> {
                                                             Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
-                                                                builder: (context) => PayPage(
+                                                                builder: (context) => PayOptionPage(
                                                                   cartItem: widget.userCart,
                                                                   priceReduct: memPointPrice,
                                                                   currentPoint: currentmemPoint,
@@ -296,7 +298,7 @@ class _MyCartTileState extends State<MyCartTile> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => PayPage(
+                                    builder: (context) => PayOptionPage(
                                       cartItem: widget.userCart,
                                       priceReduct: memPointPrice,
                                       currentPoint: currentmemPoint,

@@ -34,7 +34,7 @@ class UpdateOrderData {
             if (oneOrder.status == "Complete") {
               await FirebaseFirestore.instance.collection('complete').where("id", isEqualTo: oneOrder.id).get().then((value) {
                 for (var dSs in value.docs) {
-                  oneOrder.reasonOrdate = dSs.get('date');
+                  oneOrder.reasonOrdate = DateFormat('d MMM yyyy, hh:mm a').format(DateTime.parse(dSs.get('date')));
                   oneOrder.onchange = dSs.get('onchange');
                 }
               });
@@ -57,7 +57,7 @@ class UpdateOrderData {
               }).then((onValue) async {
                 await FirebaseFirestore.instance.collection('complete').where("id", isEqualTo: oneOrder.id).get().then((value) {
                   for (var dSs in value.docs) {
-                    oneOrder.reasonOrdate = dSs.get('date');
+                    oneOrder.reasonOrdate = DateFormat('d MMM yyyy, hh:mm a').format(DateTime.parse(dSs.get('date')));
                   }
                 });
               });

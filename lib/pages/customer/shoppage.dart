@@ -177,6 +177,7 @@ class _ShopPageState extends State<ShopPage> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 10),
                   Expanded(
                     child: ListView.builder(
                         shrinkWrap: true,
@@ -189,30 +190,26 @@ class _ShopPageState extends State<ShopPage> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(top: 10, bottom: 5),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
-                                        color: Colors.white.withValues(alpha: 0.75),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-                                        child: Center(
-                                          child: Text(
-                                            categories[index],
-                                            style: const TextStyle(
-                                              overflow: TextOverflow.ellipsis,
-                                              fontSize: 30,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Colors.white.withValues(alpha: 0.75),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
+                                    child: Center(
+                                      child: Text(
+                                        categories[index],
+                                        style: const TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          fontSize: 30,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                               Column(

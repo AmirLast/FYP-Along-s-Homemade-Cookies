@@ -196,13 +196,97 @@ class _MembershipPageState extends State<MembershipPage> {
                               );
                             },
                           )
-                        : MaterialButton(
-                            shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
-                            padding: const EdgeInsets.all(10),
-                            color: Colors.green,
-                            textColor: Colors.black,
-                            child: Text("Current Point: $point"),
-                            onPressed: () {},
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              MaterialButton(
+                                shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                                padding: const EdgeInsets.all(10),
+                                color: Colors.green,
+                                textColor: Colors.black,
+                                child: Text("Current Point: $point"),
+                                onPressed: () {},
+                              ),
+                              const SizedBox(width: 15),
+                              MaterialButton(
+                                shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                                padding: const EdgeInsets.all(10),
+                                color: Colors.green,
+                                textColor: Colors.black,
+                                child: const Text("Check Available Benefit"),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 5.0),
+                                            child: Text(
+                                              "List Benefits",
+                                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Member.member.firstPurch
+                                                    ? const Icon(Icons.check_box_outline_blank_rounded, color: Colors.black, size: 30)
+                                                    : const Icon(Icons.check_box_outlined, color: Colors.black, size: 30),
+                                                const Expanded(
+                                                  child: Text(
+                                                    "First Purchase (100 Points)",
+                                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Member.member.rm10x5Purch < 5
+                                                    ? const Icon(Icons.check_box_outline_blank_rounded, color: Colors.black, size: 30)
+                                                    : const Icon(Icons.check_box_outlined, color: Colors.black, size: 30),
+                                                const Expanded(
+                                                  child: Text(
+                                                    "First RM10 x5 Purchase (300 Points)",
+                                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Member.member.rm30Purch
+                                                    ? const Icon(Icons.check_box_outline_blank_rounded, color: Colors.black, size: 30)
+                                                    : const Icon(Icons.check_box_outlined, color: Colors.black, size: 30),
+                                                const Expanded(
+                                                  child: Text(
+                                                    "First RM30 Purchase (500 Points)",
+                                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                   ],
                 ),

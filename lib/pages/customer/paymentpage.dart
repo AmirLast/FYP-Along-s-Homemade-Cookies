@@ -133,10 +133,10 @@ class _PayPageState extends State<PayPage> {
                     newPoint += 100;
                     Member.member.firstPurch = false;
                   }
-                  bool forrm30purchase = Member.member.rm30Purch && context.read<Shopping>().getTotalPrice() >= 15;
-                  bool isrm30Valid = Member.member.rm30Purch && context.read<Shopping>().getTotalPrice() < 15;
+                  bool forrm30purchase = Member.member.rm30Purch && context.read<Shopping>().getTotalPrice() >= 30;
+                  bool isrm30Valid = Member.member.rm30Purch && context.read<Shopping>().getTotalPrice() < 30;
                   if (forrm30purchase) {
-                    newPoint += 300;
+                    newPoint += 500;
                     Member.member.rm30Purch = false;
                   }
                   if (Member.member.rm10x5Purch < 5 && context.read<Shopping>().getTotalPrice() >= 10) {
@@ -203,7 +203,7 @@ class _PayPageState extends State<PayPage> {
           ),
           title: const Center(
             child: Text(
-              "Checkout",
+              "QR Code",
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
             ),
           ),

@@ -53,10 +53,10 @@ class PayOptionPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+              padding: const EdgeInsets.symmetric(horizontal: 50),
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(15),
                   color: Colors.white,
                 ),
                 child: Padding(
@@ -72,22 +72,22 @@ class PayOptionPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 30),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           GestureDetector(
                             child: Container(
-                              decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(10)),
-                              height: 50,
-                              width: 50,
+                              decoration: BoxDecoration(color: Colors.grey.shade400, borderRadius: BorderRadius.circular(20)),
+                              height: 100,
+                              width: 100,
                               child: const Center(child: Text("FPX", style: TextStyle(fontSize: 20, color: Colors.black))),
                             ),
                             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FPXPage())),
                           ),
                           GestureDetector(
                             child: Container(
-                              decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(10)),
-                              height: 50,
-                              width: 50,
+                              decoration: BoxDecoration(color: Colors.grey.shade400, borderRadius: BorderRadius.circular(20)),
+                              height: 100,
+                              width: 100,
                               child: const Center(child: Text("QR Code", style: TextStyle(fontSize: 20, color: Colors.black))),
                             ),
                             onTap: () => Navigator.push(

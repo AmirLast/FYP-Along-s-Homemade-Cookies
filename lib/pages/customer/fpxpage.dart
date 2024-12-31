@@ -20,7 +20,7 @@ class FPXPage extends StatelessWidget {
         title: const Center(
           child: Text(
             textAlign: TextAlign.center,
-            "Payment Option",
+            "FPX",
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
