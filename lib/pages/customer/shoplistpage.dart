@@ -42,10 +42,10 @@ class _ShopListPageState extends State<ShopListPage> {
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
-        actions: [
+        actions: const [
           IconButton(
-            onPressed: () => {},
-            icon: const Icon(
+            onPressed: null,
+            icon: Icon(
               Icons.more_vert,
               color: Colors.transparent,
             ),

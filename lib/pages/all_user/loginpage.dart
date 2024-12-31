@@ -188,13 +188,26 @@ class _LoginPageState extends State<LoginPage> {
                           if (value.data()?['type'] == "buyer") {
                             UserNow.usernow.address = value.data()?['address'];
                             UserNow.usernow.isMember = value.data()?['ismember'];
-                            Member.member = Member(memPoint: value.data()?['mempoint'], firstPurchase: value.data()?['firstpurchase']);
                           }
                           //special data for seller
                           if (value.data()?['type'] == "seller") {
                             UserNow.usernow.address = value.data()?['address'];
                             UserNow.usernow.categories = value.data()?['categories'];
                             UserNow.usernow.shop = value.data()?['shop'];
+                          }
+                        }).then((v) async {
+                          if (UserNow.usernow.isMember) {
+                            //if member then update local value
+                            await FirebaseFirestore.instance.collection('members').where('id', isEqualTo: user.uid).get().then((qSs) {
+                              for (var dSs in qSs.docs) {
+                                Member.member = Member(
+                                  memPoint: dSs.get('memPoint'),
+                                  firstPurch: dSs.get('firstPurch'),
+                                  rm30Purch: dSs.get('rm30Purch'),
+                                  rm10x5Purch: dSs.get('rm10x5Purch'),
+                                );
+                              }
+                            });
                           }
                         });
                         //update password strength value

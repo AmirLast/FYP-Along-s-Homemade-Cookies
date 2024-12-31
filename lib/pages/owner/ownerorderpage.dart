@@ -41,7 +41,7 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
     past = orders.where((d) => d.status == "Complete" || d.status == "Cancel" || d.status == "Confirm").toList();
     pin.sort((x, y) => x.dateDT.compareTo(y.dateDT));
     pending.sort((x, y) => x.dateDT.compareTo(y.dateDT));
-    past.sort((x, y) => x.dateDT.compareTo(y.dateDT)); //all past order sort by date
+    past.sort((x, y) => DateTime.parse(x.onchange).compareTo(DateTime.parse(y.onchange))); //all past order sort by date changed
     pin += pending; //all current order but pin is first, all sort by date
     setState(() {
       reason = TextEditingController();
@@ -92,9 +92,12 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                       await FirebaseFirestore.instance.collection('cancel').doc().set({
                         "id": id,
                         "reason": reason.text.trim(),
+                        'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                       }).then((onValue) {
                         Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Cancel";
                         Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate = reason.text.trim();
+                        Orders.currentOrder.orders.firstWhere((test) => test.id == id).onchange =
+                            DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
                         Navigator.pop(context);
                         Navigator.pop(context);
                         obj.scaffoldmessage("Status updated to Cancel", context);
@@ -143,9 +146,12 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                     await FirebaseFirestore.instance.collection('complete').doc().set({
                       "id": id,
                       'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+                      'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                     }).then((onValue) {
                       Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Complete";
                       Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate =
+                          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).onchange =
                           DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
                       Navigator.pop(context);
                       Navigator.pop(context);
@@ -239,10 +245,10 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
             ),
           ),
         ),
-        actions: [
+        actions: const [
           IconButton(
-            onPressed: () => {},
-            icon: const Icon(
+            onPressed: null,
+            icon: Icon(
               Icons.more_vert,
               color: Colors.transparent,
             ),

@@ -67,10 +67,10 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
               ),
             ),
-            actions: [
+            actions: const [
               IconButton(
-                onPressed: () => {},
-                icon: const Icon(
+                onPressed: null,
+                icon: Icon(
                   Icons.more_vert,
                   color: Colors.transparent,
                 ),

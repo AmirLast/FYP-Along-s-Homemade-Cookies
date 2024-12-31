@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_drawer_tile.dart';
+import 'package:fyp/models/bakedclass.dart';
+import 'package:fyp/models/memberclass.dart';
+import 'package:fyp/models/orderclass.dart';
+import 'package:fyp/models/shopclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
 import 'package:fyp/pages/all_user/profile.dart';
@@ -31,6 +35,13 @@ class MyDrawer extends StatelessWidget {
     );
     // loading circle-----
     await Future.delayed(const Duration(seconds: 2), () async {
+      //empty all classes
+      Bakeds.currentBaked.empty();
+      Member.member.empty();
+      Orders.currentOrder.empty();
+      Shops.currentShop.empty();
+      UserNow.usernow.empty();
+
       final authService = AuthService();
       await authService.signOut();
     });

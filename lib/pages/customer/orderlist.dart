@@ -5,6 +5,7 @@ import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_ordercard.dart';
 import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/models/orderclass.dart';
+import 'package:intl/intl.dart';
 
 class BuyerOrder extends StatefulWidget {
   const BuyerOrder({super.key});
@@ -40,7 +41,7 @@ class _BuyerOrderState extends State<BuyerOrder> {
     currentO = orders.where((a) => a.status == "Pin" || a.status == "Pending").toList();
     pastO = orders.where((a) => a.status == "Complete" || a.status == "Cancel" || a.status == "Confirm").toList();
     currentO.sort((x, y) => x.dateDT.compareTo(y.dateDT)); //all current order sort by date
-    pastO.sort((x, y) => x.dateDT.compareTo(y.dateDT)); //all past order sort by date
+    pastO.sort((x, y) => DateTime.parse(x.onchange).compareTo(DateTime.parse(y.onchange))); //all past order sort by date
     setState(() {
       reasonCancel = TextEditingController();
       review = TextEditingController();
@@ -91,10 +92,13 @@ class _BuyerOrderState extends State<BuyerOrder> {
                       await FirebaseFirestore.instance.collection('cancel').doc().set({
                         "id": id,
                         "reason": reasonCancel.text.trim(),
+                        'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                       });
                     }).then((onValue) {
                       Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Cancel";
                       Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate = reasonCancel.text.trim();
+                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).onchange =
+                          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
                       Navigator.pop(context);
                       Navigator.pop(context);
                       obj.scaffoldmessage("Status updated to Cancel", context);
@@ -199,9 +203,12 @@ class _BuyerOrderState extends State<BuyerOrder> {
                         "id": id,
                         "seller": sellerID,
                         "review": review.text.trim(),
+                        'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                       });
                     }).then((onValue) {
                       Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Confirm";
+                      Orders.currentOrder.orders.firstWhere((test) => test.id == id).onchange =
+                          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
                       Navigator.pop(context);
                       Navigator.pop(context);
                       obj.scaffoldmessage("Order confirmed received", context);
@@ -251,10 +258,10 @@ class _BuyerOrderState extends State<BuyerOrder> {
             ),
           ),
         ),
-        actions: [
+        actions: const [
           IconButton(
-            onPressed: () => {},
-            icon: const Icon(
+            onPressed: null,
+            icon: Icon(
               Icons.more_vert,
               color: Colors.transparent,
             ),

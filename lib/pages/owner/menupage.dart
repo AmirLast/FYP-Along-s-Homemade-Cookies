@@ -76,10 +76,10 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
-        actions: [
+        actions: const [
           IconButton(
-            onPressed: () => {},
-            icon: const Icon(
+            onPressed: null,
+            icon: Icon(
               Icons.more_vert,
               color: Colors.transparent,
             ),
@@ -207,6 +207,27 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                   },
                 ),
               ),
+              cat.isNotEmpty
+                  ? const SizedBox()
+                  : const Column(
+                      children: [
+                        Spacer(),
+                        Padding(
+                          padding: EdgeInsets.only(left: 50),
+                          child: Row(
+                            children: [
+                              Icon(Icons.arrow_back, color: Colors.black, size: 15),
+                              SizedBox(width: 15),
+                              Text(
+                                "click this to add category",
+                                style: TextStyle(color: Colors.black, fontSize: 15),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
             ],
           ),
         ),

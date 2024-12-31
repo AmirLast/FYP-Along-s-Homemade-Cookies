@@ -291,10 +291,10 @@ class _EditProdPageState extends State<EditProdPage> {
               style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
           ),
-          actions: [
+          actions: const [
             IconButton(
-              onPressed: () => {},
-              icon: const Icon(
+              onPressed: null,
+              icon: Icon(
                 Icons.more_vert,
                 color: Colors.transparent,
               ),

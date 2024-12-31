@@ -19,4 +19,13 @@ class Shops {
     id: "",
     categories: [],
   ); // the object to call all the above
+  void empty() {
+    Shops.currentShop = Shops(
+      name: "",
+      bakeds: [],
+      id: "",
+      categories: [],
+    );
+    Shops.currentShop.shops.clear();
+  }
 }

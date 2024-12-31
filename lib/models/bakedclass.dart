@@ -25,4 +25,15 @@ class Bakeds {
     category: "",
     imagePath: "",
   ); // the object to call all the above
+  void empty() {
+    Bakeds.currentBaked = Bakeds(
+      name: "",
+      quantity: 0,
+      description: "",
+      url: "",
+      price: 0,
+      category: "",
+      imagePath: "",
+    );
+  }
 }

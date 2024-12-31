@@ -127,16 +127,39 @@ class _PayPageState extends State<PayPage> {
               if (i + 1 == j) {
                 if (UserNow.usernow.isMember) {
                   load.loading(context);
-                  context.read<Shopping>().updatePriceReduct(widget.priceReduct);
+                  context.read<Shopping>().updatePriceReduct(widget.priceReduct); //affect if use memberpoint
                   int newPoint = widget.currentPoint + context.read<Shopping>().getTotalPrice().round();
-                  if (Member.member.firstPurchase) {
+                  if (Member.member.firstPurch) {
                     newPoint += 100;
+                    Member.member.firstPurch = false;
+                  }
+                  bool forrm30purchase = Member.member.rm30Purch && context.read<Shopping>().getTotalPrice() >= 15;
+                  bool isrm30Valid = Member.member.rm30Purch && context.read<Shopping>().getTotalPrice() < 15;
+                  if (forrm30purchase) {
+                    newPoint += 300;
+                    Member.member.rm30Purch = false;
+                  }
+                  if (Member.member.rm10x5Purch < 5 && context.read<Shopping>().getTotalPrice() >= 10) {
+                    Member.member.rm10x5Purch += 1;
+                    if (Member.member.rm10x5Purch == 5) {
+                      newPoint += 300;
+                    }
                   }
                   Member.member.memPoint = newPoint;
                   //update member point after paying
-                  await FirebaseFirestore.instance.collection('users').doc(UserNow.usernow.user?.uid).update({
-                    'mempoint': newPoint,
-                    'firstpurchase': false, //whether it's first or not, it will always go to false after the purchase
+                  await FirebaseFirestore.instance
+                      .collection('members')
+                      .where('id', isEqualTo: UserNow.usernow.user?.uid)
+                      .get()
+                      .then((qSs) async {
+                    for (var dSs in qSs.docs) {
+                      await FirebaseFirestore.instance.collection('members').doc(dSs.id).update({
+                        'mempoint': newPoint,
+                        'firstPurch': false, //whether it's first or not, it will always go to false after the purchase
+                        'rm30Purch': isrm30Valid,
+                        'rm10x5Purch': Member.member.rm10x5Purch,
+                      });
+                    }
                   }).then((onValue) {
                     Navigator.push(
                       context,
@@ -184,10 +207,10 @@ class _PayPageState extends State<PayPage> {
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
             ),
           ),
-          actions: [
+          actions: const [
             IconButton(
-              onPressed: () => {},
-              icon: const Icon(
+              onPressed: null,
+              icon: Icon(
                 Icons.more_vert,
                 color: Colors.transparent,
               ),

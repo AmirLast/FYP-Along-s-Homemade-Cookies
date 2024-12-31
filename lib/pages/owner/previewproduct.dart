@@ -82,39 +82,42 @@ class _PreviewProdPageState extends State<PreviewProdPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.name,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                    SizedBox(
+                      width: 210,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.name,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
                           ),
-                        ),
 
-                        //product price
-                        Text(
-                          'RM' + widget.price,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
+                          //product price
+                          Text(
+                            'RM' + widget.price,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
 
-                        const SizedBox(height: 10),
+                          const SizedBox(height: 10),
 
-                        //product description
-                        Text(
-                          widget.desc,
-                          style: const TextStyle(fontStyle: FontStyle.italic),
-                        ),
+                          //product description
+                          Text(
+                            widget.desc,
+                            style: const TextStyle(fontStyle: FontStyle.italic),
+                          ),
 
-                        const SizedBox(height: 10),
+                          const SizedBox(height: 10),
 
-                        //product available quantity
-                        Text("Available Product: " + widget.quantity.toString()),
-                      ],
+                          //product available quantity
+                          Text("Available Product: " + widget.quantity.toString()),
+                        ],
+                      ),
                     ),
                     Column(
                       children: [

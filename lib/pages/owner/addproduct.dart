@@ -140,10 +140,10 @@ class _AddProductState extends State<AddProduct> {
             style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
-        actions: [
+        actions: const [
           IconButton(
-            onPressed: () => {},
-            icon: const Icon(
+            onPressed: null,
+            icon: Icon(
               Icons.more_vert,
               color: Colors.transparent,
             ),

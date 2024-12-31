@@ -72,14 +72,17 @@ class _CategoryTileState extends State<CategoryTile> {
                   title: Row(
                     children: [
                       const SizedBox(width: 15),
-                      Text(
-                        textAlign: TextAlign.center,
-                        widget.catName,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                      SizedBox(
+                        width: 190,
+                        child: Text(
+                          textAlign: TextAlign.center,
+                          widget.catName,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                       const Spacer(),

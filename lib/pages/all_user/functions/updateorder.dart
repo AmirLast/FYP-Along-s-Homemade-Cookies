@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_loading.dart';
 import 'package:fyp/models/orderclass.dart';
+import 'package:intl/intl.dart';
 
 class UpdateOrderData {
   final load = Loading(); //to show loading screen
@@ -21,10 +22,11 @@ class UpdateOrderData {
       await FirebaseFirestore.instance.collection('orders').where(type, isEqualTo: userid).get().then(
         (querySnapshot) async {
           for (var docSnapshot in querySnapshot.docs) {
+            DateTime dtOrder = DateTime.parse(docSnapshot.get('date'));
             oneOrder = Orders(
               id: docSnapshot.id,
-              dateString: docSnapshot.get('date'),
-              dateDT: DateTime.parse(docSnapshot.get('date')),
+              dateString: DateFormat('d MMM yyyy, hh:mm a').format(dtOrder),
+              dateDT: dtOrder,
               order: docSnapshot.get('order'),
               status: docSnapshot.get('status'),
               cartitems: docSnapshot.get('cartitem'),
@@ -33,6 +35,7 @@ class UpdateOrderData {
               await FirebaseFirestore.instance.collection('complete').where("id", isEqualTo: oneOrder.id).get().then((value) {
                 for (var dSs in value.docs) {
                   oneOrder.reasonOrdate = dSs.get('date');
+                  oneOrder.onchange = dSs.get('onchange');
                 }
               });
             }
@@ -40,6 +43,7 @@ class UpdateOrderData {
               await FirebaseFirestore.instance.collection('cancel').where("id", isEqualTo: oneOrder.id).get().then((value) {
                 for (var dSs in value.docs) {
                   oneOrder.reasonOrdate = dSs.get('reason');
+                  oneOrder.onchange = dSs.get('onchange');
                 }
               });
             }
@@ -48,6 +52,7 @@ class UpdateOrderData {
                 for (var dSs in value.docs) {
                   oneOrder.review = dSs.get('review');
                   oneOrder.reviewID = dSs.get('seller');
+                  oneOrder.onchange = dSs.get('onchange');
                 }
               }).then((onValue) async {
                 await FirebaseFirestore.instance.collection('complete').where("id", isEqualTo: oneOrder.id).get().then((value) {

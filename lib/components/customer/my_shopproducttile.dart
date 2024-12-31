@@ -45,7 +45,8 @@ class _MyProdTileState extends State<MyProdTile> {
                   child: Row(
                     children: [
                       //text product detail
-                      Expanded(
+                      SizedBox(
+                        width: 200,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -82,7 +83,7 @@ class _MyProdTileState extends State<MyProdTile> {
                         ),
                       ),
 
-                      const SizedBox(width: 15),
+                      const Spacer(),
 
                       // prod image
                       ClipRRect(

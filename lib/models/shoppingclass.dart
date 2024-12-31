@@ -99,11 +99,11 @@ class Shopping extends ChangeNotifier {
   }
 
   // remove from cart
-  void removeFromCart(CartItem cartItem) {
+  void removeFromCart(CartItem cartItem, bool empty) {
     int cartIndex = _cart.indexOf(cartItem);
 
     if (cartIndex != -1) {
-      if (_cart[cartIndex].quantity > 1) {
+      if (_cart[cartIndex].quantity > 1 && !empty) {
         _cart[cartIndex].quantity--;
       } else {
         _cart.removeAt(cartIndex);

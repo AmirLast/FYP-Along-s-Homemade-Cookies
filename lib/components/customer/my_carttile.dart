@@ -77,6 +77,17 @@ class _MyCartTileState extends State<MyCartTile> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              shopping.removeFromCart(widget.cartItem, true);
+                            },
+                            child: const Icon(Icons.cancel, color: Colors.black, size: 10),
+                          ),
+                        ],
+                      ),
                       //food image
                       ClipRRect(
                           borderRadius: BorderRadius.circular(8),
@@ -110,7 +121,7 @@ class _MyCartTileState extends State<MyCartTile> {
                             //increment or decrement for quantity
                             quantity: widget.cartItem.quantity,
                             onDec: () {
-                              shopping.removeFromCart(widget.cartItem);
+                              shopping.removeFromCart(widget.cartItem, false);
                             },
                             onInc: () {
                               if (widget.cartItem.quantity == widget.cartItem.prod.quantity) {

@@ -7,7 +7,8 @@ import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/customer/userhomepage.dart';
 
 class MembershipPage extends StatefulWidget {
-  const MembershipPage({super.key});
+  final String pop;
+  const MembershipPage({super.key, required this.pop});
 
   @override
   State<MembershipPage> createState() => _MembershipPageState();
@@ -18,13 +19,24 @@ class _MembershipPageState extends State<MembershipPage> {
   int point = Member.member.memPoint;
   final Logo show = Logo(); //for logo
   final load = Loading();
+  List<String> benefits = [
+    "Every 100 point = RM1 redeemable for price reduction",
+    "For every RM1 purchase = +1 Point",
+    "New member first purchase = +100 Point",
+    "For first RM10 x5 purchase = +300 Point",
+    "For first RM30 purchase = +500 Point",
+  ];
 
   void toPop() {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute<void>(builder: (BuildContext context) => const UserHomePage(), settings: const RouteSettings(name: "/")),
-      (Route<dynamic> route) => false,
-    );
+    if (widget.pop == "pop") {
+      Navigator.pop(context);
+    } else {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute<void>(builder: (BuildContext context) => const UserHomePage(), settings: const RouteSettings(name: "/")),
+        (Route<dynamic> route) => false,
+      );
+    }
   }
 
   @override
@@ -52,10 +64,10 @@ class _MembershipPageState extends State<MembershipPage> {
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
           ),
-          actions: [
+          actions: const [
             IconButton(
-              onPressed: () => {},
-              icon: const Icon(
+              onPressed: null,
+              icon: Icon(
                 Icons.more_vert,
                 color: Colors.transparent,
               ),
@@ -95,33 +107,26 @@ class _MembershipPageState extends State<MembershipPage> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 10),
-                        Container(
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-                            child: Text(
-                              "- For every RM1 purchase = +1 Point",
-                              style: TextStyle(color: Colors.black, fontSize: 15),
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(top: 10),
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: benefits.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: Container(
+                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
+                              child: Text(
+                                benefits[index],
+                                style: const TextStyle(color: Colors.black, fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        Container(
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-                            child: Text(
-                              "- New member first purchase +100 Point",
-                              style: TextStyle(color: Colors.black, fontSize: 15),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -158,11 +163,19 @@ class _MembershipPageState extends State<MembershipPage> {
                                             load.loading(context);
                                             await FirebaseFirestore.instance.collection('users').doc(UserNow.usernow.user?.uid).update({
                                               "ismember": true,
+                                            }).then((a) async {
+                                              await FirebaseFirestore.instance.collection('members').add({
+                                                'id': UserNow.usernow.user?.uid,
+                                                'firstPurch': true,
+                                                'memPoint': 0,
+                                                'rm10x5Purch': 0,
+                                                'rm30Purch': true,
+                                              });
                                             }).then((onValue) {
                                               Navigator.pop(context);
                                               Navigator.pop(context);
                                               UserNow.usernow.isMember = true;
-                                              Member.member.memPoint = 0;
+                                              Member.member = Member(memPoint: 0, firstPurch: true, rm30Purch: true, rm10x5Purch: 0);
                                               setState(() {
                                                 isMember = UserNow.usernow.isMember;
                                                 point = Member.member.memPoint;

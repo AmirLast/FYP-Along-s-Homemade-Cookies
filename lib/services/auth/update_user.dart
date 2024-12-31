@@ -14,7 +14,7 @@ class UpdateUserData {
         return "";
       }
       var dir = FirebaseFirestore.instance.collection('users');
-      await dir.doc(user.uid).get().then((value) {
+      await dir.doc(user.uid).get().then((value) async {
         UserNow.usernow = UserNow(
           fullname: value.data()?['fullname'],
           phone: value.data()?['phone'],
@@ -33,7 +33,18 @@ class UpdateUserData {
         if (value.data()?['type'] == "buyer") {
           UserNow.usernow.address = value.data()?['address'];
           UserNow.usernow.isMember = value.data()?['ismember'];
-          Member.member = Member(memPoint: value.data()?['mempoint'], firstPurchase: value.data()?['firstpurchase']);
+          if (UserNow.usernow.isMember) {
+            await FirebaseFirestore.instance.collection('members').where('id', isEqualTo: UserNow.usernow.user?.uid).get().then((qSs) {
+              for (var dSs in qSs.docs) {
+                Member.member = Member(
+                  memPoint: dSs.get('memPoint'),
+                  firstPurch: dSs.get('firstPurch'),
+                  rm30Purch: dSs.get('rm30Purch'),
+                  rm10x5Purch: dSs.get('rm10x5Purch'),
+                );
+              }
+            });
+          }
         }
       });
       return UserNow.usernow.type;
