@@ -6,6 +6,7 @@ class Loading {
       barrierDismissible: false, //to prevent outside click
       context: context,
       builder: (context) {
+        //to prevent back button
         return PopScope(
           canPop: false,
           onPopInvokedWithResult: (didPop, result) {

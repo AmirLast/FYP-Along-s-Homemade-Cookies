@@ -3,6 +3,8 @@ import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/admin/adminhomepage.dart';
+import 'package:fyp/pages/all_user/changeemail.dart';
+import 'package:fyp/pages/all_user/changepassword.dart';
 import 'package:fyp/pages/customer/membership.dart';
 import 'package:fyp/pages/customer/userhomepage.dart';
 import 'package:fyp/pages/owner/ownerhomepage.dart';
@@ -103,8 +105,15 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               MyMenuButton(
-                text: "Change Email or Password",
-                onPressed: () {},
+                text: "Change Password",
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangePassword())),
+                icon: Icons.lock_person_rounded,
+                size: 350,
+              ),
+              const SizedBox(height: 50),
+              MyMenuButton(
+                text: "Change Email",
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangeEmail())),
                 icon: Icons.lock_person_rounded,
                 size: 350,
               ),

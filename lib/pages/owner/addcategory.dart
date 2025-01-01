@@ -56,7 +56,7 @@ class _AddCategoryState extends State<AddCategory> {
         title: const Center(
           child: Text(
             textAlign: TextAlign.center,
-            "Category",
+            "New Category",
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),

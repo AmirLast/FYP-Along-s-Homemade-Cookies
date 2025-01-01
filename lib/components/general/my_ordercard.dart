@@ -29,7 +29,7 @@ class OrderCard extends StatefulWidget {
 }
 
 class _OrderCardState extends State<OrderCard> {
-  Widget theCard(BuildContext context, String formattedDate, String status, bool isOwner) {
+  Widget theCard(BuildContext context, String formattedDate, String status, bool isOwner, bool canCancel, int dayPassed) {
     bool isPinnable = status == "Pin" || status == "Unpin" || status == "Pending";
     bool isComplete = status == "Complete";
     bool isConfirm = status == "Confirm"; //to disable confirm receive
@@ -97,11 +97,22 @@ class _OrderCardState extends State<OrderCard> {
                             textDirection: TextDirection.rtl,
                           ),
                         ),
-                        Center(
-                          child: Text(
-                            "Status: " + status,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Status: " + status,
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Visibility(visible: isPinnable || isComplete, child: const SizedBox(width: 15)),
+                            Visibility(
+                              visible: isPinnable || isComplete,
+                              child: Text(
+                                dayPassed.toString() + " days passed",
+                                style: const TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          ],
                         ),
                         Visibility(
                           visible: !isPinnable,
@@ -122,21 +133,17 @@ class _OrderCardState extends State<OrderCard> {
                                 ),
                               );
                             },
-                            child: Padding(
+                            child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 5.0),
-                              child: Container(
-                                width: 270,
-                                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    widget.order!.status == "Cancel"
-                                        ? "Cancelled for: ${widget.order!.reasonOrdate}"
-                                        : "Completed On: ${widget.order!.reasonOrdate}",
-                                    style: const TextStyle(color: Colors.black, overflow: TextOverflow.ellipsis),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
+                              margin: const EdgeInsets.all(8.0),
+                              width: 270,
+                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                              child: Text(
+                                widget.order!.status == "Cancel"
+                                    ? "Cancelled for: ${widget.order!.reasonOrdate}"
+                                    : "Completed On: ${widget.order!.reasonOrdate}",
+                                style: const TextStyle(color: Colors.black, overflow: TextOverflow.ellipsis),
+                                textAlign: TextAlign.left,
                               ),
                             ),
                           ),
@@ -156,9 +163,13 @@ class _OrderCardState extends State<OrderCard> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  Text(
-                                    widget.order!.cartitems[index].keys.first,
-                                    style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                                  SizedBox(
+                                    width: 220,
+                                    child: Text(
+                                      overflow: TextOverflow.ellipsis,
+                                      widget.order!.cartitems[index].keys.first,
+                                      style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                   const Spacer(),
                                   Text(
@@ -215,7 +226,7 @@ class _OrderCardState extends State<OrderCard> {
               Visibility(
                 visible: !isOwner && (isComplete || isConfirm),
                 child: MaterialButton(
-                  onPressed: isComplete ? widget.onReceive : null,
+                  onPressed: isComplete && canCancel ? widget.onReceive : null,
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     decoration: BoxDecoration(
@@ -224,7 +235,7 @@ class _OrderCardState extends State<OrderCard> {
                     ),
                     child: Center(
                       child: Text(
-                        "Confirm Receive",
+                        canCancel ? "Confirm Receive" : "Write Review",
                         style: TextStyle(
                           color: !isComplete ? Colors.black.withValues(alpha: 0.4) : Colors.black,
                         ),
@@ -238,7 +249,7 @@ class _OrderCardState extends State<OrderCard> {
               Visibility(
                 visible: !(!isOwner && (isComplete || isConfirm)),
                 child: MaterialButton(
-                  onPressed: isPinnable ? widget.onCancel : null,
+                  onPressed: isPinnable && canCancel ? widget.onCancel : null,
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     decoration: BoxDecoration(
@@ -309,27 +320,23 @@ class _OrderCardState extends State<OrderCard> {
     );
   }
 
-  Widget theColumn(BuildContext context, String formattedDate, String status, bool isOwner) {
+  Widget theColumn(BuildContext context, String formattedDate, String status, bool isOwner, bool canCancel, int dayPassed) {
     return Column(
       children: [
-        Padding(
+        Container(
           padding: const EdgeInsets.fromLTRB(90, 10, 90, 0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: Center(
-                  child: Text(
-                widget.title,
-                style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-              )),
-            ),
+          margin: const EdgeInsets.symmetric(vertical: 10.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
           ),
+          child: Center(
+              child: Text(
+            widget.title,
+            style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+          )),
         ),
-        theCard(context, formattedDate, status, isOwner),
+        theCard(context, formattedDate, status, isOwner, canCancel, dayPassed),
       ],
     );
   }
@@ -339,13 +346,22 @@ class _OrderCardState extends State<OrderCard> {
     bool isOwner = UserNow.usernow.type == "seller";
     String formattedDate = widget.order!.dateString;
     String status = widget.order!.status == "Pin" ? "Pending" : widget.order!.status;
+    DateTime statusTime;
+    if (status == "Pending") {
+      statusTime = widget.order!.dateDT;
+    } else {
+      statusTime = DateTime.parse(widget.order!.onchange);
+    }
+    Duration dayPassed = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+        .difference(DateTime(statusTime.year, statusTime.month, statusTime.day));
+    bool canCancel = dayPassed.inDays < 3;
 
     return widget.index != 0
         ? Column(
             children: [
-              theCard(context, formattedDate, status, isOwner),
+              theCard(context, formattedDate, status, isOwner, canCancel, dayPassed.inDays),
             ],
           )
-        : theColumn(context, formattedDate, status, isOwner);
+        : theColumn(context, formattedDate, status, isOwner, canCancel, dayPassed.inDays);
   }
 }
