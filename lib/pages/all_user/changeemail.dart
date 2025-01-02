@@ -73,9 +73,9 @@ class _ChangeEmailState extends State<ChangeEmail> {
         decoration: show.showLogo(),
         child: Column(
           children: [
-            const SizedBox(height: 30),
+            const SizedBox(height: 120),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+              margin: const EdgeInsets.symmetric(horizontal: 25),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.white,
@@ -202,6 +202,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       }
                     },
                   ),
+                  const SizedBox(height: 40),
                 ],
               ),
             )

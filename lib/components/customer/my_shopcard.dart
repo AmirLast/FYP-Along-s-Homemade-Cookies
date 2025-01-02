@@ -62,28 +62,24 @@ class _ShopCardState extends State<ShopCard> {
                       if (index == 4) {
                         return Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: obj.showImage(widget.shop!.bakeds[index]!.url),
-                              ),
+                            Container(
+                              margin: const EdgeInsets.all(5.0),
+                              height: 100,
+                              width: 100,
+                              child: obj.showImage(widget.shop!.bakeds[index]!.url),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Container(
-                                decoration: const BoxDecoration(color: Colors.grey),
-                                height: 100,
-                                width: 100,
-                                child: Center(
-                                  child: Text(
-                                    "+" + remainingProd(widget.shop!.bakeds.length).toString(),
-                                    style: TextStyle(
-                                      color: Colors.black.withValues(alpha: 0.4),
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            Container(
+                              margin: const EdgeInsets.all(5.0),
+                              decoration: const BoxDecoration(color: Colors.grey),
+                              height: 100,
+                              width: 100,
+                              child: Center(
+                                child: Text(
+                                  "+" + remainingProd(widget.shop!.bakeds.length).toString(),
+                                  style: TextStyle(
+                                    color: Colors.black.withValues(alpha: 0.4),
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
@@ -91,13 +87,11 @@ class _ShopCardState extends State<ShopCard> {
                           ],
                         );
                       } else {
-                        return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: obj.showImage(widget.shop!.bakeds[index]!.url),
-                          ),
+                        return Container(
+                          margin: const EdgeInsets.all(5.0),
+                          height: 100,
+                          width: 100,
+                          child: obj.showImage(widget.shop!.bakeds[index]!.url),
                         );
                       }
                     },

@@ -434,21 +434,16 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        child: Text(
-                          "Display Name",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: const Text(
+                      "Display Name",
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                   //displayname
@@ -464,20 +459,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     isShowhint: true,
                   ),
                   const SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        child: Text(
-                          "Full Name",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: const Text(
+                      "Full Name",
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                   //fullname
@@ -493,20 +484,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     isShowhint: true,
                   ),
                   const SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        child: Text(
-                          "Phone Number",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: const Text(
+                      "Phone Number",
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                   //phone
@@ -522,20 +509,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     isShowhint: true,
                   ),
                   const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        child: Text(
-                          "Address",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: const Text(
+                      "Address",
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                   //address
@@ -555,37 +538,29 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                            child: Text(
-                              "PostCode",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        margin: const EdgeInsets.symmetric(horizontal: 25),
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        child: const Text(
+                          "PostCode",
+                          style: TextStyle(color: Colors.black),
                         ),
                       ),
                       const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                            child: Text(
-                              "City",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        margin: const EdgeInsets.symmetric(horizontal: 25),
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        child: const Text(
+                          "City",
+                          style: TextStyle(color: Colors.black),
                         ),
                       ),
                       const SizedBox(width: 110),
@@ -662,37 +637,29 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                            child: Text(
-                              "State",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        margin: const EdgeInsets.symmetric(horizontal: 25),
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        child: const Text(
+                          "State",
+                          style: TextStyle(color: Colors.black),
                         ),
                       ),
                       const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                            child: Text(
-                              "Country",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        margin: const EdgeInsets.symmetric(horizontal: 25),
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        child: const Text(
+                          "Country",
+                          style: TextStyle(color: Colors.black),
                         ),
                       ),
                       const SizedBox(width: 85),
@@ -979,12 +946,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                            child: Text(
-                              isEdit ? "Save Profile" : "Edit Profile",
-                              style: const TextStyle(color: Colors.black, fontSize: 15),
-                            ),
+                          padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                          child: Text(
+                            isEdit ? "Save Profile" : "Edit Profile",
+                            style: const TextStyle(color: Colors.black, fontSize: 15),
                           ),
                         ),
                       ),

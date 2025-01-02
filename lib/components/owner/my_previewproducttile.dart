@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_cachednetworkimage.dart';
 import 'package:fyp/models/bakedclass.dart';
-import 'package:fyp/pages/customer/prodpage.dart';
 
-class MyProdTile extends StatefulWidget {
+class MyPreviewProdTile extends StatefulWidget {
   final List<Bakeds?> bakeds;
   final String category;
-  const MyProdTile({
+  const MyPreviewProdTile({
     super.key,
     required this.bakeds,
     required this.category,
   });
 
   @override
-  State<MyProdTile> createState() => _MyProdTileState();
+  State<MyPreviewProdTile> createState() => _MyPreviewProdTileState();
 }
 
-class _MyProdTileState extends State<MyProdTile> {
+class _MyPreviewProdTileState extends State<MyPreviewProdTile> {
   late List<Bakeds?> currentBakeds = widget.bakeds.where((b) => b!.category == widget.category).toList();
   final obj = MyCachednetworkimage();
 
@@ -33,11 +32,7 @@ class _MyProdTileState extends State<MyProdTile> {
           children: [
             Container(height: 2, color: Colors.black),
             GestureDetector(
-              onTap: isAvailable
-                  ? () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProdPage(prod: currentBakeds[index])));
-                    }
-                  : null,
+              onTap: () {},
               child: Container(
                 color: const Color(0xffc1ff72).withValues(alpha: 0.5),
                 padding: const EdgeInsets.all(15.0),

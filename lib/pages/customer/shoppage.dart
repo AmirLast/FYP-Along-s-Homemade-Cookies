@@ -145,11 +145,9 @@ class _ShopPageState extends State<ShopPage> {
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.grey,
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: Row(
-                            children: [Text("Sort by"), Spacer(), Icon(Icons.arrow_drop_down_sharp)],
-                          ),
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: const Row(
+                          children: [Text("Sort by"), Spacer(), Icon(Icons.arrow_drop_down_sharp)],
                         ),
                       ),
                       GestureDetector(
@@ -165,14 +163,12 @@ class _ShopPageState extends State<ShopPage> {
                         child: Container(
                           height: 30,
                           width: 80,
+                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.white,
                           ),
-                          child: const Padding(
-                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: Center(child: Text("Reviews")),
-                          ),
+                          child: const Center(child: Text("Reviews")),
                         ),
                       ),
                     ],
@@ -188,26 +184,22 @@ class _ShopPageState extends State<ShopPage> {
                           return Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10, bottom: 5),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: Colors.white.withValues(alpha: 0.75),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-                                    child: Center(
-                                      child: Text(
-                                        categories[index],
-                                        style: const TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          fontSize: 30,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: const EdgeInsets.only(top: 10, bottom: 5),
+                                padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Colors.white.withValues(alpha: 0.75),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    categories[index],
+                                    style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 30,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),

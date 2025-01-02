@@ -90,6 +90,8 @@ class MyDrawer extends StatelessWidget {
             }, //go to profile setting
           ),
 
+          Divider(color: Colors.grey.shade400),
+
           //setting list tile
           MyDrawerTile(
             text: "S E T T I N G S",
@@ -105,12 +107,16 @@ class MyDrawer extends StatelessWidget {
             },
           ),
 
+          Divider(color: Colors.grey.shade400),
+
           //about list tile
           MyDrawerTile(
             text: "A B O U T",
             icon: Icons.info,
             onTap: () => Navigator.pop(context), //goto about page
           ),
+
+          Divider(color: Colors.grey.shade400),
 
           //help list tile
           MyDrawerTile(

@@ -70,85 +70,83 @@ class _MyCartTileState extends State<MyCartTile> {
               borderRadius: BorderRadius.circular(8),
             ),
             margin: const EdgeInsets.fromLTRB(15, 30, 15, 0),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        shopping.removeFromCart(widget.cartItem, true);
-                      },
-                      child: const Icon(Icons.close_rounded, color: Colors.black, size: 20),
-                    ),
+            padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      shopping.removeFromCart(widget.cartItem, true);
+                    },
+                    child: const Icon(Icons.close_rounded, color: Colors.black, size: 20),
                   ),
-                  //food image
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: obj2.showImage(widget.cartItem.prod.url),
-                    ),
+                ),
+                //food image
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: obj2.showImage(widget.cartItem.prod.url),
                   ),
+                ),
 
-                  const SizedBox(width: 10),
+                const SizedBox(width: 10),
 
-                  //name and price
-                  SizedBox(
-                    width: 150,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //the name
-                        Text(
-                          widget.cartItem.prod.name,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        //the price
-                        const SizedBox(height: 10),
-                        Text(
-                          'RM' + widget.cartItem.prod.price.toStringAsFixed(2),
-                          style: const TextStyle(color: Colors.purple),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const Spacer(),
-
-                  Column(
+                //name and price
+                SizedBox(
+                  width: 150,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      QuantitySelector(
-                        //increment or decrement for quantity
-                        quantity: widget.cartItem.quantity,
-                        onDec: () {
-                          shopping.removeFromCart(widget.cartItem, false);
-                        },
-                        onInc: () {
-                          if (widget.cartItem.quantity == widget.cartItem.prod.quantity) {
-                            blockButton();
-                          } else {
-                            shopping.addToCart(widget.cartItem.prod, 0);
-                          }
-                        },
+                      //the name
+                      Text(
+                        widget.cartItem.prod.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
+                      //the price
                       const SizedBox(height: 10),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          border: Border.all(color: Colors.black),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text('RM ${(widget.cartItem.quantity * widget.cartItem.prod.price).toStringAsFixed(2)}'),
+                      Text(
+                        'RM' + widget.cartItem.prod.price.toStringAsFixed(2),
+                        style: const TextStyle(color: Colors.purple),
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+
+                const Spacer(),
+
+                Column(
+                  children: [
+                    QuantitySelector(
+                      //increment or decrement for quantity
+                      quantity: widget.cartItem.quantity,
+                      onDec: () {
+                        shopping.removeFromCart(widget.cartItem, false);
+                      },
+                      onInc: () {
+                        if (widget.cartItem.quantity == widget.cartItem.prod.quantity) {
+                          blockButton();
+                        } else {
+                          shopping.addToCart(widget.cartItem.prod, 0);
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text('RM ${(widget.cartItem.quantity * widget.cartItem.prod.price).toStringAsFixed(2)}'),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           //show total price and check out button and use point button
@@ -157,20 +155,16 @@ class _MyCartTileState extends State<MyCartTile> {
                   children: [
                     Visibility(
                       visible: widget.userCart.isNotEmpty,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade400,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
-                            child: Text(
-                              "Total Price: RM${(shopping.getTotalPrice() - 2).toStringAsFixed(2)}",
-                              style: const TextStyle(color: Colors.black, fontSize: 15),
-                            ),
-                          ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade400,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        margin: const EdgeInsets.symmetric(vertical: 15.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
+                        child: Text(
+                          "Total Price: RM${(shopping.getTotalPrice() - 2).toStringAsFixed(2)}",
+                          style: const TextStyle(color: Colors.black, fontSize: 15),
                         ),
                       ),
                     ),

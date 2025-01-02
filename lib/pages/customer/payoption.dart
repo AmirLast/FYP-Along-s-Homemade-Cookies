@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/models/cartitem.dart';
 import 'package:fyp/pages/customer/fpxpage.dart';
-import 'package:fyp/pages/customer/paymentpage.dart';
+import 'package:fyp/pages/customer/creditcardpage.dart';
 
 class PayOptionPage extends StatelessWidget {
   final Logo show = Logo(); //for logo
@@ -52,55 +52,51 @@ class PayOptionPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 30, 25, 60),
-                  child: Column(
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+              ),
+              margin: const EdgeInsets.symmetric(horizontal: 50),
+              padding: const EdgeInsets.fromLTRB(25, 30, 25, 60),
+              child: Column(
+                children: [
+                  const Text(
+                    "Choose payment option",
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const Text(
-                        "Choose payment option",
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
+                      GestureDetector(
+                        child: Container(
+                          decoration: BoxDecoration(color: Colors.grey.shade400, borderRadius: BorderRadius.circular(20)),
+                          height: 100,
+                          width: 100,
+                          child: const Center(child: Text("FPX", style: TextStyle(fontSize: 20, color: Colors.black))),
                         ),
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FPXPage())),
                       ),
-                      const SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            child: Container(
-                              decoration: BoxDecoration(color: Colors.grey.shade400, borderRadius: BorderRadius.circular(20)),
-                              height: 100,
-                              width: 100,
-                              child: const Center(child: Text("FPX", style: TextStyle(fontSize: 20, color: Colors.black))),
-                            ),
-                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FPXPage())),
-                          ),
-                          GestureDetector(
-                            child: Container(
-                              decoration: BoxDecoration(color: Colors.grey.shade400, borderRadius: BorderRadius.circular(20)),
-                              height: 100,
-                              width: 100,
-                              child: const Center(child: Text("QR Code", style: TextStyle(fontSize: 20, color: Colors.black))),
-                            ),
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PayPage(cartItem: cartItem, priceReduct: priceReduct, currentPoint: currentPoint)),
-                            ),
-                          ),
-                        ],
+                      GestureDetector(
+                        child: Container(
+                          decoration: BoxDecoration(color: Colors.grey.shade400, borderRadius: BorderRadius.circular(20)),
+                          height: 100,
+                          width: 100,
+                          child: const Center(child: Text("Credit\nCard", style: TextStyle(fontSize: 20, color: Colors.black))),
+                        ),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CCPage(cartItem: cartItem, priceReduct: priceReduct, currentPoint: currentPoint)),
+                        ),
                       ),
                     ],
                   ),
-                ),
+                ],
               ),
             ),
           ],

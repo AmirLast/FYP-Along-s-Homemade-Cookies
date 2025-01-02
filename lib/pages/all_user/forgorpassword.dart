@@ -70,99 +70,97 @@ class _ForgorPasswordState extends State<ForgorPassword> {
 
             const SizedBox(height: 25),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.white,
-                ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 30),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
 
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25),
-                      child: Text(
-                        "Insert E-mail\nto reset password",
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.center,
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    child: Text(
+                      "Insert E-mail\nto reset password",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.black,
                       ),
+                      textAlign: TextAlign.center,
                     ),
+                  ),
 
-                    const SizedBox(height: 60),
+                  const SizedBox(height: 60),
 
-                    //email
-                    MyTextField(
-                      maxLength: 0,
-                      controller: emailController,
-                      caps: TextCapitalization.none,
-                      inputType: TextInputType.emailAddress,
-                      labelText: "Email",
-                      hintText: "",
-                      obscureText: false,
-                      isEnabled: true,
-                      isShowhint: false,
-                    ),
+                  //email
+                  MyTextField(
+                    maxLength: 0,
+                    controller: emailController,
+                    caps: TextCapitalization.none,
+                    inputType: TextInputType.emailAddress,
+                    labelText: "Email",
+                    hintText: "",
+                    obscureText: false,
+                    isEnabled: true,
+                    isShowhint: false,
+                  ),
 
-                    const SizedBox(height: 60),
+                  const SizedBox(height: 60),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //go back button
-                        MaterialButton(
-                          child: Container(
-                            padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Go back",
-                                style: TextStyle(
-                                  color: Colors.grey.shade400,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      //go back button
+                      MaterialButton(
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(40),
                           ),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-
-                        //confirm button
-                        MaterialButton(
-                          onPressed: () {
-                            resetPass();
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Confirm",
-                                style: TextStyle(
-                                  //fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade400,
-                                  fontSize: 20,
-                                ),
+                          child: Center(
+                            child: Text(
+                              "Go back",
+                              style: TextStyle(
+                                color: Colors.grey.shade400,
+                                fontSize: 20,
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                        onPressed: () => Navigator.pop(context),
+                      ),
 
-                    const SizedBox(height: 40),
-                  ],
-                ),
+                      //confirm button
+                      MaterialButton(
+                        onPressed: () {
+                          resetPass();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Confirm",
+                              style: TextStyle(
+                                //fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade400,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 40),
+                ],
               ),
             ),
           ],

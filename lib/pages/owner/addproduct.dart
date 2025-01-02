@@ -159,251 +159,247 @@ class _AddProductState extends State<AddProduct> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(height: 60),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 30),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 25),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 30),
 
-                      const Text(
-                        "Fill in the information",
-                        style: TextStyle(
-                          fontSize: 25,
+                    const Text(
+                      "Fill in the information",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.black,
+                      ),
+                    ),
+
+                    const SizedBox(height: 60),
+
+                    //name of product
+                    MyTextField(
+                      maxLength: 0,
+                      controller: nameController,
+                      caps: TextCapitalization.words,
+                      inputType: TextInputType.text,
+                      labelText: "Product Name",
+                      hintText: "",
+                      obscureText: false,
+                      isEnabled: true,
+                      isShowhint: false,
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    //description of product
+                    MyTextField(
+                      maxLength: 0,
+                      controller: descController,
+                      caps: TextCapitalization.none,
+                      inputType: TextInputType.text,
+                      labelText: "Description",
+                      hintText: "",
+                      obscureText: false,
+                      isEnabled: true,
+                      isShowhint: false,
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    //price of category
+                    MyTextField(
+                      maxLength: 0,
+                      controller: priceController,
+                      caps: TextCapitalization.none,
+                      inputType: TextInputType.number,
+                      labelText: "Price (RM)",
+                      hintText: "1.00",
+                      obscureText: false,
+                      isEnabled: true,
+                      isShowhint: false,
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    //quantity of ready stock
+                    MyTextField(
+                      maxLength: 0,
+                      controller: quantityController,
+                      caps: TextCapitalization.none,
+                      inputType: TextInputType.number,
+                      labelText: "Ready Stock Quantity",
+                      hintText: "",
+                      obscureText: false,
+                      isEnabled: true,
+                      isShowhint: false,
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    //image of category
+                    MaterialButton(
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Text('Select Product Image'),
+                      ),
+                      onPressed: showOptions,
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Container(
+                      height: 150,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        border: Border.all(
                           color: Colors.black,
+                          width: 4,
                         ),
                       ),
-
-                      const SizedBox(height: 60),
-
-                      //name of product
-                      MyTextField(
-                        maxLength: 0,
-                        controller: nameController,
-                        caps: TextCapitalization.words,
-                        inputType: TextInputType.text,
-                        labelText: "Product Name",
-                        hintText: "",
-                        obscureText: false,
-                        isEnabled: true,
-                        isShowhint: false,
-                      ),
-
-                      const SizedBox(height: 30),
-
-                      //description of product
-                      MyTextField(
-                        maxLength: 0,
-                        controller: descController,
-                        caps: TextCapitalization.none,
-                        inputType: TextInputType.text,
-                        labelText: "Description",
-                        hintText: "",
-                        obscureText: false,
-                        isEnabled: true,
-                        isShowhint: false,
-                      ),
-
-                      const SizedBox(height: 30),
-
-                      //price of category
-                      MyTextField(
-                        maxLength: 0,
-                        controller: priceController,
-                        caps: TextCapitalization.none,
-                        inputType: TextInputType.number,
-                        labelText: "Price (RM)",
-                        hintText: "1.00",
-                        obscureText: false,
-                        isEnabled: true,
-                        isShowhint: false,
-                      ),
-
-                      const SizedBox(height: 30),
-
-                      //quantity of ready stock
-                      MyTextField(
-                        maxLength: 0,
-                        controller: quantityController,
-                        caps: TextCapitalization.none,
-                        inputType: TextInputType.number,
-                        labelText: "Ready Stock Quantity",
-                        hintText: "",
-                        obscureText: false,
-                        isEnabled: true,
-                        isShowhint: false,
-                      ),
-
-                      const SizedBox(height: 30),
-
-                      //image of category
-                      MaterialButton(
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Text('Select Product Image'),
-                        ),
-                        onPressed: showOptions,
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black,
-                              width: 4,
+                      child: _image == null
+                          ? obj2.showImage(defItem)
+                          : Image.file(
+                              _image!,
+                              fit: BoxFit.cover,
                             ),
-                          ),
-                          child: _image == null
-                              ? obj2.showImage(defItem)
-                              : Image.file(
-                                  _image!,
-                                  fit: BoxFit.cover,
-                                ),
-                        ),
-                      ),
-                      //input file sendiri or use default image for now
-                      const SizedBox(height: 30),
+                    ),
+                    //input file sendiri or use default image for now
+                    const SizedBox(height: 30),
 
-                      //confirm button
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MaterialButton(
-                              child: Container(
-                                padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(40),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Confirm",
-                                    style: TextStyle(
-                                      //fontWeight: FontWeight.bold,
-                                      color: Colors.grey.shade400,
-                                      fontSize: 20,
-                                    ),
+                    //confirm button
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MaterialButton(
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Confirm",
+                                  style: TextStyle(
+                                    //fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade400,
+                                    fontSize: 20,
                                   ),
                                 ),
                               ),
-                              onPressed: () async {
-                                //check blank
-                                if (nameController.text == '') {
-                                  scaffoldOBJ.scaffoldmessage("Product name is blank", context);
-                                } else if (descController.text == '') {
-                                  scaffoldOBJ.scaffoldmessage("Description is blank", context);
-                                } else if (priceController.text == '') {
-                                  scaffoldOBJ.scaffoldmessage("Price is blank", context);
-                                } else if (_image == null) {
-                                  scaffoldOBJ.scaffoldmessage("Picture not selected", context);
-                                } else if (quantityController.text == '' || int.parse(quantityController.text.trim()) <= 0) {
-                                  scaffoldOBJ.scaffoldmessage("Quantity is wrong", context);
-                                } else {
-                                  //uppercase every first letter for each word
-                                  List<String> words = nameController.text.trim().split(" ");
-                                  String capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
-                                  //for checking product name
-                                  UpdateMenuData objProd = UpdateMenuData();
-                                  List<Bakeds?> checkProduct = [];
-                                  //fix price into 0.00 format
-                                  String prodPrice = double.parse(priceController.text.trim()).toStringAsFixed(2);
-                                  User? user = AuthService().getCurrentUser();
-                                  //set file path for current user folder in firebase storage
-                                  String path = "";
-                                  CollectionReference dir =
-                                      FirebaseFirestore.instance.collection('users').doc(user!.uid).collection(widget.category);
+                            ),
+                            onPressed: () async {
+                              //check blank
+                              if (nameController.text == '') {
+                                scaffoldOBJ.scaffoldmessage("Product name is blank", context);
+                              } else if (descController.text == '') {
+                                scaffoldOBJ.scaffoldmessage("Description is blank", context);
+                              } else if (priceController.text == '') {
+                                scaffoldOBJ.scaffoldmessage("Price is blank", context);
+                              } else if (_image == null) {
+                                scaffoldOBJ.scaffoldmessage("Picture not selected", context);
+                              } else if (quantityController.text == '' || int.parse(quantityController.text.trim()) <= 0) {
+                                scaffoldOBJ.scaffoldmessage("Quantity is wrong", context);
+                              } else {
+                                //uppercase every first letter for each word
+                                List<String> words = nameController.text.trim().split(" ");
+                                String capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
+                                //for checking product name
+                                UpdateMenuData objProd = UpdateMenuData();
+                                List<Bakeds?> checkProduct = [];
+                                //fix price into 0.00 format
+                                String prodPrice = double.parse(priceController.text.trim()).toStringAsFixed(2);
+                                User? user = AuthService().getCurrentUser();
+                                //set file path for current user folder in firebase storage
+                                String path = "";
+                                CollectionReference dir =
+                                    FirebaseFirestore.instance.collection('users').doc(user!.uid).collection(widget.category);
 
-                                  //cek product dah ade sama nama ke tak
-                                  await objProd.updatemenudata("").then((onValue) async {
-                                    checkProduct = onValue;
-                                    if (checkProduct.where((test) => test!.name == capitalizedSentence).isNotEmpty) {
-                                      scaffoldOBJ.scaffoldmessage("Product '" + nameController.text + "' already exist", context);
-                                      return; //exit code bracket
-                                    } else {
-                                      // loading circle-------------------------
-                                      load.loading(context);
-                                      //----------------------------------------
-                                      try {
-                                        //prepare prod to be pushed into edit page
-                                        Bakeds newProd = Bakeds(
-                                          quantity: int.parse(quantityController.text.trim()),
-                                          name: capitalizedSentence,
-                                          description: descController.text.trim(),
-                                          url: "",
-                                          imagePath: "",
-                                          price: double.parse(priceController.text.trim()),
-                                          category: widget.category,
-                                        );
+                                //cek product dah ade sama nama ke tak
+                                await objProd.updatemenudata("").then((onValue) async {
+                                  checkProduct = onValue;
+                                  if (checkProduct.where((test) => test!.name == capitalizedSentence).isNotEmpty) {
+                                    scaffoldOBJ.scaffoldmessage("Product '" + nameController.text + "' already exist", context);
+                                    return; //exit code bracket
+                                  } else {
+                                    // loading circle-------------------------
+                                    load.loading(context);
+                                    //----------------------------------------
+                                    try {
+                                      //prepare prod to be pushed into edit page
+                                      Bakeds newProd = Bakeds(
+                                        quantity: int.parse(quantityController.text.trim()),
+                                        name: capitalizedSentence,
+                                        description: descController.text.trim(),
+                                        url: "",
+                                        imagePath: "",
+                                        price: double.parse(priceController.text.trim()),
+                                        category: widget.category,
+                                      );
 
-                                        //add prod dalam collection categories kat FBFS so can get random id for product
-                                        await dir.add({
-                                          "quantity": int.parse(quantityController.text.trim()),
-                                          "description": descController.text.trim(),
-                                          "url": "",
-                                          "imagePath": "",
-                                          "name": capitalizedSentence,
-                                          "price": prodPrice,
-                                        }).then((onValue) async {
-                                          //get prod id
-                                          await dir.where("name", isEqualTo: capitalizedSentence).get().then((onValue) async {
-                                            for (var docSnapshot in onValue.docs) {
-                                              //use prod id as path for image in storage
-                                              path = "${user.uid}/${docSnapshot.id}";
-                                              newProd.imagePath = path;
-                                              //upload gambar dalam firebase storage
-                                              await FirebaseStorage.instance.ref().child(path).putFile(_image!).then((onValue) async {
-                                                await obj.downloadUrl(path, context).then((url) async {
-                                                  //get url for uploaded image for easy use
-                                                  newProd.url = url;
-                                                  await dir.doc(docSnapshot.id).update({
-                                                    //update remaining data
-                                                    "url": url,
-                                                    "imagePath": path,
-                                                  }).then((onValue) {
-                                                    scaffoldOBJ.scaffoldmessage("Product Added", context);
-                                                    Navigator.pop(context);
-                                                    //pop loading circle
-                                                    Navigator.pop(context);
-                                                    //pop add product page
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) => EditProdPage(prod: newProd, category: widget.category),
-                                                      ),
-                                                    );
-                                                  });
+                                      //add prod dalam collection categories kat FBFS so can get random id for product
+                                      await dir.add({
+                                        "quantity": int.parse(quantityController.text.trim()),
+                                        "description": descController.text.trim(),
+                                        "url": "",
+                                        "imagePath": "",
+                                        "name": capitalizedSentence,
+                                        "price": prodPrice,
+                                      }).then((onValue) async {
+                                        //get prod id
+                                        await dir.where("name", isEqualTo: capitalizedSentence).get().then((onValue) async {
+                                          for (var docSnapshot in onValue.docs) {
+                                            //use prod id as path for image in storage
+                                            path = "${user.uid}/${docSnapshot.id}";
+                                            newProd.imagePath = path;
+                                            //upload gambar dalam firebase storage
+                                            await FirebaseStorage.instance.ref().child(path).putFile(_image!).then((onValue) async {
+                                              await obj.downloadUrl(path, context).then((url) async {
+                                                //get url for uploaded image for easy use
+                                                newProd.url = url;
+                                                await dir.doc(docSnapshot.id).update({
+                                                  //update remaining data
+                                                  "url": url,
+                                                  "imagePath": path,
+                                                }).then((onValue) {
+                                                  scaffoldOBJ.scaffoldmessage("Product Added", context);
+                                                  Navigator.pop(context);
+                                                  //pop loading circle
+                                                  Navigator.pop(context);
+                                                  //pop add product page
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => EditProdPage(prod: newProd, category: widget.category),
+                                                    ),
+                                                  );
                                                 });
                                               });
-                                            }
-                                          });
+                                            });
+                                          }
                                         });
-                                      } on FirebaseException {
-                                        Navigator.pop(context);
-                                        //pop loading circle if fail---------
-                                        scaffoldOBJ.scaffoldmessage("Fail uploading", context);
-                                      }
+                                      });
+                                    } on FirebaseException {
+                                      Navigator.pop(context);
+                                      //pop loading circle if fail---------
+                                      scaffoldOBJ.scaffoldmessage("Fail uploading", context);
                                     }
-                                  });
-                                }
-                              }),
-                        ],
-                      ),
+                                  }
+                                });
+                              }
+                            }),
+                      ],
+                    ),
 
-                      const SizedBox(height: 40),
-                    ],
-                  ),
+                    const SizedBox(height: 40),
+                  ],
                 ),
               ),
               const SizedBox(height: 60),

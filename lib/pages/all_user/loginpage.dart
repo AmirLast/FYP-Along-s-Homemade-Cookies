@@ -85,207 +85,205 @@ class _LoginPageState extends State<LoginPage> {
 
             const SizedBox(height: 25),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.white,
-                ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 30),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
 
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25),
-                      child: Text(
-                        "Insert Email and Password",
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
-                        ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    child: Text(
+                      "Insert Email and Password",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.black,
                       ),
                     ),
+                  ),
 
-                    const SizedBox(height: 60),
+                  const SizedBox(height: 60),
 
-                    //email
-                    MyTextField(
-                      maxLength: 0,
-                      controller: emailController,
-                      caps: TextCapitalization.none,
-                      inputType: TextInputType.emailAddress,
-                      labelText: "Email",
-                      hintText: "",
-                      obscureText: false,
-                      isEnabled: true,
-                      isShowhint: false,
-                    ),
+                  //email
+                  MyTextField(
+                    maxLength: 0,
+                    controller: emailController,
+                    caps: TextCapitalization.none,
+                    inputType: TextInputType.emailAddress,
+                    labelText: "Email",
+                    hintText: "",
+                    obscureText: false,
+                    isEnabled: true,
+                    isShowhint: false,
+                  ),
 
-                    const SizedBox(height: 30),
+                  const SizedBox(height: 30),
 
-                    //password
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: TextField(
-                        cursorColor: Colors.black,
-                        autofocus: false,
-                        enabled: true, //get this value
-                        controller: passwordController,
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: !passwordVisibility, //initially false = hide
-                        textCapitalization: TextCapitalization.none,
-                        decoration: InputDecoration(
-                          disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                passwordVisibility = !passwordVisibility;
-                              });
-                            },
-                            icon: Icon(passwordVisibility ? Icons.visibility : Icons.visibility_off),
-                            color: Colors.black,
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey.shade400,
-                          labelText: "Password",
-                          floatingLabelStyle: const TextStyle(color: Colors.black),
-                          floatingLabelBehavior: null,
-                          hintText: "",
-                          hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
+                  //password
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: TextField(
+                      cursorColor: Colors.black,
+                      autofocus: false,
+                      enabled: true, //get this value
+                      controller: passwordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: !passwordVisibility, //initially false = hide
+                      textCapitalization: TextCapitalization.none,
+                      decoration: InputDecoration(
+                        disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: Colors.grey.shade400)),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
                         ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 60),
-
-                    MaterialButton(
-                      onPressed: () async {
-                        User? user =
-                            await login(email: emailController.text, password: passwordController.text, context: context); //dah login
-                        //re-check password strength since user can reset password with weak password
-                        final obj = PasswordStrength();
-                        List passStrength = obj.checkpass(password: passwordController.text);
-                        //all 4 criteria must qualify to be considered strength
-                        bool isStrong = passStrength[0] && passStrength[1] && passStrength[2] && passStrength[3];
-                        var dir = FirebaseFirestore.instance.collection('users');
-                        await dir.doc(user!.uid).get().then((value) {
-                          //these are general data loads for any user
-                          UserNow.usernow = UserNow(
-                            fullname: value.data()?['fullname'],
-                            phone: value.data()?['phone'],
-                            user: user,
-                            type: value.data()?['type'],
-                            currentdir: value.data()?['currentdir'],
-                            passStrength: value.data()?['passStrength'],
-                          );
-                          //special data for buyer
-                          if (value.data()?['type'] == "buyer") {
-                            UserNow.usernow.address = value.data()?['address'];
-                            UserNow.usernow.isMember = value.data()?['ismember'];
-                          }
-                          //special data for seller
-                          if (value.data()?['type'] == "seller") {
-                            UserNow.usernow.address = value.data()?['address'];
-                            UserNow.usernow.categories = value.data()?['categories'];
-                            UserNow.usernow.shop = value.data()?['shop'];
-                          }
-                        }).then((v) async {
-                          if (UserNow.usernow.isMember) {
-                            //if member then update local value
-                            await FirebaseFirestore.instance.collection('members').where('id', isEqualTo: user.uid).get().then((qSs) {
-                              for (var dSs in qSs.docs) {
-                                Member.member = Member(
-                                  memPoint: dSs.get('memPoint'),
-                                  firstPurch: dSs.get('firstPurch'),
-                                  rm30Purch: dSs.get('rm30Purch'),
-                                  rm10x5Purch: dSs.get('rm10x5Purch'),
-                                );
-                              }
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              passwordVisibility = !passwordVisibility;
                             });
-                          }
-                        });
-                        //update password strength value
-                        dir.doc(user.uid).update({
-                          "passStrength": isStrong,
-                        });
-                        //make them verify first, verify page will handle diff user routing
-                        Future.delayed(const Duration(seconds: 2), () {
-                          Navigator.of(context).pop();
-                          // pop loading circle if success
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => const VerifyEmailPage(),
-                              settings: const RouteSettings(name: "/"),
-                            ),
-                            (r) => false,
-                          );
-                        });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        margin: const EdgeInsets.symmetric(horizontal: 85),
-                        decoration: BoxDecoration(
+                          },
+                          icon: Icon(passwordVisibility ? Icons.visibility : Icons.visibility_off),
                           color: Colors.black,
-                          borderRadius: BorderRadius.circular(40),
                         ),
-                        child: Center(
-                          child: Text(
-                            "Sign In",
-                            style: TextStyle(
-                              //fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade400,
-                              fontSize: 20,
-                            ),
+                        filled: true,
+                        fillColor: Colors.grey.shade400,
+                        labelText: "Password",
+                        floatingLabelStyle: const TextStyle(color: Colors.black),
+                        floatingLabelBehavior: null,
+                        hintText: "",
+                        hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 60),
+
+                  MaterialButton(
+                    onPressed: () async {
+                      User? user =
+                          await login(email: emailController.text, password: passwordController.text, context: context); //dah login
+                      //re-check password strength since user can reset password with weak password
+                      final obj = PasswordStrength();
+                      List passStrength = obj.checkpass(password: passwordController.text);
+                      //all 4 criteria must qualify to be considered strength
+                      bool isStrong = passStrength[0] && passStrength[1] && passStrength[2] && passStrength[3];
+                      var dir = FirebaseFirestore.instance.collection('users');
+                      await dir.doc(user!.uid).get().then((value) {
+                        //these are general data loads for any user
+                        UserNow.usernow = UserNow(
+                          fullname: value.data()?['fullname'],
+                          phone: value.data()?['phone'],
+                          user: user,
+                          type: value.data()?['type'],
+                          currentdir: value.data()?['currentdir'],
+                          passStrength: value.data()?['passStrength'],
+                        );
+                        //special data for buyer
+                        if (value.data()?['type'] == "buyer") {
+                          UserNow.usernow.address = value.data()?['address'];
+                          UserNow.usernow.isMember = value.data()?['ismember'];
+                        }
+                        //special data for seller
+                        if (value.data()?['type'] == "seller") {
+                          UserNow.usernow.address = value.data()?['address'];
+                          UserNow.usernow.categories = value.data()?['categories'];
+                          UserNow.usernow.shop = value.data()?['shop'];
+                        }
+                      }).then((v) async {
+                        if (UserNow.usernow.isMember) {
+                          //if member then update local value
+                          await FirebaseFirestore.instance.collection('members').where('id', isEqualTo: user.uid).get().then((qSs) {
+                            for (var dSs in qSs.docs) {
+                              Member.member = Member(
+                                memPoint: dSs.get('memPoint'),
+                                firstPurch: dSs.get('firstPurch'),
+                                rm30Purch: dSs.get('rm30Purch'),
+                                rm10x5Purch: dSs.get('rm10x5Purch'),
+                              );
+                            }
+                          });
+                        }
+                      });
+                      //update password strength value
+                      dir.doc(user.uid).update({
+                        "passStrength": isStrong,
+                      });
+                      //make them verify first, verify page will handle diff user routing
+                      Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.of(context).pop();
+                        // pop loading circle if success
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const VerifyEmailPage(),
+                            settings: const RouteSettings(name: "/"),
+                          ),
+                          (r) => false,
+                        );
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      margin: const EdgeInsets.symmetric(horizontal: 85),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Sign In",
+                          style: TextStyle(
+                            //fontWeight: FontWeight.bold,
+                            color: Colors.grey.shade400,
+                            fontSize: 20,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 12.0,
+                  ),
+                  const SizedBox(
+                    height: 12.0,
+                  ),
+                  InkWell(
+                    child: const Text(
+                      "Forgot password?",
                     ),
-                    InkWell(
-                      child: const Text(
-                        "Forgot password?",
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ForgorPassword()));
+                    },
+                  ),
+
+                  const SizedBox(height: 25),
+
+                  //register
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Have no account?",
+                        style: TextStyle(color: Colors.black),
                       ),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ForgorPassword()));
-                      },
-                    ),
-
-                    const SizedBox(height: 25),
-
-                    //register
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Have no account?",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        const SizedBox(width: 4),
-                        GestureDetector(
-                          onTap: () => Navigator.pushReplacement(
-                              context, MaterialPageRoute(builder: (context) => const RegisterPage())), //goto Register
-                          child: const Text(
-                            "Click here to Register",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      const SizedBox(width: 4),
+                      GestureDetector(
+                        onTap: () => Navigator.pushReplacement(
+                            context, MaterialPageRoute(builder: (context) => const RegisterPage())), //goto Register
+                        child: const Text(
+                          "Click here to Register",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
 
-                    const SizedBox(height: 40),
-                  ],
-                ),
+                  const SizedBox(height: 40),
+                ],
               ),
             ),
           ],

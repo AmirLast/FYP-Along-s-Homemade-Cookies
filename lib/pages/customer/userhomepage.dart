@@ -172,22 +172,18 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MembershipPage(pop: ""))),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 4),
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Center(
-                          child: Text(
-                            "Try Membership! Be a Premium User",
-                            style: TextStyle(color: Colors.black, fontSize: 20),
-                          ),
-                        ),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 4),
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Try Membership! Be a Premium User",
+                        style: TextStyle(color: Colors.black, fontSize: 20),
                       ),
                     ),
                   ),

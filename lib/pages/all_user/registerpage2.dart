@@ -117,307 +117,305 @@ class _Register2PageState extends State<Register2Page> {
 
               const SizedBox(height: 25),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 30),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 25),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 30),
 
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25),
-                        child: Text(
-                          "Fill in these information",
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.black,
-                          ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: Text(
+                        "Fill in these information",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
                         ),
                       ),
+                    ),
 
-                      const SizedBox(height: 60),
+                    const SizedBox(height: 60),
 
-                      //address house + building + town
-                      MyTextField(
-                        maxLength: 0,
-                        controller: address1Controller,
-                        caps: TextCapitalization.words,
-                        inputType: TextInputType.text,
-                        labelText: "Address",
-                        hintText: "",
-                        obscureText: false,
-                        isEnabled: true,
-                        isShowhint: false,
-                      ),
+                    //address house + building + town
+                    MyTextField(
+                      maxLength: 0,
+                      controller: address1Controller,
+                      caps: TextCapitalization.words,
+                      inputType: TextInputType.text,
+                      labelText: "Address",
+                      hintText: "",
+                      obscureText: false,
+                      isEnabled: true,
+                      isShowhint: false,
+                    ),
 
-                      const SizedBox(height: 30),
+                    const SizedBox(height: 30),
 
-                      //post code
-                      MyTextField(
-                        maxLength: 5,
-                        controller: postcodeController,
-                        caps: TextCapitalization.none,
-                        inputType: TextInputType.number,
-                        labelText: "Post Code",
-                        hintText: "",
-                        obscureText: false,
-                        isEnabled: true,
-                        isShowhint: false,
-                      ),
+                    //post code
+                    MyTextField(
+                      maxLength: 5,
+                      controller: postcodeController,
+                      caps: TextCapitalization.none,
+                      inputType: TextInputType.number,
+                      labelText: "Post Code",
+                      hintText: "",
+                      obscureText: false,
+                      isEnabled: true,
+                      isShowhint: false,
+                    ),
 
-                      const SizedBox(height: 10),
+                    const SizedBox(height: 10),
 
-                      //city
-                      MyTextField(
-                        maxLength: 0,
-                        controller: cityController,
-                        caps: TextCapitalization.words,
-                        inputType: TextInputType.text,
-                        labelText: "City",
-                        hintText: "",
-                        obscureText: false,
-                        isEnabled: true,
-                        isShowhint: false,
-                      ),
+                    //city
+                    MyTextField(
+                      maxLength: 0,
+                      controller: cityController,
+                      caps: TextCapitalization.words,
+                      inputType: TextInputType.text,
+                      labelText: "City",
+                      hintText: "",
+                      obscureText: false,
+                      isEnabled: true,
+                      isShowhint: false,
+                    ),
 
-                      const SizedBox(height: 30),
+                    const SizedBox(height: 30),
 
-                      //state
-                      MyTextField(
-                        maxLength: 0,
-                        controller: stateController,
-                        caps: TextCapitalization.words,
-                        inputType: TextInputType.text,
-                        labelText: "State",
-                        hintText: "",
-                        obscureText: false,
-                        isEnabled: true,
-                        isShowhint: false,
-                      ),
+                    //state
+                    MyTextField(
+                      maxLength: 0,
+                      controller: stateController,
+                      caps: TextCapitalization.words,
+                      inputType: TextInputType.text,
+                      labelText: "State",
+                      hintText: "",
+                      obscureText: false,
+                      isEnabled: true,
+                      isShowhint: false,
+                    ),
 
-                      const SizedBox(height: 30),
+                    const SizedBox(height: 30),
 
-                      //country
-                      MyTextField(
-                        maxLength: 0,
-                        controller: countryController,
-                        caps: TextCapitalization.words,
-                        inputType: TextInputType.text,
-                        labelText: "Country",
-                        hintText: "",
-                        obscureText: false,
-                        isEnabled: true,
-                        isShowhint: false,
-                      ),
+                    //country
+                    MyTextField(
+                      maxLength: 0,
+                      controller: countryController,
+                      caps: TextCapitalization.words,
+                      inputType: TextInputType.text,
+                      labelText: "Country",
+                      hintText: "",
+                      obscureText: false,
+                      isEnabled: true,
+                      isShowhint: false,
+                    ),
 
-                      const SizedBox(height: 60),
+                    const SizedBox(height: 60),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          //go back button
-                          MaterialButton(
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(40),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Go back",
-                                  style: TextStyle(
-                                    color: Colors.grey.shade400,
-                                    fontSize: 20,
-                                  ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //go back button
+                        MaterialButton(
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Go back",
+                                style: TextStyle(
+                                  color: Colors.grey.shade400,
+                                  fontSize: 20,
                                 ),
                               ),
                             ),
-                            onPressed: () => Navigator.pop(context),
                           ),
+                          onPressed: () => Navigator.pop(context),
+                        ),
 
-                          //sign up button
-                          MaterialButton(
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(40),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Sign Up",
-                                  style: TextStyle(
-                                    //fontWeight: FontWeight.bold,
-                                    color: Colors.grey.shade400,
-                                    fontSize: 20,
-                                  ),
+                        //sign up button
+                        MaterialButton(
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                  //fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade400,
+                                  fontSize: 20,
                                 ),
                               ),
                             ),
-                            onPressed: () async {
-                              //some value for error checking---------
-                              var isBlank = false; //blank means no error
-                              String error = ""; //the error description
-                              //User? user;
+                          ),
+                          onPressed: () async {
+                            //some value for error checking---------
+                            var isBlank = false; //blank means no error
+                            String error = ""; //the error description
+                            //User? user;
 
-                              //checking if it is blank
-                              if (address1Controller.text == '') {
-                                error = 'Address is blank';
-                                isBlank = true;
-                              } else if (postcodeController.text == '') {
-                                error = 'Post Code is blank';
-                                isBlank = true;
-                              } else if (cityController.text == '') {
-                                error = 'City is blank';
-                                isBlank = true;
-                              } else if (stateController.text == '') {
-                                error = 'State is blank';
-                                isBlank = true;
-                              } else if (countryController.text == '') {
-                                error = 'Country is blank';
-                                isBlank = true;
-                              }
+                            //checking if it is blank
+                            if (address1Controller.text == '') {
+                              error = 'Address is blank';
+                              isBlank = true;
+                            } else if (postcodeController.text == '') {
+                              error = 'Post Code is blank';
+                              isBlank = true;
+                            } else if (cityController.text == '') {
+                              error = 'City is blank';
+                              isBlank = true;
+                            } else if (stateController.text == '') {
+                              error = 'State is blank';
+                              isBlank = true;
+                            } else if (countryController.text == '') {
+                              error = 'Country is blank';
+                              isBlank = true;
+                            }
 
-                              //if there is error, show it and don't sign up
-                              if (isBlank) {
-                                isBlank = false;
-                                scaffoldOBJ.scaffoldmessage(error, context);
-                                return;
-                              } else {
-                                // loading circle-----
-                                load.loading(context);
-                                //--------------------
-                                try {
-                                  User? user = await register(email: widget.email, password: widget.password);
+                            //if there is error, show it and don't sign up
+                            if (isBlank) {
+                              isBlank = false;
+                              scaffoldOBJ.scaffoldmessage(error, context);
+                              return;
+                            } else {
+                              // loading circle-----
+                              load.loading(context);
+                              //--------------------
+                              try {
+                                User? user = await register(email: widget.email, password: widget.password);
 
-                                  var userFF = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
+                                var userFF = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
 
-                                  //user?.linkWithCredential(credential)
-                                  //user.linkWithPhoneNumber(phoneNumber)
+                                //user?.linkWithCredential(credential)
+                                //user.linkWithPhoneNumber(phoneNumber)
 
-                                  //for full name capitalization
-                                  late List<String> words;
-                                  late String capitalizedSentence;
-                                  words = widget.fullName.trim().split(" ");
-                                  capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
-                                  List<String> addressList = [
-                                    address1Controller.text.trim(),
-                                    postcodeController.text.trim(),
-                                    upperCase(cityController.text.trim()),
-                                    upperCase(stateController.text.trim()),
-                                    upperCase(countryController.text.trim())
-                                  ];
-                                  //set default user pfp and displayname and phone
-                                  await user?.updateProfile(displayName: widget.displayName.trim(), photoURL: defProfile);
-                                  await user?.reload();
+                                //for full name capitalization
+                                late List<String> words;
+                                late String capitalizedSentence;
+                                words = widget.fullName.trim().split(" ");
+                                capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
+                                List<String> addressList = [
+                                  address1Controller.text.trim(),
+                                  postcodeController.text.trim(),
+                                  upperCase(cityController.text.trim()),
+                                  upperCase(stateController.text.trim()),
+                                  upperCase(countryController.text.trim())
+                                ];
+                                //set default user pfp and displayname and phone
+                                await user?.updateProfile(displayName: widget.displayName.trim(), photoURL: defProfile);
+                                await user?.reload();
 
-                                  //name the userfile as uid
-                                  await userFF.doc(user?.uid).set({
-                                    //set all data that user and owner have in common
-                                    "fullname": capitalizedSentence,
-                                    "phone": widget.phone.trim(),
-                                    "type": widget.type,
-                                    "passStrength": true, //checked hence true
-                                    //for category edit assist
-                                    "currentdir": "",
-                                    "address": addressList, //for delivery
-                                  }).then((onValue) {
-                                    context.read<Shopping>().updateDeliveryAddress(addressList);
+                                //name the userfile as uid
+                                await userFF.doc(user?.uid).set({
+                                  //set all data that user and owner have in common
+                                  "fullname": capitalizedSentence,
+                                  "phone": widget.phone.trim(),
+                                  "type": widget.type,
+                                  "passStrength": true, //checked hence true
+                                  //for category edit assist
+                                  "currentdir": "",
+                                  "address": addressList, //for delivery
+                                }).then((onValue) {
+                                  context.read<Shopping>().updateDeliveryAddress(addressList);
+                                  //update userclass
+                                  UserNow.usernow = UserNow(
+                                    fullname: widget.fullName,
+                                    phone: widget.phone,
+                                    user: user,
+                                    type: widget.type,
+                                    currentdir: "",
+                                    passStrength: widget.passStrength,
+                                  );
+                                  if (widget.type == 'seller') {
                                     //update userclass
-                                    UserNow.usernow = UserNow(
-                                      fullname: widget.fullName,
-                                      phone: widget.phone,
-                                      user: user,
-                                      type: widget.type,
-                                      currentdir: "",
-                                      passStrength: widget.passStrength,
-                                    );
-                                    if (widget.type == 'seller') {
-                                      //update userclass
-                                      UserNow.usernow.address = addressList;
-                                      UserNow.usernow.shop = upperCase(widget.shop.trim());
-                                      UserNow.usernow.categories = [];
+                                    UserNow.usernow.address = addressList;
+                                    UserNow.usernow.shop = upperCase(widget.shop.trim());
+                                    UserNow.usernow.categories = [];
 
-                                      userFF.doc(user?.uid).set(
-                                        //add other data that only owner have
-                                        {
-                                          'shop': upperCase(widget.shop.trim()),
-                                          //owner need array of categories
-                                          "categories": [],
-                                        },
-                                        SetOptions(merge: true),
-                                      );
-                                    } else {
-                                      //update userclass
-                                      UserNow.usernow.address = addressList;
-                                      UserNow.usernow.isMember = false;
-
-                                      userFF.doc(user?.uid).set(
-                                        //add other data that only owner have
-                                        {
-                                          //ni untuk buyer je
-                                          "ismember": false,
-                                        },
-                                        SetOptions(merge: true),
-                                      );
-                                    }
-                                  }).then((onValue) {
-                                    Navigator.of(context).pop();
-                                    // pop loading circle if success register
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                        builder: (context) => const VerifyEmailPage(),
-                                        settings: const RouteSettings(name: "/"),
-                                      ),
-                                      (r) => false,
+                                    userFF.doc(user?.uid).set(
+                                      //add other data that only owner have
+                                      {
+                                        'shop': upperCase(widget.shop.trim()),
+                                        //owner need array of categories
+                                        "categories": [],
+                                      },
+                                      SetOptions(merge: true),
                                     );
-                                  });
-                                } catch (e) {
-                                  Future.delayed(const Duration(seconds: 2), () {
-                                    Navigator.pop(context);
-                                    //pop loading circle if fail
-                                    scaffoldOBJ.scaffoldmessage("Fail to register", context);
-                                    setState(() {});
-                                  });
-                                }
+                                  } else {
+                                    //update userclass
+                                    UserNow.usernow.address = addressList;
+                                    UserNow.usernow.isMember = false;
+
+                                    userFF.doc(user?.uid).set(
+                                      //add other data that only owner have
+                                      {
+                                        //ni untuk buyer je
+                                        "ismember": false,
+                                      },
+                                      SetOptions(merge: true),
+                                    );
+                                  }
+                                }).then((onValue) {
+                                  Navigator.of(context).pop();
+                                  // pop loading circle if success register
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                      builder: (context) => const VerifyEmailPage(),
+                                      settings: const RouteSettings(name: "/"),
+                                    ),
+                                    (r) => false,
+                                  );
+                                });
+                              } catch (e) {
+                                Future.delayed(const Duration(seconds: 2), () {
+                                  Navigator.pop(context);
+                                  //pop loading circle if fail
+                                  scaffoldOBJ.scaffoldmessage("Fail to register", context);
+                                  setState(() {});
+                                });
                               }
-                            },
-                          ),
-                        ],
-                      ),
+                            }
+                          },
+                        ),
+                      ],
+                    ),
 
-                      const SizedBox(height: 25),
+                    const SizedBox(height: 25),
 
-                      //to login
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Already have an account?",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          const SizedBox(width: 4),
-                          GestureDetector(
-                            onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage())),
-                            child: const Text(
-                              "Click here to Login",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
+                    //to login
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Already have an account?",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        const SizedBox(width: 4),
+                        GestureDetector(
+                          onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage())),
+                          child: const Text(
+                            "Click here to Login",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
 
-                      const SizedBox(height: 40),
-                    ],
-                  ),
+                    const SizedBox(height: 40),
+                  ],
                 ),
               ),
 

@@ -16,7 +16,7 @@ class UpdateOrderData {
   ) async {
     load.loading(context); //show loading screen for both option
     Orders.currentOrder.orders.clear(); //clear current order list
-    //final cartitems = <Map<String, int>>[];
+    //final cartitems = <Map<String, dynamic>>[];
     Orders oneOrder;
     try {
       await FirebaseFirestore.instance.collection('orders').where(type, isEqualTo: userid).get().then(

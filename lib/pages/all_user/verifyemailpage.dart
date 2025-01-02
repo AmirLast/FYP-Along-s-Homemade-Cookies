@@ -97,67 +97,65 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
                   const SizedBox(height: 25),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 30),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 25),
-                            child: Text(
-                              "A verification email has been sent to your email",
-                              style: TextStyle(
-                                fontSize: 25,
-                                color: Colors.black,
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 30),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          child: Text(
+                            "A verification email has been sent to your email",
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: 60),
+                        ElevatedButton.icon(
+                          onPressed: canResendEmail ? sendVerificationEmail : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            padding: const EdgeInsets.all(25),
+                          ),
+                          icon: Icon(
+                            Icons.email,
+                            size: 32,
+                            color: Colors.grey.shade400,
+                          ),
+                          label: Text(
+                            "Resent Email",
+                            style: TextStyle(color: Colors.grey.shade400, fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: 60),
+                        TextButton(
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut();
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => const HomeScreen(),
                               ),
-                              textAlign: TextAlign.center,
+                              (r) => false,
+                            );
+                          },
+                          child: const Text(
+                            "Cancel",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
                           ),
-                          const SizedBox(height: 60),
-                          ElevatedButton.icon(
-                            onPressed: canResendEmail ? sendVerificationEmail : null,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              padding: const EdgeInsets.all(25),
-                            ),
-                            icon: Icon(
-                              Icons.email,
-                              size: 32,
-                              color: Colors.grey.shade400,
-                            ),
-                            label: Text(
-                              "Resent Email",
-                              style: TextStyle(color: Colors.grey.shade400, fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          const SizedBox(height: 60),
-                          TextButton(
-                            onPressed: () {
-                              FirebaseAuth.instance.signOut();
-                              Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                  builder: (context) => const HomeScreen(),
-                                ),
-                                (r) => false,
-                              );
-                            },
-                            child: const Text(
-                              "Cancel",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 40),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 40),
+                      ],
                     ),
                   ),
                 ],

@@ -101,85 +101,83 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
           topRight: Radius.circular(40),
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        child: Row(
-          children: [
-            //pfp of driver
-            Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: Row(
+        children: [
+          //pfp of driver
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            padding: const EdgeInsets.all(10),
+            child: IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {},
+            ),
+          ),
+
+          const SizedBox(width: 10),
+
+          //driver detail
+          const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Abdul Dilan",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
               ),
-              padding: const EdgeInsets.all(10),
-              child: IconButton(
-                icon: const Icon(Icons.person),
-                onPressed: () {},
+              Text(
+                "Driver",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
-            ),
+            ],
+          ),
 
-            const SizedBox(width: 10),
+          const Spacer(),
 
-            //driver detail
-            const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Abdul Dilan",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Colors.black,
-                  ),
+          Row(
+            children: [
+              //message button
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
                 ),
-                Text(
-                  "Driver",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                padding: const EdgeInsets.all(10),
+                child: IconButton(
+                  icon: const Icon(Icons.message),
+                  color: Colors.blue.shade900,
+                  onPressed: () {},
                 ),
-              ],
-            ),
+              ),
 
-            const Spacer(),
+              const SizedBox(width: 10),
 
-            Row(
-              children: [
-                //message button
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: IconButton(
-                    icon: const Icon(Icons.message),
-                    color: Colors.blue.shade900,
-                    onPressed: () {},
-                  ),
+              //call button
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
                 ),
-
-                const SizedBox(width: 10),
-
-                //call button
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: IconButton(
-                    icon: const Icon(Icons.call),
-                    color: Colors.green,
-                    onPressed: () {},
-                  ),
+                padding: const EdgeInsets.all(10),
+                child: IconButton(
+                  icon: const Icon(Icons.call),
+                  color: Colors.green,
+                  onPressed: () {},
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

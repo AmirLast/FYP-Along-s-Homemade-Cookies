@@ -79,18 +79,14 @@ class _ReviewPageState extends State<ReviewPage> {
                         itemCount: reviews.length,
                         padding: const EdgeInsets.symmetric(horizontal: 50),
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: Container(
-                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 25, 10, 25),
-                                child: Expanded(
-                                  child: Text(
-                                    reviews[index].review,
-                                    style: const TextStyle(color: Colors.black),
-                                  ),
-                                ),
+                          return Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10.0),
+                            padding: const EdgeInsets.fromLTRB(10, 25, 10, 25),
+                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
+                            child: Expanded(
+                              child: Text(
+                                reviews[index].review,
+                                style: const TextStyle(color: Colors.black),
                               ),
                             ),
                           );

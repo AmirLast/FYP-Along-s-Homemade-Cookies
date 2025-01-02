@@ -77,110 +77,106 @@ class _PreviewProdPageState extends State<PreviewProdPage> {
               decoration: BoxDecoration(
                 color: const Color(0xffc1ff72).withValues(alpha: 0.5),
               ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(15, 25, 15, 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 210,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-
-                          //product price
-                          Text(
-                            'RM' + widget.price,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          //product description
-                          Text(
-                            widget.desc,
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          //product available quantity
-                          Text("Available Product: " + widget.quantity.toString()),
-                        ],
-                      ),
-                    ),
-                    Column(
+              padding: const EdgeInsets.fromLTRB(15, 25, 15, 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 210,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          //increment or decrement for quantity
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          padding: const EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              //decrease button
-                              GestureDetector(
-                                onTap: () {},
-                                child: const Icon(
-                                  Icons.remove,
-                                  size: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-
-                              //quantity counter
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8),
-                                child: SizedBox(
-                                  width: 20,
-                                  child: Center(
-                                    child: Text(
-                                      "0",
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                              //increase button
-                              GestureDetector(
-                                onTap: () {},
-                                child: const Icon(
-                                  Icons.add,
-                                  size: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
+                        Text(
+                          widget.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(10),
+
+                        //product price
+                        Text(
+                          'RM' + widget.price,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
                           ),
-                          child: Text('Currently in cart: ' + widget.quantity.toString()),
                         ),
+
+                        const SizedBox(height: 10),
+
+                        //product description
+                        Text(
+                          widget.desc,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        //product available quantity
+                        Text("Available Product: " + widget.quantity.toString()),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        //increment or decrement for quantity
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            //decrease button
+                            GestureDetector(
+                              onTap: () {},
+                              child: const Icon(
+                                Icons.remove,
+                                size: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+
+                            //quantity counter
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 20,
+                              child: const Center(
+                                child: Text(
+                                  "0",
+                                ),
+                              ),
+                            ),
+
+                            //increase button
+                            GestureDetector(
+                              onTap: () {},
+                              child: const Icon(
+                                Icons.add,
+                                size: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text('Currently in cart: ' + widget.quantity.toString()),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             Container(height: 2, color: Colors.black),

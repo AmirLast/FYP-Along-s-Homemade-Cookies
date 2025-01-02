@@ -134,8 +134,8 @@ class _OrderCardState extends State<OrderCard> {
                               );
                             },
                             child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 5.0),
-                              margin: const EdgeInsets.all(8.0),
+                              margin: const EdgeInsets.symmetric(vertical: 5.0),
+                              padding: const EdgeInsets.all(8.0),
                               width: 270,
                               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                               child: Text(
@@ -167,13 +167,13 @@ class _OrderCardState extends State<OrderCard> {
                                     width: 220,
                                     child: Text(
                                       overflow: TextOverflow.ellipsis,
-                                      widget.order!.cartitems[index].keys.first,
+                                      widget.order!.cartitems[index].values.elementAt(2).toString(), //2 is name
                                       style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                   const Spacer(),
                                   Text(
-                                    widget.order!.cartitems[index].values.first.toString(),
+                                    widget.order!.cartitems[index].values.elementAt(0).toString(), //1 is quantity
                                     style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
                                   ),
                                 ],
@@ -324,8 +324,8 @@ class _OrderCardState extends State<OrderCard> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.fromLTRB(90, 10, 90, 0),
-          margin: const EdgeInsets.symmetric(vertical: 10.0),
+          margin: const EdgeInsets.fromLTRB(90, 10, 90, 0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),

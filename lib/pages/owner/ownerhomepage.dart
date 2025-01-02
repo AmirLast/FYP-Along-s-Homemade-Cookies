@@ -97,7 +97,8 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
             ),
             IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPage()));
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => const MenuPage(), settings: const RouteSettings(name: "menus")));
               },
               icon: const Icon(Icons.add_shopping_cart, color: Colors.black),
             ),
@@ -127,7 +128,7 @@ class _OwnerHomePageState extends State<OwnerHomePage> with SingleTickerProvider
                 text: "Business Summary",
                 size: 280,
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SummaryPage()));
+                  gotoOrder.updateorderdata(UserNow.usernow.user!.uid, "seller", context, (context) => const SummaryPage(), "/");
                 },
               ),
               const SizedBox(height: 50),

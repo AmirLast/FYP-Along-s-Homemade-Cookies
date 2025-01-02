@@ -155,126 +155,122 @@ class _EditProdPageState extends State<ProdPage> {
                     decoration: BoxDecoration(
                       color: const Color(0xffc1ff72).withValues(alpha: 0.5),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 25, 15, 25),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 210,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.prod!.name,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-
-                                //product price
-                                Text(
-                                  'RM' + widget.prod!.price.toStringAsFixed(2),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                  ),
-                                ),
-
-                                const SizedBox(height: 10),
-
-                                //product description
-                                Text(
-                                  widget.prod!.description,
-                                  style: const TextStyle(fontStyle: FontStyle.italic),
-                                ),
-
-                                const SizedBox(height: 10),
-
-                                //product available quantity
-                                Text("Available Product: " + widget.prod!.quantity.toString()),
-                              ],
-                            ),
-                          ),
-                          Column(
+                    padding: const EdgeInsets.fromLTRB(15, 25, 15, 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 210,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                //increment or decrement for quantity
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                padding: const EdgeInsets.all(8),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    //decrease button
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          if (q == 0) {
-                                            q = 0;
-                                          } else {
-                                            q--;
-                                          }
-                                        });
-                                      },
-                                      child: const Icon(
-                                        Icons.remove,
-                                        size: 20,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-
-                                    //quantity counter
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                                      child: SizedBox(
-                                        width: 20,
-                                        child: Center(
-                                          child: Text(
-                                            q.toString(),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    //increase button
-                                    GestureDetector(
-                                      onTap: () {
-                                        if (!(q + shopping.getQuantity(widget.prod) == widget.prod!.quantity)) {
-                                          setState(() {
-                                            q++;
-                                          });
-                                        } else {
-                                          blockButton();
-                                        }
-                                      },
-                                      child: const Icon(
-                                        Icons.add,
-                                        size: 20,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
+                              Text(
+                                widget.prod!.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
                                 ),
                               ),
-                              const SizedBox(height: 8),
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  border: Border.all(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(10),
+
+                              //product price
+                              Text(
+                                'RM' + widget.prod!.price.toStringAsFixed(2),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
                                 ),
-                                child: Text('Currently in cart: ' + shopping.getQuantity(widget.prod).toString()),
                               ),
+
+                              const SizedBox(height: 10),
+
+                              //product description
+                              Text(
+                                widget.prod!.description,
+                                style: const TextStyle(fontStyle: FontStyle.italic),
+                              ),
+
+                              const SizedBox(height: 10),
+
+                              //product available quantity
+                              Text("Available Product: " + widget.prod!.quantity.toString()),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              //increment or decrement for quantity
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  //decrease button
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (q == 0) {
+                                          q = 0;
+                                        } else {
+                                          q--;
+                                        }
+                                      });
+                                    },
+                                    child: const Icon(
+                                      Icons.remove,
+                                      size: 20,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+
+                                  //quantity counter
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                                    width: 20,
+                                    child: Center(
+                                      child: Text(
+                                        q.toString(),
+                                      ),
+                                    ),
+                                  ),
+
+                                  //increase button
+                                  GestureDetector(
+                                    onTap: () {
+                                      if (!(q + shopping.getQuantity(widget.prod) == widget.prod!.quantity)) {
+                                        setState(() {
+                                          q++;
+                                        });
+                                      } else {
+                                        blockButton();
+                                      }
+                                    },
+                                    child: const Icon(
+                                      Icons.add,
+                                      size: 20,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text('Currently in cart: ' + shopping.getQuantity(widget.prod).toString()),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                   Container(height: 2, color: Colors.black),

@@ -10,11 +10,11 @@ import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/customer/deliveryprogresspage.dart';
 import 'package:provider/provider.dart';
 
-class PayPage extends StatefulWidget {
+class CCPage extends StatefulWidget {
   final double priceReduct;
   final int currentPoint;
   final List<CartItem> cartItem;
-  const PayPage({
+  const CCPage({
     super.key,
     required this.cartItem,
     required this.priceReduct,
@@ -22,10 +22,10 @@ class PayPage extends StatefulWidget {
   });
 
   @override
-  State<PayPage> createState() => _PayPageState();
+  State<CCPage> createState() => _CCPageState();
 }
 
-class _PayPageState extends State<PayPage> {
+class _CCPageState extends State<CCPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String cardNumber = '';
   String expiryDate = '';
@@ -154,7 +154,7 @@ class _PayPageState extends State<PayPage> {
                       .then((qSs) async {
                     for (var dSs in qSs.docs) {
                       await FirebaseFirestore.instance.collection('members').doc(dSs.id).update({
-                        'mempoint': newPoint,
+                        'memPoint': newPoint,
                         'firstPurch': false, //whether it's first or not, it will always go to false after the purchase
                         'rm30Purch': isrm30Valid,
                         'rm10x5Purch': Member.member.rm10x5Purch,

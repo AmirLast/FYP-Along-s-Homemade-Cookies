@@ -7,9 +7,11 @@ import 'package:fyp/components/general/my_loading.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/userclass.dart';
+import 'package:fyp/pages/all_user/functions/showloading.dart';
 import 'package:fyp/pages/owner/addcategory.dart';
 import 'package:fyp/pages/owner/editcategory.dart';
 import 'package:fyp/pages/owner/functions/updatemenu.dart';
+import 'package:fyp/pages/owner/previewshop.dart';
 import 'package:fyp/services/auth/auth_service.dart';
 
 class MenuPage extends StatefulWidget {
@@ -25,6 +27,7 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
   List<Bakeds?> menus = [];
   final obj = UpdateMenuData();
   final load = Loading();
+  final gotoNext = Showloading();
 
   Future<void> updateMenu() async {
     //update menu data in local memory
@@ -94,6 +97,33 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const SizedBox(height: 20),
+              MaterialButton(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.remove_red_eye_rounded, color: Colors.black),
+                      SizedBox(width: 10),
+                      Text('Preview Shop Page'),
+                    ],
+                  ),
+                ),
+                onPressed: () {
+                  gotoNext.showloading(
+                    UserNow.usernow.user!.uid,
+                    (context) => PreviewShop(id: UserNow.usernow.user!.uid),
+                    null,
+                    "menus",
+                    context,
+                  );
+                },
+              ),
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,

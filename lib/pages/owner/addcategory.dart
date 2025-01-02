@@ -78,118 +78,116 @@ class _AddCategoryState extends State<AddCategory> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 150),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.white,
-                ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 30),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
 
-                    const Text(
-                      "Fill in the information",
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.black,
-                      ),
+                  const Text(
+                    "Fill in the information",
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.black,
                     ),
+                  ),
 
-                    const SizedBox(height: 60),
+                  const SizedBox(height: 60),
 
-                    //name of category
-                    MyTextField(
-                      maxLength: 0,
-                      controller: nameController,
-                      caps: TextCapitalization.words,
-                      inputType: TextInputType.text,
-                      labelText: "Name",
-                      hintText: "",
-                      obscureText: false,
-                      isEnabled: true,
-                      isShowhint: false,
-                    ),
+                  //name of category
+                  MyTextField(
+                    maxLength: 0,
+                    controller: nameController,
+                    caps: TextCapitalization.words,
+                    inputType: TextInputType.text,
+                    labelText: "Name",
+                    hintText: "",
+                    obscureText: false,
+                    isEnabled: true,
+                    isShowhint: false,
+                  ),
 
-                    const SizedBox(height: 30),
+                  const SizedBox(height: 30),
 
-                    //confirm button
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        MaterialButton(
-                          child: Container(
-                            padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Confirm",
-                                style: TextStyle(
-                                  //fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade400,
-                                  fontSize: 20,
-                                ),
+                  //confirm button
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      MaterialButton(
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Confirm",
+                              style: TextStyle(
+                                //fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade400,
+                                fontSize: 20,
                               ),
                             ),
                           ),
-                          onPressed: () async {
-                            late List<String> words;
-                            late String capitalizedSentence;
-                            if (nameController.text != "") {
-                              //uppercase every first letter for each word
-                              words = nameController.text.trim().split(" ");
-                              capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
-                            }
-
-                            if (nameController.text == '') {
-                              //check blank
-                              scaffoldOBJ.scaffoldmessage("Category name is blank", context);
-                            } else if (UserNow.usernow.categories.contains(capitalizedSentence)) {
-                              //check categories exist in current data
-                              scaffoldOBJ.scaffoldmessage("Category '" + nameController.text + "' already exist", context);
-                            } else {
-                              // loading circle-------------------------
-                              load.loading(context);
-                              //---------------------------------------
-
-                              User? user = AuthService().getCurrentUser();
-                              //update local userclass data (+ new category)
-                              UserNow.usernow.categories.add(capitalizedSentence);
-                              //map userclass data pasal categories
-                              List newArray = UserNow.usernow.categories;
-                              //update array categories (xde prod) data kat FBFS
-                              FirebaseFirestore.instance.collection('users').doc(user?.uid).update({
-                                "categories": newArray,
-                              });
-                              //new collection is automatically create when add product :D
-
-                              await Future.delayed(const Duration(seconds: 2), () {
-                                scaffoldOBJ.scaffoldmessage("Category Added", context);
-                                Navigator.pop(context);
-                                //pop loading circle-----------------
-                                //go back to menu page
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MenuPage(),
-                                  ),
-                                );
-                              });
-                            }
-                          },
                         ),
-                      ],
-                    ),
+                        onPressed: () async {
+                          late List<String> words;
+                          late String capitalizedSentence;
+                          if (nameController.text != "") {
+                            //uppercase every first letter for each word
+                            words = nameController.text.trim().split(" ");
+                            capitalizedSentence = words.map((word) => upperCase(word)).join(" ");
+                          }
 
-                    const SizedBox(height: 40),
-                  ],
-                ),
+                          if (nameController.text == '') {
+                            //check blank
+                            scaffoldOBJ.scaffoldmessage("Category name is blank", context);
+                          } else if (UserNow.usernow.categories.contains(capitalizedSentence)) {
+                            //check categories exist in current data
+                            scaffoldOBJ.scaffoldmessage("Category '" + nameController.text + "' already exist", context);
+                          } else {
+                            // loading circle-------------------------
+                            load.loading(context);
+                            //---------------------------------------
+
+                            User? user = AuthService().getCurrentUser();
+                            //update local userclass data (+ new category)
+                            UserNow.usernow.categories.add(capitalizedSentence);
+                            //map userclass data pasal categories
+                            List newArray = UserNow.usernow.categories;
+                            //update array categories (xde prod) data kat FBFS
+                            FirebaseFirestore.instance.collection('users').doc(user?.uid).update({
+                              "categories": newArray,
+                            });
+                            //new collection is automatically create when add product :D
+
+                            await Future.delayed(const Duration(seconds: 2), () {
+                              scaffoldOBJ.scaffoldmessage("Category Added", context);
+                              Navigator.pop(context);
+                              //pop loading circle-----------------
+                              //go back to menu page
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MenuPage(),
+                                ),
+                              );
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 40),
+                ],
               ),
             ),
           ],

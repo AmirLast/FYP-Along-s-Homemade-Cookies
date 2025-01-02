@@ -89,21 +89,17 @@ class _CategoryTileState extends State<CategoryTile> {
                       GestureDetector(
                         onTap: widget.onEdit,
                         child: Container(
+                          padding: const EdgeInsets.fromLTRB(25, 10, 12, 10),
                           color: Colors.grey.shade400,
-                          child: const Padding(
-                            padding: EdgeInsets.fromLTRB(25, 10, 12, 10),
-                            child: Icon(Icons.edit, size: 20, color: Colors.black),
-                          ),
+                          child: const Icon(Icons.edit, size: 20, color: Colors.black),
                         ),
                       ),
                       GestureDetector(
                         onTap: widget.onDel,
                         child: Container(
+                          padding: const EdgeInsets.fromLTRB(13, 7, 5, 7),
                           color: Colors.grey.shade400,
-                          child: const Padding(
-                            padding: EdgeInsets.fromLTRB(13, 7, 5, 7),
-                            child: Icon(Icons.close_rounded, size: 25, color: Colors.black),
-                          ),
+                          child: const Icon(Icons.close_rounded, size: 25, color: Colors.black),
                         ),
                       ),
                     ],
@@ -214,7 +210,7 @@ class _CategoryTileState extends State<CategoryTile> {
                           ),
                           //button add product
                           Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
+                            padding: const EdgeInsets.only(left: 30.0),
                             child: ElevatedButton(
                               onPressed: () => Navigator.push(
                                 context,

@@ -35,14 +35,12 @@ class QuantitySelector extends StatelessWidget {
           ),
 
           //quantity counter
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: SizedBox(
-              width: 20,
-              child: Center(
-                child: Text(
-                  quantity.toString(),
-                ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            width: 20,
+            child: Center(
+              child: Text(
+                quantity.toString(),
               ),
             ),
           ),

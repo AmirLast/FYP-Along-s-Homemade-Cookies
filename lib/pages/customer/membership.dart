@@ -47,7 +47,7 @@ class _MembershipPageState extends State<MembershipPage> {
         if (didPop) {
           return;
         }
-        toPop;
+        toPop();
       },
       child: Scaffold(
         backgroundColor: const Color(0xffd1a271),
@@ -78,221 +78,211 @@ class _MembershipPageState extends State<MembershipPage> {
           width: MediaQuery.of(context).size.width, //max width for current phone
           height: MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight + 19, //max height for current phone
           decoration: show.showLogo(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 15),
-                Container(
-                  width: 150,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                    color: Colors.white,
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Center(child: Text("Membership Benefit")),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 15),
+              Container(
+                width: 150,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                  color: Colors.white,
+                ),
+                padding: const EdgeInsets.all(8.0),
+                child: const Center(child: Text("Membership Benefit")),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width - 50,
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
                   ),
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width - 50,
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ListView.builder(
-                      padding: const EdgeInsets.only(top: 10),
-                      shrinkWrap: true,
-                      primary: false,
-                      itemCount: benefits.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: Container(
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
-                              child: Text(
-                                benefits[index],
-                                style: const TextStyle(color: Colors.black, fontSize: 15),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                padding: const EdgeInsets.all(10),
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(top: 10),
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: benefits.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 10.0),
+                      padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
+                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
+                      child: Text(
+                        benefits[index],
+                        style: const TextStyle(color: Colors.black, fontSize: 15),
+                      ),
+                    );
+                  },
                 ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    !isMember
-                        ? MaterialButton(
-                            shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
-                            padding: const EdgeInsets.all(10),
-                            color: Colors.green,
-                            textColor: Colors.black,
-                            child: const Text("Join Member"),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  backgroundColor: Colors.white,
-                                  content: const Text(
-                                    "Confirm joining member?",
-                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                  ),
-                                  actions: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        IconButton(
-                                          iconSize: 50,
-                                          color: Colors.green,
-                                          icon: const Icon(Icons.check_circle),
-                                          onPressed: () async {
-                                            load.loading(context);
-                                            await FirebaseFirestore.instance.collection('users').doc(UserNow.usernow.user?.uid).update({
-                                              "ismember": true,
-                                            }).then((a) async {
-                                              await FirebaseFirestore.instance.collection('members').add({
-                                                'id': UserNow.usernow.user?.uid,
-                                                'firstPurch': true,
-                                                'memPoint': 0,
-                                                'rm10x5Purch': 0,
-                                                'rm30Purch': true,
-                                              });
-                                            }).then((onValue) {
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                              UserNow.usernow.isMember = true;
-                                              Member.member = Member(memPoint: 0, firstPurch: true, rm30Purch: true, rm10x5Purch: 0);
-                                              setState(() {
-                                                isMember = UserNow.usernow.isMember;
-                                                point = Member.member.memPoint;
-                                              });
+              ),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  !isMember
+                      ? MaterialButton(
+                          shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                          padding: const EdgeInsets.all(10),
+                          color: Colors.green,
+                          textColor: Colors.black,
+                          child: const Text("Join Member"),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                backgroundColor: Colors.white,
+                                content: const Text(
+                                  "Confirm joining member?",
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                ),
+                                actions: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      IconButton(
+                                        iconSize: 50,
+                                        color: Colors.green,
+                                        icon: const Icon(Icons.check_circle),
+                                        onPressed: () async {
+                                          load.loading(context);
+                                          await FirebaseFirestore.instance.collection('users').doc(UserNow.usernow.user?.uid).update({
+                                            "ismember": true,
+                                          }).then((a) async {
+                                            await FirebaseFirestore.instance.collection('members').add({
+                                              'id': UserNow.usernow.user?.uid,
+                                              'firstPurch': true,
+                                              'memPoint': 0,
+                                              'rm10x5Purch': 0,
+                                              'rm30Purch': true,
                                             });
-                                          },
+                                          }).then((onValue) {
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                            UserNow.usernow.isMember = true;
+                                            Member.member = Member(memPoint: 0, firstPurch: true, rm30Purch: true, rm10x5Purch: 0);
+                                            setState(() {
+                                              isMember = UserNow.usernow.isMember;
+                                              point = Member.member.memPoint;
+                                            });
+                                          });
+                                        },
+                                      ),
+                                      IconButton(
+                                        iconSize: 50,
+                                        color: Colors.red,
+                                        onPressed: () => Navigator.pop(context),
+                                        icon: const Icon(Icons.cancel),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            MaterialButton(
+                              shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                              padding: const EdgeInsets.all(10),
+                              color: Colors.green,
+                              textColor: Colors.black,
+                              child: Text("Current Point: $point"),
+                              onPressed: () {},
+                            ),
+                            const SizedBox(width: 15),
+                            MaterialButton(
+                              shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                              padding: const EdgeInsets.all(10),
+                              color: Colors.green,
+                              textColor: Colors.black,
+                              child: const Text("Check Available Benefit"),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    backgroundColor: Colors.white,
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                                          child: Text(
+                                            "List Benefits",
+                                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                          ),
                                         ),
-                                        IconButton(
-                                          iconSize: 50,
-                                          color: Colors.red,
-                                          onPressed: () => Navigator.pop(context),
-                                          icon: const Icon(Icons.cancel),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Member.member.firstPurch
+                                                  ? const Icon(Icons.check_box_outline_blank_rounded, color: Colors.black, size: 30)
+                                                  : const Icon(Icons.check_box_outlined, color: Colors.black, size: 30),
+                                              const Expanded(
+                                                child: Text(
+                                                  "First Purchase (100 Points)",
+                                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Member.member.rm10x5Purch < 5
+                                                  ? const Icon(Icons.check_box_outline_blank_rounded, color: Colors.black, size: 30)
+                                                  : const Icon(Icons.check_box_outlined, color: Colors.black, size: 30),
+                                              const Expanded(
+                                                child: Text(
+                                                  "First RM10 x5 Purchase (300 Points)",
+                                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Member.member.rm30Purch
+                                                  ? const Icon(Icons.check_box_outline_blank_rounded, color: Colors.black, size: 30)
+                                                  : const Icon(Icons.check_box_outlined, color: Colors.black, size: 30),
+                                              const Expanded(
+                                                child: Text(
+                                                  "First RM30 Purchase (500 Points)",
+                                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              MaterialButton(
-                                shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
-                                padding: const EdgeInsets.all(10),
-                                color: Colors.green,
-                                textColor: Colors.black,
-                                child: Text("Current Point: $point"),
-                                onPressed: () {},
-                              ),
-                              const SizedBox(width: 15),
-                              MaterialButton(
-                                shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
-                                padding: const EdgeInsets.all(10),
-                                color: Colors.green,
-                                textColor: Colors.black,
-                                child: const Text("Check Available Benefit"),
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      backgroundColor: Colors.white,
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 5.0),
-                                            child: Text(
-                                              "List Benefits",
-                                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Member.member.firstPurch
-                                                    ? const Icon(Icons.check_box_outline_blank_rounded, color: Colors.black, size: 30)
-                                                    : const Icon(Icons.check_box_outlined, color: Colors.black, size: 30),
-                                                const Expanded(
-                                                  child: Text(
-                                                    "First Purchase (100 Points)",
-                                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Member.member.rm10x5Purch < 5
-                                                    ? const Icon(Icons.check_box_outline_blank_rounded, color: Colors.black, size: 30)
-                                                    : const Icon(Icons.check_box_outlined, color: Colors.black, size: 30),
-                                                const Expanded(
-                                                  child: Text(
-                                                    "First RM10 x5 Purchase (300 Points)",
-                                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Member.member.rm30Purch
-                                                    ? const Icon(Icons.check_box_outline_blank_rounded, color: Colors.black, size: 30)
-                                                    : const Icon(Icons.check_box_outlined, color: Colors.black, size: 30),
-                                                const Expanded(
-                                                  child: Text(
-                                                    "First RM30 Purchase (500 Points)",
-                                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
                                     ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                  ],
-                ),
-                const Spacer(),
-              ],
-            ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                ],
+              ),
+              const Spacer(),
+            ],
           ),
         ),
       ),
