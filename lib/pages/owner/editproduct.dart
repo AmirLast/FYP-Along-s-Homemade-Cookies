@@ -15,7 +15,7 @@ import 'package:fyp/pages/all_user/functions/updateurl.dart';
 import 'package:fyp/pages/owner/functions/updatemenu.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/pages/owner/previewproduct.dart';
-import 'package:fyp/services/auth/auth_service.dart';
+import 'package:fyp/services/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProdPage extends StatefulWidget {

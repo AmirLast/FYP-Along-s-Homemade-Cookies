@@ -21,6 +21,7 @@ class Showloading {
         await FirebaseFirestore.instance.collection('users').where("type", isEqualTo: "seller").get().then((querySnapshot) async {
           for (var docSnapshot in querySnapshot.docs) {
             cat = docSnapshot.data()['categories'];
+            allMenu = []; //reset
             i = cat.length;
             j = 0; //resetter
             //print('${docSnapshot.id} => ${docSnapshot.data()}');

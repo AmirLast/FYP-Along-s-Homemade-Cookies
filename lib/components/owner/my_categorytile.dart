@@ -9,7 +9,7 @@ import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/pages/owner/addproduct.dart';
 import 'package:fyp/pages/owner/editproduct.dart';
 import 'package:fyp/pages/owner/menupage.dart';
-import 'package:fyp/services/auth/auth_service.dart';
+import 'package:fyp/services/auth_service.dart';
 
 class CategoryTile extends StatefulWidget {
   final String catName;

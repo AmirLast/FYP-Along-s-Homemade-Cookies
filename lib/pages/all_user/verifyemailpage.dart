@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
-import 'package:fyp/services/auth/auth_gate.dart';
+import 'package:fyp/services/auth_gate.dart';
 
 class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({super.key});

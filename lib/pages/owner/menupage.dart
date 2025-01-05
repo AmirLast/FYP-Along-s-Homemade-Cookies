@@ -12,7 +12,7 @@ import 'package:fyp/pages/owner/addcategory.dart';
 import 'package:fyp/pages/owner/editcategory.dart';
 import 'package:fyp/pages/owner/functions/updatemenu.dart';
 import 'package:fyp/pages/owner/previewshop.dart';
-import 'package:fyp/services/auth/auth_service.dart';
+import 'package:fyp/services/auth_service.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -211,13 +211,6 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                               //refresh new menu page
                                               Navigator.pop(context);
                                               updateMenu();
-                                              /*Navigator.pop(context);
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => const MenuPage(),
-                                                ),
-                                              );*/
                                             });
                                           },
                                           icon: const Icon(Icons.check_circle),
@@ -232,32 +225,36 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                                     )
                                   ],
                                 ));
-                      }, //pop up delete confirm -> delete FBFS -> delete local data -> pushreplacement ke menupage
+                      },
                     );
                   },
                 ),
               ),
-              cat.isNotEmpty
-                  ? const SizedBox()
-                  : const Column(
-                      children: [
-                        Spacer(),
-                        Padding(
-                          padding: EdgeInsets.only(left: 50),
-                          child: Row(
-                            children: [
-                              Icon(Icons.arrow_back, color: Colors.black, size: 15),
-                              SizedBox(width: 15),
-                              Text(
-                                "click this to add category",
-                                style: TextStyle(color: Colors.black, fontSize: 15),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                      ],
+              Visibility(visible: cat.isEmpty, child: const Spacer()),
+              Visibility(
+                visible: cat.isEmpty,
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      margin: const EdgeInsets.only(left: 85),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.4),
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: Colors.black),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.arrow_back, color: Colors.black, size: 17),
+                          SizedBox(width: 15),
+                          Text("click this to add category", style: TextStyle(color: Colors.black, fontSize: 17)),
+                        ],
+                      ),
                     ),
+                  ],
+                ),
+              ),
+              Visibility(visible: cat.isEmpty, child: const SizedBox(height: 20)),
             ],
           ),
         ),

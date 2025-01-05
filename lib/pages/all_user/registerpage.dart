@@ -4,7 +4,7 @@ import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/registerpage2.dart';
-import 'package:fyp/services/auth/checkpass.dart';
+import 'package:fyp/services/checkpass.dart';
 import '../../components/general/my_textfield.dart';
 
 class RegisterPage extends StatefulWidget {

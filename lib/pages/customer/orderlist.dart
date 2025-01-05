@@ -48,6 +48,13 @@ class _BuyerOrderState extends State<BuyerOrder> {
     });
   }
 
+  bool noNeedConfirm(Orders o) {
+    DateTime statusTime = DateTime.parse(o.onchange);
+    Duration dayPassed = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+        .difference(DateTime(statusTime.year, statusTime.month, statusTime.day));
+    return dayPassed.inDays < 3;
+  }
+
   void onCancel(String id) async {
     await showDialog(
       context: context,
@@ -88,11 +95,11 @@ class _BuyerOrderState extends State<BuyerOrder> {
                     load.loading(context);
                     await FirebaseFirestore.instance.collection('orders').doc(id).update({
                       "status": "Cancel",
+                      'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                     }).then((onValue) async {
                       await FirebaseFirestore.instance.collection('cancel').doc().set({
                         "id": id,
                         "reason": reasonCancel.text.trim(),
-                        'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                       });
                     }).then((onValue) {
                       Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Cancel";
@@ -143,7 +150,8 @@ class _BuyerOrderState extends State<BuyerOrder> {
     );
   }
 
-  void onReceive(String id) {
+  void onReceive(String id, Orders order) {
+    bool doReviewOnly = noNeedConfirm(order);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -155,9 +163,12 @@ class _BuyerOrderState extends State<BuyerOrder> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              "Before confirming, you can put a review in the text box.",
-              style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5.0),
+              child: Text(
+                doReviewOnly ? "Before confirming, you can put a review in the text box." : "You can put your review in this text box.",
+                style: const TextStyle(color: Colors.black, fontStyle: FontStyle.italic),
+              ),
             ),
             TextField(
               cursorColor: Colors.black,
@@ -195,6 +206,7 @@ class _BuyerOrderState extends State<BuyerOrder> {
                   load.loading(context);
                   await FirebaseFirestore.instance.collection('orders').doc(id).update({
                     "status": "Confirm",
+                    'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                   }).then((onValue) async {
                     await FirebaseFirestore.instance.collection('orders').doc(id).get().then((value) {
                       sellerID = value.data()?['seller'];
@@ -203,7 +215,6 @@ class _BuyerOrderState extends State<BuyerOrder> {
                         "id": id,
                         "seller": sellerID,
                         "review": review.text.trim(),
-                        'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                       });
                     }).then((onValue) {
                       Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Confirm";
@@ -302,7 +313,7 @@ class _BuyerOrderState extends State<BuyerOrder> {
                                   onInfo: onInfo,
                                   onPin: () {},
                                   onReceive: () {
-                                    onReceive(currentO[index].id);
+                                    onReceive(currentO[index].id, currentO[index]);
                                   },
                                 )
                               : OrderCard(
@@ -314,7 +325,7 @@ class _BuyerOrderState extends State<BuyerOrder> {
                                   onInfo: onInfo,
                                   onPin: () {},
                                   onReceive: () {
-                                    onReceive(pastO[index - currentO.length].id);
+                                    onReceive(pastO[index - currentO.length].id, pastO[index - currentO.length]);
                                   },
                                 );
                         },

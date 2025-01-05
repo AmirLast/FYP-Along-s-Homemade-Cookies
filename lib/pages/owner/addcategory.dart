@@ -7,7 +7,7 @@ import 'package:fyp/components/general/my_scaffoldmessage.dart';
 import 'package:fyp/components/general/my_textfield.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
-import 'package:fyp/services/auth/auth_service.dart';
+import 'package:fyp/services/auth_service.dart';
 
 class AddCategory extends StatefulWidget {
   const AddCategory({super.key});

@@ -7,7 +7,7 @@ import 'package:fyp/models/shopclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
 import 'package:fyp/pages/all_user/profile.dart';
-import 'package:fyp/services/auth/auth_service.dart';
+import 'package:fyp/services/auth_service.dart';
 import '../../pages/all_user/settingspage.dart';
 
 class MyDrawer extends StatelessWidget {

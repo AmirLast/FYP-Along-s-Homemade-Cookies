@@ -17,7 +17,7 @@ import 'package:fyp/pages/admin/adminhomepage.dart';
 import 'package:fyp/pages/all_user/functions/updateurl.dart';
 import 'package:fyp/pages/customer/userhomepage.dart';
 import 'package:fyp/pages/owner/ownerhomepage.dart';
-import 'package:fyp/services/auth/auth_service.dart';
+import 'package:fyp/services/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 

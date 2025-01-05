@@ -4,7 +4,7 @@ import 'package:fyp/pages/admin/adminhomepage.dart';
 import 'package:fyp/pages/owner/ownerhomepage.dart';
 import 'package:fyp/pages/customer/userhomepage.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
-import 'package:fyp/services/auth/update_user.dart';
+import 'package:fyp/services/update_user.dart';
 
 class AuthGate extends StatefulWidget {
   const AuthGate({super.key});

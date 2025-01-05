@@ -9,7 +9,7 @@ import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/owner/menupage.dart';
 import 'package:fyp/pages/owner/functions/updatemenu.dart';
-import 'package:fyp/services/auth/auth_service.dart';
+import 'package:fyp/services/auth_service.dart';
 
 class EditCategoryPage extends StatefulWidget {
   final String category;

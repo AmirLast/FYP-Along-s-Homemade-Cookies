@@ -226,7 +226,7 @@ class _OrderCardState extends State<OrderCard> {
               Visibility(
                 visible: !isOwner && (isComplete || isConfirm),
                 child: MaterialButton(
-                  onPressed: isComplete && canCancel ? widget.onReceive : null,
+                  onPressed: isComplete ? widget.onReceive : null,
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     decoration: BoxDecoration(
@@ -253,14 +253,14 @@ class _OrderCardState extends State<OrderCard> {
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     decoration: BoxDecoration(
-                      color: !isPinnable ? Colors.red.withValues(alpha: 0.4) : Colors.red,
+                      color: isPinnable && canCancel ? Colors.red : Colors.red.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
                       child: Text(
                         "Cancel",
                         style: TextStyle(
-                          color: textColor,
+                          color: isPinnable && canCancel ? Colors.black : Colors.black.withValues(alpha: 0.4),
                         ),
                       ),
                     ),

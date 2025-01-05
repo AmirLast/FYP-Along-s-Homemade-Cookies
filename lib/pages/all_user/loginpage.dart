@@ -9,8 +9,8 @@ import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/forgorpassword.dart';
 import 'package:fyp/pages/all_user/registerpage.dart';
 import 'package:fyp/pages/all_user/verifyemailpage.dart';
-import 'package:fyp/services/auth/auth_service.dart';
-import 'package:fyp/services/auth/checkpass.dart';
+import 'package:fyp/services/auth_service.dart';
+import 'package:fyp/services/checkpass.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

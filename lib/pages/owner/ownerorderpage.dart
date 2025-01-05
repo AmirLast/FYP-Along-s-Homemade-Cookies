@@ -88,11 +88,11 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                     load.loading(context);
                     await FirebaseFirestore.instance.collection('orders').doc(id).update({
                       "status": "Cancel",
+                      'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                     }).then((onValue) async {
                       await FirebaseFirestore.instance.collection('cancel').doc().set({
                         "id": id,
                         "reason": reason.text.trim(),
-                        'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                       }).then((onValue) {
                         Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Cancel";
                         Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate = reason.text.trim();
@@ -142,11 +142,11 @@ class _OwnerOrderPageState extends State<OwnerOrderPage> {
                   load.loading(context);
                   await FirebaseFirestore.instance.collection('orders').doc(id).update({
                     "status": "Complete",
+                    'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                   }).then((onValue) async {
                     await FirebaseFirestore.instance.collection('complete').doc().set({
                       "id": id,
                       'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-                      'onchange': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
                     }).then((onValue) {
                       Orders.currentOrder.orders.firstWhere((test) => test.id == id).status = "Complete";
                       Orders.currentOrder.orders.firstWhere((test) => test.id == id).reasonOrdate =

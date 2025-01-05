@@ -9,7 +9,7 @@ import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/loginpage.dart';
 import 'package:fyp/pages/all_user/verifyemailpage.dart';
-import 'package:fyp/services/auth/auth_service.dart';
+import 'package:fyp/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import '../../components/general/my_textfield.dart';
 

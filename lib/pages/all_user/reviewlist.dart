@@ -65,13 +65,10 @@ class _ReviewPageState extends State<ReviewPage> {
             children: [
               reviews.isEmpty
                   ? const Expanded(
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 30.0),
-                          child: Text("Review is empty.."),
-                        ),
-                      ),
-                    )
+                      child: Padding(
+                      padding: EdgeInsets.only(top: 30.0),
+                      child: Text("Review is empty.."),
+                    ))
                   : Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
