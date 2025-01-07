@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:fyp/models/orderclass.dart';
 
-class MyProductQuantitySold extends StatefulWidget {
-  const MyProductQuantitySold({super.key});
+class MySalesTotal extends StatefulWidget {
+  const MySalesTotal({super.key});
 
   @override
-  State<MyProductQuantitySold> createState() => _MyProductQuantitySoldState();
+  State<MySalesTotal> createState() => _MySalesTotalState();
 }
 
-class _MyProductQuantitySoldState extends State<MyProductQuantitySold> {
+class _MySalesTotalState extends State<MySalesTotal> {
   final totQuant = <Map<String, int>>[];
   final List<Color> colors = [];
   var orders = Orders.currentOrder.orders.where((x) => x.status == "Confirm").toList();

@@ -20,42 +20,46 @@ class Showloading {
       try {
         await FirebaseFirestore.instance.collection('users').where("type", isEqualTo: "seller").get().then((querySnapshot) async {
           for (var docSnapshot in querySnapshot.docs) {
-            cat = docSnapshot.data()['categories'];
-            allMenu = []; //reset
-            i = cat.length;
-            j = 0; //resetter
-            //print('${docSnapshot.id} => ${docSnapshot.data()}');
-            for (j; j < i; j++) {
-              //different category different collection
-              var dir = FirebaseFirestore.instance.collection('users').doc(docSnapshot.id);
-              await dir.collection(cat[j].toString()).get().then(
-                (querySnapshot) {
-                  for (var docSnapshot2 in querySnapshot.docs) {
-                    //every document read will be set as Bakeds data and inserted into List<Bakeds>
-                    //print('${docSnapshot.id} => ${docSnapshot.data()}');
-                    Bakeds.currentBaked = Bakeds(
-                      quantity: docSnapshot2.data()['quantity'],
-                      imagePath: docSnapshot2.data()['imagePath'],
-                      name: docSnapshot2.data()['name'],
-                      description: docSnapshot2.data()['description'],
-                      url: docSnapshot2.data()['url'],
-                      price: double.parse(docSnapshot2.data()['price']),
-                      category: cat[j].toString(),
-                    );
-                    allMenu.add(Bakeds.currentBaked);
-                  }
-                },
-                //onError: (e) => print("Error completing: $e"),
+            if (docSnapshot.data()['visibility'] == true) {
+              cat = docSnapshot.data()['categories'];
+              allMenu = []; //reset
+              i = cat.length;
+              j = 0; //resetter
+              for (j; j < i; j++) {
+                //different category different collection
+                var dir = FirebaseFirestore.instance.collection('users').doc(docSnapshot.id);
+                await dir.collection(cat[j].toString()).get().then(
+                  (querySnapshot) {
+                    for (var docSnapshot2 in querySnapshot.docs) {
+                      //every document read will be set as Bakeds data and inserted into List<Bakeds>
+                      Bakeds.currentBaked = Bakeds(
+                        quantity: docSnapshot2.data()['quantity'],
+                        imagePath: docSnapshot2.data()['imagePath'],
+                        name: docSnapshot2.data()['name'],
+                        description: docSnapshot2.data()['description'],
+                        url: docSnapshot2.data()['url'],
+                        price: double.parse(docSnapshot2.data()['price']),
+                        category: cat[j].toString(),
+                      );
+                      allMenu.add(Bakeds.currentBaked);
+                    }
+                  },
+                  onError: (e) {
+                    if (kDebugMode) {
+                      print("Error completing: $e");
+                    }
+                  },
+                );
+              }
+              //add the shop into the list
+              Shops.currentShop = Shops(
+                name: docSnapshot.data()['shop'],
+                bakeds: allMenu,
+                id: docSnapshot.id,
+                categories: docSnapshot.data()['categories'],
               );
+              shops.add(Shops.currentShop);
             }
-            //add the shop into the list
-            Shops.currentShop = Shops(
-              name: docSnapshot.data()['shop'],
-              bakeds: allMenu,
-              id: docSnapshot.id,
-              categories: docSnapshot.data()['categories'],
-            );
-            shops.add(Shops.currentShop);
           }
         }).then((onValue) {
           Shops.currentShop.shops = shops;
@@ -102,7 +106,11 @@ class Showloading {
                   allMenu.add(Bakeds.currentBaked);
                 }
               },
-              //onError: (e) => print("Error completing: $e"),
+              onError: (e) {
+                if (kDebugMode) {
+                  print("Error completing: $e");
+                }
+              },
             );
           }
           //add the shop into the list

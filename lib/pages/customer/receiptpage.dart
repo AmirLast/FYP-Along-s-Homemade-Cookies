@@ -7,21 +7,20 @@ import 'package:fyp/pages/customer/shoppage.dart';
 import 'package:fyp/pages/customer/functions/saveorder.dart';
 import 'package:provider/provider.dart';
 
-class DeliveryProgressPage extends StatefulWidget {
-  const DeliveryProgressPage({super.key});
+class ReceiptPage extends StatefulWidget {
+  const ReceiptPage({super.key});
 
   @override
-  State<DeliveryProgressPage> createState() => _DeliveryProgressPageState();
+  State<ReceiptPage> createState() => _ReceiptPageState();
 }
 
-class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
+class _ReceiptPageState extends State<ReceiptPage> {
   final gotoNext = Showloading();
   FirestoreService db = FirestoreService(); //get access to db
 
   @override
   void initState() {
     super.initState();
-
     //submit order to firestore db
     String receipt = context.read<Shopping>().displayCartReceipt();
     db.saveOrderToDatabase(receipt, context);

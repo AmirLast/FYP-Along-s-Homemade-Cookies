@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class EndScreen extends StatefulWidget {
@@ -12,18 +11,18 @@ class EndScreen extends StatefulWidget {
 class _EndScreenState extends State<EndScreen> {
   bool isWait = true;
 
-  @override
-  void initState() {
-    super.initState();
-    stillWait();
-  }
-
   void stillWait() async {
     await Future.delayed(const Duration(seconds: 1, milliseconds: 500), () {
       setState(() {
         isWait = false;
       });
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    stillWait();
   }
 
   @override

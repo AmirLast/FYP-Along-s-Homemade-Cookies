@@ -29,6 +29,7 @@ class UpdateUserData {
           UserNow.usernow.address = value.data()?['address'];
           UserNow.usernow.categories = value.data()?['categories'];
           UserNow.usernow.shop = value.data()?['shop'];
+          UserNow.usernow.visibility = value.data()?['visibility'];
         }
         if (value.data()?['type'] == "buyer") {
           UserNow.usernow.address = value.data()?['address'];

@@ -69,7 +69,7 @@ class MyDrawer extends StatelessWidget {
           ),
 
           const Padding(
-            padding: EdgeInsets.all(25.0),
+            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
             child: Divider(
               color: Colors.white,
             ),
@@ -90,7 +90,7 @@ class MyDrawer extends StatelessWidget {
             }, //go to profile setting
           ),
 
-          Divider(color: Colors.grey.shade400),
+          const SizedBox(height: 10),
 
           //setting list tile
           MyDrawerTile(
@@ -107,7 +107,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
 
-          Divider(color: Colors.grey.shade400),
+          const SizedBox(height: 10),
 
           //about list tile
           MyDrawerTile(
@@ -116,7 +116,7 @@ class MyDrawer extends StatelessWidget {
             onTap: () => Navigator.pop(context), //goto about page
           ),
 
-          Divider(color: Colors.grey.shade400),
+          const SizedBox(height: 10),
 
           //help list tile
           MyDrawerTile(

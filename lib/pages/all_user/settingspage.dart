@@ -13,6 +13,8 @@ class SettingsPage extends StatelessWidget {
   final Logo show = Logo(); //for logo
   SettingsPage({super.key});
 
+  //can change notification setting
+
   void toPop(BuildContext context) {
     if (UserNow.usernow.type == "buyer") {
       Navigator.pushAndRemoveUntil(
@@ -34,10 +36,6 @@ class SettingsPage extends StatelessWidget {
       );
     }
   }
-
-  //can change notification setting
-  //change email and password
-  //can subscribe to premium
 
   @override
   Widget build(BuildContext context) {

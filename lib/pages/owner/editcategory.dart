@@ -26,8 +26,7 @@ class EditCategoryPage extends StatefulWidget {
 class _EditProdPageState extends State<EditCategoryPage> {
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
-  //text editing controller
-  late TextEditingController nameController;
+  late TextEditingController nameController; //text editing controller
   late String nameHT;
   List<Bakeds?> menus = [];
   final obj = UpdateMenuData();
@@ -97,7 +96,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
         ],
       ),
     );
-  } //----------------------------------------------------------------------
+  } //--------------------------------------------------------------------------
 
   void toPop() {
     if (nameController.text == '') {
@@ -131,7 +130,7 @@ class _EditProdPageState extends State<EditCategoryPage> {
           title: Center(
             child: Text(
               textAlign: TextAlign.center,
-              "Category '" + widget.category + "'",
+              "Category '${widget.category}'",
               style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
           ),
@@ -211,7 +210,6 @@ class _EditProdPageState extends State<EditCategoryPage> {
                                 child: Text(
                                   "Save",
                                   style: TextStyle(
-                                    //fontWeight: FontWeight.bold,
                                     color: nameController.text == '' ? Colors.black.withValues(alpha: 0.4) : Colors.grey.shade400,
                                     fontSize: 20,
                                   ),

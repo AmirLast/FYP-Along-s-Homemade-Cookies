@@ -31,12 +31,19 @@ class _AddProductState extends State<AddProduct> {
   final DownloadURL obj = DownloadURL(); //for url
   final Logo show = Logo(); //for logo
   final load = Loading();
+  //text editing controller
+  late TextEditingController descController;
+  late TextEditingController nameController;
+  late TextEditingController priceController;
+  late TextEditingController quantityController;
+
   //uppercase first letter-----------------------------------------
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
   }
 
   //uppercase first letter-----------------------------------------
+
   //untuk bahagian upload image-----------------------------------------------------
   File? _image;
   final picker = ImagePicker();
@@ -95,13 +102,7 @@ class _AddProductState extends State<AddProduct> {
       ),
     );
   }
-  //bahagian upload imej-----------------------------------------------------------------------
-
-  //text editing controller
-  late TextEditingController descController;
-  late TextEditingController nameController;
-  late TextEditingController priceController;
-  late TextEditingController quantityController;
+  //bahagian upload imej------------------------------------------------------------
 
   @override
   void initState() {
@@ -136,7 +137,7 @@ class _AddProductState extends State<AddProduct> {
         title: Center(
           child: Text(
             textAlign: TextAlign.center,
-            widget.category + "'s Product",
+            "${widget.category}'s Product",
             style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
@@ -288,7 +289,6 @@ class _AddProductState extends State<AddProduct> {
                                 child: Text(
                                   "Confirm",
                                   style: TextStyle(
-                                    //fontWeight: FontWeight.bold,
                                     color: Colors.grey.shade400,
                                     fontSize: 20,
                                   ),

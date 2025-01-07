@@ -20,14 +20,13 @@ class _AddCategoryState extends State<AddCategory> {
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
   final load = Loading();
+  late TextEditingController nameController; //text editing controller
+
   //uppercase first letter-----------------------------------------
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
   }
-
   //uppercase first letter-----------------------------------------
-  //text editing controller
-  late TextEditingController nameController;
 
   @override
   void initState() {
@@ -128,7 +127,6 @@ class _AddCategoryState extends State<AddCategory> {
                             child: Text(
                               "Confirm",
                               style: TextStyle(
-                                //fontWeight: FontWeight.bold,
                                 color: Colors.grey.shade400,
                                 fontSize: 20,
                               ),

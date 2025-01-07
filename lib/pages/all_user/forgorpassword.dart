@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_textfield.dart';
@@ -11,10 +12,8 @@ class ForgorPassword extends StatefulWidget {
 }
 
 class _ForgorPasswordState extends State<ForgorPassword> {
-  //for logo
-  final Logo show = Logo();
+  final show = Logo(); //for logo
   TextEditingController emailController = TextEditingController();
-
   final url =
       'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAFgdksbfVdVQ1OM46UcxO-40ScjkNT8ng'; //web api key to sent reset password/verify email/change email - email
 
@@ -35,7 +34,9 @@ class _ForgorPasswordState extends State<ForgorPassword> {
             ); //pop up to UI so user know what error it is
           });
     } on FirebaseAuthException catch (e) {
-      //  print(e); //for console
+      if (kDebugMode) {
+        print(e);
+      } //for console
       showDialog(
           context: context,
           builder: (context) {
@@ -58,7 +59,6 @@ class _ForgorPasswordState extends State<ForgorPassword> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 125),
-            //title of current widget
             const Text(
               "Reset Password",
               style: TextStyle(
@@ -67,9 +67,7 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                 color: Colors.black,
               ),
             ),
-
             const SizedBox(height: 25),
-
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 25),
               decoration: BoxDecoration(
@@ -148,7 +146,6 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                             child: Text(
                               "Confirm",
                               style: TextStyle(
-                                //fontWeight: FontWeight.bold,
                                 color: Colors.grey.shade400,
                                 fontSize: 20,
                               ),

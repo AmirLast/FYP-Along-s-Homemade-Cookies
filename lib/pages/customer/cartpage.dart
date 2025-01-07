@@ -18,9 +18,7 @@ class _CartPageState extends State<CartPage> {
 
     return Consumer<Shopping>(
       builder: (context, shopping, child) {
-        //cart
-        final userCart = shopping.cart;
-        //scaffold UI
+        final userCart = shopping.cart; //cart
         return Scaffold(
           backgroundColor: const Color(0xffd1a271),
           appBar: AppBar(

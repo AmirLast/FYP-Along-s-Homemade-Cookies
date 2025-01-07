@@ -281,7 +281,6 @@ class _MembershipPageState extends State<MembershipPage> {
                         ),
                 ],
               ),
-              const Spacer(),
             ],
           ),
         ),

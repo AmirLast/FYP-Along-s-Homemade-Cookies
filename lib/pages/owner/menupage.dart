@@ -12,6 +12,7 @@ import 'package:fyp/pages/owner/addcategory.dart';
 import 'package:fyp/pages/owner/editcategory.dart';
 import 'package:fyp/pages/owner/functions/updatemenu.dart';
 import 'package:fyp/pages/owner/previewshop.dart';
+import 'package:fyp/pages/owner/shopsetting.dart';
 import 'package:fyp/services/auth_service.dart';
 
 class MenuPage extends StatefulWidget {
@@ -97,33 +98,6 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 20),
-              MaterialButton(
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.remove_red_eye_rounded, color: Colors.black),
-                      SizedBox(width: 10),
-                      Text('Preview Shop Page'),
-                    ],
-                  ),
-                ),
-                onPressed: () {
-                  gotoNext.showloading(
-                    UserNow.usernow.user!.uid,
-                    (context) => PreviewShop(id: UserNow.usernow.user!.uid),
-                    null,
-                    "menus",
-                    context,
-                  );
-                },
-              ),
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
@@ -133,99 +107,172 @@ class _MenuPageState extends State<MenuPage> with SingleTickerProviderStateMixin
                   itemBuilder: (context, index) {
                     final String catName = cat[index].toString();
                     //return product tile UI
-                    return CategoryTile(
-                      catName: catName,
-                      baked: menus,
-                      onEdit: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          //calling ProdPage while sending prod values
-                          builder: (context) => EditCategoryPage(
-                            category: catName,
+                    return Column(
+                      children: [
+                        Visibility(visible: index == 0, child: const SizedBox(height: 20)),
+                        Visibility(
+                          visible: index == 0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              MaterialButton(
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.remove_red_eye_rounded, color: Colors.black),
+                                      SizedBox(width: 10),
+                                      Text('Preview Shop Page'),
+                                    ],
+                                  ),
+                                ),
+                                onPressed: () {
+                                  gotoNext.showloading(
+                                    UserNow.usernow.user!.uid,
+                                    (context) => PreviewShop(id: UserNow.usernow.user!.uid),
+                                    null,
+                                    "menus",
+                                    context,
+                                  );
+                                },
+                              ),
+                              MaterialButton(
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Visibility(
+                                        visible: !UserNow.usernow.visibility,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.fromLTRB(0, 0, 5, 20),
+                                              height: 5,
+                                              width: 5,
+                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.red),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Icon(Icons.settings, color: Colors.black),
+                                      const SizedBox(width: 10),
+                                      const Text('Shop Settings'),
+                                    ],
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ShopSetting()));
+                                },
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      onDel: () {
-                        //confirm pop up
-                        showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                  backgroundColor: Colors.white,
-                                  content: Text(
-                                    "Do you want to delete category named '" + catName + "'? All product will be deleted too.",
-                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                  ),
-                                  actions: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        IconButton(
-                                          iconSize: 50,
-                                          color: Colors.green,
-                                          onPressed: () async {
-                                            // loading circle-------------------------
-                                            load.loading(context);
-                                            //--------------------------------------
+                        CategoryTile(
+                          catName: catName,
+                          baked: menus,
+                          onEdit: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              //calling ProdPage while sending prod values
+                              builder: (context) => EditCategoryPage(
+                                category: catName,
+                              ),
+                            ),
+                          ),
+                          onDel: () {
+                            //confirm pop up
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      content: Text(
+                                        "Do you want to delete category named '" + catName + "'? All product will be deleted too.",
+                                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                      ),
+                                      actions: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            IconButton(
+                                              iconSize: 50,
+                                              color: Colors.green,
+                                              onPressed: () async {
+                                                // loading circle-------------------------
+                                                load.loading(context);
+                                                //--------------------------------------
 
-                                            User? user = AuthService().getCurrentUser(); //for doc name in fbfs
+                                                User? user = AuthService().getCurrentUser(); //for doc name in fbfs
 
-                                            //delete data from local class
-                                            UserNow.usernow.categories.remove(catName);
+                                                //delete data from local class
+                                                UserNow.usernow.categories.remove(catName);
 
-                                            //delete data from firebase categories value
-                                            await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
-                                              'categories': FieldValue.arrayRemove([catName])
-                                            });
-                                            //delete data from firebase collection
-                                            List<Bakeds?> documents = [];
-                                            await obj.updatemenudata(catName).then((temp) async {
-                                              documents = temp;
-                                              int i = 0;
-                                              int j = documents.length;
-                                              //if theres no product, no document to be delete, this for loop won't be bothered
-                                              for (i; i < j; i++) {
-                                                //delete product document in collection
-                                                await FirebaseFirestore.instance
-                                                    .collection('users')
-                                                    .doc(user.uid)
-                                                    .collection(catName)
-                                                    .where('name', isEqualTo: documents[i]!.name)
-                                                    .get()
-                                                    .then(
-                                                  (querySnapshot) async {
-                                                    for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-                                                      //delete document in collection of category
-                                                      documentSnapshot.reference.delete();
-                                                      //only delete if not default value
-                                                      if (documents[i]!.imagePath != "") {
-                                                        //delete picture in storage
-                                                        await FirebaseStorage.instance.ref().child(documents[i]!.imagePath).delete();
-                                                      }
-                                                    }
-                                                  },
-                                                );
-                                              }
-                                            }).then((onValue) {
-                                              Navigator.pop(context);
-                                              //pop loading circle---------
-                                              //refresh new menu page
-                                              Navigator.pop(context);
-                                              updateMenu();
-                                            });
-                                          },
-                                          icon: const Icon(Icons.check_circle),
-                                        ),
-                                        IconButton(
-                                          iconSize: 50,
-                                          color: Colors.red,
-                                          onPressed: () => Navigator.pop(context),
-                                          icon: const Icon(Icons.cancel),
-                                        ),
+                                                //delete data from firebase categories value
+                                                await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+                                                  'categories': FieldValue.arrayRemove([catName])
+                                                });
+                                                //delete data from firebase collection
+                                                List<Bakeds?> documents = [];
+                                                await obj.updatemenudata(catName).then((temp) async {
+                                                  documents = temp;
+                                                  int i = 0;
+                                                  int j = documents.length;
+                                                  //if theres no product, no document to be delete, this for loop won't be bothered
+                                                  for (i; i < j; i++) {
+                                                    //delete product document in collection
+                                                    await FirebaseFirestore.instance
+                                                        .collection('users')
+                                                        .doc(user.uid)
+                                                        .collection(catName)
+                                                        .where('name', isEqualTo: documents[i]!.name)
+                                                        .get()
+                                                        .then(
+                                                      (querySnapshot) async {
+                                                        for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+                                                          //delete document in collection of category
+                                                          documentSnapshot.reference.delete();
+                                                          //only delete if not default value
+                                                          if (documents[i]!.imagePath != "") {
+                                                            //delete picture in storage
+                                                            await FirebaseStorage.instance.ref().child(documents[i]!.imagePath).delete();
+                                                          }
+                                                        }
+                                                      },
+                                                    );
+                                                  }
+                                                }).then((onValue) {
+                                                  Navigator.pop(context);
+                                                  //pop loading circle---------
+                                                  //refresh new menu page
+                                                  Navigator.pop(context);
+                                                  updateMenu();
+                                                });
+                                              },
+                                              icon: const Icon(Icons.check_circle),
+                                            ),
+                                            IconButton(
+                                              iconSize: 50,
+                                              color: Colors.red,
+                                              onPressed: () => Navigator.pop(context),
+                                              icon: const Icon(Icons.cancel),
+                                            ),
+                                          ],
+                                        )
                                       ],
-                                    )
-                                  ],
-                                ));
-                      },
+                                    ));
+                          },
+                        ),
+                      ],
                     );
                   },
                 ),

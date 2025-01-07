@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp/components/customer/my_currentlocation.dart';
 import 'package:fyp/components/general/my_drawer.dart';
 import 'package:fyp/components/general/my_logo.dart';
-import 'package:fyp/components/general/my_descbox.dart';
+import 'package:fyp/components/customer/my_descbox.dart';
 import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/endscreen.dart';

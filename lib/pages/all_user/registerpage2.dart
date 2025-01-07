@@ -43,7 +43,7 @@ class _Register2PageState extends State<Register2Page> {
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
   final load = Loading();
-//text editing controller
+  //text editing controller
   late TextEditingController address1Controller;
   late TextEditingController postcodeController;
   late TextEditingController stateController;
@@ -71,7 +71,7 @@ class _Register2PageState extends State<Register2Page> {
   }
 
   Future<User?> register({
-    //for creting user
+    //for creating user
     required String email,
     required String password,
   }) async {
@@ -105,7 +105,7 @@ class _Register2PageState extends State<Register2Page> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(height: 80), //to replace safearea
-              //title of current widget
+
               const Text(
                 "Sign Up",
                 style: TextStyle(
@@ -140,7 +140,6 @@ class _Register2PageState extends State<Register2Page> {
 
                     const SizedBox(height: 60),
 
-                    //address house + building + town
                     MyTextField(
                       maxLength: 0,
                       controller: address1Controller,
@@ -262,7 +261,6 @@ class _Register2PageState extends State<Register2Page> {
                             //some value for error checking---------
                             var isBlank = false; //blank means no error
                             String error = ""; //the error description
-                            //User? user;
 
                             //checking if it is blank
                             if (address1Controller.text == '') {
@@ -295,9 +293,6 @@ class _Register2PageState extends State<Register2Page> {
                                 User? user = await register(email: widget.email, password: widget.password);
 
                                 var userFF = FirebaseFirestore.instance.collection('users'); //opening user collection in firestore
-
-                                //user?.linkWithCredential(credential)
-                                //user.linkWithPhoneNumber(phoneNumber)
 
                                 //for full name capitalization
                                 late List<String> words;
@@ -348,6 +343,7 @@ class _Register2PageState extends State<Register2Page> {
                                         'shop': upperCase(widget.shop.trim()),
                                         //owner need array of categories
                                         "categories": [],
+                                        "visibility": false,
                                       },
                                       SetOptions(merge: true),
                                     );

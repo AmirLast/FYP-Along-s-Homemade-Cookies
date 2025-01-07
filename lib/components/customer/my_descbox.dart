@@ -37,7 +37,7 @@ class MyDescBox extends StatelessWidget {
           Column(
             children: [
               Text(
-                "3~5 days",
+                "3~6 days",
                 style: myPrimaryTextStyle,
               ),
               Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_logo.dart';
+import 'package:fyp/components/general/my_sortby.dart';
 import 'package:fyp/components/owner/my_previewproducttile.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/shopclass.dart';
@@ -66,77 +67,76 @@ class _PreviewShopState extends State<PreviewShop> {
           decoration: show.showLogo(),
           child: Column(
             children: [
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    height: 30,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.grey,
-                    ),
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: const Row(
-                      children: [Text("Sort by"), Spacer(), Icon(Icons.arrow_drop_down_sharp)],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      height: 30,
-                      width: 80,
-                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.white,
-                      ),
-                      child: const Center(child: Text("Reviews")),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
               Expanded(
                 child: ListView.builder(
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: categories.length,
-                    padding: EdgeInsets.zero,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: const EdgeInsets.only(top: 10, bottom: 5),
-                            padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.white.withValues(alpha: 0.75),
-                            ),
-                            child: Center(
-                              child: Text(
-                                categories[index],
-                                style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                  fontSize: 30,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: categories.length,
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Visibility(visible: index == 0, child: const SizedBox(height: 10)),
+                        Visibility(
+                          visible: index == 0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const MySortBy(
+                                enable: false,
+                                width: 100,
+                                options: [],
+                                functions: [],
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  height: 30,
+                                  width: 80,
+                                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.white,
+                                  ),
+                                  child: const Center(child: Text("Reviews")),
                                 ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Visibility(visible: index == 0, child: const SizedBox(height: 10)),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.only(top: 10, bottom: 5),
+                          padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white.withValues(alpha: 0.75),
+                          ),
+                          child: Center(
+                            child: Text(
+                              categories[index],
+                              style: const TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: 30,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              MyPreviewProdTile(bakeds: bakeds, category: categories[index]),
-                            ],
-                          ),
-                        ],
-                      );
-                    }),
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            MyPreviewProdTile(bakeds: bakeds, category: categories[index]),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ],
           ),

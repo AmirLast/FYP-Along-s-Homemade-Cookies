@@ -7,7 +7,7 @@ import 'package:fyp/models/cartitem.dart';
 import 'package:fyp/models/memberclass.dart';
 import 'package:fyp/models/shoppingclass.dart';
 import 'package:fyp/models/userclass.dart';
-import 'package:fyp/pages/customer/deliveryprogresspage.dart';
+import 'package:fyp/pages/customer/receiptpage.dart';
 import 'package:provider/provider.dart';
 
 class CCPage extends StatefulWidget {
@@ -35,7 +35,6 @@ class _CCPageState extends State<CCPage> {
   String id = UserNow.usernow.currentdir; //for knowing owner shop id
   final load = Loading();
 
-  //user wants to pay-----------------------------------------
   void userTappedPay(Shopping shop) {
     if (formKey.currentState!.validate()) {
       //only show dialog if form is valid
@@ -72,7 +71,7 @@ class _CCPageState extends State<CCPage> {
         ),
       );
     }
-  } //---------------------------------------------------------
+  }
 
   //confirm pop up kalau ada unsaved data---------------------------------------
   confirmPopUp(context, String prodName, Shopping shop) {
@@ -164,7 +163,7 @@ class _CCPageState extends State<CCPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const DeliveryProgressPage(),
+                        builder: (context) => const ReceiptPage(),
                       ),
                     );
                   });
@@ -172,7 +171,7 @@ class _CCPageState extends State<CCPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DeliveryProgressPage(),
+                      builder: (context) => const ReceiptPage(),
                     ),
                   );
                 }

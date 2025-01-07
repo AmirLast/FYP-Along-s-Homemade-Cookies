@@ -30,11 +30,17 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final Logo show = Logo();
+  final show = Logo();
+  final obj2 = MyCachednetworkimage();
+  final scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
+  final load = Loading();
+  final obj = DownloadURL(); //for url
+  final _auth = AuthService();
+  bool isEdit = false;
+  //initial value
   final user = UserNow.usernow.user;
   final String fullname = UserNow.usernow.fullname;
   final String displayName = UserNow.usernow.user?.displayName ?? "";
-  //final String password;
   final String phone = UserNow.usernow.phone;
   final String photoURL = UserNow.usernow.user?.photoURL ?? defProfile;
   final String address = UserNow.usernow.address[0];
@@ -52,6 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController stateController;
   late TextEditingController countryController;
   late String src;
+  //initial hint text
   late String dnameHT;
   late String fnameHT;
   late String phoneHT;
@@ -60,12 +67,6 @@ class _ProfilePageState extends State<ProfilePage> {
   late String cityHT;
   late String stateHT;
   late String countryHT;
-  bool isEdit = false;
-  final obj2 = MyCachednetworkimage();
-  final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
-  final load = Loading();
-  final DownloadURL obj = DownloadURL(); //for url
-  final AuthService _auth = AuthService();
 
   @override
   void dispose() {
@@ -112,8 +113,8 @@ class _ProfilePageState extends State<ProfilePage> {
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
   }
-
   //uppercase first letter-----------------------------------------
+
   //untuk bahagian upload image---------------------------------------------------
   File? _image;
   final picker = ImagePicker();
@@ -434,6 +435,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
+                  //displayname
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -446,7 +448,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
-                  //displayname
                   MyTextField(
                     maxLength: 0,
                     controller: dnameController,
@@ -459,6 +460,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     isShowhint: true,
                   ),
                   const SizedBox(height: 30),
+
+                  //fullname
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -471,7 +474,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
-                  //fullname
                   MyTextField(
                     maxLength: 0,
                     controller: fnameController,
@@ -484,6 +486,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     isShowhint: true,
                   ),
                   const SizedBox(height: 30),
+
+                  //phone
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -496,7 +500,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
-                  //phone
                   MyTextField(
                     maxLength: 12,
                     controller: phoneController,
@@ -509,6 +512,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     isShowhint: true,
                   ),
                   const SizedBox(height: 10),
+
+                  //address
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -521,7 +526,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
-                  //address
                   MyTextField(
                     maxLength: 0,
                     controller: addressController,
@@ -534,6 +538,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     isShowhint: true,
                   ),
                   const SizedBox(height: 30),
+
                   //postcode and city
                   Row(
                     mainAxisSize: MainAxisSize.max,
@@ -633,6 +638,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 10),
+
                   //state and country
                   Row(
                     mainAxisSize: MainAxisSize.max,
@@ -731,6 +737,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 50),
+
+                  //save changes button
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -847,7 +855,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           print(e.toString());
                                                         }
                                                       }
-                                                      //context.read<Shopping>().updateDeliveryAddress(newadd); will update add new homepage
                                                       await FirebaseFirestore.instance.collection("users").doc(user?.uid).update({
                                                         "fullname": newfname,
                                                         "phone": newpnum,
@@ -884,7 +891,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       print(e.toString());
                                                     }
                                                   }
-                                                  //context.read<Shopping>().updateDeliveryAddress(newadd); will update at new homepage
                                                   await FirebaseFirestore.instance.collection("users").doc(user?.uid).update({
                                                     "fullname": newfname,
                                                     "phone": newpnum,

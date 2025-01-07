@@ -18,15 +18,15 @@ class _RegisterPageState extends State<RegisterPage> {
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
   final load = Loading();
-//text editing controller
+  //text editing controller
   late TextEditingController confirmpasswordController;
   late TextEditingController emailController;
   late TextEditingController displaynameController;
   late TextEditingController fullnameController;
   late TextEditingController phoneController;
   late TextEditingController passwordController;
-  late bool passwordVisibility; //for?
-  late bool confirmpasswordVisibility; //for?
+  late bool passwordVisibility;
+  late bool confirmpasswordVisibility;
   late TextEditingController shopController;
   bool isOwner = false; //default value
   String type = "buyer"; //default value
@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(height: 60), //to replace safearea
-              //title of current widget
+
               const Text(
                 "Sign Up",
                 style: TextStyle(
@@ -103,8 +103,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                     const SizedBox(height: 60),
 
-                    //username
-                    //first name
+                    //display name
                     MyTextField(
                       maxLength: 0,
                       controller: displaynameController,
@@ -119,13 +118,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
                     const SizedBox(height: 30),
 
-                    //last name
+                    //full name
                     MyTextField(
                       maxLength: 0,
                       controller: fullnameController,
                       caps: TextCapitalization.words,
                       inputType: TextInputType.text,
-                      labelText: "Full Name",
+                      labelText: "Full Name as NRIC",
                       hintText: "",
                       obscureText: false,
                       isEnabled: true,
@@ -251,7 +250,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
 
-                    const SizedBox(height: 30),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
+                      child: Text(
+                        "*password must have: a symbol, an uppercase letter, a lowercase letter, a number\n*password must be 10 characters long",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
 
                     //confirm password
                     Padding(
@@ -306,7 +313,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: Text(
                             "Next",
                             style: TextStyle(
-                              //fontWeight: FontWeight.bold,
                               color: Colors.grey.shade400,
                               fontSize: 20,
                             ),

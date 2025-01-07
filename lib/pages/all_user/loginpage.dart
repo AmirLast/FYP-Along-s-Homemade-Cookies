@@ -20,12 +20,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final load = Loading();
+  final show = Logo(); //for logo
   //text editing controller
   late TextEditingController emailController;
   late TextEditingController passwordController;
   late bool passwordVisibility;
-  final load = Loading();
-  final Logo show = Logo(); //for logo
+
   // login user
   Future<User?> login({required String email, required String password, required BuildContext context}) async {
     //authenticating
@@ -73,7 +74,6 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 120),
-            //title of current widget
             const Text(
               "Sign In",
               style: TextStyle(
@@ -82,9 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.black,
               ),
             ),
-
             const SizedBox(height: 25),
-
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 25),
               decoration: BoxDecoration(
@@ -193,6 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                           UserNow.usernow.address = value.data()?['address'];
                           UserNow.usernow.categories = value.data()?['categories'];
                           UserNow.usernow.shop = value.data()?['shop'];
+                          UserNow.usernow.visibility = value.data()?['visibility'];
                         }
                       }).then((v) async {
                         if (UserNow.usernow.isMember) {
@@ -237,7 +236,6 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           "Sign In",
                           style: TextStyle(
-                            //fontWeight: FontWeight.bold,
                             color: Colors.grey.shade400,
                             fontSize: 20,
                           ),

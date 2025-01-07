@@ -25,7 +25,7 @@ class _MyProdTileState extends State<MyProdTile> {
     return ListView.builder(
       shrinkWrap: true,
       primary: false,
-      itemCount: currentBakeds.length, //limit to 10 display
+      itemCount: currentBakeds.length,
       padding: EdgeInsets.zero,
       itemBuilder: (context, index) {
         bool isAvailable = currentBakeds[index]!.quantity > 0;

@@ -132,7 +132,7 @@ class _CategoryTileState extends State<CategoryTile> {
                                       category: widget.catName,
                                     ),
                                   ),
-                                ), //pergi page baru (cam add category) + access data guna func update cam kat addcategory
+                                ),
                                 onDel: () {
                                   //confirm pop up
                                   showDialog(
@@ -227,7 +227,6 @@ class _CategoryTileState extends State<CategoryTile> {
                               style: ElevatedButton.styleFrom(
                                 shape: const CircleBorder(),
                                 backgroundColor: Colors.grey.shade400, // <-- Button color
-                                //foregroundColor: Colors.red, // <-- Splash color
                               ),
                             ),
                           ),

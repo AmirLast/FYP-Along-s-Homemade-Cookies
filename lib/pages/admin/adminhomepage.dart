@@ -14,8 +14,7 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProviderStateMixin {
-  //for logo
-  final Logo show = Logo();
+  final Logo show = Logo(); //for logo
   late String? name;
 
   confirmPopUp(context) {

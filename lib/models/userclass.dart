@@ -4,7 +4,7 @@ class UserNow {
   //list down all data in user database
   String fullname;
   String phone;
-  String type; //to know if they are user or admin
+  String type; //to know user type
   User? user;
   String currentdir;
   bool passStrength;
@@ -13,6 +13,7 @@ class UserNow {
   //below is for owner
   List categories = [];
   String shop = "";
+  bool visibility = false;
   UserNow({
     required this.fullname,
     required this.phone,
@@ -42,5 +43,6 @@ class UserNow {
     UserNow.usernow.address.clear();
     UserNow.usernow.categories.clear();
     UserNow.usernow.shop = "";
+    UserNow.usernow.visibility = false;
   }
 }

@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 
 class FirestoreService {
   final UserNow? user = UserNow.usernow;
-  //get collection of orders
   final CollectionReference collection = FirebaseFirestore.instance.collection('orders');
   List<CartItem> cartitem = [];
   final items = <Map<String, dynamic>>[];
@@ -29,7 +28,6 @@ class FirestoreService {
       'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
       'order': receipt,
       'cartitem': items,
-      //add more data later
       'seller': user!.currentdir,
       'buyer': user!.user!.uid,
       'status': "Pending",

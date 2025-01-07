@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/services/auth_service.dart';
@@ -24,7 +25,6 @@ class UpdateMenuData {
         (querySnapshot) {
           for (var docSnapshot in querySnapshot.docs) {
             //every document read will be set as Bakeds data and inserted into List<Bakeds>
-            //print('${docSnapshot.id} => ${docSnapshot.data()}');
             Bakeds.currentBaked = Bakeds(
               quantity: docSnapshot.data()['quantity'],
               imagePath: docSnapshot.data()['imagePath'],
@@ -37,7 +37,11 @@ class UpdateMenuData {
             allMenu.add(Bakeds.currentBaked);
           }
         },
-        //onError: (e) => print("Error completing: $e"),
+        onError: (e) {
+          if (kDebugMode) {
+            print("Error completing: $e");
+          }
+        },
       );
     }
     return allMenu;

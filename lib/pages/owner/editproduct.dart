@@ -83,8 +83,8 @@ class _EditProdPageState extends State<EditProdPage> {
   String upperCase(String toEdit) {
     return toEdit[0].toUpperCase() + toEdit.substring(1).toLowerCase();
   }
-
   //uppercase first letter-----------------------------------------
+
   //untuk bahagian upload image-----------------------------------------------------
   File? _image;
   final picker = ImagePicker();
@@ -143,7 +143,7 @@ class _EditProdPageState extends State<EditProdPage> {
       ),
     );
   }
-  //bahagian upload imej----------------------------------------------------------
+  //bahagian upload imej------------------------------------------------------------
 
   //enable save kalau ada changes in textcontroller atau imej je--------------------------------
   bool isSaveEnabled() {

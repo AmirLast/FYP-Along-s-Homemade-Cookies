@@ -5,12 +5,6 @@ import 'package:fyp/models/bakedclass.dart';
 import 'package:fyp/models/cartitem.dart';
 import 'package:intl/intl.dart';
 
-//these will be in database, but how to make it into a List after reading
-//loading screen to wait
-//search internet
-//read in changenotifier?
-//and then make page to edit the product
-
 class Shopping extends ChangeNotifier {
   //list product menu
 

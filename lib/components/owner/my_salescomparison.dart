@@ -2,20 +2,21 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/models/orderclass.dart';
 
-class MySalesPerDay extends StatefulWidget {
-  const MySalesPerDay({super.key});
+class MySalesComparison extends StatefulWidget {
+  const MySalesComparison({super.key});
 
   @override
-  State<MySalesPerDay> createState() => _MySalesPerDayState();
+  State<MySalesComparison> createState() => _MySalesComparisonState();
 }
 
-class _MySalesPerDayState extends State<MySalesPerDay> {
+class _MySalesComparisonState extends State<MySalesComparison> {
   var orders = Orders.currentOrder.orders.where((x) => x.status == "Confirm").toList();
   List<BarChartGroupData> listData = [];
   late List<Map<String, int>> firstProds = [];
   late List<Map<String, int>> secondProds = [];
   late List<String> prodNames = [];
   late List<int> percentage = [];
+  late double max = 0;
   //from xRange1 until xRange2
   late DateTime xRange1;
   late DateTime xRange2;
@@ -113,6 +114,15 @@ class _MySalesPerDayState extends State<MySalesPerDay> {
         }
       } else {
         percentage.add(((curr - prev) / prev * 100).toInt());
+      }
+      if (usePrev) {
+        if (max < prev) {
+          max = prev;
+        }
+      } else {
+        if (max < curr) {
+          max = curr;
+        }
       }
 
       listData.add(
@@ -299,8 +309,7 @@ class _MySalesPerDayState extends State<MySalesPerDay> {
                           show: false,
                         ),
                         groupsSpace: 20,
-                        barGroups: listData //getData(8, 4),
-                        ),
+                        barGroups: listData),
                   ),
           ),
         ],
