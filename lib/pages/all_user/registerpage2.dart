@@ -320,6 +320,7 @@ class _Register2PageState extends State<Register2Page> {
                                   //for category edit assist
                                   "currentdir": "",
                                   "address": addressList, //for delivery
+                                  "ban": false,
                                 }).then((onValue) {
                                   context.read<Shopping>().updateDeliveryAddress(addressList);
                                   //update userclass
@@ -330,6 +331,7 @@ class _Register2PageState extends State<Register2Page> {
                                     type: widget.type,
                                     currentdir: "",
                                     passStrength: widget.passStrength,
+                                    ban: false,
                                   );
                                   if (widget.type == 'seller') {
                                     //update userclass

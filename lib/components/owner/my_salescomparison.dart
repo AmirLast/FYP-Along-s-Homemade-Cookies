@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/models/orderclass.dart';
+import 'package:intl/intl.dart';
 
 class MySalesComparison extends StatefulWidget {
   const MySalesComparison({super.key});
@@ -12,8 +13,8 @@ class MySalesComparison extends StatefulWidget {
 class _MySalesComparisonState extends State<MySalesComparison> {
   var orders = Orders.currentOrder.orders.where((x) => x.status == "Confirm").toList();
   List<BarChartGroupData> listData = [];
-  late List<Map<String, int>> firstProds = [];
-  late List<Map<String, int>> secondProds = [];
+  late List<Map<String, double>> firstProds = [];
+  late List<Map<String, double>> secondProds = [];
   late List<String> prodNames = [];
   late List<int> percentage = [];
   late double max = 0;
@@ -31,8 +32,8 @@ class _MySalesComparisonState extends State<MySalesComparison> {
     yRange2 = y2;
   }
 
-  List<Map<String, int>> setListProduct(List<Orders> o) {
-    List<Map<String, int>> list = [];
+  List<Map<String, double>> setListProduct(List<Orders> o) {
+    List<Map<String, double>> list = [];
     int i = 0;
     //for every order
     for (i; i < o.length; i++) {
@@ -40,35 +41,36 @@ class _MySalesComparisonState extends State<MySalesComparison> {
       //for every item in order
       for (j; j < o[i].cartitems.length; j++) {
         String name = o[i].cartitems[j].values.elementAt(2);
+        double price = orders[i].cartitems[j].values.elementAt(1);
         int quantity = o[i].cartitems[j].values.elementAt(0);
         int x = 0;
         bool exist = false;
         if (list.isEmpty) {
-          list.add({name: quantity});
+          list.add({name: quantity * price});
           exist = true; //prod exist now
         } else {
           //check each list if exist current prod name
           for (x; x < list.length; x++) {
             if (list[x].containsKey(name)) {
               //if exist, sum up the prod quantity with current quantity
-              int newQ = list[x].values.first + quantity;
-              list[x].update(name, (value) => newQ); //update
+              double newS = list[x].values.first + quantity * price;
+              list[x].update(name, (value) => newS); //update
               exist = true; //prod name found in list
             }
           }
         }
         if (!exist) {
           //if not found in list, add it
-          list.add({name: quantity});
+          list.add({name: quantity * price});
         }
       }
     }
     return list;
   }
 
-  void setListName(List<Map<String, int>> first, List<Map<String, int>> second) {
+  void setListName(List<Map<String, double>> first, List<Map<String, double>> second) {
     prodNames.clear();
-    List<Map<String, int>> combine = first + second;
+    List<Map<String, double>> combine = first + second;
     combine.sort((a, b) => a.keys.first.compareTo(b.keys.first)); //sort by name
     int i = 0;
     int j = 0;
@@ -99,8 +101,8 @@ class _MySalesComparisonState extends State<MySalesComparison> {
     for (i; i < j; i++) {
       var a = firstProds.firstWhere((x) => x.keys.first == prodNames[i], orElse: () => {});
       var b = secondProds.firstWhere((x) => x.keys.first == prodNames[i], orElse: () => {});
-      double prev = a.isEmpty ? 0 : double.parse("${a.values.first}");
-      double curr = b.isEmpty ? 0 : double.parse("${b.values.first}");
+      double prev = a.isEmpty ? 0 : double.parse(a.values.first.toStringAsFixed(2));
+      double curr = b.isEmpty ? 0 : double.parse(b.values.first.toStringAsFixed(2));
       bool usePrev = prev > curr;
       double high = usePrev ? prev : curr;
       double low = !usePrev ? prev : curr;
@@ -178,9 +180,9 @@ class _MySalesComparisonState extends State<MySalesComparison> {
       ),
       child: Column(
         children: [
-          const Text(
-            "Product Quantity Sold (W1 vs W2)",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          Text(
+            "Product Sales\n(${DateFormat('yyyy-MM-dd').format(xRange1)} ~ ${DateFormat('yyyy-MM-dd').format(xRange2)} vs ${DateFormat('yyyy-MM-dd').format(yRange1)} ~ ${DateFormat('yyyy-MM-dd').format(yRange2)})",
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           listData.isEmpty
               ? Container()

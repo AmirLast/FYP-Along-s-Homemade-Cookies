@@ -11,11 +11,11 @@ class MySalesTotal extends StatefulWidget {
 }
 
 class _MySalesTotalState extends State<MySalesTotal> {
-  final totQuant = <Map<String, int>>[];
+  final totSales = <Map<String, double>>[];
   final List<Color> colors = [];
   var orders = Orders.currentOrder.orders.where((x) => x.status == "Confirm").toList();
   List<PieChartSectionData> pieCharts = [];
-  int allQuant = 0;
+  double allSales = 0;
   late DateTime date1;
   late DateTime date2;
 
@@ -32,27 +32,28 @@ class _MySalesTotalState extends State<MySalesTotal> {
       //for every item in order
       for (j; j < orders[i].cartitems.length; j++) {
         String name = orders[i].cartitems[j].values.elementAt(2);
+        double price = orders[i].cartitems[j].values.elementAt(1);
         int quantity = orders[i].cartitems[j].values.elementAt(0);
         int x = 0;
         bool exist = false;
         //if empty, add the product name and quantity
-        if (totQuant.isEmpty) {
-          totQuant.add({name: quantity});
+        if (totSales.isEmpty) {
+          totSales.add({name: quantity * price});
           exist = true; //prod exist now
         } else {
           //check each list if exist current prod name
-          for (x; x < totQuant.length; x++) {
-            if (totQuant[x].containsKey(name)) {
+          for (x; x < totSales.length; x++) {
+            if (totSales[x].containsKey(name)) {
               //if exist, sum up the prod quantity with current quantity
-              int newQ = totQuant[x].values.first + quantity;
-              totQuant[x].update(name, (value) => newQ); //update
+              double newS = totSales[x].values.first + quantity * price;
+              totSales[x].update(name, (value) => newS); //update
               exist = true; //prod name found in list
             }
           }
         }
         if (!exist) {
           //if not found in list, add it
-          totQuant.add({name: quantity});
+          totSales.add({name: quantity * price});
         }
       }
     }
@@ -60,8 +61,8 @@ class _MySalesTotalState extends State<MySalesTotal> {
 
   void makeChartData() {
     int i = 0;
-    for (i; i < totQuant.length; i++) {
-      int q = totQuant[i].values.first;
+    for (i; i < totSales.length; i++) {
+      double sales = totSales[i].values.first;
       //the random color
       Color theColor = Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withValues(alpha: 1.0);
       //process to make a lighten color
@@ -71,8 +72,8 @@ class _MySalesTotalState extends State<MySalesTotal> {
       colors.add(hslLight.toColor());
       pieCharts.add(
         PieChartSectionData(
-          value: double.parse("$q"),
-          title: "${(q / allQuant * 100).toStringAsFixed(0)}%",
+          value: double.parse("$sales"),
+          title: "${(sales / allSales * 100).toStringAsFixed(0)}%",
           titleStyle: const TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.bold,
@@ -91,10 +92,10 @@ class _MySalesTotalState extends State<MySalesTotal> {
     orders =
         orders.where((x) => DateTime.parse(x.onchange).compareTo(date1) >= 0 && DateTime.parse(x.onchange).compareTo(date2) <= 0).toList();
     getAllData();
-    totQuant.sort((a, b) => a.keys.first.compareTo(b.keys.first));
+    totSales.sort((a, b) => a.keys.first.compareTo(b.keys.first));
     int i = 0;
-    for (i; i < totQuant.length; i++) {
-      allQuant += totQuant[i].values.first;
+    for (i; i < totSales.length; i++) {
+      allSales += totSales[i].values.first;
     }
     makeChartData();
   }
@@ -118,15 +119,15 @@ class _MySalesTotalState extends State<MySalesTotal> {
       ),
       child: Column(
         children: [
-          Text(
-            "Product Quantity Sold ($allQuant Items)",
-            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          const Text(
+            "Product Sales",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 5),
             width: 200,
-            height: totQuant.isEmpty ? 100 : 200,
-            child: totQuant.isEmpty
+            height: totSales.isEmpty ? 100 : 200,
+            child: totSales.isEmpty
                 ? Center(
                     child: Text(
                       "Nothing to show yet...",
@@ -141,13 +142,13 @@ class _MySalesTotalState extends State<MySalesTotal> {
           ),
           Row(
             children: [
-              totQuant.isEmpty ? const SizedBox(height: 20) : Container(),
+              totSales.isEmpty ? const SizedBox(height: 20) : Container(),
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
                   primary: false,
                   padding: const EdgeInsets.only(bottom: 5),
-                  itemCount: totQuant.length,
+                  itemCount: totSales.length,
                   itemBuilder: (context, index) {
                     return index.isEven
                         ? Row(
@@ -163,8 +164,8 @@ class _MySalesTotalState extends State<MySalesTotal> {
                                 ),
                               ),
                               const SizedBox(width: 10),
-                              SizedBox(width: 100, child: Text(totQuant[index].keys.first, overflow: TextOverflow.ellipsis)),
-                              Text(" ${totQuant[index].values.first}"),
+                              SizedBox(width: 100, child: Text(totSales[index].keys.first, overflow: TextOverflow.ellipsis)),
+                              Text("RM" + totSales[index].values.first.toStringAsFixed(2)),
                             ],
                           )
                         : Container();
@@ -176,7 +177,7 @@ class _MySalesTotalState extends State<MySalesTotal> {
                   shrinkWrap: true,
                   primary: false,
                   padding: const EdgeInsets.only(bottom: 5),
-                  itemCount: totQuant.length,
+                  itemCount: totSales.length,
                   itemBuilder: (context, index) {
                     return index.isOdd
                         ? Row(
@@ -192,8 +193,8 @@ class _MySalesTotalState extends State<MySalesTotal> {
                                 ),
                               ),
                               const SizedBox(width: 10),
-                              SizedBox(width: 100, child: Text(totQuant[index].keys.first, overflow: TextOverflow.ellipsis)),
-                              Text(" ${totQuant[index].values.first}"),
+                              SizedBox(width: 100, child: Text(totSales[index].keys.first, overflow: TextOverflow.ellipsis)),
+                              Text("RM" + totSales[index].values.first.toStringAsFixed(2)),
                             ],
                           )
                         : Container();

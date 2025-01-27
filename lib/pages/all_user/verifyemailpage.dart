@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_scaffoldmessage.dart';
+import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
 import 'package:fyp/services/auth_gate.dart';
 
@@ -16,7 +17,7 @@ class VerifyEmailPage extends StatefulWidget {
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
-  bool isEmailVerified = false;
+  bool isEmailVerified = UserNow.usernow.type == "admin" ? true : false;
   bool canResendEmail = false;
   Timer? timer;
 

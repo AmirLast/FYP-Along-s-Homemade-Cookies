@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/admin/adminhomepage.dart';
+import 'package:fyp/pages/all_user/banned.dart';
 import 'package:fyp/pages/owner/ownerhomepage.dart';
 import 'package:fyp/pages/customer/userhomepage.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
@@ -15,6 +17,7 @@ class AuthGate extends StatefulWidget {
 
 class _AuthGateState extends State<AuthGate> {
   String type = "";
+  bool ban = false;
   bool isLoading = true;
 
   stillLoad() {
@@ -42,6 +45,7 @@ class _AuthGateState extends State<AuthGate> {
         setState(() {
           type = temp;
           isLoading = false;
+          ban = UserNow.usernow.ban;
         });
       });
     });
@@ -64,11 +68,11 @@ class _AuthGateState extends State<AuthGate> {
                 if (snapshot.hasData) {
                   // if there is user logged in then
                   if (type == 'buyer') {
-                    return const UserHomePage();
+                    return ban ? const Banned() : const UserHomePage();
                   } else if (type == 'admin') {
-                    return const AdminHomePage();
+                    return ban ? const Banned() : const AdminHomePage();
                   } else if (type == 'seller') {
-                    return const OwnerHomePage();
+                    return ban ? const Banned() : const OwnerHomePage();
                   }
                   return const HomeScreen(); //to counter returning null
                 } else {

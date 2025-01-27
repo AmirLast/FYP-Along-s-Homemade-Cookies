@@ -5,6 +5,7 @@ import 'package:fyp/models/memberclass.dart';
 import 'package:fyp/models/orderclass.dart';
 import 'package:fyp/models/shopclass.dart';
 import 'package:fyp/models/userclass.dart';
+import 'package:fyp/models/userlistclass.dart';
 import 'package:fyp/pages/all_user/homescreen.dart';
 import 'package:fyp/pages/all_user/profile.dart';
 import 'package:fyp/services/auth_service.dart';
@@ -41,6 +42,7 @@ class MyDrawer extends StatelessWidget {
       Orders.currentOrder.empty();
       Shops.currentShop.empty();
       UserNow.usernow.empty();
+      UserList.user.empty();
 
       final authService = AuthService();
       await authService.signOut();
@@ -76,18 +78,21 @@ class MyDrawer extends StatelessWidget {
           ),
 
           //home list tile
-          MyDrawerTile(
-            text: "P R O F I L E",
-            icon: Icons.person,
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(type: UserNow.usernow.type),
-                ),
-              );
-            }, //go to profile setting
+          Visibility(
+            visible: UserNow.usernow.type != "admin",
+            child: MyDrawerTile(
+              text: "P R O F I L E",
+              icon: Icons.person,
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(type: UserNow.usernow.type),
+                  ),
+                );
+              }, //go to profile setting
+            ),
           ),
 
           const SizedBox(height: 10),

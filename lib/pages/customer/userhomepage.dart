@@ -112,7 +112,7 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
               visible: UserNow.usernow.isMember,
               child: IconButton(
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MembershipPage(pop: ""))),
-                icon: const Icon(Icons.star, color: Colors.amber),
+                icon: const Stack(children: [Icon(Icons.star, color: Colors.amber), Icon(Icons.star_border, color: Colors.black)]),
               ),
             ),
             IconButton(

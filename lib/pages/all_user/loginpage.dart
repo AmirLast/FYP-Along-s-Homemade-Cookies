@@ -172,15 +172,21 @@ class _LoginPageState extends State<LoginPage> {
                       bool isStrong = passStrength[0] && passStrength[1] && passStrength[2] && passStrength[3];
                       var dir = FirebaseFirestore.instance.collection('users');
                       await dir.doc(user!.uid).get().then((value) {
-                        //these are general data loads for any user
-                        UserNow.usernow = UserNow(
-                          fullname: value.data()?['fullname'],
-                          phone: value.data()?['phone'],
-                          user: user,
-                          type: value.data()?['type'],
-                          currentdir: value.data()?['currentdir'],
-                          passStrength: value.data()?['passStrength'],
-                        );
+                        //these are general data loads for non admin
+                        if (value.data()?['type'] != "admin") {
+                          UserNow.usernow = UserNow(
+                            fullname: value.data()?['fullname'],
+                            phone: value.data()?['phone'],
+                            user: user,
+                            type: value.data()?['type'],
+                            currentdir: value.data()?['currentdir'],
+                            passStrength: value.data()?['passStrength'],
+                            ban: value.data()?['ban'],
+                          );
+                        } else {
+                          UserNow.usernow.type = "admin";
+                          UserNow.usernow.ban = false;
+                        }
                         //special data for buyer
                         if (value.data()?['type'] == "buyer") {
                           UserNow.usernow.address = value.data()?['address'];

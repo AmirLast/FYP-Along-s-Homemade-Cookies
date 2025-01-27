@@ -76,7 +76,7 @@ class _ReceiptPageState extends State<ReceiptPage> {
               ),
             ],
           ),
-          bottomNavigationBar: _buildBottomNavBar(context),
+          //bottomNavigationBar: _buildBottomNavBar(context),
           body: const SingleChildScrollView(
             child: Column(
               children: [
@@ -90,7 +90,7 @@ class _ReceiptPageState extends State<ReceiptPage> {
   }
 
   //Custom bottom naavigation bar - messages/call delivery driver
-  Widget _buildBottomNavBar(BuildContext context) {
+  /*Widget _buildBottomNavBar(BuildContext context) {
     return Container(
       height: 100,
       decoration: BoxDecoration(
@@ -179,5 +179,5 @@ class _ReceiptPageState extends State<ReceiptPage> {
         ],
       ),
     );
-  }
+  }*/
 }

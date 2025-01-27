@@ -8,6 +8,7 @@ class UserNow {
   User? user;
   String currentdir;
   bool passStrength;
+  bool ban;
   bool isMember = false; //only buyer can be member
   List address = []; //only admin has no address
   //below is for owner
@@ -15,6 +16,7 @@ class UserNow {
   String shop = "";
   bool visibility = false;
   UserNow({
+    required this.ban,
     required this.fullname,
     required this.phone,
     required this.user,
@@ -29,6 +31,7 @@ class UserNow {
     type: "",
     currentdir: "",
     passStrength: true,
+    ban: false,
   ); //the object to call all the above data
   void empty() {
     UserNow.usernow = UserNow(
@@ -38,6 +41,7 @@ class UserNow {
       type: "",
       currentdir: "",
       passStrength: true,
+      ban: false,
     );
     UserNow.usernow.isMember = false;
     UserNow.usernow.address.clear();

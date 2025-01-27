@@ -4,7 +4,6 @@ import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
 import 'package:fyp/pages/all_user/endscreen.dart';
-import 'package:fyp/pages/all_user/profile.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -84,10 +83,13 @@ class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProvider
               color: Colors.black,
             ),
           ),
-          actions: [
+          actions: const [
             IconButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(type: UserNow.usernow.type))),
-              icon: const Icon(Icons.account_circle, color: Colors.black),
+              onPressed: null,
+              icon: Icon(
+                Icons.more_vert,
+                color: Colors.transparent,
+              ),
             ),
           ],
         ),

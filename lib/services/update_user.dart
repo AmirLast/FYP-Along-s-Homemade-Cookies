@@ -15,14 +15,20 @@ class UpdateUserData {
       }
       var dir = FirebaseFirestore.instance.collection('users');
       await dir.doc(user.uid).get().then((value) async {
-        UserNow.usernow = UserNow(
-          fullname: value.data()?['fullname'],
-          phone: value.data()?['phone'],
-          user: user,
-          type: value.data()?['type'],
-          currentdir: value.data()?['currentdir'],
-          passStrength: value.data()?['passStrength'],
-        );
+        if (value.data()?['type'] != "admin") {
+          UserNow.usernow = UserNow(
+            fullname: value.data()?['fullname'],
+            phone: value.data()?['phone'],
+            user: user,
+            type: value.data()?['type'],
+            currentdir: value.data()?['currentdir'],
+            passStrength: value.data()?['passStrength'],
+            ban: value.data()?['ban'],
+          );
+        } else {
+          UserNow.usernow.type = "admin";
+          UserNow.usernow.ban = false;
+        }
         //check user type
         if (value.data()?['type'] == "seller") {
           //for owner, they have extra data

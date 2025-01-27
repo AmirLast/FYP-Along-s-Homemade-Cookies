@@ -81,11 +81,14 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              MyMenuButton(
-                text: "Change Notification Settings",
-                onPressed: () {},
-                icon: Icons.notifications_active_rounded,
-                size: 350,
+              Visibility(
+                visible: false, //tukar kalau dh boleh notif
+                child: MyMenuButton(
+                  text: "Change Notification Settings",
+                  onPressed: () {},
+                  icon: Icons.notifications_active_rounded,
+                  size: 350,
+                ),
               ),
               const SizedBox(height: 50),
               Visibility(
@@ -109,11 +112,14 @@ class SettingsPage extends StatelessWidget {
                 size: 350,
               ),
               const SizedBox(height: 50),
-              MyMenuButton(
-                text: "Change Email",
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangeEmail())),
-                icon: Icons.lock_person_rounded,
-                size: 350,
+              Visibility(
+                visible: UserNow.usernow.type != "admin",
+                child: MyMenuButton(
+                  text: "Change Email",
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangeEmail())),
+                  icon: Icons.lock_person_rounded,
+                  size: 350,
+                ),
               ),
             ],
           ),
