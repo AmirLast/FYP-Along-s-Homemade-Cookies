@@ -177,7 +177,7 @@ class _UserHomePageState extends State<UserHomePage> with SingleTickerProviderSt
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black, width: 4),
-                      color: Colors.amber,
+                      color: Colors.red,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Center(

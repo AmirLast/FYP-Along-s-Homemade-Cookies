@@ -4,6 +4,7 @@ class UserList {
   String type;
   String shop = "";
   bool ban;
+  List<UserList> users = [];
   UserList({
     required this.name,
     required this.uid,
@@ -14,5 +15,6 @@ class UserList {
   void empty() {
     UserList.user = UserList(name: "", uid: "", type: "", ban: false);
     UserList.user.shop = "";
+    UserList.user.users.clear();
   }
 }

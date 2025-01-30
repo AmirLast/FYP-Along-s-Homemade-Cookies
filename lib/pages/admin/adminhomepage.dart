@@ -3,6 +3,7 @@ import 'package:fyp/components/general/my_drawer.dart';
 import 'package:fyp/components/general/my_logo.dart';
 import 'package:fyp/components/general/my_menubutton.dart';
 import 'package:fyp/models/userclass.dart';
+import 'package:fyp/pages/admin/functions/updateuserlist.dart';
 import 'package:fyp/pages/all_user/endscreen.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -14,6 +15,7 @@ class AdminHomePage extends StatefulWidget {
 
 class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProviderStateMixin {
   final Logo show = Logo(); //for logo
+  final obj = UpdateUserList(); //for update users
   late String? name;
 
   confirmPopUp(context) {
@@ -104,7 +106,9 @@ class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProvider
               MyMenuButton(
                 text: "User List",
                 icon: Icons.person,
-                onPressed: () {},
+                onPressed: () {
+                  obj.updateUserList(context);
+                },
                 size: 0,
               )
             ],
