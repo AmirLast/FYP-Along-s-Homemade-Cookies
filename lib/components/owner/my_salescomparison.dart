@@ -41,7 +41,7 @@ class _MySalesComparisonState extends State<MySalesComparison> {
       //for every item in order
       for (j; j < o[i].cartitems.length; j++) {
         String name = o[i].cartitems[j].values.elementAt(2);
-        double price = orders[i].cartitems[j].values.elementAt(1);
+        double price = o[i].cartitems[j].values.elementAt(1);
         int quantity = o[i].cartitems[j].values.elementAt(0);
         int x = 0;
         bool exist = false;
@@ -180,9 +180,14 @@ class _MySalesComparisonState extends State<MySalesComparison> {
       ),
       child: Column(
         children: [
-          Text(
-            "Product Sales\n(${DateFormat('yyyy-MM-dd').format(xRange1)} ~ ${DateFormat('yyyy-MM-dd').format(xRange2)} vs ${DateFormat('yyyy-MM-dd').format(yRange1)} ~ ${DateFormat('yyyy-MM-dd').format(yRange2)})",
-            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          Column(
+            children: [
+              const Center(child: Text("Product Sales", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
+              Text(
+                "(${DateFormat('dd/MM/yy').format(xRange1)} ~ ${DateFormat('dd/MM/yy').format(xRange2)} vs ${DateFormat('dd/MM/yy').format(yRange1)} ~ ${DateFormat('dd/MM/yy').format(yRange2)})",
+                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
           listData.isEmpty
               ? Container()

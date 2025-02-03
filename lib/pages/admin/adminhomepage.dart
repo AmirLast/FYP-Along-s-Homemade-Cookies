@@ -77,9 +77,9 @@ class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProvider
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xffd1a271),
-          title: Text(
-            "Hello " + name.toString(),
-            style: const TextStyle(
+          title: const Text(
+            "Hello Admin",
+            style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
               color: Colors.black,

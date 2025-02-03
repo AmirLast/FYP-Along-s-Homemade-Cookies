@@ -17,7 +17,7 @@ class VerifyEmailPage extends StatefulWidget {
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
   final MyScaffoldmessage scaffoldOBJ = MyScaffoldmessage(); //for scaffold message
   final Logo show = Logo(); //for logo
-  bool isEmailVerified = UserNow.usernow.type == "admin" ? true : false;
+  bool isEmailVerified = false;
   bool canResendEmail = false;
   Timer? timer;
 
@@ -26,6 +26,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     super.initState();
     //user needs to be created before
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    if (UserNow.usernow.type == "admin") {
+      isEmailVerified = true;
+    }
 
     if (!isEmailVerified) {
       sendVerificationEmail();

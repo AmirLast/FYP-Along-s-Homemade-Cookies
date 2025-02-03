@@ -141,6 +141,7 @@ class _MySalesTotalState extends State<MySalesTotal> {
                   ),
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               totSales.isEmpty ? const SizedBox(height: 20) : Container(),
               Expanded(
@@ -164,7 +165,7 @@ class _MySalesTotalState extends State<MySalesTotal> {
                                 ),
                               ),
                               const SizedBox(width: 10),
-                              SizedBox(width: 100, child: Text(totSales[index].keys.first, overflow: TextOverflow.ellipsis)),
+                              SizedBox(width: 75, child: Text(totSales[index].keys.first, overflow: TextOverflow.ellipsis)),
                               Text("RM" + totSales[index].values.first.toStringAsFixed(2)),
                             ],
                           )
@@ -193,7 +194,7 @@ class _MySalesTotalState extends State<MySalesTotal> {
                                 ),
                               ),
                               const SizedBox(width: 10),
-                              SizedBox(width: 100, child: Text(totSales[index].keys.first, overflow: TextOverflow.ellipsis)),
+                              SizedBox(width: 75, child: Text(totSales[index].keys.first, overflow: TextOverflow.ellipsis)),
                               Text("RM" + totSales[index].values.first.toStringAsFixed(2)),
                             ],
                           )

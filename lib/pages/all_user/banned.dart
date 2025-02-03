@@ -23,8 +23,9 @@ class Banned extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 25),
-                padding: const EdgeInsets.all(10),
+                height: 250,
+                margin: const EdgeInsets.symmetric(horizontal: 50),
+                padding: const EdgeInsets.all(40),
                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
                 child: Column(
                   children: [
@@ -36,9 +37,11 @@ class Banned extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
+                    const Spacer(),
                     MaterialButton(
                       child: Container(
-                        padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+                        margin: const EdgeInsets.symmetric(horizontal: 50),
+                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
                         decoration: BoxDecoration(
                           color: Colors.black,
                           borderRadius: BorderRadius.circular(40),

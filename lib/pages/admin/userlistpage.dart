@@ -32,20 +32,23 @@ class _UserListPageState extends State<UserListPage> {
         Navigator.pop(context);
       },
       child: Scaffold(
+        backgroundColor: const Color(0xffd1a271),
         appBar: AppBar(
-          backgroundColor: const Color(0xffd1a271),
+          backgroundColor: const Color(0xffB67F5F),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new_rounded),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
-          title: const Text(
-            "User List",
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+          title: const Center(
+            child: Text(
+              "User List",
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
           ),
           actions: const [
